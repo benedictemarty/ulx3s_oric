@@ -179,14 +179,24 @@ moment du routage :
 dimensions exactes, positions des découpes arrière, entraxes de fixation,
 position du connecteur nappe clavier.
 
-## Phasage recommandé
+## Stratégie : CARTE UNIQUE (décision bmarty 2026-07-29)
 
-1. **Phase A — bandeau prototype** (~150×40 mm, ~30 €) : peigne LOCI +
-   TXS + DIN cassette + imprimante + jack 5 V. Valide le bus, la LOCI
-   réelle et les niveaux — risque minimal.
-2. **Phase B — carte format Atmos** : reprend la phase A validée, ajoute
-   berceaux Pico/Tang, USB, HP, fixations boîtier. Lancée seulement après
-   validation électrique de la phase A et mesures du boîtier.
+**Une seule platine porte tout** : berceau Tang Nano 20K, 2 berceaux
+Pico W, les 6 TXS, le peigne LOCI, cassette, imprimante, HDMI déporté,
+micro-SD externe, HP, clavier. Pas de bandeau intermédiaire commandé.
+
+Le dossier « phase A » (hardware/phaseA/) N'EST PAS perdu : c'est le
+prototype virtuel dont la carte unique hérite les blocs VALIDÉS PAR DRC :
+banc de 6 TXS et affectations, géométrie exacte du peigne (pas confirmé
+sur la LOCI réelle), chaîne analogique cassette (LM393+hystérésis,
+PhotoMOS), port imprimante, pinouts fan-out monotone, et toutes les
+leçons de routage (paires de doigts, échappements TSSOP, routage
+conjoint). Maîtrise du risque sans deuxième commande : DRC 0 erreur
+exigé + revue visuelle des rendus + lot de 5 (une itération de réserve).
+
+Le boîtier paramétrique OpenSCAD (backlog S5) est généré depuis les
+coordonnées des connecteurs de CETTE carte : gabarit libre (plus
+contraint par l'OriClone), silhouette Atmos par le profil extrait.
 
 ## Notes de conception vérifiées
 

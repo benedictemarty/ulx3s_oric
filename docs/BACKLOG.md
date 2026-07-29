@@ -32,8 +32,8 @@ affichage HDMI, clavier USB, son AY.
 - [ ] US3.4 Shift register VIA complet + entrée cassette réelle (jack)
 
 ## Sprint 4+ — « Atmos moderne » (carte format Atmos)
-- [ ] US4.1 Fichiers de fabrication phase A (bandeau LOCI) — en cours (agent PCB)
-- [ ] US4.2 Validation bandeau : bus 3,3 V en bouclage, puis LOCI réelle
+- [x] US4.1 Conception bandeau LOCI terminée (144/144, DRC 0) — NON commandée : blocs intégrés à la carte unique (décision carte unique 2026-07-29)
+- [ ] US4.2 Carte UNIQUE « Atmos moderne » : Tang Nano + 2 Pico W + TXS + tous connecteurs — hérite des blocs du bandeau
 - [ ] US4.3 **PRIORITAIRE — Portage du core sur Tang Nano 20K** (Gowin
       GW2AR-18, yosys synth_gowin + apicula ; PLL/TMDS/USB à adapter).
       Prérequis d'usage du bandeau phase A : c'est le Tang Nano qui le
