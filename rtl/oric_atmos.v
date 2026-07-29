@@ -43,6 +43,16 @@ module oric_atmos #(
     input         ext_map,
     input         ext_ioctl,
 
+    // Imprimante (Centronics via VIA : PA data, PB4 strobe, CA1 ack)
+    output [7:0]  prn_data,
+    output        prn_strobe_n,
+    input         prn_ack,
+
+    // Cassette (PB7 sortie, PB6 moteur, CB1 entrée)
+    output        tape_out,
+    output        tape_motor,
+    input         tape_in,
+
     // Debug
     output        cpu_irq_dbg
 );
@@ -191,11 +201,16 @@ module oric_atmos #(
         .pb_in   (via_pb_in),
         .pb_out  (via_pb_out),
         .ddrb_o  (via_ddrb),
-        .ca1_in  (1'b1),                  // ACK imprimante, repos haut
+        .ca1_in  (prn_ack),               // ACK imprimante
         .ca2_out (via_ca2),
-        .cb1_in  (1'b1),                  // entrée cassette (v2)
+        .cb1_in  (tape_in),               // entrée cassette
         .cb2_out (via_cb2)
     );
+
+    assign prn_data     = via_pa_out;     // partagé avec le bus AY (fidèle)
+    assign prn_strobe_n = via_pb_out[4];
+    assign tape_motor   = via_pb_out[6];
+    assign tape_out     = via_pb_out[7];
 
     jt49_bus #(.COMP(3'b000)) psg (
         .rst_n   (~rst),

@@ -13,6 +13,8 @@ module tb_trace;
         .exp_addr(), .exp_we(), .exp_do(), .exp_io_page(), .exp_tphase(),
         .ext_din(8'hFF), .ext_irq(1'b0), .ext_romdis(1'b0), .ext_map(1'b0),
         .ext_ioctl(1'b0),
+        .prn_data(), .prn_strobe_n(), .prn_ack(1'b1),
+        .tape_out(), .tape_motor(), .tape_in(1'b1),
         .fb_we(), .fb_addr(), .fb_data(), .frame_tick(), .audio(),
         .cpu_irq_dbg()
     );
