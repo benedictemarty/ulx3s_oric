@@ -31,6 +31,16 @@ affichage HDMI, clavier USB, son AY.
 - [ ] US3.3 Joystick USB → interface joystick Oric
 - [ ] US3.4 Shift register VIA complet + entrée cassette réelle (jack)
 
+## Sprint 4+ — « Atmos moderne » (carte format Atmos)
+- [ ] US4.1 Fichiers de fabrication phase A (bandeau LOCI) — en cours (agent PCB)
+- [ ] US4.2 Validation bandeau : bus 3,3 V en bouclage, puis LOCI réelle
+- [ ] US4.3 **Portage du core sur Tang Nano 20K** (Gowin GW2AR-18,
+      yosys synth_gowin + apicula ; PLL/TMDS/USB à adapter)
+- [ ] US4.4 Carte format Atmos (phase B) : mesures boîtier, routage,
+      berceaux Pico W ×2 + Tang Nano, micro-SD externe (découpe TV),
+      HP + PAM8302, imprimante via Pico
+- [ ] US4.5 Firmware LOCI natif sur Pico #1 (build loci-firmware, SD)
+
 ## Dette technique / risques identifiés
 - Battement 50/60 Hz → tearing occasionnel (accepté v1, cf. US3.2).
 - usb_hid_host ne gère que les claviers *boot protocol* low-speed ; certains
