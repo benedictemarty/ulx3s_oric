@@ -76,6 +76,17 @@ Reproduction de la face arrière d'un Oric Atmos pilotée par le core FPGA,
 sont des **périphériques** (ils ne pilotent D que sur lecture de leur
 plage, /IRQ//ROMDIS//MAP en drain ouvert).
 
+## Stockage et mémoire
+
+- **Slot micro-SD** câblé en SPI sur le berceau Pico #1 — architecture de la
+  vraie LOCI (firmware RP2040 + stockage SD). S'ajoutent le micro-SD de
+  l'ULX3S (utilisable par le core, chargement .tap au backlog) et celui du
+  Tang Nano 20K.
+- **RAM : aucun boîtier sur la carte porteuse.** La RAM de l'Oric (64 Ko)
+  est en BRAM dans le FPGA ; l'ULX3S apporte 32 Mo de SDRAM et le Tang
+  Nano 20K 8 Mo intégrés — chaque module a sa mémoire, le bus 6502
+  n'adresse que 64 Ko.
+
 ## USB latéraux
 
 - **USB1** (USB-A femelle) : câblée au Pico #1 en hôte PIO-USB
