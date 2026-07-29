@@ -132,7 +132,7 @@ def build_component_table():
     jua["37"] = "+3V3"
     jua["38"] = "+3V3"
     add("J_ULX_A", "Connector_PinHeader_2.54mm", "PinHeader_2x20_P2.54mm_Vertical",
-        (14, 44), 0, "Conn_02x20", jua)
+        (14, 46.54), 90, "Conn_02x20", jua)
 
     # --- J_ULX_B (2x10) --------------------------------------------------
     jub = {}
@@ -143,7 +143,7 @@ def build_component_table():
                 "14": "GND", "15": "GND", "16": "GND",
                 "17": "+3V3", "18": "+3V3", "19": "GND", "20": "GND"})
     add("J_ULX_B", "Connector_PinHeader_2.54mm", "PinHeader_2x10_P2.54mm_Vertical",
-        (72, 44), 0, "Conn_02x10", jub)
+        (72, 46.54), 90, "Conn_02x10", jub)
 
     # --- J_PRN (2x10, brochage imprimante Atmos) -------------------------
     jprn = {}
@@ -154,7 +154,7 @@ def build_component_table():
     for p in range(2, 21, 2):
         jprn[str(p)] = "GND"
     add("J_PRN", "Connector_PinHeader_2.54mm", "PinHeader_2x10_P2.54mm_Vertical",
-        (84, 4.5), 0, "Conn_02x10", jprn)
+        (84, 7.04), 90, "Conn_02x10", jprn)
 
     # --- J_PWR jack 5,5/2,1 : 1=centre(+5V), 2=manchon(GND), 3=switch NC
     add("J_PWR", "Connector_BarrelJack", "BarrelJack_Horizontal",

@@ -611,7 +611,7 @@
       (attach off)
     )
     (padstack Rect[B]Pad_6000.000000x1600.000000_um
-      (shape (rect B.Cu -3000 -800 3000 800))
+      (shape (rect B.Cu -3000 -800 -1000 800))
       (attach off)
     )
     (padstack Rect[A]Pad_3500.000000x3500.000000_um
@@ -620,7 +620,7 @@
       (attach off)
     )
     (padstack Rect[T]Pad_6000.000000x1600.000000_um
-      (shape (rect F.Cu -3000 -800 3000 800))
+      (shape (rect F.Cu -3000 -800 -1000 800))
       (attach off)
     )
     (padstack Rect[A]Pad_1700.000000x1700.000000_um

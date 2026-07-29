@@ -119,9 +119,17 @@ CPU/ULA/VIA/AY : portables tels quels. → épic au backlog.
 
 ## Format : carte mère Atmos complète
 
-Objectif final : la carte reprend **les dimensions de la carte mère de
-l'Oric Atmos d'origine** (~280 × 178 mm, à confirmer par mesure sur un
-exemplaire réel) pour se monter dans un vrai boîtier Atmos :
+**Boîtier cible acté (2026-07-29) : OriClone-1** — boîtier imprimable 3D
+(Thingiverse 6228328, CC-BY-SA, ~284×205×~100 mm assemblé) conçu pour la
+carte du projet OriClone-1 de JennyDigital (github.com/JennyDigital/OriClone-1,
+cloné en `hardware/oriclone-1-ref/`). Notre carte reprend donc le gabarit
+**OriClone-1 : 206,5 × 138,0 mm**, trous de fixation à (3,8;3,8),
+(3,8;133), (96,8;133), (202,5;3,8), (202,5;133) mm (+ 2 petits trous à
+l'origine), extraits du fichier Eagle `OriClone-1.brd`. Le clavier peut
+être la platine **« Oric Tactile KB » du même dépôt** (switches MX,
+gerbers prêts à commander, compatible avec ce boîtier et sa touche SHIFT
+imprimée). Positions des connecteurs arrière à reprendre du .brd au
+moment du routage :
 - connecteurs arrière positionnés exactement comme l'origine (découpes du
   boîtier) : le peigne d'extension au bord arrière droit, DIN cassette,
   port imprimante, HDMI à l'emplacement du DIN RGB, jack alim ;
