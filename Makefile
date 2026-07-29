@@ -9,7 +9,7 @@ LPF       = constraints/ulx3s_v20.lpf
 RTL = rtl/oric_atmos.v rtl/oric_ula.v rtl/oric_ram.v rtl/oric_rom.v \
       rtl/via6522.v rtl/oric_keyboard.v rtl/framebuffer.v \
       rtl/tmds_encoder.v rtl/hdmi_out.v rtl/top_ulx3s.v \
-      rtl/uart_rx.v rtl/key_injector.v \
+      rtl/uart_rx.v rtl/key_injector.v rtl/expansion_port.v \
       rtl/pll_video.v rtl/pll_sys.v
 
 CPU = third_party/verilog-6502/cpu.v third_party/verilog-6502/ALU.v
@@ -55,7 +55,7 @@ prog-fujprog: build/$(PROJ).bit
 # ----------------------------------------------------------------------
 # Tests
 # ----------------------------------------------------------------------
-TESTS = test-via test-keyboard test-injector test-ula test-boot
+TESTS = test-via test-keyboard test-injector test-expansion test-ula test-boot
 
 test: $(TESTS)
 	@echo "== TOUS LES TESTS SONT PASSES =="
@@ -78,6 +78,11 @@ test-injector: sim/out
 	  rtl/uart_rx.v rtl/key_injector.v rtl/oric_keyboard.v
 	vvp sim/out/tb_inj.vvp | tee sim/out/tb_inj.log
 	@grep -q "ALL TESTS PASSED" sim/out/tb_inj.log
+
+test-expansion: sim/out
+	iverilog -DSIM -g2005 -o sim/out/tb_exp.vvp sim/tb_expansion.v rtl/expansion_port.v
+	vvp sim/out/tb_exp.vvp | tee sim/out/tb_exp.log
+	@grep -q "ALL TESTS PASSED" sim/out/tb_exp.log
 
 test-ula: sim/out
 	iverilog -DSIM -g2005 -o sim/out/tb_ula.vvp sim/tb_ula.v rtl/oric_ula.v rtl/oric_ram.v

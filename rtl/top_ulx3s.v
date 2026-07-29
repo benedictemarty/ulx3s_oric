@@ -12,6 +12,8 @@ module top_ulx3s (
     inout        usb_fpga_bd_dn,
     output [3:0] audio_l,
     output [3:0] audio_r,
+    inout [27:0] gp,            // port d'extension Oric (cf. docs/PORT_EXTENSION.md)
+    inout [27:0] gn,
     output       wifi_gpio0
 );
 
@@ -48,7 +50,8 @@ module top_ulx3s (
         else if (por != 0)
             por <= por - 16'd1;
 
-    wire rst_sys = (por != 0) || btn[1];
+    wire ext_rst_req;
+    wire rst_sys = (por != 0) || btn[1] || ext_rst_req;
 
     reg [3:0] rst_usb_sync = 4'hF;
     always @(posedge clk_usb) rst_usb_sync <= {rst_usb_sync[2:0], rst_sys};
@@ -146,12 +149,59 @@ module top_ulx3s (
         .inj_col     (inj_col),
         .inj_row     (inj_row),
         .inj_shift   (inj_shift),
+        .exp_addr    (exp_addr),
+        .exp_we      (exp_we),
+        .exp_do      (exp_do),
+        .exp_io_page (exp_io_page),
+        .exp_tphase  (exp_tphase),
+        .ext_din     (ext_din),
+        .ext_irq     (ext_irq),
+        .ext_romdis  (ext_romdis),
+        .ext_map     (ext_map),
+        .ext_ioctl   (ext_ioctl),
         .fb_we       (fb_we),
         .fb_addr     (fb_waddr),
         .fb_data     (fb_wdata),
         .frame_tick  (frame_tick),
         .audio       (audio_mix),
         .cpu_irq_dbg (irq_dbg)
+    );
+
+    // ------------------------------------------------------------------
+    // Port d'extension Oric (GPIO, cf. docs/PORT_EXTENSION.md)
+    // ------------------------------------------------------------------
+    wire [15:0] exp_addr;
+    wire        exp_we, exp_io_page;
+    wire [7:0]  exp_do;
+    wire [4:0]  exp_tphase;
+    wire [7:0]  ext_din;
+    wire        ext_irq, ext_romdis, ext_map, ext_ioctl;
+
+    expansion_port exp (
+        .clk          (clk_sys),
+        .rst          ((por != 0) || btn[1]),   // pas ext_rst_req : évite le verrou
+        .tphase       (exp_tphase),
+        .bus_addr     (exp_addr),
+        .bus_we       (exp_we),
+        .bus_do       (exp_do),
+        .sel_io_page  (exp_io_page),
+        .ext_din      (ext_din),
+        .ext_irq      (ext_irq),
+        .ext_romdis   (ext_romdis),
+        .ext_map      (ext_map),
+        .ext_ioctl    (ext_ioctl),
+        .ext_rst_req  (ext_rst_req),
+        // gp/gn[11..17] évitées : partagées avec l'ESP32 et l'ADC
+        .pin_a        ({gp[22:18], gp[10:0]}),   // A15..A11, A10..A0
+        .pin_d        (gn[7:0]),
+        .pin_rw       (gn[8]),
+        .pin_phi2     (gn[9]),
+        .pin_io_n     (gn[10]),
+        .pin_rst_n    (gn[18]),
+        .pin_irq_n    (gn[19]),
+        .pin_romdis_n (gn[20]),
+        .pin_map_n    (gn[21]),
+        .pin_ioctl_n  (gn[22])
     );
 
     // ------------------------------------------------------------------

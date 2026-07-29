@@ -31,6 +31,18 @@ module oric_atmos #(
     // Audio AY (mix 10 bits non signé)
     output [9:0]  audio,
 
+    // Port d'extension : bus exporté + retours cartouche
+    output [15:0] exp_addr,
+    output        exp_we,
+    output [7:0]  exp_do,
+    output        exp_io_page,
+    output [4:0]  exp_tphase,
+    input  [7:0]  ext_din,        // donnée cartouche (valide phase 23)
+    input         ext_irq,
+    input         ext_romdis,
+    input         ext_map,
+    input         ext_ioctl,
+
     // Debug
     output        cpu_irq_dbg
 );
@@ -63,7 +75,7 @@ module oric_atmos #(
         .DI    (cpu_di),
         .DO    (cpu_do),
         .WE    (cpu_we),
-        .IRQ   (via_irq),
+        .IRQ   (via_irq | ext_irq),
         .NMI   (1'b0),
         .RDY   (cen1)
     );
@@ -90,9 +102,25 @@ module oric_atmos #(
             bus_do_q   <= cpu_do;
         end
 
-    wire sel_io  = (bus_addr_q[15:8] == 8'h03);
-    wire sel_rom = (bus_addr_q[15:14] == 2'b11);
-    wire sel_ram = ~sel_io & ~sel_rom;
+    // Décodage — sémantique du port d'extension (wiki Defence Force) :
+    // $C000-$FFFF : ROM interne si /ROMDIS inactif ; RAM cachée si /ROMDIS
+    // seul ; périphérique externe si /ROMDIS ET /MAP. La VIA ne répond qu'à
+    // $0300-$030F (le reste de la page 3 appartient au bus d'extension),
+    // et /IOCTRL l'inhibe totalement.
+    wire sel_io   = (bus_addr_q[15:8] == 8'h03);
+    wire rom_area = (bus_addr_q[15:14] == 2'b11);
+    wire sel_via  = sel_io & (bus_addr_q[7:4] == 4'h0) & ~ext_ioctl;
+    wire sel_rom  = rom_area & ~ext_romdis;
+    wire sel_ram  = ~sel_io & ~rom_area;
+    wire rom_as_ram = rom_area & ext_romdis & ~ext_map;   // RAM cachée
+    wire sel_ext  = (sel_io & ~sel_via)                   // page 3 externe
+                  | (rom_area & ext_romdis & ext_map);    // overlay cartouche
+
+    assign exp_addr    = bus_addr_q;
+    assign exp_we      = bus_we_q;
+    assign exp_do      = bus_do_q;
+    assign exp_io_page = sel_io;
+    assign exp_tphase  = tphase;
 
     // ------------------------------------------------------------------
     // Mémoires
@@ -104,7 +132,7 @@ module oric_atmos #(
     oric_ram ram (
         .clk    (clk),
         .addr_a (bus_addr_q),
-        .we_a   (bus_we_q & sel_ram & cen1),
+        .we_a   (bus_we_q & (sel_ram | rom_as_ram) & cen1),
         .din_a  (bus_do_q),
         .dout_a (ram_dout),
         .addr_b (vram_addr),
@@ -119,13 +147,19 @@ module oric_atmos #(
 
     // DI verrouillé à t4 : donnée du cycle courant, stable bien avant le
     // front RDY où le CPU la consomme. Ce registre casse aussi la boucle
-    // combinatoire AB->DI->AB du core d'Arlet.
+    // combinatoire AB->DI->AB du core d'Arlet. Les lectures du port
+    // d'extension arrivent plus tard (échantillon cartouche phase 22) et
+    // écrasent DI à t23 — toujours avant le front cen1 (t24).
     always @(posedge clk) begin
         if (tphase == 5'd4) begin
-            if (sel_io)       cpu_di <= via_dout;
-            else if (sel_rom) cpu_di <= rom_dout;
-            else              cpu_di <= ram_dout;
+            if (sel_via)        cpu_di <= via_dout;
+            else if (sel_rom)   cpu_di <= rom_dout;
+            else if (rom_as_ram) cpu_di <= ram_dout;
+            else if (sel_ext)   cpu_di <= 8'hFF;   // provisoire, écrasé à t23
+            else                cpu_di <= ram_dout;
         end
+        if (tphase == 5'd23 && sel_ext)
+            cpu_di <= ext_din;
     end
 
     // ------------------------------------------------------------------
@@ -146,7 +180,7 @@ module oric_atmos #(
         .cen     (cen1),
         .rst     (rst),
         .addr    (bus_addr_q[3:0]),
-        .cs      (sel_io),
+        .cs      (sel_via),
         .we      (bus_we_q),
         .din     (bus_do_q),
         .dout    (via_dout),
