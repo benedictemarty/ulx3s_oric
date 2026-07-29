@@ -4,14 +4,16 @@
 
 | Horloge   | Fréquence | Rôle                                            |
 |-----------|-----------|-------------------------------------------------|
-| clk_sys   | 24 MHz    | Domaine système : CPU, VIA, AY, ULA, RAM/ROM    |
-| clk_pixel | 25 MHz    | Timing vidéo 640×480@60                         |
+| clk_sys   | 25 MHz    | Domaine système : CPU, VIA, AY, ULA, RAM/ROM    |
+| clk_pixel | 25 MHz    | Timing vidéo 640×480@60 (PLL distincte)         |
 | clk_shift | 125 MHz   | Sérialisation TMDS (DDR ×2 = 250 Mb/s/canal)    |
 | clk_usb   | 12 MHz    | Hôte USB HID (clavier)                          |
 
-Dans le domaine système, des *clock enables* dérivent les cadences d'époque :
-- `cen1` : 1 MHz (24÷24) → CPU 6502, VIA 6522, AY-3-8912 (1 MHz authentique)
-- `cen6` : 6 MHz (24÷4) → pixel ULA (64 µs/ligne × 6 MHz = 384 pixels/ligne)
+Dans le domaine système, le compteur `tphase` (0..24) découpe chaque
+microseconde : `cen1` (25÷25 = 1 MHz exact) cadence CPU 6502, VIA 6522 et
+AY-3-8912 ; la ULA pipeline sa cellule de 6 pixels sur les phases 0-11
+(fetch écran, décodage, fetch charset, écriture de 6 pixels au framebuffer).
+Une cellule = 1 µs, 64 cellules/ligne × 312 lignes = trame PAL 50 Hz exacte.
 
 ## Chemin vidéo
 
@@ -23,8 +25,9 @@ ULA (clk_sys, cen6)  ──écrit──▶  FB 240×224 ×4 bits  ──lit─�
                                  (27 Ko BRAM, 2 ports)          zoom ×2, centré
 ```
 
-- Côté ULA : balayage authentique 384×312 à 6 MHz, fetch écran/charset sur le
-  port B de la RAM 64 Ko (dual-port, donc zéro contention avec le CPU).
+- Côté ULA : balayage authentique 384×312 (6 MHz équivalent), fetch
+  écran/charset sur le port B de la RAM 64 Ko (dual-port, donc zéro
+  contention avec le CPU).
 - Côté HDMI : fenêtre active 480×448 centrée (marges 80 px H, 16 px V),
   chaque pixel Oric affiché 2×2. Les trames 50 Hz/60 Hz battent librement
   (tearing rare et acceptable en v1).
@@ -65,3 +68,16 @@ Audio : sortie `sound[9:0]` de jt49 → 4 bits MSB → DAC résistif jack ULX3S.
   inversion = XOR 7, blink = bit 4 du compteur de trames).
 - La VIA implémente T1/T2, latching, CA2/CB2 modes manuels — le shift register
   est partiel (suffisant pour le boot et le clavier ; la cassette viendra en v2).
+- **Chemins registrés anti-boucle** : le 6502 d'Arlet calcule `AB`
+  combinatoirement depuis `DI` (adressage indexé). Tout chemin AB→DI doit donc
+  être registré : `dout` de la VIA et le mux DI du système le sont (latence de
+  2-3 cycles clk, invisible à 1 MHz).
+- **Protocole bus sous RDY** : AB/WE/DO du core d'Arlet ne sont fiables que
+  pendant la phase où RDY=1 (le reste du temps, `DIMUX = DIHOLD` et AB peut
+  être basé sur une donnée périmée). Le système capture donc AB/WE/DO au
+  front `cen1`, effectue le fetch au début du cycle suivant et verrouille DI
+  à la phase t4 — re-temporisation démontrée équivalente à l'environnement
+  natif du core (voir sim/tb_trace.v pour la validation instruction par
+  instruction).
+- La RAM est initialisée à zéro (comportement réel de la BRAM ECP5, et
+  nécessaire en simulation pour éviter la propagation de X dans le 6502).

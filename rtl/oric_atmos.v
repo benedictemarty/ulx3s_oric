@@ -62,9 +62,30 @@ module oric_atmos #(
         .RDY   (cen1)
     );
 
-    // Décodage d'adresses (stable pendant tout le cycle 1 MHz)
-    wire sel_io  = (cpu_ab[15:8] == 8'h03);
-    wire sel_rom = (cpu_ab[15:14] == 2'b11);
+    // Protocole bus du core d'Arlet sous RDY — re-temporisation exacte de son
+    // environnement natif (mémoire synchrone pleine vitesse) :
+    //  - AB/WE/DO ne sont garantis corrects que pendant la phase RDY (DIMUX
+    //    bascule sur DI vivant) : on les capture AU front cen1, comme la BRAM
+    //    native qui échantillonne AB au front de fin de cycle ;
+    //  - le fetch mem[addr_q] s'effectue au début du cycle suivant, DI est
+    //    verrouillé à t4 et consommé au front cen1 suivant — soit exactement
+    //    « adresse cycle k -> donnée consommée fin de cycle k+1 » du natif ;
+    //  - les écritures RAM et les accès VIA (effets de bord) s'appliquent au
+    //    front cen1 avec le snapshot, un cycle bus après le natif : l'ordre
+    //    écriture -> lecture est préservé (le fetch suivant part après).
+    reg [15:0] bus_addr_q;
+    reg        bus_we_q;
+    reg [7:0]  bus_do_q;
+
+    always @(posedge clk)
+        if (cen1) begin
+            bus_addr_q <= cpu_ab;
+            bus_we_q   <= cpu_we;
+            bus_do_q   <= cpu_do;
+        end
+
+    wire sel_io  = (bus_addr_q[15:8] == 8'h03);
+    wire sel_rom = (bus_addr_q[15:14] == 2'b11);
     wire sel_ram = ~sel_io & ~sel_rom;
 
     // ------------------------------------------------------------------
@@ -76,9 +97,9 @@ module oric_atmos #(
 
     oric_ram ram (
         .clk    (clk),
-        .addr_a (cpu_ab),
-        .we_a   (cpu_we & sel_ram & cen1),
-        .din_a  (cpu_do),
+        .addr_a (bus_addr_q),
+        .we_a   (bus_we_q & sel_ram & cen1),
+        .din_a  (bus_do_q),
         .dout_a (ram_dout),
         .addr_b (vram_addr),
         .dout_b (vram_dout)
@@ -86,17 +107,19 @@ module oric_atmos #(
 
     oric_rom #(.ROM_FILE(ROM_FILE)) rom (
         .clk  (clk),
-        .addr (cpu_ab[13:0]),
+        .addr (bus_addr_q[13:0]),
         .dout (rom_dout)
     );
 
-    // Mux DI registré : AB pilote combinatoirement DI->AB dans le core
-    // d'Arlet, tout chemin AB->DI doit donc passer par un registre. La donnée
-    // est stable dès le 3e cycle de clk, le CPU la consomme au front 1 MHz.
+    // DI verrouillé à t4 : donnée du cycle courant, stable bien avant le
+    // front RDY où le CPU la consomme. Ce registre casse aussi la boucle
+    // combinatoire AB->DI->AB du core d'Arlet.
     always @(posedge clk) begin
-        if (sel_io)       cpu_di <= via_dout;
-        else if (sel_rom) cpu_di <= rom_dout;
-        else              cpu_di <= ram_dout;
+        if (tphase == 5'd4) begin
+            if (sel_io)       cpu_di <= via_dout;
+            else if (sel_rom) cpu_di <= rom_dout;
+            else              cpu_di <= ram_dout;
+        end
     end
 
     // ------------------------------------------------------------------
@@ -116,10 +139,10 @@ module oric_atmos #(
         .clk     (clk),
         .cen     (cen1),
         .rst     (rst),
-        .addr    (cpu_ab[3:0]),
+        .addr    (bus_addr_q[3:0]),
         .cs      (sel_io),
-        .we      (cpu_we),
-        .din     (cpu_do),
+        .we      (bus_we_q),
+        .din     (bus_do_q),
         .dout    (via_dout),
         .irq     (via_irq),
         .pa_in   (via_pa_in),
