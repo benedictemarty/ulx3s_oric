@@ -64,7 +64,11 @@ même position le long du bord. Position k (1..17) : avant = 2k, arrière = 2k-1
 
 Géométrie doigts : largeur 1,6 mm, longueur 6 mm depuis le bord, pas
 2,54 mm, sans masque (mask ouvert), F.Cu ET B.Cu.
-⚠️ Pas à CONFIRMER par mesure sur la LOCI réelle avant envoi en fab.
+✔ Pas confirmé (2026-07-29, bmarty) : le connecteur LOCI est un
+Amphenol 34 points carte-bord standard (type nappe disquette), pas
+2,54 mm, carte 1,6 mm. Option de raccordement souple : nappe 34
+conducteurs avec connecteurs carte-bord IDC de récupération (câble
+disquette d'époque), si l'insertion directe est mécaniquement gênante.
 
 ## Affectation TXS
 
