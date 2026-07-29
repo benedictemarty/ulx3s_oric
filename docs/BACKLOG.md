@@ -34,8 +34,10 @@ affichage HDMI, clavier USB, son AY.
 ## Sprint 4+ — « Atmos moderne » (carte format Atmos)
 - [ ] US4.1 Fichiers de fabrication phase A (bandeau LOCI) — en cours (agent PCB)
 - [ ] US4.2 Validation bandeau : bus 3,3 V en bouclage, puis LOCI réelle
-- [ ] US4.3 **Portage du core sur Tang Nano 20K** (Gowin GW2AR-18,
-      yosys synth_gowin + apicula ; PLL/TMDS/USB à adapter)
+- [ ] US4.3 **PRIORITAIRE — Portage du core sur Tang Nano 20K** (Gowin
+      GW2AR-18, yosys synth_gowin + apicula ; PLL/TMDS/USB à adapter).
+      Prérequis d'usage du bandeau phase A : c'est le Tang Nano qui le
+      pilote (décision 2026-07-29). L'ULX3S reste banc de dev ECP5.
 - [ ] US4.4 Carte format Atmos (phase B) : mesures boîtier, routage,
       berceaux Pico W ×2 + Tang Nano, micro-SD externe (découpe TV),
       HP + PAM8302, imprimante via Pico

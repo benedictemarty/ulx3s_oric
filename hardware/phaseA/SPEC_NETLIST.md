@@ -82,7 +82,11 @@ disquette d'époque), si l'insertion directe est mécaniquement gênante.
 | U5 A1..A8 | PA0..PA7 | PRN_D0..PRN_D7 → J_PRN |
 | U6 A1,A2 | STROBE_n, ACK | PRN_STB_n, PRN_ACK → J_PRN (A3..A8/B3..B8 : NC) |
 
-## J_ULX_A (2×20) — vers GPIO ULX3S (Dupont)
+## J_ULX_A (2×20) — vers le FPGA hôte (Dupont, 3,3 V)
+
+**Hôte cible : Tang Nano 20K** (décision 2026-07-29) — l'ULX3S peut aussi
+servir de banc de validation ECP5. Budget Nano 20K : J_ULX_A complet passe ;
+J_ULX_B (imprimante/cassette) attendra le pont Pico (voir spec carte B).
 
 **Ordre RÉVISÉ 2026-07-29 (fan-out monotone vers les TXS, routage sans
 croisements)** :
