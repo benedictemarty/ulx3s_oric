@@ -1,0 +1,43 @@
+2026-07-29 15:29:48.660 INFO   Freerouting v2.2.4 (build-date: 2026-05-13)
+2026-07-29 15:29:49.758 INFO   Opening '/home/bmarty/ulx3s_oric/hardware/phaseA/phaseA_r2.dsn'...
+2026-07-29 15:29:50.918 WARN   DSN file 'phaseA_r2.dsn' was loaded with 17 warning(s).
+2026-07-29 15:29:51.005 INFO   New version available: v2.2.4
+2026-07-29 15:29:52.983 ERROR  Cannot invoke "app.freerouting.gui.BoardSavableSubWindow.parent_iconified()" because "this.this$0.permanent_subwindows[i]" is null
+java.lang.NullPointerException: Cannot invoke "app.freerouting.gui.BoardSavableSubWindow.parent_iconified()" because "this.this$0.permanent_subwindows[i]" is null
+	at app.freerouting.gui.BoardFrame$WindowStateListener.windowIconified(BoardFrame.java:1023)
+	at java.desktop/java.awt.AWTEventMulticaster.windowIconified(AWTEventMulticaster.java:379)
+	at java.desktop/java.awt.Window.processWindowEvent(Window.java:2001)
+	at java.desktop/javax.swing.JFrame.processWindowEvent(JFrame.java:298)
+	at java.desktop/java.awt.Window.processEvent(Window.java:1954)
+	at java.desktop/java.awt.Component.dispatchEventImpl(Component.java:4958)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2318)
+	at java.desktop/java.awt.Window.dispatchEventImpl(Window.java:2671)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4790)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:725)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:702)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+2026-07-29 15:29:52.983 ERROR  Cannot invoke "app.freerouting.gui.BoardSavableSubWindow.parent_iconified()" because "this.this$0.permanent_subwindows[i]" is null
+java.lang.NullPointerException: Cannot invoke "app.freerouting.gui.BoardSavableSubWindow.parent_iconified()" because "this.this$0.permanent_subwindows[i]" is null
+	at app.freerouting.gui.BoardFrame$WindowStateListener.windowIconified(BoardFrame.java:1023)
+	at java.desktop/java.awt.AWTEventMulticaster.windowIconified(AWTEventMulticaster.java:379)
+	at java.desktop/java.awt.Window.processWindowEvent(Window.java:2001)
+	at java.desktop/javax.swing.JFrame.processWindowEvent(JFrame.java:298)
+	at java.desktop/java.awt.Window.processEvent(Window.java:1954)
+	at java.desktop/java.awt.Component.dispatchEventImpl(Component.java:4958)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2318)
+	at java.desktop/java.awt.Window.dispatchEventImpl(Window.java:2671)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4790)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:725)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:702)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+2026-07-29 15:29:58.364 INFO   [BC07BE\203850] Starting routing of 'phaseA_r2' on 4 threads...

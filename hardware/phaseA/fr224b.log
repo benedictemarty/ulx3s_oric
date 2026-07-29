@@ -1,0 +1,49 @@
+2026-07-29 15:20:39.665 INFO   Freerouting v2.2.4 (build-date: 2026-05-13)
+2026-07-29 15:20:39.698 WARN   freerouting.json at '/tmp/freerouting/freerouting.json' was written by an older version of Freerouting (file: 2.1.0, current: 2.2.4). No migration logic is implemented for this version transition, so some settings may have been reset to their defaults. The file will be re-saved with the updated version string.
+2026-07-29 15:20:39.702 INFO   freerouting.json config version changed from '2.1.0' to '2.2.4' – re-saving configuration.
+2026-07-29 15:20:40.761 INFO   Opening '/home/bmarty/ulx3s_oric/hardware/phaseA/phaseA_fr.dsn'...
+2026-07-29 15:20:41.811 INFO   New version available: v2.2.4
+2026-07-29 15:20:48.797 INFO   [55150D\4177B5] Starting routing of 'phaseA_fr' on 4 threads...
+2026-07-29 15:21:03.269 INFO   [55150D\4177B5] Auto-router pass #1 on board '2e6aac65bf596a60b8365e0d68d3b6bd' was completed in 14.33 seconds with the score of 836.16 (63 unrouted).
+2026-07-29 15:21:19.715 INFO   [55150D\4177B5] Auto-router pass #2 on board '291d6782fc64eb2b7088670d1a5118a1' was completed in 16.40 seconds with the score of 916.17 (38 unrouted).
+2026-07-29 15:21:36.518 INFO   [55150D\4177B5] Auto-router pass #3 on board 'b6dea522a9b22088023d693703f00782' was completed in 16.74 seconds with the score of 931.54 (32 unrouted).
+2026-07-29 15:21:52.959 INFO   [55150D\4177B5] Auto-router pass #4 on board '467fda68473bc70ce80322bf880d9d8c' was completed in 16.40 seconds with the score of 958.83 (20 unrouted).
+2026-07-29 15:22:07.406 INFO   [55150D\4177B5] Auto-router pass #5 on board 'dcbe9d3614abd6f2a410251be743cc5a' was completed in 14.40 seconds with the score of 968.22 (15 unrouted).
+2026-07-29 15:22:21.574 INFO   [55150D\4177B5] Auto-router pass #6 on board 'dbfd2f67333a3cc774bcd047091c1a1e' was completed in 14.12 seconds with the score of 968.20 (15 unrouted).
+2026-07-29 15:22:38.686 INFO   [55150D\4177B5] Auto-router pass #7 on board 'e0ee516b77850503b22bbb0442b75cf0' was completed in 17.05 seconds with the score of 971.72 (13 unrouted).
+2026-07-29 15:22:53.144 INFO   [55150D\4177B5] Auto-router pass #8 on board 'a775ea835cec3d265bcd6e087316857f' was completed in 14.41 seconds with the score of 973.42 (12 unrouted).
+2026-07-29 15:23:08.283 INFO   [55150D\4177B5] Auto-router pass #9 on board '1d04ca5629aafa7231c52ddeecbf53a3' was completed in 15.09 seconds with the score of 973.47 (12 unrouted).
+2026-07-29 15:23:25.456 INFO   [55150D\4177B5] Auto-router pass #10 on board '0f255a8d518b977cfba7fc61f0980b8e' was completed in 17.12 seconds with the score of 969.63 (14 unrouted).
+2026-07-29 15:23:44.052 INFO   [55150D\4177B5] Auto-router pass #11 on board 'bcc03e66830734b955ab880ace2a8410' was completed in 18.55 seconds with the score of 968.19 (15 unrouted).
+2026-07-29 15:24:01.700 INFO   [55150D\4177B5] Auto-router pass #12 on board '0f255a8d518b977cfba7fc61f0980b8e' was completed in 0.00 seconds with the score of 973.47 (12 unrouted).
+2026-07-29 15:24:17.051 INFO   [55150D\4177B5] Auto-router pass #13 on board '0f255a8d518b977cfba7fc61f0980b8e' was completed in 15.31 seconds with the score of 969.67 (14 unrouted).
+2026-07-29 15:24:35.312 INFO   [55150D\4177B5] Auto-router pass #14 on board '439e4331f13dc54c0b15d0b050b69420' was completed in 18.22 seconds with the score of 968.25 (15 unrouted).
+2026-07-29 15:24:51.384 INFO   [55150D\4177B5] Auto-router pass #15 on board '833c80a27cf6b6921dec89ed775de98b' was completed in 16.03 seconds with the score of 971.57 (13 unrouted).
+2026-07-29 15:25:05.975 INFO   [55150D\4177B5] Auto-router pass #16 on board '0f255a8d518b977cfba7fc61f0980b8e' was completed in 0.00 seconds with the score of 973.47 (12 unrouted).
+2026-07-29 15:25:21.570 INFO   [55150D\4177B5] Auto-router pass #17 on board '0f255a8d518b977cfba7fc61f0980b8e' was completed in 15.57 seconds with the score of 969.67 (14 unrouted).
+2026-07-29 15:25:40.143 INFO   [55150D\4177B5] Auto-router pass #18 on board 'b8657b39d8a6c45f2a65dbe6b8ba1b69' was completed in 18.54 seconds with the score of 969.94 (14 unrouted).
+2026-07-29 15:25:40.159 INFO   [55150D\4177B5] The router's best score (973.42) has not improved by more than 0.5 points since pass #8. Stopping the auto-router after 18 passes (14 items still unconnected).
+The following connections could not be routed -- please review your design (e.g. check pad clearances, trace width rules, and available routing space):
+  Net '+5V' (6 unrouted connections):
+    - U5-19  ->  via
+    - U1-19  ->  C4-1
+    - C6-1  ->  U2-19
+    - C8-1  ->  U3-19
+    - C10-1  ->  U4-19
+    - U3-19  ->  C14-1
+  Net '+3V3' (3 unrouted connections):
+    - U6-2  ->  via
+    - U2-2  ->  C5-1
+    - U4-2  ->  C9-1
+  Net 'A1' (1 unrouted connection):
+    - J_ULX_A-2  ->  U1-3
+  Net 'A3' (1 unrouted connection):
+    - J_ULX_A-4  ->  U1-5
+  Net 'A4' (1 unrouted connection):
+    - U1-6  ->  J_ULX_A-5
+  Net 'A12' (1 unrouted connection):
+    - J_ULX_A-13  ->  U2-6
+  Net 'PRN_D2' (1 unrouted connection):
+    - U5-17  ->  J_PRN-7
+2026-07-29 15:25:40.205 INFO   [55150D\4177B5] Auto-router session completed: started with 142 unrouted nets, completed in 4 minutes 51.41 seconds, final score: 973.47 (12 unrouted).
+2026-07-29 15:25:40.348 INFO   Saving '/home/bmarty/ulx3s_oric/hardware/phaseA/phaseA.ses'...
