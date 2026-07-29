@@ -1,0 +1,14 @@
+2026-07-29 14:45:21.161 INFO   Freerouting v2.1.0 (build-date: 2025-04-12)
+2026-07-29 14:45:21.216 WARN   No default constructor found for field: currentLocale
+2026-07-29 14:45:21.216 INFO   Settings were loaded from freerouting.json
+2026-07-29 14:45:21.220 WARN   Couldn't get screen resolution. If you are running in a headless environment, disable the GUI by setting gui.enabled to false.
+2026-07-29 14:45:22.668 INFO   [82A531\B03F7E] Job '82A531\B03F7E' started at 2026-07-29T12:45:22.667982319Z
+2026-07-29 14:45:22.950 INFO   New version available: v2.2.4
+2026-07-29 14:45:28.204 INFO   [82A531\B03F7E] Auto-router pass #1 on board 'aa5fb0050d6c147c86e9d69ff40451dc' was completed in 5,37 seconds with the score of 53,53 (187 unrouted and 42 violations), using 14,29 CPU seconds and 7384 MB memory.
+2026-07-29 14:45:31.790 INFO   [82A531\B03F7E] Auto-router pass #2 on board 'bfa2f3a3c970bd35e15bdd8ed5737a92' was completed in 3,56 seconds with the score of 53,53 (187 unrouted and 42 violations), using 43,28 CPU seconds and 15287 MB memory.
+2026-07-29 14:45:35.304 INFO   [82A531\B03F7E] Auto-router pass #3 on board 'bfa2f3a3c970bd35e15bdd8ed5737a92' was completed in 3,51 seconds with the score of 53,53 (187 unrouted and 42 violations), using 75,33 CPU seconds and 21288 MB memory.
+2026-07-29 14:45:41.701 INFO   [82A531\B03F7E] Auto-router pass #4 on board 'bfa2f3a3c970bd35e15bdd8ed5737a92' was completed in 6,39 seconds with the score of 159,78 (178 unrouted and 42 violations), using 184,18 CPU seconds and 31553 MB memory.
+2026-07-29 14:45:45.216 INFO   [82A531\B03F7E] Auto-router pass #5 on board 'ef8c3613f254b806d9e9d35166b99b88' was completed in 3,50 seconds with the score of 159,78 (178 unrouted and 42 violations), using 245,51 CPU seconds and 37527 MB memory.
+2026-07-29 14:45:48.696 INFO   [82A531\B03F7E] Auto-router pass #6 on board 'ef8c3613f254b806d9e9d35166b99b88' was completed in 3,47 seconds with the score of 159,78 (178 unrouted and 42 violations), using 341,03 CPU seconds and 45569 MB memory.
+2026-07-29 14:45:52.182 INFO   [82A531\B03F7E] Auto-router pass #7 on board 'ef8c3613f254b806d9e9d35166b99b88' was completed in 3,48 seconds with the score of 159,78 (178 unrouted and 42 violations), using 423,00 CPU seconds and 51574 MB memory.
+2026-07-29 14:45:56.069 INFO   [82A531\B03F7E] Auto-router pass #8 on board 'ef8c3613f254b806d9e9d35166b99b88' was completed in 3,88 seconds with the score of 159,78 (178 unrouted and 42 violations), using 546,09 CPU seconds and 59132 MB memory.

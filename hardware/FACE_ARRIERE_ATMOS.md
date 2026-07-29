@@ -137,8 +137,13 @@ exemplaire réel) pour se monter dans un vrai boîtier Atmos :
   (32) + cassette (3) + OE + audio ≈ 38 → le port imprimante sera servi
   par un berceau Pico (périphérique de bus) et non par le FPGA
   directement — à trancher au routage de la phase B ;
-- à terme, le clavier mécanique du boîtier peut être scanné par un des
-  berceaux (matrice 8×8 → bus) : prévoir le connecteur nappe clavier Atmos.
+- **clavier d'origine réutilisable tel quel** : la platine Atmos est une
+  matrice 8×8 passive (aucune électronique). Header nappe au même
+  emplacement que la carte d'origine (brochage : schéma du manuel de
+  service, à transcrire au routage). Scan par le **Pico #2** (16 GPIO,
+  injection vers le core par le canal clavier série existant) — le FPGA
+  reste déchargé. Pas de diodes dans la matrice d'origine : ghosting
+  authentique conservé.
 
 ⚠️ Mesures à faire sur boîtier/carte réels avant le routage final :
 dimensions exactes, positions des découpes arrière, entraxes de fixation,

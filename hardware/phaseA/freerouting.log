@@ -1,0 +1,20 @@
+2026-07-29 14:44:02.270 INFO   Freerouting v2.1.0 (build-date: 2025-04-12)
+2026-07-29 14:44:02.331 WARN   No default constructor found for field: currentLocale
+2026-07-29 14:44:02.332 INFO   Settings were loaded from freerouting.json
+2026-07-29 14:44:02.336 WARN   Couldn't get screen resolution. If you are running in a headless environment, disable the GUI by setting gui.enabled to false.
+2026-07-29 14:44:03.875 INFO   [A06B04\6CAEE9] Job 'A06B04\6CAEE9' started at 2026-07-29T12:44:03.874877368Z
+2026-07-29 14:44:04.229 INFO   New version available: v2.2.4
+2026-07-29 14:44:10.227 INFO   [A06B04\6CAEE9] Auto-router pass #1 on board '7c03df600393ec61ce1aed253234b597' was completed in 6,10 seconds with the score of 251,14 (147 unrouted and 42 violations), using 19,65 CPU seconds and 7301 MB memory.
+2026-07-29 14:44:13.771 INFO   [A06B04\6CAEE9] Auto-router pass #2 on board '8cc49ea6a104fd1d92c4df43c71d2255' was completed in 3,51 seconds with the score of 251,14 (147 unrouted and 42 violations), using 42,64 CPU seconds and 12637 MB memory.
+2026-07-29 14:44:17.180 INFO   [A06B04\6CAEE9] Auto-router pass #3 on board '8cc49ea6a104fd1d92c4df43c71d2255' was completed in 3,40 seconds with the score of 251,14 (147 unrouted and 42 violations), using 87,04 CPU seconds and 19893 MB memory.
+2026-07-29 14:44:23.702 INFO   [A06B04\6CAEE9] Auto-router pass #4 on board '8cc49ea6a104fd1d92c4df43c71d2255' was completed in 6,51 seconds with the score of 355,85 (138 unrouted and 42 violations), using 182,91 CPU seconds and 27337 MB memory.
+2026-07-29 14:44:27.104 INFO   [A06B04\6CAEE9] Auto-router pass #5 on board '76de91821d3d733f007af02157b22b3c' was completed in 3,38 seconds with the score of 355,85 (138 unrouted and 42 violations), using 266,39 CPU seconds and 34311 MB memory.
+2026-07-29 14:44:30.468 INFO   [A06B04\6CAEE9] Auto-router pass #6 on board '76de91821d3d733f007af02157b22b3c' was completed in 3,35 seconds with the score of 355,85 (138 unrouted and 42 violations), using 339,34 CPU seconds and 39717 MB memory.
+2026-07-29 14:44:33.866 INFO   [A06B04\6CAEE9] Auto-router pass #7 on board '76de91821d3d733f007af02157b22b3c' was completed in 3,38 seconds with the score of 355,85 (138 unrouted and 42 violations), using 421,16 CPU seconds and 45066 MB memory.
+2026-07-29 14:44:37.362 INFO   [A06B04\6CAEE9] Auto-router pass #8 on board '76de91821d3d733f007af02157b22b3c' was completed in 3,49 seconds with the score of 355,85 (138 unrouted and 42 violations), using 544,02 CPU seconds and 52052 MB memory.
+2026-07-29 14:44:40.745 INFO   [A06B04\6CAEE9] Auto-router pass #9 on board '76de91821d3d733f007af02157b22b3c' was completed in 3,38 seconds with the score of 355,85 (138 unrouted and 42 violations), using 646,49 CPU seconds and 57409 MB memory.
+2026-07-29 14:44:44.125 INFO   [A06B04\6CAEE9] Auto-router pass #10 on board '76de91821d3d733f007af02157b22b3c' was completed in 3,37 seconds with the score of 355,85 (138 unrouted and 42 violations), using 796,90 CPU seconds and 64537 MB memory.
+2026-07-29 14:44:47.513 INFO   [A06B04\6CAEE9] Auto-router pass #11 on board '76de91821d3d733f007af02157b22b3c' was completed in 3,38 seconds with the score of 355,85 (138 unrouted and 42 violations), using 920,04 CPU seconds and 69918 MB memory.
+2026-07-29 14:44:51.010 INFO   [A06B04\6CAEE9] Auto-router pass #12 on board '76de91821d3d733f007af02157b22b3c' was completed in 3,49 seconds with the score of 355,85 (138 unrouted and 42 violations), using 1098,00 CPU seconds and 76899 MB memory.
+2026-07-29 14:44:54.375 INFO   [A06B04\6CAEE9] Auto-router pass #13 on board '76de91821d3d733f007af02157b22b3c' was completed in 3,36 seconds with the score of 355,85 (138 unrouted and 42 violations), using 1241,80 CPU seconds and 82269 MB memory.
+2026-07-29 14:44:57.753 INFO   [A06B04\6CAEE9] Auto-router pass #14 on board '76de91821d3d733f007af02157b22b3c' was completed in 3,37 seconds with the score of 355,85 (138 unrouted and 42 violations), using 1394,46 CPU seconds and 87670 MB memory.

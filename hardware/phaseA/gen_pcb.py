@@ -115,7 +115,7 @@ def build_component_table():
          "5": "GND", "6": "GND", "8": "+3V3"})
 
     # --- PhotoMOS AQY212GH (K1) : 1=LED+, 2=LED-, 3/4=contacts
-    add("K1", "Package_DIP", "DIP-4_W7.62mm", (18, 21), 0, "AQY212GH",
+    add("K1", "Package_DIP", "DIP-4_W7.62mm", (21, 21), 0, "AQY212GH",
         {"1": "K1_LED_A", "2": "GND", "3": "MOTOR_A", "4": "MOTOR_B"})
 
     # --- J_ULX_A (2x20) --------------------------------------------------
@@ -158,7 +158,7 @@ def build_component_table():
 
     # --- J_PWR jack 5,5/2,1 : 1=centre(+5V), 2=manchon(GND), 3=switch NC
     add("J_PWR", "Connector_BarrelJack", "BarrelJack_Horizontal",
-        (10, 13), 90, "Jack_5.5x2.1", {"1": "+5V", "2": "GND"})
+        (10, 2.1), 90, "Jack_5.5x2.1", {"1": "+5V", "2": "GND"})
 
     # --- J_SND 1x02 ------------------------------------------------------
     add("J_SND", "Connector_PinHeader_2.54mm", "PinHeader_1x02_P2.54mm_Vertical",
@@ -173,13 +173,13 @@ def build_component_table():
         add(ref, "Capacitor_SMD", size, pos, rot, val, {"1": n1, "2": n2})
 
     r("R_OE", (65, 41), 90, "10k", "OE_EN", "GND")
-    r("R1", (26, 15), 90, "10k", "TAPE_OUT_3V3", "TAPE_OUT_DIN")
-    r("R2", (29, 15), 90, "1k", "TAPE_OUT_DIN", "GND")
+    r("R1", (33, 20), 90, "10k", "TAPE_OUT_3V3", "TAPE_OUT_DIN")
+    r("R2", (36, 20), 90, "1k", "TAPE_OUT_DIN", "GND")
     r("R3", (44, 21), 90, "100k", "IN_PLUS", "+3V3")
     r("R4", (47, 21), 90, "100k", "IN_PLUS", "GND")
     r("R5", (50, 21), 90, "100k", "IN_PLUS", "IN_MINUS")
     r("R6", (56, 21), 90, "10k", "TAPE_IN_3V3", "+3V3")
-    r("R7", (11, 21), 0, "470", "MOTOR_3V3", "K1_LED_A")
+    r("R7", (21, 27), 0, "470", "MOTOR_3V3", "K1_LED_A")
     c("C1", (42, 12), 0, "1uF", "TAPE_IN_DIN", "IN_PLUS")
     c("C2", (53, 21), 90, "100nF", "IN_MINUS", "GND")
 
@@ -192,7 +192,7 @@ def build_component_table():
         c("C%d" % idx, (ux + 5.2, uy - 1.3), 90, "100nF", "+5V", "GND")
         idx += 1
 
-    c("C15", (16, 13), 90, "10uF", "+5V", "GND", "C_0805_2012Metric")
+    c("C15", (21, 13), 90, "10uF", "+5V", "GND", "C_0805_2012Metric")
     c("C16", (59, 40), 90, "10uF", "+3V3", "GND", "C_0805_2012Metric")
 
     return comps
@@ -216,7 +216,7 @@ def make_jexp(board, nets):
     pitch = 2.54
     finger_w = 1.6
     finger_l = 6.0
-    x_edge = 160.0
+    x_edge = 159.95  # retrait 0,05 mm = demi-largeur du trait Edge.Cuts
     y0 = 25.0 - 8 * pitch  # k=1 en haut, 17 positions centrées (4,68..45,32)
 
     for k in range(1, 18):
