@@ -152,9 +152,16 @@ moment du routage :
   ampli classe D PAM8302 attaqué en PWM/sigma-delta depuis un GPIO du
   Tang Nano ;
 - **budget GPIO Tang Nano 20K** (~40 broches utiles) : bus extension
-  (32) + cassette (3) + OE + audio ≈ 38 → le port imprimante sera servi
-  par un berceau Pico (périphérique de bus) et non par le FPGA
-  directement — à trancher au routage de la phase B ;
+  (32) + cassette (3) + OE + audio + pont UART Pico #2 (2) ≈ 40 ;
+- **architecture satellites (actée 2026-07-29)** : seuls le FPGA et la
+  LOCI (réelle ou Pico #1 avec le firmware LOCI, ~26 GPIO consommés par
+  le bus) touchent le bus parallèle. Le Pico #2 est un satellite HORS
+  bus relié au FPGA par un **pont UART multiplexé** (2 GPIO) qui
+  transporte : les octets imprimante (logique VIA dans le FPGA, lignes
+  Centronics physiques et handshake ACK sur le Pico — mode « imprimante
+  virtuelle » vers SD/WiFi possible), le modem WiFi (ACIA 6551 en RTL
+  dans le FPGA, modèle dispo dans la référence Phosphoric), et les
+  événements du clavier matrice scanné par le Pico ;
 - **clavier d'origine réutilisable tel quel** : la platine Atmos est une
   matrice 8×8 passive (aucune électronique). Header nappe au même
   emplacement que la carte d'origine (brochage : schéma du manuel de
