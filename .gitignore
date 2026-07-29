@@ -1,0 +1,8 @@
+build/
+*.vcd
+*.vvp
+*.json
+*.config
+*.bit
+sim/out/
+__pycache__/
