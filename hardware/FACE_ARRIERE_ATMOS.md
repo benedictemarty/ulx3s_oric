@@ -1,9 +1,9 @@
 # Carte « Atmos moderne » — carte mère format Oric Atmos
 
-Carte mère complète au format Atmos, **motorisée par le Tang Nano 20K en
-berceau** (le core Oric y sera porté — voir « Portage Gowin » ci-dessous).
-L'ULX3S reste la plateforme de développement du core, hors carte.
-Berceaux pour 2 Pico W, 2 USB-A latéraux, connecteurs d'époque à l'arrière.
+**CARTE UNIQUE** (décision 2026-07-29) : une seule platine porte tout le
+micro — berceau **Tang Nano 20K** (le cœur, portage Gowin prérequis),
+**2 berceaux Pico W**, adaptation 5 V, connecteurs d'époque, USB, HP.
+L'ULX3S reste hors carte (banc de développement ECP5 uniquement).
 
 ```
                     face arrière (connecteurs d'époque)
@@ -13,12 +13,12 @@ Berceaux pour 2 Pico W, 2 USB-A latéraux, connecteurs d'époque à l'arrière.
 │                                                                      │
 │U │   ┌─────────────┐  ┌─────────────┐  ┌──────────────────────┐     │
 │S │   │ berceau      │  │ berceau     │  │ berceau              │     │
-│B │   │ Pico W  #1   │  │ Pico W #2   │  │ Tang Primer 20K      │     │
-│1 │   │ (LOCI fw /   │  │ (modem WiFi │  │ (dock, 2 headers     │     │
-│  │   │  stockage)   │  │  picowifi)  │  │  2x20)               │     │
-│U │   └─────────────┘  └─────────────┘  └──────────────────────┘     │
-│S │                                                                   │
-│B │      TXS0108E x5, LM393, picots Dupont -> GPIO ULX3S              │
+│B │   │ Pico W  #1   │  │ Pico W #2   │  │ TANG NANO 20K        │     │
+│1 │   │ (LOCI fw,    │  │ (modem WiFi,│  │ (le cœur : core Oric │     │
+│  │   │  SD ext,USB1)│  │ clavier,USB2│  │  Gowin, HDMI, SDRAM) │     │
+│U │   └─────────────┘  └──────┬──────┘  └───────────┬──────────┘     │
+│S │                          pont UART multiplexé ───┘                │
+│B │      6x TXS0108E, LM393, PhotoMOS, PAM8302+HP, nappe clavier      │
 │2 │                                                                   │
 └──────────────────────────────────────────────────────────────────────┘
    côté : USB1, USB2 (USB-A femelles)
@@ -42,8 +42,7 @@ Berceaux pour 2 Pico W, 2 USB-A latéraux, connecteurs d'époque à l'arrière.
 - 1× **LM393** + réseau RC : mise en forme du signal TAPE IN
   (magnétophone → niveau logique).
 - Condensateurs de découplage, résistances de pull-up 5 V (bus au repos).
-- 2 rangées de picots 2,54 vers les GPIO ULX3S (câblage Dupont documenté
-  dans docs/PORT_EXTENSION.md, complété ci-dessous).
+- liaisons internes en pistes (plus aucun câblage Dupont : carte unique).
 
 ## Affectation GPIO complémentaire (imprimante + cassette)
 
@@ -79,7 +78,7 @@ autonome sans cartouche.
   bord ; FPGA d'expérimentation sur le bus (co-processeur, cartouche
   synthétique…). Même règle : il voit le bus 3,3 V.
 
-⚠️ Règle de cohabitation : la ULX3S pilote toujours A/RW/Φ2 ; les berceaux
+⚠️ Règle de cohabitation : le Tang Nano pilote toujours A/RW/Φ2 ; les berceaux
 sont des **périphériques** (ils ne pilotent D que sur lecture de leur
 plage, /IRQ//ROMDIS//MAP en drain ouvert).
 
@@ -124,7 +123,7 @@ CPU/ULA/VIA/AY : portables tels quels. → épic au backlog.
 
 - Le jack 5 V alimente exclusivement le domaine 5 V de la carte
   (VCCB des TXS, cartouche broche 33, imprimante, LM393).
-- L'ULX3S garde sa propre alimentation USB. **Masses communes obligatoires.**
+- Le jack 5 V alimente aussi le Tang Nano et les Picos (via leurs entrées 5 V). **Masse unique de la carte.**
 - Prévoir 5 V / 1 A (la LOCI consomme < 300 mA).
 
 ## Format : carte mère Atmos complète
