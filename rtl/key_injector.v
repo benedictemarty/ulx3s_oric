@@ -100,7 +100,7 @@ module key_injector #(
     endfunction
 
     // FIFO 256 octets
-    reg [7:0] fifo [0:255];
+    (* ram_style = "distributed" *) reg [7:0] fifo [0:255];
     reg [7:0] wptr, rptr;
     wire empty = (wptr == rptr);
     wire full  = (wptr + 8'd1 == rptr);

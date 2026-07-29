@@ -23,10 +23,15 @@ module oric_ram (
         for (i = 0; i < 65536; i = i + 1)
             mem[i] = 8'h00;
 
+    // Lecture/écriture exclusives (mode NO_CHANGE) : évite la duplication
+    // du bloc en BSRAM Gowin (le mapper refuse le read-during-write).
+    // Équivalent pour notre bus : l'adresse est stable tout le cycle 1 MHz,
+    // dout_a garde la valeur lue aux cycles précédents pendant l'écriture.
     always @(posedge clk) begin
         if (we_a)
             mem[addr_a] <= din_a;
-        dout_a <= mem[addr_a];
+        else
+            dout_a <= mem[addr_a];
     end
 
     always @(posedge clk)

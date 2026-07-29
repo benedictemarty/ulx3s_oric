@@ -62,7 +62,7 @@ module video_576p (
     // ------------------------------------------------------------------
     // Tampons de ligne : 4 x 256 nibbles (LUTRAM)
     // ------------------------------------------------------------------
-    reg [3:0] lbuf [0:1023];
+    (* ram_style = "distributed" *) reg [3:0] lbuf [0:1023];
 
     // Écriture : position x dans la ligne reconstruite depuis fb_addr
     // (fb_addr = y*240 + x ; x = fb_addr - y*240)

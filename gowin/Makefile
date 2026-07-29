@@ -7,7 +7,7 @@ FAMILY  = GW2A-18C
 TOP     = top_tangnano20k
 CST     = tangnano20k.cst
 
-CORE = ../rtl/oric_atmos.v ../rtl/oric_ula.v ../rtl/oric_ram.v \
+CORE = ../rtl/oric_atmos.v ../rtl/oric_ula.v rtl/oric_ram_gowin.v \
        ../rtl/oric_rom.v ../rtl/via6522.v ../rtl/oric_keyboard.v \
        ../rtl/uart_rx.v ../rtl/key_injector.v ../rtl/tmds_encoder.v \
        ../third_party/jt49/hdl/jt49_bus.v ../third_party/jt49/hdl/jt49.v \

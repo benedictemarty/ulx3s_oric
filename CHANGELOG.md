@@ -5,6 +5,27 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 
 ## [Non publié]
 
+## [2.0.0-tn20k] — 2026-07-29 — Portage Gowin : premier bitstream Tang Nano 20K
+
+### Ajouté
+- **Portage complet du core sur GW2AR-18** (gowin/) : bitstream
+  `oric_tn20k.fs` généré par la chaîne libre (yosys synth_gowin +
+  nextpnr-himbaechel/apicula + gowin_pack). LUT 19 %, timing 79,6 MHz
+  pour 27 requis. Cœur Oric (6502/ULA/VIA/AY) inchangé, DIV=27.
+- **Vidéo 720×576p50 par doubleur de lignes** : trames ULA et HDMI de
+  longueur strictement égale (539 136 cycles, vérifié par tb_video576),
+  verrouillées au reset — zéro framebuffer, zéro tearing (résout US3.2
+  par construction). TMDS par OSER10 + TLVDS_OBUF, rPLL 27→135 MHz.
+- Clavier série via le BL616 embarqué (USB-C), audio sigma-delta 1 bit.
+- RAM Gowin dédiée : 64 Ko simple-port + miroir vidéo $9800-$BFFF
+  (10 Ko) pour la ULA — 45/46 blocs BSRAM (la 1W2R naïve en exigeait 64).
+
+### Corrigé
+- Collision de nom avec la primitive Gowin `ALU` : ALU du 6502 renommée
+  à la volée au build.
+- RAM principale passée en lecture/écriture exclusives (NO_CHANGE) —
+  régression ECP5 6/6 tests OK.
+
 ## [1.2.0] — 2026-07-29 — Sprint 3 : port d'extension, cassette, imprimante
 
 ### Ajouté
