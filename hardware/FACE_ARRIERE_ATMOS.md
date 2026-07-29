@@ -1,8 +1,9 @@
-# Carte « Face arrière Atmos » pour ULX3S
+# Carte « Atmos moderne » — carte mère format Oric Atmos
 
-Reproduction de la face arrière d'un Oric Atmos pilotée par le core FPGA,
-étendue en mini fond de panier : berceaux pour 2 Pico W et un Tang Primer
-20K, 2 USB-A latéraux.
+Carte mère complète au format Atmos, **motorisée par le Tang Nano 20K en
+berceau** (le core Oric y sera porté — voir « Portage Gowin » ci-dessous).
+L'ULX3S reste la plateforme de développement du core, hors carte.
+Berceaux pour 2 Pico W, 2 USB-A latéraux, connecteurs d'époque à l'arrière.
 
 ```
                     face arrière (connecteurs d'époque)
@@ -78,23 +79,36 @@ plage, /IRQ//ROMDIS//MAP en drain ouvert).
 
 ## Stockage et mémoire
 
-- **Slot micro-SD** câblé en SPI sur le berceau Pico #1 — architecture de la
-  vraie LOCI (firmware RP2040 + stockage SD). S'ajoutent le micro-SD de
-  l'ULX3S (utilisable par le core, chargement .tap au backlog) et celui du
-  Tang Nano 20K.
+- **Slot micro-SD ACCESSIBLE DE L'EXTÉRIEUR** (exigence 2026-07-29) :
+  monté au bord arrière de la carte, poussoir push-push, câblé en SPI sur
+  le berceau Pico #1 — c'est le stockage LOCI (.tap/.dsk), celui qu'on
+  change au quotidien. Accès par l'ancienne découpe TV (RF) du boîtier
+  Atmos, inutilisée (prévoir un insert imprimé 3D pour guider la carte
+  dans l'ouverture ronde).
+- Le micro-SD embarqué du Tang Nano 20K (core, rarement manipulé) reste
+  interne ; en cas de besoin, une rallonge micro-SD souple peut le
+  déporter.
 - **RAM : aucun boîtier sur la carte porteuse.** La RAM de l'Oric (64 Ko)
-  est en BRAM dans le FPGA ; l'ULX3S apporte 32 Mo de SDRAM et le Tang
-  Nano 20K 8 Mo intégrés — chaque module a sa mémoire, le bus 6502
-  n'adresse que 64 Ko.
+  est en BRAM dans le FPGA ; le Tang Nano 20K apporte 8 Mo de SDRAM
+  intégrés — le bus 6502 n'adresse que 64 Ko.
 
 ## USB latéraux
 
 - **USB1** (USB-A femelle) : câblée au Pico #1 en hôte PIO-USB
   (D+/D- sur deux GPIO + 5 V du jack) — clé USB de stockage pour le
   firmware LOCI, comme sur la vraie cartouche.
-- **USB2** (USB-A femelle) : déport mécanique du port US2 de l'ULX3S
-  (clavier USB du core) : 4 picots D+/D-/5V/GND à relier en Dupont
-  vers us2 — plus pratique que le micro-USB de la carte.
+- **USB2** (USB-A femelle) : hôte PIO-USB sur le Pico #2 (ou clavier USB
+  fourni par le firmware LOCI du Pico #1, comme la vraie cartouche —
+  la LOCI sait déjà présenter un clavier USB à l'Oric).
+
+## Portage Gowin (nouveau chantier RTL)
+
+Le core développé sur ULX3S (ECP5) devra être porté sur le GW2AR-18 du
+Tang Nano 20K : chaîne yosys `synth_gowin` + nextpnr-himbaechel/apicula
+(le Tang Nano 20K est bien supporté par la chaîne libre), ou Gowin EDA.
+À adapter : PLL (rPLL Gowin), sérialiseur TMDS (primitives ODDR Gowin),
+BRAM (inférence identique), USB clavier (déplacé vers les Pico).
+CPU/ULA/VIA/AY : portables tels quels. → épic au backlog.
 
 ## Alimentation
 
@@ -112,11 +126,17 @@ exemplaire réel) pour se monter dans un vrai boîtier Atmos :
   boîtier) : le peigne d'extension au bord arrière droit, DIN cassette,
   port imprimante, HDMI à l'emplacement du DIN RGB, jack alim ;
 - trous de fixation aux emplacements des plots du boîtier Atmos ;
-- l'ULX3S se visse sur la carte (entretoises) et s'y raccorde par nappes ;
+- **le Tang Nano 20K en berceau est le cœur** : son HDMI est déporté sur le
+  connecteur arrière (câble/adaptateur court), son micro-SD sert au core,
+  sa SDRAM 8 Mo est intégrée ; le bus 6502 5 V sort de ses GPIO via les
+  TXS0108E ;
 - **haut-parleur** : emplacement pour HP Ø 40-50 mm (comme l'origine) +
-  ampli classe D PAM8302, alimenté par la sortie jack audio de l'ULX3S
-  (câble TRS court ou 2 fils Dupont depuis les picots audio) — aucun GPIO
-  supplémentaire nécessaire ;
+  ampli classe D PAM8302 attaqué en PWM/sigma-delta depuis un GPIO du
+  Tang Nano ;
+- **budget GPIO Tang Nano 20K** (~40 broches utiles) : bus extension
+  (32) + cassette (3) + OE + audio ≈ 38 → le port imprimante sera servi
+  par un berceau Pico (périphérique de bus) et non par le FPGA
+  directement — à trancher au routage de la phase B ;
 - à terme, le clavier mécanique du boîtier peut être scanné par un des
   berceaux (matrice 8×8 → bus) : prévoir le connecteur nappe clavier Atmos.
 
