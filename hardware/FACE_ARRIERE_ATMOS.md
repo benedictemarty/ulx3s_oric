@@ -66,8 +66,10 @@ Reproduction de la face arrière d'un Oric Atmos pilotée par le core FPGA,
   - straps de sélection pour choisir quelles lignes de bus chaque Pico voit
     (éviter les conflits de pilotage — deux périphériques ne répondent
     jamais à la même adresse).
-- **1× berceau Tang Primer 20K** (2 supports 2×20 femelles, format dock
-  Sipeed) : FPGA d'expérimentation sur le bus (co-processeur, cartouche
+- **1× berceau Tang Nano 20K** (choix acté 2026-07-29, remplace le couple
+  Primer 20K + dock) : format DIP à picots 2,54 → deux rangées de supports
+  femelles. GW2AR-18 avec 8 Mo de SDRAM intégrée, HDMI et lecteur SD à
+  bord ; FPGA d'expérimentation sur le bus (co-processeur, cartouche
   synthétique…). Même règle : il voit le bus 3,3 V.
 
 ⚠️ Règle de cohabitation : la ULX3S pilote toujours A/RW/Φ2 ; les berceaux
@@ -119,6 +121,18 @@ position du connecteur nappe clavier.
 2. **Phase B — carte format Atmos** : reprend la phase A validée, ajoute
    berceaux Pico/Tang, USB, HP, fixations boîtier. Lancée seulement après
    validation électrique de la phase A et mesures du boîtier.
+
+## Notes de conception vérifiées
+
+- **TXS0108E TSSOP-20 (PW), brochage vérifié sur datasheet TI SCES642H** :
+  1=A1, 2=VCCA(3,3 V), 3..9=A2..A8, 10=OE, 11=GND, 12..18=B8..B2,
+  **19=VCCB(5 V), 20=B1**. OE : pull-down 10 kΩ vers GND (Hi-Z au
+  démarrage, exigence datasheet) + strap vers 3,3 V pour activer.
+- Moteur cassette : contact sec attendu par le magnétophone → relais
+  statique PhotoMOS (AQY212 ou TLP222A) piloté par MOTOR_3V3, pas un
+  transistor à la masse.
+- TAPE IN : comparateur LM393 (seuil ~200 mV) avec pull-up 3,3 V en sortie.
+- TAPE OUT : diviseur résistif vers niveau ligne (~10 k/1 k).
 
 ## Fabrication
 
