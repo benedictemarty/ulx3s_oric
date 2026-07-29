@@ -162,6 +162,11 @@ moment du routage :
   virtuelle » vers SD/WiFi possible), le modem WiFi (ACIA 6551 en RTL
   dans le FPGA, modèle dispo dans la référence Phosphoric), et les
   événements du clavier matrice scanné par le Pico ;
+- **pont UART : aucun composant à ajouter** (pistes 3,3 V courtes sur
+  PCB ; la liaison PC du Nano 20K passe par son BL616 embarqué, comme le
+  FTDI de l'ULX3S). Protocole du pont avec trames typées + CRC8 +
+  acquittement (3 flux multiplexés : imprimante, modem ACIA, clavier) —
+  la robustesse est logicielle, pas matérielle ;
 - **clavier d'origine réutilisable tel quel** : la platine Atmos est une
   matrice 8×8 passive (aucune électronique). Header nappe au même
   emplacement que la carte d'origine (brochage : schéma du manuel de
