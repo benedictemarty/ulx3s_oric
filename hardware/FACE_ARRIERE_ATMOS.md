@@ -58,6 +58,12 @@ Berceaux pour 2 Pico W, 2 USB-A latéraux, connecteurs d'époque à l'arrière.
 
 ## Berceaux (côté 3,3 V — le même bus que le lien ULX3S)
 
+Principe : **un Pico = un firmware** ; les berceaux sont de simples
+supports femelles, à peupler selon l'usage. Avec la LOCI réelle branchée
+sur le peigne, le berceau #1 (LOCI intégrée) reste VIDE — un seul Pico W
+(#2, modem WiFi + scan clavier) suffit. Le #1 se peuple pour une config
+autonome sans cartouche.
+
 - **2× berceau Pico W** (2 rangées de supports femelles 1×20, pas 2,54) :
   - Pico #1 : candidat naturel pour porter le **firmware LOCI natif**
     (github.com/sodiumlb/loci-firmware, RP2040) ou tout périphérique de bus

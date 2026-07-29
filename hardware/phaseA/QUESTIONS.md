@@ -29,8 +29,9 @@ Conséquence : K1 n'est PAS assemblable par JLC en « assemblage top SMD »
 
 ## 4. J_CAS — empreinte DIN-7 femelle 270° créée par script
 Aucune empreinte DIN 41524 7 broches dans les bibliothèques KiCad.
-Créée par script : 7 pastilles THT Ø2,5 mm / perçage 1,3 mm sur un arc de
-270°, rayon 3,75 mm, 45° entre broches, ordre physique 6-1-4-2-5-3-7
+Créée par script : 7 pastilles THT Ø2,6 mm / perçage 1,4 mm sur un arc de
+270°, cercle de broches Ø7,0 mm (DIN 45329), 45° entre broches, ordre
+physique 6-1-4-2-5-3-7
 (broche 2 au centre de l'arc), ouverture vers le bord haut de la carte.
 **À VALIDER mécaniquement contre le connecteur réellement acheté**
 (position des pattes de fixation, sens avant/arrière du brochage vu côté

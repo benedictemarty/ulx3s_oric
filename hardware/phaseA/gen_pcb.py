@@ -244,9 +244,10 @@ def make_jexp(board, nets):
 
 def make_jcas(board, nets):
     """DIN-7 femelle 270° THT (base DIN 41524/45329) : 7 pads sur un arc de
-    270°, rayon 3,75 mm, 45° entre broches, ordre physique 6-1-4-2-5-3-7,
-    broche 2 au milieu (vers l'intérieur de la carte), ouverture vers le
-    bord haut. Perçage 1,3 mm / pastille 2,5 mm.
+    270°, cercle de broches Ø7,0 mm (DIN 45329 : rayon 3,5 mm), 45° entre
+    broches, ordre physique 6-1-4-2-5-3-7, broche 2 au milieu (vers
+    l'intérieur de la carte), ouverture vers le bord haut.
+    Perçage 1,4 mm / pastille 2,6 mm.
     Brochage Atmos : 1=TAPE_OUT_DIN 2=GND 3=TAPE_IN_DIN 4=SOUND 5=NC
     6=MOTOR_A 7=MOTOR_B."""
     cx, cy = 34.0, 10.0
@@ -260,7 +261,7 @@ def make_jcas(board, nets):
     fp.SetPosition(V(0, 0))
 
     order = ["6", "1", "4", "2", "5", "3", "7"]
-    r = 3.75
+    r = 3.5
     for i, num in enumerate(order):
         ang = math.radians(90 + (i - 3) * 45)  # broche 2 vers +y (intérieur)
         x = cx + r * math.cos(ang)
@@ -269,8 +270,8 @@ def make_jcas(board, nets):
         pad.SetNumber(num)
         pad.SetAttribute(pcbnew.PAD_ATTRIB_PTH)
         pad.SetShape(pcbnew.PAD_SHAPE_CIRCLE)
-        pad.SetSize(V(2.5, 2.5))
-        pad.SetDrillSize(V(1.3, 1.3))
+        pad.SetSize(V(2.6, 2.6))
+        pad.SetDrillSize(V(1.4, 1.4))
         pad.SetLayerSet(pad.PTHMask())
         pad.SetPosition(V(x, y))
         if num in pin_nets:
