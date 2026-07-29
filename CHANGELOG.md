@@ -7,6 +7,10 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 
 ## [1.1.0] — 2026-07-29 — Sprint 2 : clavier série + fiabilisation HDMI
 
+### Déployé
+- Bitstream v1.1.0 gravé en flash SPI (--unprotect-flash requis) :
+  démarrage autonome à la mise sous tension.
+
 ### Ajouté
 - **Clavier série depuis le PC** (port US1, 115200 8N1) : `uart_rx.v` +
   `key_injector.v` (FIFO 256 octets, table ASCII→matrice Oric issue des
