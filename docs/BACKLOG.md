@@ -10,11 +10,14 @@ affichage HDMI, clavier USB, son AY.
 - [x] US1.4 Testbenches : VIA, ULA, boot ROM (message BASIC en RAM écran)
 - [x] US1.5 Synthèse 85F propre en timing + bitstream + flash carte
 
-### Reste à valider sur matériel (début Sprint 2)
-- [ ] Affichage HDMI réel (écran branché sur GPDI)
+### Validation matérielle
+- [x] Affichage HDMI réel (2026-07-29 — boot BASIC visible ; synchro
+      fiabilisée par l'alignement de phase TMDS)
+- [x] Clavier série UART depuis le PC (2026-07-29 — frappes visibles à
+      l'écran via picocom)
+- [x] Flash permanent en SPI v1.1.0 (2026-07-29, --unprotect-flash)
 - [ ] Frappe clavier USB réelle (port US2, clavier boot-protocol)
 - [ ] Son AY sur la prise jack (ex. `PING`, `ZAP`, `MUSIC` en BASIC)
-- [ ] Si OK : flash permanent en SPI (`openFPGALoader -b ulx3s -f …`)
 
 ## Sprint 2 — « On charge des programmes »
 - [ ] US2.1 Chargement .tap (cassette) — injection via ESP32 ou carte SD
