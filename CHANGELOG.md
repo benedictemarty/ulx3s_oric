@@ -5,6 +5,17 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 
 ## [Non publié]
 
+## [1.0.0] — 2026-07-29 — Sprint 1 terminé : « Il boote »
+
+### Validé
+- `tb_boot` : boot complet de la ROM en simulation — écran
+  « ORIC EXTENDED BASIC V1.1 / © 1983 TANGERINE / 37631 BYTES FREE / Ready »
+  identique à la machine réelle (bannière + charset copiés par la ROM).
+- Timing nextpnr final : clk_sys 54,5 MHz (requis 25), clk_shift 256 MHz
+  (requis 125), clk_pixel 59,4 MHz, clk_usb 76 MHz — tous PASS.
+- Ressources ECP5-85F : 87/208 DP16KD (41 %), 4 MULT18, 2/4 PLL.
+- Bitstream `build/oric_ulx3s.bit` flashé sur carte (openFPGALoader, SRAM).
+
 ## [0.2.0] — 2026-07-29 — Sprint 1 (suite)
 
 ### Ajouté

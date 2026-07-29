@@ -1,14 +1,20 @@
 # Backlog agile — ulx3s_oric
 
-## Sprint 1 (en cours) — « Il boote »
+## Sprint 1 (TERMINÉ 2026-07-29) — « Il boote »
 Objectif : Oric Atmos fonctionnel sur ULX3S 85F — BASIC 1.1b au boot,
 affichage HDMI, clavier USB, son AY.
 
 - [x] US1.1 Squelette projet + docs + git
-- [ ] US1.2 RTL cœur : ULA, VIA 6522, mémoire, intégration 6502/jt49
-- [ ] US1.3 HDMI 640×480 + top-level ULX3S + USB HID + audio
-- [ ] US1.4 Testbenches : VIA, ULA, boot ROM (message BASIC en RAM écran)
-- [ ] US1.5 Synthèse 85F propre en timing + bitstream
+- [x] US1.2 RTL cœur : ULA, VIA 6522, mémoire, intégration 6502/jt49
+- [x] US1.3 HDMI 640×480 + top-level ULX3S + USB HID + audio
+- [x] US1.4 Testbenches : VIA, ULA, boot ROM (message BASIC en RAM écran)
+- [x] US1.5 Synthèse 85F propre en timing + bitstream + flash carte
+
+### Reste à valider sur matériel (début Sprint 2)
+- [ ] Affichage HDMI réel (écran branché sur GPDI)
+- [ ] Frappe clavier USB réelle (port US2, clavier boot-protocol)
+- [ ] Son AY sur la prise jack (ex. `PING`, `ZAP`, `MUSIC` en BASIC)
+- [ ] Si OK : flash permanent en SPI (`openFPGALoader -b ulx3s -f …`)
 
 ## Sprint 2 — « On charge des programmes »
 - [ ] US2.1 Chargement .tap (cassette) — injection via ESP32 ou carte SD
