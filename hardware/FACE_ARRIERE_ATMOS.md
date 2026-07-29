@@ -100,12 +100,16 @@ plage, /IRQ//ROMDIS//MAP en drain ouvert).
 
 ## USB latéraux
 
-- **USB1** (USB-A femelle) : câblée au Pico #1 en hôte PIO-USB
-  (D+/D- sur deux GPIO + 5 V du jack) — clé USB de stockage pour le
-  firmware LOCI, comme sur la vraie cartouche.
-- **USB2** (USB-A femelle) : hôte PIO-USB sur le Pico #2 (ou clavier USB
-  fourni par le firmware LOCI du Pico #1, comme la vraie cartouche —
-  la LOCI sait déjà présenter un clavier USB à l'Oric).
+Chaque USB-A latéral est un port **hôte PIO-USB appartenant à un Pico**
+(D+/D- sur 2 GPIO + 5 V du jack ; le Tang Nano n'a aucun rôle USB) :
+- **USB1 → Pico #1** (firmware LOCI) : clé USB de stockage et
+  clavier/souris HID, comme le port USB de la vraie cartouche (hub
+  supporté par le firmware) ;
+- **USB2 → Pico #2** (modem WiFi + scan matrice) : clavier USB de secours
+  quand le berceau #1 est vide (vraie LOCI sur le peigne).
+La LOCI réelle branchée sur le peigne conserve son propre port USB.
+Les micro-USB natifs des Picos restent accessibles sur les berceaux pour
+flasher leurs firmwares (opération d'atelier, ne sort pas du boîtier).
 
 ## Portage Gowin (nouveau chantier RTL)
 
