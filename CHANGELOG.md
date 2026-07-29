@@ -5,6 +5,24 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 
 ## [Non publié]
 
+## [1.2.0] — 2026-07-29 — Sprint 3 : port d'extension, cassette, imprimante
+
+### Ajouté
+- **Port d'extension Oric complet sur GPIO** (`expansion_port.v`) : bus 6502,
+  Φ2, /ROMDIS, /MAP, /IOCTRL, /IRQ, /RESET drain ouvert — sémantique fidèle
+  (ROM / RAM cachée / cartouche), VIA restreinte à $0300-$030F. Cible :
+  cartouche LOCI réelle. Brochage officiel (annexe 11 manuel Atmos) et table
+  de câblage dans docs/PORT_EXTENSION.md. Testbench tb_expansion.
+- **Signaux cassette** (PB7 sortie, PB6 moteur, CB1 entrée) et
+  **imprimante Centronics** (PA données, PB4 strobe, CA1 ack) sur GPIO.
+- Spécification de la carte « face arrière Atmos » au format carte mère
+  d'origine (hardware/FACE_ARRIERE_ATMOS.md) : connecteurs d'époque + HDMI,
+  berceaux 2× Pico W + carte FPGA, 2 USB-A, haut-parleur, phasage A/B.
+
+### Déployé
+- Bitstream v1.2.0 (inclut les correctifs HIRES/clignotement v1.1.1) gravé
+  en flash SPI : démarrage autonome. 6/6 tests, timing 54,7 MHz (25 requis).
+
 ## [1.1.1] — 2026-07-29 — Correctif HIRES
 
 ### Corrigé
