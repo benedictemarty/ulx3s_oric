@@ -70,7 +70,8 @@ for netsec in find_all(find_all(tree, "network_out")[0], "net"):
         continue
     for wire in find_all(netsec, "wire"):
         for path in find_all(wire, "path"):
-            layer, width, coords = path[1], int(path[2]), path[3:]
+            layer, width = path[1], int(path[2])
+            coords = [c for c in path[3:] if isinstance(c, str)]
             pts = [(to_iu(coords[i]), -to_iu(coords[i + 1]))
                    for i in range(0, len(coords), 2)]
             for a, c in zip(pts, pts[1:]):
@@ -83,7 +84,8 @@ for netsec in find_all(find_all(tree, "network_out")[0], "net"):
                 b.Add(t)
                 added_t += 1
     for via in find_all(netsec, "via"):
-        x, y = via[-2], via[-1]
+        scal = [c for c in via if isinstance(c, str)]
+        x, y = scal[-2], scal[-1]
         v = pcbnew.PCB_VIA(b)
         v.SetPosition(pcbnew.VECTOR2I(to_iu(x), -to_iu(y)))
         v.SetDrill(pcbnew.FromMM(0.3))
