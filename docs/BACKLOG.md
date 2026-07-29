@@ -48,3 +48,12 @@ affichage HDMI, clavier USB, son AY.
 - usb_hid_host ne gère que les claviers *boot protocol* low-speed ; certains
   claviers USB ne répondent pas (prévoir un clavier simple).
 - ROM : droits d'auteur — usage personnel uniquement, pas de redistribution.
+
+## Sprint 5 — « Boîtier maîtrisé »
+- [ ] US5.1 Boîtier paramétrique OpenSCAD silhouette Atmos : profil extrait
+      des STL OriClone (hardware/boitier/profil_coupe.json), paramètres :
+      profondeur 175 (fidèle/clavier d'origine) ou 205 (clavier MX),
+      découpes arrière générées depuis les coordonnées du PCB phase B,
+      tuilage imprimable 220×220 (queues d'aronde + bossages à vis)
+- [ ] US5.2 Chaînage/nettoyage du profil brut en polygone propre
+- [ ] US5.3 Rendu STL + impression test d'un tronçon
