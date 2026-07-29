@@ -25,6 +25,7 @@ doigts des deux faces) au bord DROIT. Assemblage JLCPCB (SMD top).
 | R5 | 100 kΩ 0603 (seuil auto IN-) | R_0603 |
 | R6 | 10 kΩ 0603 (pull-up sortie LM393) | R_0603 |
 | R7 | 470 Ω 0603 (LED PhotoMOS) | R_0603 |
+| R8 | 1 MΩ 0603 (hystérésis LM393) | R_0603 |
 | C1 | 1 µF 0603 (couplage TAPE IN) | C_0603 |
 | C2 | 100 nF 0603 (moyenne IN-) | C_0603 |
 | C3..C14 | 100 nF 0603 (découplage : 2/TXS) | C_0603 |
@@ -108,8 +109,10 @@ Impairs : 1=PRN_STB_n, 3=PRN_D0, 5=PRN_D1, 7=PRN_D2, 9=PRN_D3, 11=PRN_D4,
 - TAPE IN : TAPE_IN_DIN —C1(1µF)— nœud IN+ ; R3(100k) IN+→3V3 ;
   R4(100k) IN+→GND ; R5(100k) IN+→IN- ; C2(100n) IN-→GND ;
   LM393 : IN+=broche 3, IN-=broche 2, OUT=broche 1 ; R6(10k) OUT→3V3 ;
-  OUT = net TAPE_IN_3V3. VCC LM393(8)=3V3, GND(4)=GND. 2e comparateur :
-  entrées (5,6) à GND, sortie (7) NC.
+  **R8(1M) OUT→IN+ : hystérésis ~30 mV** (immunité au bruit du câble
+  magnétophone — ajouté 2026-07-29) ; OUT = net TAPE_IN_3V3.
+  VCC LM393(8)=3V3, GND(4)=GND. 2e comparateur : entrées (5,6) à GND,
+  sortie (7) NC.
 - MOTEUR : MOTOR_3V3 —R7(470)— K1 LED+(1) ; K1 LED-(2)=GND ;
   K1 contacts (3,4) = MOTOR_A/MOTOR_B (contact sec).
 

@@ -34,7 +34,7 @@ Remarques :
 | BOM | `BOM.csv` |
 | CPL (Pick & Place) | `CPL.csv` |
 
-Composants assemblés (43 CMS top) : U1..U6 (TXS0108EPWR, C17206),
+Composants assemblés (31 CMS top) : U1..U6 (TXS0108EPWR, C17206),
 U7 (LM393DR, C67470), R_OE,R1..R7 (0603), C1..C14 (0603), C15,C16 (0805).
 
 NON assemblés (à souder soi-même, lignes LCSC=TBD dans la BOM) :

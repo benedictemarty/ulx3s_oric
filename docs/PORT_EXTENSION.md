@@ -73,6 +73,10 @@ D (lec.)              ↑ échantillon phase 22
 Marges énormes à 1 MHz : compatible câblage Dupont + TXS0108E.
 La LOCI ajuste elle-même sa fenêtre d'échantillonnage (ADJ_SCAN du menu).
 
+Câblage Dupont anti-diaphonie : fils courts (< 20 cm), et intercaler des
+fils de MASSE entre les groupes (un GND tous les 4-6 signaux, en
+particulier entre bus d'adresses, bus de données et Φ2).
+
 ## Mise en route avec la LOCI
 
 1. Vérifier la masse commune et le 5 V externe AVANT d'insérer la cartouche.
