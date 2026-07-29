@@ -9,6 +9,7 @@ module tb_trace;
     oric_atmos #(.DIV(DIV), .ROM_FILE("roms/basic11b.hex")) dut (
         .clk(clk), .rst(rst),
         .kbd_mods(8'd0), .kbd_k1(8'd0), .kbd_k2(8'd0), .kbd_k3(8'd0), .kbd_k4(8'd0),
+        .inj_active(1'b0), .inj_col(3'd0), .inj_row(3'd0), .inj_shift(1'b0),
         .fb_we(), .fb_addr(), .fb_data(), .frame_tick(), .audio(),
         .cpu_irq_dbg()
     );

@@ -16,6 +16,12 @@ module oric_atmos #(
     input  [7:0]  kbd_mods,
     input  [7:0]  kbd_k1, kbd_k2, kbd_k3, kbd_k4,
 
+    // Injection clavier série (UART)
+    input         inj_active,
+    input  [2:0]  inj_col,
+    input  [2:0]  inj_row,
+    input         inj_shift,
+
     // Framebuffer vidéo
     output        fb_we,
     output [15:0] fb_addr,
@@ -180,15 +186,19 @@ module oric_atmos #(
     );
 
     oric_keyboard kbd (
-        .clk     (clk),
-        .mods    (kbd_mods),
-        .k1      (kbd_k1),
-        .k2      (kbd_k2),
-        .k3      (kbd_k3),
-        .k4      (kbd_k4),
-        .col_sel (via_pb_out[2:0]),
-        .ay_ioa  (ay_ioa),
-        .sense   (kbd_sense)
+        .clk        (clk),
+        .mods       (kbd_mods),
+        .k1         (kbd_k1),
+        .k2         (kbd_k2),
+        .k3         (kbd_k3),
+        .k4         (kbd_k4),
+        .inj_active (inj_active),
+        .inj_col    (inj_col),
+        .inj_row    (inj_row),
+        .inj_shift  (inj_shift),
+        .col_sel    (via_pb_out[2:0]),
+        .ay_ioa     (ay_ioa),
+        .sense      (kbd_sense)
     );
 
     // ------------------------------------------------------------------

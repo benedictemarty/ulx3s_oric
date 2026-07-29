@@ -15,6 +15,11 @@ module oric_keyboard (
     input  [7:0] k2,
     input  [7:0] k3,
     input  [7:0] k4,
+    // Injection d'une touche (clavier série UART depuis le PC)
+    input        inj_active,
+    input  [2:0] inj_col,
+    input  [2:0] inj_row,
+    input        inj_shift,
     // Interface matrice
     input  [2:0] col_sel,     // VIA ORB[2:0]
     input  [7:0] ay_ioa,      // rangées actives bas
@@ -109,6 +114,12 @@ module oric_keyboard (
         if (mods[4]) matrix[0][4] = 1'b1;   // RCTRL  -> (0,4)
         if (mods[5]) matrix[7][4] = 1'b1;   // RSHIFT -> (7,4)
         if (mods[6]) matrix[5][4] = 1'b1;   // RALT   -> FUNCT (5,4)
+
+        // Touche injectée par le lien série
+        if (inj_active) begin
+            matrix[inj_col][inj_row] = 1'b1;
+            if (inj_shift) matrix[4][4] = 1'b1;   // LSHIFT Oric
+        end
     end
 
     always @(posedge clk)

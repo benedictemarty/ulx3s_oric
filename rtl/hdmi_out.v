@@ -69,18 +69,25 @@ module hdmi_out (
     tmds_encoder enc_r (.clk(clk_pixel), .data(red), .ctrl(2'b00),          .de(de), .tmds(tmds_r));
 
 `ifndef SIM
-    // Sérialisation 10:1 : 2 bits par cycle 125 MHz (DDR)
-    reg [2:0] mod5;
+    // Sérialisation 10:1 : 2 bits par cycle 125 MHz (DDR).
+    // Chargement aligné en phase : clk_pixel (même PLL, x5) est échantillonné
+    // dans le domaine 125 MHz ; son front montant déclenche le chargement
+    // ~2 cycles (16 ns) après la mise à jour des mots TMDS côté pixel —
+    // marge confortable, phase constante (horloges liées). Un compteur mod-5
+    // libre pouvait verrouiller pendant la transition des mots (image
+    // intermittente selon la phase de démarrage de la PLL).
+    reg [2:0] pix_sync;
+    always @(posedge clk_shift) pix_sync <= {pix_sync[1:0], clk_pixel};
+    wire load = pix_sync[1] & ~pix_sync[2];
+
     reg [9:0] sh_r, sh_g, sh_b, sh_c;
     always @(posedge clk_shift) begin
-        if (mod5 == 3'd4) begin
-            mod5 <= 3'd0;
+        if (load) begin
             sh_r <= tmds_r;
             sh_g <= tmds_g;
             sh_b <= tmds_b;
             sh_c <= 10'b0000011111;   // horloge pixel sur le canal clock
         end else begin
-            mod5 <= mod5 + 3'd1;
             sh_r <= {2'b00, sh_r[9:2]};
             sh_g <= {2'b00, sh_g[9:2]};
             sh_b <= {2'b00, sh_b[9:2]};

@@ -5,6 +5,21 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 
 ## [Non publié]
 
+## [1.1.0] — 2026-07-29 — Sprint 2 : clavier série + fiabilisation HDMI
+
+### Ajouté
+- **Clavier série depuis le PC** (port US1, 115200 8N1) : `uart_rx.v` +
+  `key_injector.v` (FIFO 256 octets, table ASCII→matrice Oric issue des
+  tables ROM $FF70/$FFB0, frappe 45 ms + pause 25 ms, Shift automatique,
+  CR/LF dédupliqués). Voir docs/CLAVIER_SERIE.md. Testbench `tb_injector`.
+
+### Corrigé
+- **HDMI : chargement TMDS aligné en phase** : le compteur mod-5 libre
+  pouvait verrouiller les mots TMDS pendant leur transition selon la phase
+  de démarrage de la PLL (perte de synchro intermittente constatée sur
+  écran). Le front de clk_pixel est maintenant détecté dans le domaine
+  125 MHz et le chargement s'effectue ~16 ns après la mise à jour des mots.
+
 ## [1.0.0] — 2026-07-29 — Sprint 1 terminé : « Il boote »
 
 ### Validé

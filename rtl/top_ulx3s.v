@@ -5,6 +5,7 @@
 module top_ulx3s (
     input        clk_25mhz,
     input  [6:0] btn,
+    input        ftdi_txd,      // UART du PC (US1) : clavier série injecté
     output [7:0] led,
     output [3:0] gpdi_dp,
     inout        usb_fpga_bd_dp,
@@ -97,6 +98,33 @@ module top_ulx3s (
     end
 
     // ------------------------------------------------------------------
+    // Clavier série : UART US1 -> injection dans la matrice
+    // ------------------------------------------------------------------
+    wire [7:0] rx_data;
+    wire       rx_valid;
+    wire       inj_active, inj_shift;
+    wire [2:0] inj_col, inj_row;
+
+    uart_rx #(.CLK_HZ(25_000_000), .BAUD(115_200)) uart (
+        .clk   (clk_sys),
+        .rst   (rst_sys),
+        .rx    (ftdi_txd),
+        .data  (rx_data),
+        .valid (rx_valid)
+    );
+
+    key_injector inj (
+        .clk        (clk_sys),
+        .rst        (rst_sys),
+        .rx_data    (rx_data),
+        .rx_valid   (rx_valid),
+        .inj_active (inj_active),
+        .inj_col    (inj_col),
+        .inj_row    (inj_row),
+        .inj_shift  (inj_shift)
+    );
+
+    // ------------------------------------------------------------------
     // Système Oric
     // ------------------------------------------------------------------
     wire        fb_we;
@@ -114,6 +142,10 @@ module top_ulx3s (
         .kbd_k2      (k2_s2),
         .kbd_k3      (k3_s2),
         .kbd_k4      (k4_s2),
+        .inj_active  (inj_active),
+        .inj_col     (inj_col),
+        .inj_row     (inj_row),
+        .inj_shift   (inj_shift),
         .fb_we       (fb_we),
         .fb_addr     (fb_waddr),
         .fb_data     (fb_wdata),
