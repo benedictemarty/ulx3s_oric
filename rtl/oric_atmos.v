@@ -26,6 +26,8 @@ module oric_atmos #(
     output        fb_we,
     output [15:0] fb_addr,
     output [3:0]  fb_data,
+    output [8:0]  scan_y,
+    output [5:0]  scan_x,
     output        frame_tick,
 
     // Audio AY (mix 10 bits non signé)
@@ -262,6 +264,8 @@ module oric_atmos #(
         .fb_we      (fb_we),
         .fb_addr    (fb_addr),
         .fb_data    (fb_data),
+        .scan_y     (scan_y),
+        .scan_x     (scan_x),
         .frame_tick (frame_tick)
     );
 

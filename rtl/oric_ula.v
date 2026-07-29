@@ -29,6 +29,10 @@ module oric_ula #(
     output reg [15:0]     fb_addr,
     output reg [3:0]      fb_data,
 
+    // Coordonnées du balayage (pour doubleur de lignes, portage Gowin)
+    output [8:0]          scan_y,
+    output [5:0]          scan_x,
+
     output reg            frame_tick    // impulsion en fin de trame
 );
 
@@ -38,6 +42,9 @@ module oric_ula #(
     reg [5:0] xcell;      // 0..63 cellules par ligne
     reg [8:0] yline;      // 0..311
     reg [7:0] frame_cnt;
+
+    assign scan_y = yline;
+    assign scan_x = xcell;
 
     // État attributs série
     reg [2:0] ink, paper, tattr, vmode;
