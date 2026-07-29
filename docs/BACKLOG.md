@@ -16,6 +16,7 @@ affichage HDMI, clavier USB, son AY.
 - [x] Clavier série UART depuis le PC (2026-07-29 — frappes visibles à
       l'écran via picocom)
 - [x] Flash permanent en SPI v1.1.0 (2026-07-29, --unprotect-flash)
+- [x] HIRES validé sur carte (2026-07-29, correctif v1.1.1 confirmé par bmarty)
 - [ ] Frappe clavier USB réelle (port US2, clavier boot-protocol)
 - [ ] Son AY sur la prise jack (ex. `PING`, `ZAP`, `MUSIC` en BASIC)
 
