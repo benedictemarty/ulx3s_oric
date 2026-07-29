@@ -105,6 +105,23 @@ module tb_ula;
         check(fb[px(0,200)] == 4'd7, "ligne 200 : rangee 25 texte");
         check(fb[px(1,200)] == 4'd0, "ligne 200 : bg");
 
+        // --- Phase HIRES : les rangées texte du bas utilisent le charset
+        // relogé en $9800 (bug « blanc sur blanc » constaté sur carte)
+        ram.mem[16'hBB80] = 8'h1C;               // attribut mode HIRES
+        for (i = 0; i < 8; i = i + 1)
+            ram.mem[16'h9800 + 8*8'h41 + i] = 8'h15;   // 'A' = motif 010101
+        @(posedge frame_tick);                   // trame de transition
+        capturing = 1;
+        @(posedge frame_tick);
+        capturing = 0;
+
+        // Bitmap $A000 à zéro = cellules attribut -> remplissage papier noir
+        check(fb[px(0,8)] == 4'd0, "hires : bitmap vide -> noir");
+        // Ligne 200 : 'A' rendu avec le motif du charset $9800 (010101)
+        check(fb[px(0,200)] == 4'd0, "hires bas : bit5=0 -> papier");
+        check(fb[px(1,200)] == 4'd7, "hires bas : bit4=1 -> encre blanche");
+        check(fb[px(2,200)] == 4'd0, "hires bas : bit3=0 -> papier");
+
         if (errors == 0)
             $display("ALL TESTS PASSED (tb_ula)");
         else

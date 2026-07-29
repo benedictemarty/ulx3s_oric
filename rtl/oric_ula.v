@@ -47,7 +47,6 @@ module oric_ula #(
     reg       cell_is_attr;
     reg [2:0] fill_col;           // couleur de remplissage cellule attribut
     reg [2:0] fg, bg;
-    reg       blank_char;         // clignotement : phase masquée
     reg [2:0] px_idx;
     reg       px_active;
     reg [5:0] px_bits;
@@ -65,12 +64,15 @@ module oric_ula #(
     wire [15:0] hires_addr = 16'hA000 + {7'd0, yline} * 16'd40 + {10'd0, xcell};
     wire [15:0] scr_addr   = hires_zone ? hires_addr : text_addr;
 
-    // Adresse charset
+    // Adresse charset : la base suit le MODE GLOBAL de la ULA (vmode[2]),
+    // pas la zone de la ligne — en HIRES les 3 rangées texte du bas lisent
+    // le charset relogé en $9800/$9C00 (cf. get_charset_byte de la référence,
+    // seul $9800 est entretenu par la ROM en HIRES).
     wire        alt_charset = tattr[0];
     wire [2:0]  erow = tattr[1] ? ({1'b0, chline[2:1]} + (trow[0] ? 3'd4 : 3'd0))
                                 : chline;
-    wire [15:0] chr_base = hires_zone ? (alt_charset ? 16'h9C00 : 16'h9800)
-                                      : (alt_charset ? 16'hB800 : 16'hB400);
+    wire [15:0] chr_base = vmode[2] ? (alt_charset ? 16'h9C00 : 16'h9800)
+                                    : (alt_charset ? 16'hB800 : 16'hB400);
     wire [15:0] chr_addr = chr_base + {6'd0, scr_byte[6:0], 3'd0} + {13'd0, erow};
 
     wire is_attr = (scr_byte & 8'h60) == 8'h00;
@@ -135,10 +137,13 @@ module oric_ula #(
                                 end
                             endcase
                         end else begin
-                            vram_addr  <= chr_addr;
-                            fg <= inv ? (ink ^ 3'd7) : ink;
-                            bg <= inv ? (paper ^ 3'd7) : paper;
-                            blank_char <= tattr[2] & frame_cnt[4];
+                            vram_addr <= chr_addr;
+                            // Clignotement = inversion périodique (pas un
+                            // masquage), cumulable avec le bit 7 de l'octet
+                            fg <= (inv ^ (tattr[2] & frame_cnt[4]))
+                                  ? (ink ^ 3'd7) : ink;
+                            bg <= (inv ^ (tattr[2] & frame_cnt[4]))
+                                  ? (paper ^ 3'd7) : paper;
                         end
                     end
                     5'd5: begin
@@ -155,8 +160,6 @@ module oric_ula #(
                     fb_addr <= fb_pix_addr;
                     if (cell_is_attr)
                         fb_data <= {1'b0, fill_col};
-                    else if (blank_char && !hires_zone)
-                        fb_data <= {1'b0, bg};
                     else
                         fb_data <= px_bits[3'd5 - px_idx] ? {1'b0, fg} : {1'b0, bg};
                     px_idx <= px_idx + 3'd1;

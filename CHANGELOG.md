@@ -5,6 +5,19 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 
 ## [Non publié]
 
+## [1.1.1] — 2026-07-29 — Correctif HIRES
+
+### Corrigé
+- **HIRES : charset des 3 rangées texte du bas** — la base charset suit
+  désormais le mode global de la ULA (`vmode[2]`) et non la zone de la
+  ligne : en HIRES ces rangées lisent $9800/$9C00 (seule zone entretenue
+  par la ROM), $B400 contenant alors des données périmées (symptôme
+  constaté sur carte : texte blanc sur fond blanc). Conforme à
+  `get_charset_byte` de la référence. Test ajouté à tb_ula.
+- **Clignotement** : inversion périodique des couleurs (XOR avec le bit 7),
+  et non masquage du caractère — conforme à `blink_phase_on` de la
+  référence.
+
 ## [1.1.0] — 2026-07-29 — Sprint 2 : clavier série + fiabilisation HDMI
 
 ### Déployé
