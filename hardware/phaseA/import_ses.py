@@ -10,7 +10,7 @@ import sys
 import pcbnew
 
 BOARD = "phaseA.kicad_pcb"
-SES = "phaseA.ses"
+SES = sys.argv[1] if len(sys.argv) > 1 else "phaseA.ses"
 
 
 def tokenize(text):

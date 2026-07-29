@@ -1,0 +1,9 @@
+2026-07-29 16:33:55.200 INFO   Freerouting v2.2.4 (build-date: 2026-05-13)
+2026-07-29 16:33:55.274 WARN   Couldn't get screen resolution. If you are running in a headless environment, disable the GUI by setting gui.enabled to false.
+2026-07-29 16:33:57.257 WARN   DSN file 'phaseA_r6.dsn' was loaded with 10 warning(s).
+2026-07-29 16:33:57.446 INFO   New version available: v2.2.4
+2026-07-29 16:33:57.525 INFO   [DCA3F2\B49631] Job 'DCA3F2\B49631' started at 2026-07-29T14:33:57.524602111Z.
+2026-07-29 16:34:46.858 INFO   [DCA3F2\B49631] Auto-router pass #1 on board '58eb2d7827d2bee5d50eb375d921b18e' was completed in 48.92 seconds with the score of 942.34 (63 unrouted), using 46.65 CPU seconds and the job allocated 18.58 GB of memory so far.
+2026-07-29 16:35:29.167 INFO   [DCA3F2\B49631] Auto-router pass #2 on board 'b1274bbd7d236bb4a07326b69b42d868' was completed in 42.18 seconds with the score of 942.34 (63 unrouted), using 87.97 CPU seconds and the job allocated 36.50 GB of memory so far.
+2026-07-29 16:35:29.196 INFO   [DCA3F2\B49631] Board state has not changed since pass #2 (hash b1274bbd7d236bb4a07326b69b42d868). The auto-router cannot make further progress; stopping.
+2026-07-29 16:35:29.254 INFO   [DCA3F2\B49631] Auto-router session completed: started with 86 unrouted nets, completed in 1 minute 31.58 seconds, final score: 942.34 (63 unrouted), using 87.97 total CPU seconds, 36.50 GB total allocated, and 625.62 MB peak heap usage.

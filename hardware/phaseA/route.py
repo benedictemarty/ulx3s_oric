@@ -33,10 +33,17 @@ def export_dsn():
     if not pcbnew.ExportSpecctraDSN(b, DSN):
         raise RuntimeError("export DSN impossible")
     s = open(DSN).read()
+    # 1) Doigts vus par le routeur : seulement leurs 2 mm intérieurs
+    #    (le .kicad_pcb garde les vrais doigts 6 mm jusqu'au bord).
     s = s.replace("(shape (rect B.Cu -3000 -800 3000 800))",
                   "(shape (rect B.Cu -3000 -800 -1000 800))")
     s = s.replace("(shape (rect F.Cu -3000 -800 3000 800))",
                   "(shape (rect F.Cu -3000 -800 -1000 800))")
+    # 2) Bord droit virtuel à 156,3 mm : interdit au routeur de poser
+    #    pistes/vias au-dessus de la partie réelle des doigts.
+    s = s.replace(
+        "(path pcb 0  160000 -50000  0 -50000  0 0  160000 0  160000 -50000)",
+        "(path pcb 0  156300 -50000  0 -50000  0 0  156300 0  156300 -50000)")
     open(DSN_FR, "w").write(s)
 
 
@@ -50,6 +57,14 @@ def run_freerouting():
 
 
 def import_ses():
+    # Répare les noms de composants vides (empreintes custom sans FPID
+    # dans d'anciennes révisions du board) qui cassent le parseur SES.
+    s = open(SES).read()
+    s = s.replace('(component \n      (place "J_CAS"',
+                  '(component "DIN7_CUSTOM"\n      (place "J_CAS"')
+    s = s.replace('(component ::1\n      (place "J_EXP"',
+                  '(component "JEXP_CUSTOM"\n      (place "J_EXP"')
+    open(SES, "w").write(s)
     b = pcbnew.LoadBoard(BOARD)
     if not pcbnew.ImportSpecctraSES(b, SES):
         raise RuntimeError("import SES impossible")

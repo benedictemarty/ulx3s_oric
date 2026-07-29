@@ -84,9 +84,13 @@ disquette d'époque), si l'insertion directe est mécaniquement gênante.
 
 ## J_ULX_A (2×20) — vers GPIO ULX3S (Dupont)
 
-1..16 = A0..A15 ; 17..24 = D0..D7 ; 25=RW, 26=PHI2, 27=IO_n, 28=RST_n,
-29=IRQ_n, 30=ROMDIS_n, 31=MAP_n, 32=IOCTL_n ; 33=OE_EN ; 34..36=GND ;
-37,38=+3V3 (depuis ULX3S) ; 39,40=GND.
+**Ordre RÉVISÉ 2026-07-29 (fan-out monotone vers les TXS, routage sans
+croisements)** :
+1=RW, 2=PHI2, 3=IO_n, 4=RST_n, 5=IRQ_n, 6=ROMDIS_n, 7=MAP_n, 8=IOCTL_n,
+9=OE_EN ; 10..17 = D0..D7 ; 18..25 = A0..A7 ; 26..33 = A8..A15 ;
+34..36=GND ; 37,38=+3V3 (depuis ULX3S) ; 39,40=GND.
+(Le câblage Dupont vers les gp/gn de l'ULX3S suit ce tableau, pas
+l'ancien : chaque fil est indépendant, seule la table change.)
 
 ## J_ULX_B (2×10)
 

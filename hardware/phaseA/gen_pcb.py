@@ -180,6 +180,8 @@ def build_component_table():
     r("R5", (50, 21), 90, "100k", "IN_PLUS", "IN_MINUS")
     r("R6", (56, 21), 90, "10k", "TAPE_IN_3V3", "+3V3")
     r("R7", (21, 27), 0, "470", "MOTOR_3V3", "K1_LED_A")
+    # R8 : hystérésis LM393 ~30 mV, OUT→IN+ (ajout spec du 2026-07-29)
+    r("R8", (59, 21), 90, "1M", "TAPE_IN_3V3", "IN_PLUS")
     c("C1", (42, 12), 0, "1uF", "TAPE_IN_DIN", "IN_PLUS")
     c("C2", (53, 21), 90, "100nF", "IN_MINUS", "GND")
 
@@ -207,6 +209,7 @@ def make_jexp(board, nets):
     F.Cu = pairs (2k), B.Cu = impairs (2k-1), position k = 1..17 du haut vers
     le bas, masque ouvert, pas de pâte."""
     fp = pcbnew.FOOTPRINT(board)
+    fp.SetFPID(pcbnew.LIB_ID("phaseA", "JEXP_34_GOLDFINGERS"))
     fp.SetReference("J_EXP")
     fp.SetValue("EDGE_34_GOLDFINGERS")
     fp.SetAttributes(pcbnew.FP_SMD | pcbnew.FP_EXCLUDE_FROM_BOM
@@ -255,6 +258,7 @@ def make_jcas(board, nets):
                 "4": "SOUND", "6": "MOTOR_A", "7": "MOTOR_B"}
 
     fp = pcbnew.FOOTPRINT(board)
+    fp.SetFPID(pcbnew.LIB_ID("phaseA", "DIN41524_7pin_270deg_Female"))
     fp.SetReference("J_CAS")
     fp.SetValue("DIN41524_7pin_270deg_Female")
     fp.SetAttributes(pcbnew.FP_THROUGH_HOLE | pcbnew.FP_EXCLUDE_FROM_POS_FILES)
@@ -368,9 +372,9 @@ def build(out_path):
         z.SetAssignedPriority(0)
         z.SetLocalClearance(MM(0.3))
         z.SetMinThickness(MM(0.25))
-        z.SetPadConnection(pcbnew.ZONE_CONNECTION_THERMAL)
-        z.SetThermalReliefGap(MM(0.3))
-        z.SetThermalReliefSpokeWidth(MM(0.4))
+        # Connexion pleine : évite les reliefs thermiques affamés
+        # (starved_thermal) dans les couloirs de routage denses.
+        z.SetPadConnection(pcbnew.ZONE_CONNECTION_FULL)
         z.AddPolygon(pcbnew.VECTOR_VECTOR2I([V(x, y) for x, y in zone_pts]))
         z.SetZoneName("GND_%s" % pcbnew.BOARD.GetStandardLayerName(layer))
         board.Add(z)
