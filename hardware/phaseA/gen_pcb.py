@@ -118,15 +118,17 @@ def build_component_table():
     add("K1", "Package_DIP", "DIP-4_W7.62mm", (21, 21), 0, "AQY212GH",
         {"1": "K1_LED_A", "2": "GND", "3": "MOTOR_A", "4": "MOTOR_B"})
 
-    # --- J_ULX_A (2x20) --------------------------------------------------
+    # --- J_ULX_A (2x20) — ordre RÉVISÉ spec 2026-07-29 (fan-out monotone)
+    # 1..8 = RW..IOCTL_n ; 9 = OE_EN ; 10..17 = D0..D7 ; 18..25 = A0..A7 ;
+    # 26..33 = A8..A15 ; 34..36 = GND ; 37,38 = +3V3 ; 39,40 = GND.
     jua = {}
-    for i in range(16):
-        jua[str(i + 1)] = "A%d" % i
-    for i in range(8):
-        jua[str(i + 17)] = "D%d" % i
-    for p, n in zip(range(25, 33), CTRL_3V3):
+    for p, n in zip(range(1, 9), CTRL_3V3):
         jua[str(p)] = n
-    jua["33"] = "OE_EN"
+    jua["9"] = "OE_EN"
+    for i in range(8):
+        jua[str(i + 10)] = "D%d" % i
+    for i in range(16):
+        jua[str(i + 18)] = "A%d" % i
     for p in (34, 35, 36, 39, 40):
         jua[str(p)] = "GND"
     jua["37"] = "+3V3"

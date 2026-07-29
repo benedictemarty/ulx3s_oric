@@ -21,3 +21,15 @@
   DIN-7 (cercle Ø7 mm, pastilles 2,4/1,3), retrait 0,05 mm des doigts
   (DRC bord de cuivre).
 - Gerbers + perçage Excellon exportés dans `gerbers/` (voir Makefile).
+
+## 2026-07-29 (b) — Intégration des révisions de spec du jour
+- SPEC_NETLIST.md révisée en parallèle par bmarty : R8 1 MΩ (hystérésis
+  LM393), nouvel ordre J_ULX_A (fan-out monotone), pas du peigne confirmé
+  (Amphenol 34 pts / 2,54 mm).
+- gen_pcb.py : ajout R8 (replacé en (59;21), l'emplacement initial
+  court-circuitait U7.8), nouveau mapping J_ULX_A, FPID des empreintes
+  custom, zones GND en connexion pleine (anti « starved thermal »).
+- route.py : bord droit virtuel du DSN à 156,3 mm (le routeur ne passe
+  plus sur la partie réelle des doigts), alim routée à 0,4 mm (limite
+  d'isolation au pas TSSOP 0,65), patch robuste des noms SES.
+- Carte re-routée entièrement (freerouting tour 3) après régénération.

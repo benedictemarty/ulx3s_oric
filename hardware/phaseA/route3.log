@@ -1,0 +1,297 @@
+./libs/kimath/src/geometry/shape_poly_set.cpp(558): assert ""aOutline.IsClosed()"" failed in AddOutline(): Warning: non-closed outline added to SHAPE_POLY_SET
+2026-07-29 17:01:32.086 INFO   Freerouting v2.1.0 (build-date: 2025-04-12)
+2026-07-29 17:01:32.124 WARN   No default constructor found for field: currentLocale
+2026-07-29 17:01:32.126 INFO   Settings were loaded from freerouting.json
+2026-07-29 17:01:32.129 WARN   Couldn't get screen resolution. If you are running in a headless environment, disable the GUI by setting gui.enabled to false.
+2026-07-29 17:01:33.417 INFO   [E25C03\800C99] Job 'E25C03\800C99' started at 2026-07-29T15:01:33.417062339Z
+2026-07-29 17:01:33.643 INFO   New version available: v2.2.4
+2026-07-29 17:01:44.853 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-07-29 17:01:44.853 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-07-29 17:01:45.327 INFO   [E25C03\800C99] Auto-router pass #1 on board '2ba976190474d1a42238323a57fe3a1e' was completed in 11,79 seconds with the score of 810,22 (63 unrouted), using 64,21 CPU seconds and 9785 MB memory.
+2026-07-29 17:01:47.740 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-07-29 17:01:47.740 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-07-29 17:01:47.740 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-07-29 17:01:47.740 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-07-29 17:01:47.960 INFO   [E25C03\800C99] Auto-router pass #2 on board 'ed8578bfa7644a19c2202b682d6abccd' was completed in 2,61 seconds with the score of 824,07 (59 unrouted), using 102,26 CPU seconds and 12900 MB memory.
+2026-07-29 17:01:48.782 WARN   PolylineTrace.get_trace_connection_shape p_index out of range
+2026-07-29 17:01:48.782 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.NullPointerException: Cannot invoke "app.freerouting.geometry.planar.TileShape.nearest_point_approx(app.freerouting.geometry.planar.FloatPoint)" because "target_shape" is null
+	at app.freerouting.autoroute.MazeSearchAlgo.expand_to_target_doors(MazeSearchAlgo.java:534) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.expand_to_room_doors(MazeSearchAlgo.java:398) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.occupy_next_element(MazeSearchAlgo.java:286) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.find_connection(MazeSearchAlgo.java:206) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.AutorouteEngine.autoroute_connection(AutorouteEngine.java:155) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.autoroute_item(BatchAutorouter.java:610) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.autoroute_pass(BatchAutorouter.java:332) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.runBatchLoop(BatchAutorouter.java:447) [freerouting.jar:unspecified]
+	at app.freerouting.management.RoutingJobSchedulerActionThread.thread_action(RoutingJobSchedulerActionThread.java:131) [freerouting.jar:unspecified]
+	at app.freerouting.core.StoppableThread.run(StoppableThread.java:26) [freerouting.jar:unspecified]
+2026-07-29 17:01:48.782 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.NullPointerException: Cannot invoke "app.freerouting.geometry.planar.TileShape.nearest_point_approx(app.freerouting.geometry.planar.FloatPoint)" because "target_shape" is null
+	at app.freerouting.autoroute.MazeSearchAlgo.expand_to_target_doors(MazeSearchAlgo.java:534) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.expand_to_room_doors(MazeSearchAlgo.java:398) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.occupy_next_element(MazeSearchAlgo.java:286) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.find_connection(MazeSearchAlgo.java:206) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.AutorouteEngine.autoroute_connection(AutorouteEngine.java:155) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.autoroute_item(BatchAutorouter.java:610) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.autoroute_pass(BatchAutorouter.java:332) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.runBatchLoop(BatchAutorouter.java:447) [freerouting.jar:unspecified]
+	at app.freerouting.management.RoutingJobSchedulerActionThread.thread_action(RoutingJobSchedulerActionThread.java:131) [freerouting.jar:unspecified]
+	at app.freerouting.core.StoppableThread.run(StoppableThread.java:26) [freerouting.jar:unspecified]
+2026-07-29 17:01:48.892 WARN   PolylineTrace.get_trace_connection_shape p_index out of range
+2026-07-29 17:01:48.892 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.NullPointerException: Cannot invoke "app.freerouting.geometry.planar.TileShape.nearest_point_approx(app.freerouting.geometry.planar.FloatPoint)" because "target_shape" is null
+	at app.freerouting.autoroute.MazeSearchAlgo.expand_to_target_doors(MazeSearchAlgo.java:534) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.expand_to_room_doors(MazeSearchAlgo.java:398) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.occupy_next_element(MazeSearchAlgo.java:286) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.find_connection(MazeSearchAlgo.java:206) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.AutorouteEngine.autoroute_connection(AutorouteEngine.java:155) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.autoroute_item(BatchAutorouter.java:610) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.autoroute_pass(BatchAutorouter.java:332) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.runBatchLoop(BatchAutorouter.java:447) [freerouting.jar:unspecified]
+	at app.freerouting.management.RoutingJobSchedulerActionThread.thread_action(RoutingJobSchedulerActionThread.java:131) [freerouting.jar:unspecified]
+	at app.freerouting.core.StoppableThread.run(StoppableThread.java:26) [freerouting.jar:unspecified]
+2026-07-29 17:01:48.892 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.NullPointerException: Cannot invoke "app.freerouting.geometry.planar.TileShape.nearest_point_approx(app.freerouting.geometry.planar.FloatPoint)" because "target_shape" is null
+	at app.freerouting.autoroute.MazeSearchAlgo.expand_to_target_doors(MazeSearchAlgo.java:534) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.expand_to_room_doors(MazeSearchAlgo.java:398) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.occupy_next_element(MazeSearchAlgo.java:286) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.find_connection(MazeSearchAlgo.java:206) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.AutorouteEngine.autoroute_connection(AutorouteEngine.java:155) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.autoroute_item(BatchAutorouter.java:610) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.autoroute_pass(BatchAutorouter.java:332) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.runBatchLoop(BatchAutorouter.java:447) [freerouting.jar:unspecified]
+	at app.freerouting.management.RoutingJobSchedulerActionThread.thread_action(RoutingJobSchedulerActionThread.java:131) [freerouting.jar:unspecified]
+	at app.freerouting.core.StoppableThread.run(StoppableThread.java:26) [freerouting.jar:unspecified]
+2026-07-29 17:01:49.224 WARN   PolylineTrace.get_trace_connection_shape p_index out of range
+2026-07-29 17:01:49.225 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.NullPointerException: Cannot invoke "app.freerouting.geometry.planar.TileShape.nearest_point_approx(app.freerouting.geometry.planar.FloatPoint)" because "target_shape" is null
+	at app.freerouting.autoroute.MazeSearchAlgo.expand_to_target_doors(MazeSearchAlgo.java:534) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.expand_to_room_doors(MazeSearchAlgo.java:398) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.occupy_next_element(MazeSearchAlgo.java:286) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.find_connection(MazeSearchAlgo.java:206) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.AutorouteEngine.autoroute_connection(AutorouteEngine.java:155) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.autoroute_item(BatchAutorouter.java:610) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.autoroute_pass(BatchAutorouter.java:332) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.runBatchLoop(BatchAutorouter.java:447) [freerouting.jar:unspecified]
+	at app.freerouting.management.RoutingJobSchedulerActionThread.thread_action(RoutingJobSchedulerActionThread.java:131) [freerouting.jar:unspecified]
+	at app.freerouting.core.StoppableThread.run(StoppableThread.java:26) [freerouting.jar:unspecified]
+2026-07-29 17:01:49.225 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.NullPointerException: Cannot invoke "app.freerouting.geometry.planar.TileShape.nearest_point_approx(app.freerouting.geometry.planar.FloatPoint)" because "target_shape" is null
+	at app.freerouting.autoroute.MazeSearchAlgo.expand_to_target_doors(MazeSearchAlgo.java:534) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.expand_to_room_doors(MazeSearchAlgo.java:398) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.occupy_next_element(MazeSearchAlgo.java:286) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.find_connection(MazeSearchAlgo.java:206) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.AutorouteEngine.autoroute_connection(AutorouteEngine.java:155) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.autoroute_item(BatchAutorouter.java:610) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.autoroute_pass(BatchAutorouter.java:332) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.runBatchLoop(BatchAutorouter.java:447) [freerouting.jar:unspecified]
+	at app.freerouting.management.RoutingJobSchedulerActionThread.thread_action(RoutingJobSchedulerActionThread.java:131) [freerouting.jar:unspecified]
+	at app.freerouting.core.StoppableThread.run(StoppableThread.java:26) [freerouting.jar:unspecified]
+2026-07-29 17:01:49.313 WARN   PolylineTrace.get_trace_connection_shape p_index out of range
+2026-07-29 17:01:49.313 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.NullPointerException: null
+2026-07-29 17:01:49.313 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.NullPointerException: null
+2026-07-29 17:01:49.427 WARN   PolylineTrace.get_trace_connection_shape p_index out of range
+2026-07-29 17:01:49.427 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.NullPointerException: null
+2026-07-29 17:01:49.427 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.NullPointerException: null
+2026-07-29 17:01:49.508 INFO   [E25C03\800C99] Auto-router pass #3 on board 'bd2dd8921f639148a9808a51023cc0ec' was completed in 1,53 seconds with the score of 821,35 (59 unrouted), using 132,53 CPU seconds and 14873 MB memory.
+2026-07-29 17:02:07.994 INFO   [E25C03\800C99] Auto-router pass #4 on board '0484bf51d4f6c312821e1d4963065f86' was completed in 18,47 seconds with the score of 925,80 (24 unrouted), using 580,55 CPU seconds and 33953 MB memory.
+2026-07-29 17:02:09.656 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-07-29 17:02:09.656 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-07-29 17:02:09.745 INFO   [E25C03\800C99] Auto-router pass #5 on board 'b3f0f213e3dfc5514e94005367b4b957' was completed in 1,73 seconds with the score of 908,06 (33 unrouted), using 649,87 CPU seconds and 35904 MB memory.
+2026-07-29 17:02:09.927 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-07-29 17:02:09.927 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-07-29 17:02:09.927 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-07-29 17:02:09.927 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-07-29 17:02:09.951 WARN   PolylineTrace.get_trace_connection_shape p_index out of range
+2026-07-29 17:02:09.951 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.NullPointerException: null
+2026-07-29 17:02:09.951 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.NullPointerException: null
+2026-07-29 17:02:11.119 INFO   [E25C03\800C99] Auto-router pass #6 on board '6e8dd382ce35a9da042a072c00aedb48' was completed in 1,36 seconds with the score of 903,81 (34 unrouted), using 685,99 CPU seconds and 36951 MB memory.
+2026-07-29 17:02:11.365 WARN   PolylineTrace.get_trace_connection_shape p_index out of range
+2026-07-29 17:02:11.365 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.NullPointerException: null
+2026-07-29 17:02:11.365 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.NullPointerException: null
+2026-07-29 17:02:12.322 INFO   [E25C03\800C99] Auto-router pass #7 on board '710b44bb1da5ca4ffb2147e91fd46420' was completed in 1,19 seconds with the score of 906,55 (33 unrouted), using 723,10 CPU seconds and 37933 MB memory.
+2026-07-29 17:02:25.504 INFO   [E25C03\800C99] Auto-router pass #8 on board 'ca5010a27bb3b6d72a63ee072fc09328' was completed in 13,16 seconds with the score of 945,44 (15 unrouted), using 1344,90 CPU seconds and 51262 MB memory.
+2026-07-29 17:02:26.146 INFO   [E25C03\800C99] Auto-router pass #9 on board '96fe75e8701b6a98000450a5dfe9d440' was completed in 0,62 seconds with the score of 945,63 (15 unrouted), using 1344,90 CPU seconds and 51262 MB memory.
+2026-07-29 17:02:26.767 INFO   [E25C03\800C99] Auto-router pass #10 on board 'bdc675a80838ae101cd4612680fd9169' was completed in 0,60 seconds with the score of 945,63 (15 unrouted), using 1396,62 CPU seconds and 52152 MB memory.
+2026-07-29 17:02:27.396 INFO   [E25C03\800C99] Auto-router pass #11 on board 'bdc675a80838ae101cd4612680fd9169' was completed in 0,62 seconds with the score of 945,63 (15 unrouted), using 1396,62 CPU seconds and 52152 MB memory.
+2026-07-29 17:02:40.029 INFO   [E25C03\800C99] Auto-router pass #12 on board 'bdc675a80838ae101cd4612680fd9169' was completed in 12,62 seconds with the score of 950,91 (12 unrouted), using 2157,90 CPU seconds and 63711 MB memory.
+2026-07-29 17:02:40.622 INFO   [E25C03\800C99] Auto-router pass #13 on board 'c8d5769d251e7664ea28475ef47e9619' was completed in 0,57 seconds with the score of 952,72 (11 unrouted), using 2223,22 CPU seconds and 64578 MB memory.
+2026-07-29 17:02:41.118 INFO   [E25C03\800C99] Auto-router pass #14 on board 'ff7176e8df0189dab18e9e8f77f28ea6' was completed in 0,48 seconds with the score of 952,72 (11 unrouted), using 2223,22 CPU seconds and 64578 MB memory.
+2026-07-29 17:02:41.679 INFO   [E25C03\800C99] Auto-router pass #15 on board 'ff7176e8df0189dab18e9e8f77f28ea6' was completed in 0,55 seconds with the score of 952,72 (11 unrouted), using 2289,52 CPU seconds and 65403 MB memory.
+2026-07-29 17:02:51.212 INFO   [E25C03\800C99] Auto-router pass #16 on board 'ff7176e8df0189dab18e9e8f77f28ea6' was completed in 9,52 seconds with the score of 958,21 (8 unrouted), using 2929,77 CPU seconds and 73746 MB memory.
+2026-07-29 17:02:51.655 INFO   [E25C03\800C99] Auto-router pass #17 on board '9383e0fe78f041f720809755c9574c98' was completed in 0,42 seconds with the score of 958,21 (8 unrouted), using 3005,73 CPU seconds and 74598 MB memory.
+2026-07-29 17:02:52.039 INFO   [E25C03\800C99] Auto-router pass #18 on board '9383e0fe78f041f720809755c9574c98' was completed in 0,38 seconds with the score of 958,21 (8 unrouted), using 3005,73 CPU seconds and 74598 MB memory.
+2026-07-29 17:02:52.423 INFO   [E25C03\800C99] Auto-router pass #19 on board '9383e0fe78f041f720809755c9574c98' was completed in 0,38 seconds with the score of 958,21 (8 unrouted), using 3005,73 CPU seconds and 74598 MB memory.
+2026-07-29 17:02:58.815 INFO   [E25C03\800C99] Auto-router pass #20 on board '9383e0fe78f041f720809755c9574c98' was completed in 6,38 seconds with the score of 958,86 (8 unrouted), using 3564,58 CPU seconds and 80900 MB memory.
+2026-07-29 17:02:59.241 INFO   [E25C03\800C99] Auto-router pass #21 on board '3dbe672d3322e37d5753f6cf52a6141c' was completed in 0,41 seconds with the score of 958,86 (8 unrouted), using 3564,58 CPU seconds and 80900 MB memory.
+2026-07-29 17:02:59.644 INFO   [E25C03\800C99] Auto-router pass #22 on board '3dbe672d3322e37d5753f6cf52a6141c' was completed in 0,39 seconds with the score of 958,86 (8 unrouted), using 3648,27 CPU seconds and 81732 MB memory.
+2026-07-29 17:03:00.039 INFO   [E25C03\800C99] Auto-router pass #23 on board '3dbe672d3322e37d5753f6cf52a6141c' was completed in 0,39 seconds with the score of 958,86 (8 unrouted), using 3648,27 CPU seconds and 81732 MB memory.
+2026-07-29 17:03:04.835 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: Index 4 out of bounds for length 4
+	at app.freerouting.autoroute.MazeShoveTraceAlgo.check_shove_trace_line(MazeShoveTraceAlgo.java:123) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.shove_trace_room(MazeSearchAlgo.java:1214) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.expand_to_room_doors(MazeSearchAlgo.java:443) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.occupy_next_element(MazeSearchAlgo.java:286) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.find_connection(MazeSearchAlgo.java:206) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.AutorouteEngine.autoroute_connection(AutorouteEngine.java:155) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.autoroute_item(BatchAutorouter.java:610) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.autoroute_pass(BatchAutorouter.java:332) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.runBatchLoop(BatchAutorouter.java:447) [freerouting.jar:unspecified]
+	at app.freerouting.management.RoutingJobSchedulerActionThread.thread_action(RoutingJobSchedulerActionThread.java:131) [freerouting.jar:unspecified]
+	at app.freerouting.core.StoppableThread.run(StoppableThread.java:26) [freerouting.jar:unspecified]
+2026-07-29 17:03:04.835 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: Index 4 out of bounds for length 4
+	at app.freerouting.autoroute.MazeShoveTraceAlgo.check_shove_trace_line(MazeShoveTraceAlgo.java:123) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.shove_trace_room(MazeSearchAlgo.java:1214) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.expand_to_room_doors(MazeSearchAlgo.java:443) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.occupy_next_element(MazeSearchAlgo.java:286) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.find_connection(MazeSearchAlgo.java:206) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.AutorouteEngine.autoroute_connection(AutorouteEngine.java:155) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.autoroute_item(BatchAutorouter.java:610) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.autoroute_pass(BatchAutorouter.java:332) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.runBatchLoop(BatchAutorouter.java:447) [freerouting.jar:unspecified]
+	at app.freerouting.management.RoutingJobSchedulerActionThread.thread_action(RoutingJobSchedulerActionThread.java:131) [freerouting.jar:unspecified]
+	at app.freerouting.core.StoppableThread.run(StoppableThread.java:26) [freerouting.jar:unspecified]
+2026-07-29 17:03:05.131 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: null
+2026-07-29 17:03:05.131 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: null
+2026-07-29 17:03:05.936 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: null
+2026-07-29 17:03:05.936 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: null
+2026-07-29 17:03:06.223 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: null
+2026-07-29 17:03:06.223 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: null
+2026-07-29 17:03:07.045 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: null
+2026-07-29 17:03:07.045 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: null
+2026-07-29 17:03:07.173 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: null
+2026-07-29 17:03:07.173 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: null
+2026-07-29 17:03:07.550 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: null
+2026-07-29 17:03:07.550 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: null
+2026-07-29 17:03:07.626 INFO   [E25C03\800C99] Restoring an earlier board that has the score of 958,86 (8 unrouted).
+2026-07-29 17:03:07.626 INFO   [E25C03\800C99] Auto-router pass #24 on board '3dbe672d3322e37d5753f6cf52a6141c' was completed in 7,58 seconds with the score of 950,90 (13 unrouted), using 4352,74 CPU seconds and 88942 MB memory.
+2026-07-29 17:03:12.073 INFO   [E25C03\800C99] Auto-router pass #25 on board '3dbe672d3322e37d5753f6cf52a6141c' was completed in 4,44 seconds with the score of 962,15 (6 unrouted), using 4728,27 CPU seconds and 92820 MB memory.
+2026-07-29 17:03:14.925 INFO   [E25C03\800C99] Auto-router pass #26 on board 'd217e5a480ff648e534726a33cc3049e' was completed in 2,83 seconds with the score of 967,06 (3 unrouted), using 5020,18 CPU seconds and 95555 MB memory.
+2026-07-29 17:03:17.283 INFO   [E25C03\800C99] Auto-router pass #27 on board 'f31d6776381526e7209306f972e968ae' was completed in 2,34 seconds with the score of 967,00 (3 unrouted), using 5219,64 CPU seconds and 97501 MB memory.
+2026-07-29 17:03:23.445 INFO   [E25C03\800C99] Restoring an earlier board that has the score of 967,06 (3 unrouted).
+2026-07-29 17:03:23.445 INFO   [E25C03\800C99] Auto-router pass #28 on board '3797fcbe85e6b32173858cdecf4e62f8' was completed in 6,14 seconds with the score of 965,82 (4 unrouted), using 5841,35 CPU seconds and 103102 MB memory.
+2026-07-29 17:03:25.827 INFO   [E25C03\800C99] Auto-router pass #29 on board 'f31d6776381526e7209306f972e968ae' was completed in 2,37 seconds with the score of 965,80 (4 unrouted), using 6165,19 CPU seconds and 105913 MB memory.
+2026-07-29 17:03:28.558 INFO   [E25C03\800C99] Auto-router pass #30 on board 'ab2655cc6e5ccf2274494fb0ec1500fe' was completed in 2,71 seconds with the score of 966,98 (3 unrouted), using 6497,78 CPU seconds and 108815 MB memory.
+2026-07-29 17:03:31.005 INFO   [E25C03\800C99] Auto-router pass #31 on board 'fd94315521caf119af7295c42917e196' was completed in 2,43 seconds with the score of 966,83 (3 unrouted), using 6724,39 CPU seconds and 110738 MB memory.
+2026-07-29 17:03:34.169 INFO   [E25C03\800C99] Auto-router pass #32 on board '87ea34ff9a4242c5523f632b3cc4aca0' was completed in 3,14 seconds with the score of 969,92 (1 unrouted), using 7071,59 CPU seconds and 113544 MB memory.
+2026-07-29 17:03:34.982 INFO   [E25C03\800C99] Auto-router pass #33 on board '84f36f104f25aab1c90686db373d726e' was completed in 0,79 seconds with the score of 970,94, using 7189,27 CPU seconds and 114461 MB memory.
+2026-07-29 17:03:35.017 INFO   [E25C03\800C99] Auto-router pass #34 on board '8bc76df298afa39b0dbc886759702705' was completed in 0,01 seconds with the score of 970,94, using 7189,27 CPU seconds and 114461 MB memory.
+{
+  "host": "KiCad's Pcbnew,9.0.3+dfsg-1",
+  "unit": "mm",
+  "board": {
+    "bounding_box": {
+      "x": 1564.0,
+      "y": 1.0,
+      "width": -1.0,
+      "height": -501.0
+    },
+    "size": {
+      "x": 0.0,
+      "y": 0.0,
+      "width": 1565.0,
+      "height": 502.0
+    }
+  },
+  "layers": {
+    "total_count": 2,
+    "signal_count": 2
+  },
+  "items": {
+    "total_count": 1283,
+    "trace_count": 329,
+    "via_count": 140,
+    "conduction_area_count": 2,
+    "drill_item_count": 308,
+    "pin_count": 0,
+    "component_count": 503,
+    "other_count": 1
+  },
+  "components": {
+    "total_count": 40
+  },
+  "pads": {
+    "total_count": 308
+  },
+  "nets": {
+    "total_count": 99,
+    "class_count": 3
+  },
+  "connections": {
+    "maximum_count": 665,
+    "incomplete_count": 0
+  },
+  "traces": {
+    "total_count": 329,
+    "total_segment_count": 1056,
+    "total_length": 63025.496,
+    "total_weighted_length": 2.0956464E8,
+    "average_length": 191.56686,
+    "total_vertical_length": 6440.142,
+    "total_horizontal_length": 31128.152,
+    "total_angled_length": 14318.929
+  },
+  "bends": {
+    "total_count": 727,
+    "90_degree_count": 4,
+    "45_degree_count": 723,
+    "other_angle_count": 0
+  },
+  "vias": {
+    "total_count": 140,
+    "through_hole_count": 140,
+    "blind_count": 0,
+    "buried_count": 0
+  },
+  "clearance_violations": {
+    "total_count": 0
+  }
+}
+17:03:36: Debug: Adding duplicate image handler for 'PNG file'
+17:03:36: Debug: Adding duplicate image handler for 'JPEG file'
+17:03:36: Debug: Adding duplicate image handler for 'TIFF file'
+17:03:36: Debug: Adding duplicate image handler for 'GIF file'
+17:03:36: Debug: Adding duplicate image handler for 'PNM file'
+17:03:36: Debug: Adding duplicate image handler for 'PCX file'
+17:03:36: Debug: Adding duplicate image handler for 'IFF file'
+17:03:36: Debug: Adding duplicate image handler for 'Windows icon file'
+17:03:36: Debug: Adding duplicate image handler for 'Windows cursor file'
+17:03:36: Debug: Adding duplicate image handler for 'Windows animated cursor file'
+17:03:36: Debug: Adding duplicate image handler for 'TGA file'
+17:03:36: Debug: Adding duplicate image handler for 'XPM file'
+17:03:36: Debug: Adding duplicate image handler for 'PNG file'
+17:03:36: Debug: Adding duplicate image handler for 'JPEG file'
+17:03:36: Debug: Adding duplicate image handler for 'TIFF file'
+17:03:36: Debug: Adding duplicate image handler for 'GIF file'
+17:03:36: Debug: Adding duplicate image handler for 'PNM file'
+17:03:36: Debug: Adding duplicate image handler for 'PCX file'
+17:03:36: Debug: Adding duplicate image handler for 'IFF file'
+17:03:36: Debug: Adding duplicate image handler for 'Windows icon file'
+17:03:36: Debug: Adding duplicate image handler for 'Windows cursor file'
+17:03:36: Debug: Adding duplicate image handler for 'Windows animated cursor file'
+17:03:36: Debug: Adding duplicate image handler for 'TGA file'
+17:03:36: Debug: Adding duplicate image handler for 'XPM file'
+freerouting : java -Djava.awt.headless=true -jar freerouting.jar -de phaseA_fr.dsn -do phaseA.ses -mp 5
+liaisons non routées restantes : 30

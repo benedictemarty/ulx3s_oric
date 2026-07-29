@@ -44,6 +44,10 @@ def export_dsn():
     s = s.replace(
         "(path pcb 0  160000 -50000  0 -50000  0 0  160000 0  160000 -50000)",
         "(path pcb 0  156300 -50000  0 -50000  0 0  156300 0  156300 -50000)")
+    # 3) Alim routée en 0,4 mm par le routeur : une piste 0,5 mm ne peut
+    #    pas atteindre un pad TSSOP (pas 0,65 mm) en respectant 0,2 mm
+    #    d'isolation (0,65-0,25-0,2 = 0,2 limite). 0,4 mm laisse la marge.
+    s = s.replace("(width 500)", "(width 400)")
     open(DSN_FR, "w").write(s)
 
 
@@ -60,10 +64,8 @@ def import_ses():
     # Répare les noms de composants vides (empreintes custom sans FPID
     # dans d'anciennes révisions du board) qui cassent le parseur SES.
     s = open(SES).read()
-    s = s.replace('(component \n      (place "J_CAS"',
-                  '(component "DIN7_CUSTOM"\n      (place "J_CAS"')
-    s = s.replace('(component ::1\n      (place "J_EXP"',
-                  '(component "JEXP_CUSTOM"\n      (place "J_EXP"')
+    s = s.replace('(component \n      (place', '(component "CUSTOM_FP"\n      (place')
+    s = s.replace('(component ::1\n      (place', '(component "CUSTOM_FP1"\n      (place')
     open(SES, "w").write(s)
     b = pcbnew.LoadBoard(BOARD)
     if not pcbnew.ImportSpecctraSES(b, SES):
