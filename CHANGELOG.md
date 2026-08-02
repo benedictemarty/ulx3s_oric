@@ -5,6 +5,20 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 
 ## [Non publié]
 
+### Corrigé
+- **Shift synthétisé AZERTY intermittent** (symptôme : `&&7&&&&7` en tapant
+  la touche « 1 »). Sur l'Oric `&` = Shift+7 ; un Shift dérivé du même
+  scancode montait exactement en même temps que la touche, et le scan
+  clavier de la ROM attrapait parfois la touche seule. Diagnostic confirmé
+  sur carte (le Shift *physique*, qui précède la touche, était fiable ; le
+  synthétisé non). Les glyphes AZERTY à Shift sont désormais séquencés par
+  une FSM dans `oric_keyboard.v` : le Shift **précède** la touche (LEAD
+  ~20 ms), la **maintient** (HOLD, minimum garanti pour être vu par ≥1
+  balayage), puis la **prolonge** au relâché (TAIL ~10 ms) — comme un vrai
+  doigt. Lettres, touches directes, modificateurs, clavier série et Shift
+  physique QWERTY restent combinatoires. `tb_azerty` étendu (avance/maintien/
+  traîne vérifiés avec paramètres réduits).
+
 ### Ajouté
 - **Bascule de disposition clavier QWERTY ⇄ AZERTY** (ULX3S) sur le bouton
   `BTN6` (RIGHT), anti-rebond ~10 ms + détection de front ; `led[4]` allumée

@@ -1,7 +1,8 @@
 // Testbench disposition AZERTY : (scancode HID, Shift) -> ASCII FR -> matrice.
 // Vérifie les permutations de lettres, les chiffres en Shift, les symboles
-// nécessitant un Shift Oric, la non-propagation du Shift physique sur une
-// lettre, le repli positionnel (Entrée) et la non-régression QWERTY.
+// nécessitant un Shift Oric (séquencé : avance/maintien/traîne), la
+// non-propagation du Shift physique sur une lettre, le repli positionnel
+// (Entrée) et la non-régression QWERTY.
 `timescale 1ns/1ps
 
 module tb_azerty;
@@ -13,7 +14,10 @@ module tb_azerty;
     reg       azerty = 1;
     wire sense;
 
-    oric_keyboard dut (
+    // Durées de séquencement du Shift réduites pour la simulation.
+    localparam LEAD = 20, HOLD = 4, TAIL = 8;
+
+    oric_keyboard #(.LEAD_TICKS(LEAD), .HOLD_MIN_TICKS(HOLD), .TAIL_TICKS(TAIL)) dut (
         .clk(clk), .azerty(azerty), .mods(mods), .k1(k1), .k2(k2), .k3(k3), .k4(k4),
         .inj_active(1'b0), .inj_col(3'd0), .inj_row(3'd0), .inj_shift(1'b0),
         .col_sel(col_sel), .ay_ioa(ay_ioa), .sense(sense)
@@ -31,71 +35,68 @@ module tb_azerty;
     endtask
 
     task settle; begin @(negedge clk); @(negedge clk); end endtask
+    task steps(input integer n); integer j; begin
+        for (j = 0; j < n; j = j + 1) @(negedge clk);
+    end endtask
 
-    // La cellule (col,row) est-elle pressée dans la matrice ?
-    task expect_cell(input [2:0] col, input [2:0] row, input [255:0] msg);
-    begin
-        col_sel = col; ay_ioa = ~(8'h01 << row); settle;
-        check(sense == 1'b1, msg);
-    end
+    // La cellule (col,row) est-elle vue pressée (via sense) ?
+    task read_cell(input [2:0] col, input [2:0] row);
+        begin col_sel = col; ay_ioa = ~(8'h01 << row); settle; end
     endtask
-
+    task expect_cell(input [2:0] col, input [2:0] row, input [255:0] msg);
+        begin read_cell(col, row); check(sense == 1'b1, msg); end
+    endtask
     task expect_nocell(input [2:0] col, input [2:0] row, input [255:0] msg);
-    begin
-        col_sel = col; ay_ioa = ~(8'h01 << row); settle;
-        check(sense == 1'b0, msg);
-    end
+        begin read_cell(col, row); check(sense == 1'b0, msg); end
     endtask
 
     initial begin
         settle;
 
-        // ---- Lettres permutées vs QWERTY ----
-        // 0x14 (touche QWERTY Q) -> 'A' Oric (6,5)
+        // ---- Lettres permutées vs QWERTY (posées immédiatement) ----
         k1 = 8'h14; expect_cell(3'd6, 3'd5, "AZ 0x14 -> A (6,5)"); k1 = 0;
-        // 0x04 (touche QWERTY A) -> 'Q' Oric (1,6)
         k1 = 8'h04; expect_cell(3'd1, 3'd6, "AZ 0x04 -> Q (1,6)"); k1 = 0;
-        // 0x1A (QWERTY W) -> 'Z' (2,5)
         k1 = 8'h1A; expect_cell(3'd2, 3'd5, "AZ 0x1A -> Z (2,5)"); k1 = 0;
-        // 0x1D (QWERTY Z) -> 'W' (6,7)
         k1 = 8'h1D; expect_cell(3'd6, 3'd7, "AZ 0x1D -> W (6,7)"); k1 = 0;
-        // 0x33 (QWERTY ;) -> 'M' (2,0)
         k1 = 8'h33; expect_cell(3'd2, 3'd0, "AZ 0x33 -> M (2,0)"); k1 = 0;
 
         // ---- Une lettre ne doit PAS déclencher le Shift Oric, même Shift tenu ----
-        k1 = 8'h14; mods = 8'h02;   // 'A' + LSHIFT physique
+        k1 = 8'h14; mods = 8'h02;
         expect_cell(3'd6, 3'd5, "AZ A+Shift : lettre presente");
         expect_nocell(3'd4, 3'd4, "AZ A+Shift : pas de Shift Oric parasite");
-        k1 = 0; mods = 0;
+        k1 = 0; mods = 0; steps(TAIL + 3);
 
-        // ---- Rangée chiffres : symbole direct, chiffre en Shift ----
-        // 0x1E sans Shift -> '&' = Shift+7 -> (0,0) + Shift Oric (4,4)
-        k1 = 8'h1E;
-        expect_cell(3'd0, 3'd0, "AZ & : 7 Oric (0,0)");
-        expect_cell(3'd4, 3'd4, "AZ & : Shift Oric present");
-        // 0x1E avec Shift -> '1' -> (0,5), sans Shift Oric
-        mods = 8'h02;
-        expect_cell(3'd0, 3'd5, "AZ Shift+& -> 1 (0,5)");
-        expect_nocell(3'd4, 3'd4, "AZ 1 : pas de Shift Oric");
-        k1 = 0; mods = 0;
+        // ---- Glyphe à Shift synthétisé : '&' = Shift+7 (0x1E sans Shift) ----
+        // Le Shift doit PRÉCÉDER : d'abord (4,4) seul, la touche (0,0) attend.
+        k1 = 8'h1E; @(negedge clk); @(negedge clk);   // entree en LEAD
+        expect_cell(3'd4, 3'd4, "AZ & : Shift precede (4,4)");
+        expect_nocell(3'd0, 3'd0, "AZ & : touche 7 pas encore posee (LEAD)");
+        // Après l'avance, la touche apparaît AVEC le Shift toujours présent.
+        steps(LEAD + 2);
+        expect_cell(3'd0, 3'd0, "AZ & : 7 Oric (0,0) apres LEAD");
+        expect_cell(3'd4, 3'd4, "AZ & : Shift toujours present (HOLD)");
+        // Relâché : la touche tombe, le Shift PROLONGE (traîne) puis retombe.
+        k1 = 0; steps(HOLD + 1);
+        expect_cell(3'd4, 3'd4, "AZ & : Shift prolonge au relache (TAIL)");
+        expect_nocell(3'd0, 3'd0, "AZ & : touche relachee");
+        steps(TAIL + 3);
+        expect_nocell(3'd4, 3'd4, "AZ & : Shift retombe apres TAIL");
 
-        // 0x22 sans Shift -> '(' = Shift+9 -> (3,1) + Shift Oric
-        k1 = 8'h22;
+        // ---- '(' = Shift+9 (0x22 sans Shift) : présence en régime établi ----
+        k1 = 8'h22; steps(LEAD + 2);
         expect_cell(3'd3, 3'd1, "AZ ( : 9 Oric (3,1)");
-        expect_cell(3'd4, 3'd4, "AZ ( : Shift Oric present");
-        // 0x22 avec Shift -> '5' -> (0,2)
-        mods = 8'h02;
-        expect_cell(3'd0, 3'd2, "AZ Shift+( -> 5 (0,2)");
-        k1 = 0; mods = 0;
+        expect_cell(3'd4, 3'd4, "AZ ( : Shift present");
+        k1 = 0; steps(TAIL + 3);
 
-        // ---- Ponctuation bas de clavier ----
-        // 0x10 (QWERTY M) sans Shift -> ',' -> (4,1)
-        k1 = 8'h10; expect_cell(3'd4, 3'd1, "AZ , (4,1)");
-        // 0x10 avec Shift -> '?' = Shift+/ -> (7,3) + Shift Oric
-        mods = 8'h02;
+        // ---- '?' = Shift+/ (0x10 avec Shift physique) ----
+        k1 = 8'h10; mods = 8'h02; steps(LEAD + 2);
         expect_cell(3'd7, 3'd3, "AZ ? : / Oric (7,3)");
-        expect_cell(3'd4, 3'd4, "AZ ? : Shift Oric present");
-        k1 = 0; mods = 0;
+        expect_cell(3'd4, 3'd4, "AZ ? : Shift present");
+        k1 = 0; mods = 0; steps(TAIL + 3);
+
+        // ---- ',' = 0x10 sans Shift : glyphe direct, immédiat, sans Shift ----
+        k1 = 8'h10; expect_cell(3'd4, 3'd1, "AZ , (4,1) immediat");
+        expect_nocell(3'd4, 3'd4, "AZ , : pas de Shift"); k1 = 0;
 
         // ---- Repli positionnel : Entrée non réaffectée par l'AZERTY ----
         k2 = 8'h28; expect_cell(3'd7, 3'd5, "AZ Entree -> RETURN (7,5)"); k2 = 0;

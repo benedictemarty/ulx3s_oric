@@ -12,13 +12,28 @@
 //     physique est reporté tel quel sur le Shift Oric.
 //   - azerty=1 : AZERTY français. (scancode, shift) -> ASCII français
 //     (azerty_ascii) puis ASCII -> matrice via la table partagée map_char
-//     (ascii2oric.vh, la même que le clavier série). Le Shift physique est
-//     CONSOMMÉ par le décodage AZERTY (il choisit le glyphe) ; le Shift Oric
-//     est alors déterminé par map_char (ex. '(' = Shift+9). Les touches non
-//     alphanumériques (Entrée, Échap, flèches, espace…) retombent sur la
-//     table positionnelle.
+//     (ascii2oric.vh, la même que le clavier série).
+//
+// Shift synthétisé (glyphes AZERTY du type `&` = Shift+7) : contrairement à
+// un Shift physique — que l'utilisateur enfonce AVANT la touche — un Shift
+// dérivé du même scancode monterait exactement en même temps que la touche.
+// Le scan clavier de la ROM attrape alors parfois la touche sans le Shift
+// (symptôme : `7` au lieu de `&`). Ces glyphes sont donc séquencés par une
+// petite FSM qui fait PRÉCÉDER le Shift (LEAD), le MAINTIENT pendant la
+// touche (HOLD, avec un minimum garanti pour être vu par au moins un
+// balayage), puis le PROLONGE au relâché (TAIL) — comme un vrai doigt.
+// Lettres, touches non-Shift, modificateurs, clavier série et Shift physique
+// QWERTY restent purement combinatoires (déjà fiables).
 
-module oric_keyboard (
+module oric_keyboard #(
+    // Durées du séquencement du Shift synthétisé (en cycles de clk = clk_sys).
+    // Défaut à 25 MHz : ~20 ms d'avance, ~20 ms de maintien mini, ~10 ms de
+    // traîne. Un balayage clavier Oric dure ~10-20 ms : l'avance garantit que
+    // le Shift est vu au moins un balayage avant la touche.
+    parameter LEAD_TICKS     = 500_000,
+    parameter HOLD_MIN_TICKS = 500_000,
+    parameter TAIL_TICKS     = 250_000
+)(
     input        clk,
     // Disposition : 0 = QWERTY positionnel, 1 = AZERTY français
     input        azerty,
@@ -168,26 +183,79 @@ module oric_keyboard (
         end
     endfunction
 
-    reg [7:0] matrix [0:7];   // matrix[col], bit = rangée, actif haut
-    integer i;
-    reg [7:0] e0, e1, e2, e3;
     wire phys_shift = mods[1] | mods[5];   // LSHIFT | RSHIFT
-    reg  shift_oric;
+
+    // Décodage combinatoire des 4 touches HID.
+    reg [7:0] e0, e1, e2, e3;              // {valide, shift, col, row}
+    // Premier glyphe nécessitant un Shift synthétisé (géré par la FSM).
+    reg       sg_valid;
+    reg [2:0] sg_col, sg_row;
 
     always @* begin
-        for (i = 0; i < 8; i = i + 1)
-            matrix[i] = 8'h00;
-
         e0 = key_map(k1, phys_shift);
         e1 = key_map(k2, phys_shift);
         e2 = key_map(k3, phys_shift);
         e3 = key_map(k4, phys_shift);
 
-        shift_oric = 1'b0;
-        if (e0[7]) begin matrix[e0[5:3]][e0[2:0]] = 1'b1; shift_oric = shift_oric | e0[6]; end
-        if (e1[7]) begin matrix[e1[5:3]][e1[2:0]] = 1'b1; shift_oric = shift_oric | e1[6]; end
-        if (e2[7]) begin matrix[e2[5:3]][e2[2:0]] = 1'b1; shift_oric = shift_oric | e2[6]; end
-        if (e3[7]) begin matrix[e3[5:3]][e3[2:0]] = 1'b1; shift_oric = shift_oric | e3[6]; end
+        sg_valid = 1'b0; sg_col = 3'd0; sg_row = 3'd0;
+        if      (e0[7] && e0[6]) begin sg_valid = 1'b1; sg_col = e0[5:3]; sg_row = e0[2:0]; end
+        else if (e1[7] && e1[6]) begin sg_valid = 1'b1; sg_col = e1[5:3]; sg_row = e1[2:0]; end
+        else if (e2[7] && e2[6]) begin sg_valid = 1'b1; sg_col = e2[5:3]; sg_row = e2[2:0]; end
+        else if (e3[7] && e3[6]) begin sg_valid = 1'b1; sg_col = e3[5:3]; sg_row = e3[2:0]; end
+    end
+
+    // FSM du Shift synthétisé : PRÉCÈDE le Shift, MAINTIENT, puis PROLONGE.
+    localparam FSM_IDLE = 2'd0, FSM_LEAD = 2'd1, FSM_HOLD = 2'd2, FSM_TAIL = 2'd3;
+    reg [1:0]  fstate = FSM_IDLE;
+    reg [19:0] ftimer = 20'd0;
+    reg [2:0]  sg_col_l = 3'd0, sg_row_l = 3'd0;
+
+    always @(posedge clk) begin
+        case (fstate)
+            FSM_IDLE:
+                if (sg_valid) begin
+                    sg_col_l <= sg_col; sg_row_l <= sg_row;
+                    ftimer   <= LEAD_TICKS[19:0];
+                    fstate   <= FSM_LEAD;         // Shift seul, la touche attend
+                end
+            FSM_LEAD:                             // avance : Shift présenté avant la touche
+                if (ftimer == 0) begin
+                    ftimer <= HOLD_MIN_TICKS[19:0];
+                    fstate <= FSM_HOLD;
+                end else
+                    ftimer <= ftimer - 20'd1;
+            FSM_HOLD: begin                        // Shift + touche
+                if (ftimer != 0)
+                    ftimer <= ftimer - 20'd1;      // maintien minimal garanti
+                else if (!sg_valid)                // relâchée après le minimum
+                    { fstate, ftimer } <= { FSM_TAIL, TAIL_TICKS[19:0] };
+            end
+            FSM_TAIL:                              // traîne : Shift maintenu au relâché
+                if (ftimer == 0)
+                    fstate <= FSM_IDLE;
+                else
+                    ftimer <= ftimer - 20'd1;
+            default: fstate <= FSM_IDLE;
+        endcase
+    end
+
+    wire fsm_shift = (fstate != FSM_IDLE);         // cellule Shift Oric pilotée
+    wire fsm_char  = (fstate == FSM_HOLD);         // cellule glyphe pilotée
+
+    reg [7:0] matrix [0:7];   // matrix[col], bit = rangée, actif haut
+    integer i;
+
+    always @* begin
+        for (i = 0; i < 8; i = i + 1)
+            matrix[i] = 8'h00;
+
+        // Touches sans Shift synthétisé (lettres, chiffres directs, non-alphanum.) :
+        // posées immédiatement. Les glyphes à Shift synthétisé sont exclus ici et
+        // pilotés par la FSM ci-dessous.
+        if (e0[7] && !e0[6]) matrix[e0[5:3]][e0[2:0]] = 1'b1;
+        if (e1[7] && !e1[6]) matrix[e1[5:3]][e1[2:0]] = 1'b1;
+        if (e2[7] && !e2[6]) matrix[e2[5:3]][e2[2:0]] = 1'b1;
+        if (e3[7] && !e3[6]) matrix[e3[5:3]][e3[2:0]] = 1'b1;
 
         // Modificateurs HID : CTRL et FUNCT (ALT) reportés dans les deux modes.
         if (mods[0]) matrix[2][4] = 1'b1;   // LCTRL  -> CTRL (2,4)
@@ -195,13 +263,16 @@ module oric_keyboard (
         if (mods[2]) matrix[5][4] = 1'b1;   // LALT   -> FUNCT (5,4)
         if (mods[6]) matrix[5][4] = 1'b1;   // RALT   -> FUNCT (5,4)
 
-        // Shift : en QWERTY le Shift physique est reporté tel quel ; en AZERTY
-        // il est consommé par le décodage (shift_oric issu de map_char).
+        // Shift physique : reporté tel quel en QWERTY (l'utilisateur le tient
+        // déjà avant la touche) ; consommé par le décodage en AZERTY.
         if (!azerty) begin
             if (mods[1]) matrix[4][4] = 1'b1;   // LSHIFT -> (4,4)
             if (mods[5]) matrix[7][4] = 1'b1;   // RSHIFT -> (7,4)
         end
-        if (shift_oric) matrix[4][4] = 1'b1;    // Shift Oric requis par le glyphe
+
+        // Shift synthétisé séquencé (glyphes AZERTY type `&` = Shift+7).
+        if (fsm_shift) matrix[4][4] = 1'b1;
+        if (fsm_char)  matrix[sg_col_l][sg_row_l] = 1'b1;
 
         // Touche injectée par le lien série
         if (inj_active) begin
