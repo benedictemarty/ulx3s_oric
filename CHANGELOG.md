@@ -5,6 +5,12 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 
 ## [Non publié]
 
+### Documenté
+- **Plan « Modem WiFi Oric »** (`docs/MODEM_WIFI.md`) + épopée US-MODEM au
+  backlog : 6551 ACIA émulé (FPGA, `$031C-$031F`, fidèle à `acia6551.c`) relié
+  au firmware Hayes/WiFi de l'ESP32 embarqué. 3 phases — cœur 6551 FPGA (RTL),
+  firmware ESP32 (Zimodem, bmarty flashe), terminal Oric.
+
 ### Ajouté
 - **Chargement de programmes `.tap` (cassette) — US2.1** : injecteur cassette
   dans le FPGA (`rtl/tape_injector.v`) qui reçoit un `.tap` par UART et génère

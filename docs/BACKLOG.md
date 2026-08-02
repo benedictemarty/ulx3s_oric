@@ -31,6 +31,26 @@ affichage HDMI, clavier USB, son AY.
 - [ ] US2.2 Bouton reset physique (BTN) + reset à chaud/froid
 - [ ] US2.3 LED d'activité (IRQ, VSYNC, USB)
 
+## Épopée MODEM WiFi — 6551 ACIA + ESP32 Hayes (plan : docs/MODEM_WIFI.md)
+Objectif : modem WiFi Oric (telnet/BBS) via 6551 émulé (FPGA) + firmware
+Hayes/WiFi sur l'ESP32 embarqué. Décisions (bmarty, 2026-08-02) : Hayes+TCP
+dans l'ESP32 ; 6551 mappé `$031C-$031F` (standard Oric, fidèle à
+`~/Oric1/src/io/acia6551.c`) ; pont UART FPGA↔ESP32 sur `wifi_rxd`/`wifi_txd`.
+- [ ] US-MODEM.1 **Phase 1 — Cœur 6551 FPGA** : `rtl/acia6551.v` (registres
+      data/status/command/control, TDRE/RDRF/OVRN, IRQ, DCD/DSR), décodage
+      `sel_acia` ($031C-$031F) dans oric_atmos + IRQ `via_irq|ext_irq|acia_irq`,
+      pont UART ESP32 (réutilise uart_tx/uart_rx, 115200) sur wifi_rxd (K3) /
+      wifi_txd (K4), `wifi_en`, LPF, testbench `tb_acia` (registres, IRQ,
+      boucle TX→RX). Entièrement testable/flashable côté FPGA.
+- [ ] US-MODEM.2 **Phase 2 — Firmware ESP32** (bmarty flashe) : modem WiFi
+      type Zimodem (AT, ATDT host:port telnet/TCP, +++/ATH/ATI, CONNECT/NO
+      CARRIER), liaison 115200 8N1, exposition DCD (GPIO ESP32 ou en bande),
+      config WiFi. Points ouverts : interplay `wifi_gpio0` (alim/boot),
+      contrôle de flux, procédure de flash ESP32 sans casser la carte.
+- [ ] US-MODEM.3 **Phase 3 — Terminal Oric** : programme pilotant le 6551
+      (poll RDRF, R/W $031C), v0 BASIC (PEEK/POKE pour AT/OK), v1 terminal ML
+      (VT52/ANSI mini) vers un BBS. Réutiliser la logique de la référence.
+
 ## Sprint 3 — « Confort »
 - [ ] US3.1 OSD de sélection de fichiers .tap
 - [ ] US3.2 Mode 60 Hz optionnel / meilleure synchro vidéo (triple buffer)
