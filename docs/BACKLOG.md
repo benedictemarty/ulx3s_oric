@@ -51,8 +51,34 @@ dans l'ESP32 ; 6551 mappé `$031C-$031F` (standard Oric, fidèle à
       (poll RDRF, R/W $031C), v0 BASIC (PEEK/POKE pour AT/OK), v1 terminal ML
       (VT52/ANSI mini) vers un BBS. Réutiliser la logique de la référence.
 
+## Épopée NETFS — Navigateur de fichiers WiFi (tap/dsk) (plan : docs/NETFS_WIFI.md)
+Objectif : parcourir depuis l'Oric une arborescence de .tap/.dsk servie en
+HTTP via WiFi, et charger le fichier choisi. Décisions (bmarty, 2026-08-02) :
+.tap d'abord (.dsk après) ; OSD incrusté par le FPGA ; serveur HTTP + listing
+JSON. Partage le lien ESP32↔FPGA de l'épopée MODEM.
+- [ ] US-NETFS.1 **Protocole ESP32↔FPGA & client HTTP** : trames série
+      (DIR/ENTRY/END côté ESP32 ; CD/UP/LOAD/REFRESH côté FPGA), multiplexées
+      avec le modem sur l'UART ESP32. Firmware ESP32 : GET listing JSON d'un
+      dossier → trames ENTRY ; sur LOAD, GET du fichier → stream cassette.
+- [ ] US-NETFS.2 **OSD incrusté (FPGA)** : couche texte+curseur dans
+      `hdmi_out.v` (police 8×8, fenêtre défilante), tampon des entrées de la
+      page courante, navigation flèches `btn[3..6]` + FIRE, ouverture/fermeture
+      OSD ; incrustation combinatoire (ne touche pas au timing vidéo).
+      Testbench de rendu.
+- [ ] US-NETFS.3 **Chargement .tap via WiFi (bout-en-bout)** : router le flux
+      du fichier sélectionné ESP32 → `tape_injector` (réutilise le contrôle de
+      flux crédits, source = UART ESP32). Validation sur carte.
+
+## Épopée DISK — support .dsk (Microdisc) (ultérieure, cf. NETFS_WIFI.md)
+- [ ] US-DISK.1 Émulation contrôleur **Microdisc / FDC WD1793** + ROM de boot,
+      fidèle à `~/Oric1/src/io/microdisc.c` (registres, mapping I/O, /ROMDIS).
+- [ ] US-DISK.2 Streaming/bufferisation des secteurs depuis l'ESP32/WiFi
+      (à la demande ou par piste ; stockage SDRAM/BRAM), protocole secteur.
+- [ ] US-DISK.3 Intégration OSD : sélectionner un .dsk « insère » la disquette.
+
 ## Sprint 3 — « Confort »
-- [ ] US3.1 OSD de sélection de fichiers .tap
+- [ ] US3.1 OSD de sélection de fichiers .tap → couvert par US-NETFS.2 (OSD
+      incrusté FPGA) ; la source de fichiers devient le serveur WiFi.
 - [ ] US3.2 Mode 60 Hz optionnel / meilleure synchro vidéo (triple buffer)
 - [ ] US3.3 Joystick USB → interface joystick Oric
 - [ ] US3.4 Shift register VIA complet + entrée cassette réelle (jack)

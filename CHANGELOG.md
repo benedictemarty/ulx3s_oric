@@ -6,6 +6,11 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 ## [Non publié]
 
 ### Documenté
+- **Plan « Navigateur de fichiers WiFi »** (`docs/NETFS_WIFI.md`) + épopées
+  US-NETFS et US-DISK au backlog : parcourir une arborescence de `.tap`/`.dsk`
+  servie en HTTP (listing JSON) via WiFi, OSD incrusté par le FPGA, chargement
+  `.tap` réutilisant l'injecteur cassette. `.dsk` (Microdisc WD1793) = épopée
+  ultérieure. Partage le lien ESP32↔FPGA du plan modem.
 - **Plan « Modem WiFi Oric »** (`docs/MODEM_WIFI.md`) + épopée US-MODEM au
   backlog : 6551 ACIA émulé (FPGA, `$031C-$031F`, fidèle à `acia6551.c`) relié
   au firmware Hayes/WiFi de l'ESP32 embarqué. 3 phases — cœur 6551 FPGA (RTL),
