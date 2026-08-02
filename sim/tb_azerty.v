@@ -66,9 +66,23 @@ module tb_azerty;
         expect_nocell(3'd4, 3'd4, "AZ A+Shift : pas de Shift Oric parasite");
         k1 = 0; mods = 0; steps(TAIL + 3);
 
-        // ---- Glyphe à Shift synthétisé : '&' = Shift+7 (0x1E sans Shift) ----
+        // ---- Rangée du haut : CHIFFRE direct, immédiat, sans Shift ----
+        // 0x1E sans Shift -> '1' -> (0,5)
+        k1 = 8'h1E; expect_cell(3'd0, 3'd5, "AZ 0x1E -> 1 (0,5) immediat");
+        expect_nocell(3'd4, 3'd4, "AZ 1 : pas de Shift"); k1 = 0;
+        // 0x1F sans Shift -> '2' -> (2,6)
+        k1 = 8'h1F; expect_cell(3'd2, 3'd6, "AZ 0x1F -> 2 (2,6) immediat"); k1 = 0;
+
+        // ---- Anti-repli : Shift+2 (glyphe é hors ASCII) ne doit RIEN donner,
+        //      surtout pas le '2' QWERTY (bug corrige). ----
+        k1 = 8'h1F; mods = 8'h02; steps(LEAD + 2);
+        expect_nocell(3'd2, 3'd6, "AZ Shift+2 : pas de 2 QWERTY parasite");
+        expect_nocell(3'd0, 3'd5, "AZ Shift+2 : pas de 1 non plus");
+        k1 = 0; mods = 0; steps(TAIL + 3);
+
+        // ---- Symbole en Shift synthétisé : '&' = Shift+1 -> Shift+7 Oric ----
         // Le Shift doit PRÉCÉDER : d'abord (4,4) seul, la touche (0,0) attend.
-        k1 = 8'h1E; @(negedge clk); @(negedge clk);   // entree en LEAD
+        k1 = 8'h1E; mods = 8'h02; @(negedge clk); @(negedge clk);   // entree en LEAD
         expect_cell(3'd4, 3'd4, "AZ & : Shift precede (4,4)");
         expect_nocell(3'd0, 3'd0, "AZ & : touche 7 pas encore posee (LEAD)");
         // Après l'avance, la touche apparaît AVEC le Shift toujours présent.
@@ -76,17 +90,17 @@ module tb_azerty;
         expect_cell(3'd0, 3'd0, "AZ & : 7 Oric (0,0) apres LEAD");
         expect_cell(3'd4, 3'd4, "AZ & : Shift toujours present (HOLD)");
         // Relâché : la touche tombe, le Shift PROLONGE (traîne) puis retombe.
-        k1 = 0; steps(HOLD + 1);
+        k1 = 0; mods = 0; steps(HOLD + 1);
         expect_cell(3'd4, 3'd4, "AZ & : Shift prolonge au relache (TAIL)");
         expect_nocell(3'd0, 3'd0, "AZ & : touche relachee");
         steps(TAIL + 3);
         expect_nocell(3'd4, 3'd4, "AZ & : Shift retombe apres TAIL");
 
-        // ---- '(' = Shift+9 (0x22 sans Shift) : présence en régime établi ----
-        k1 = 8'h22; steps(LEAD + 2);
+        // ---- '(' = Shift+5 -> Shift+9 Oric : présence en régime établi ----
+        k1 = 8'h22; mods = 8'h02; steps(LEAD + 2);
         expect_cell(3'd3, 3'd1, "AZ ( : 9 Oric (3,1)");
         expect_cell(3'd4, 3'd4, "AZ ( : Shift present");
-        k1 = 0; steps(TAIL + 3);
+        k1 = 0; mods = 0; steps(TAIL + 3);
 
         // ---- '?' = Shift+/ (0x10 avec Shift physique) ----
         k1 = 8'h10; mods = 8'h02; steps(LEAD + 2);

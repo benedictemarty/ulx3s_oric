@@ -6,6 +6,12 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 ## [Non publié]
 
 ### Corrigé
+- **Touche accentuée AZERTY tombait sur le chiffre QWERTY** (« la touche 2
+  reste à 2 même avec Shift »). Les touches dont le glyphe est hors ASCII
+  (é è à ç ù ° £ § µ) renvoyaient 0 et `key_map` retombait alors sur la table
+  positionnelle QWERTY (→ chiffre). Ajout d'un drapeau « touche AZERTY
+  reconnue » (`azerty_map` renvoie {reconnue, ASCII}) : une touche AZERTY à
+  glyphe hors ASCII ne produit rien, sans repli parasite.
 - **Shift synthétisé AZERTY intermittent** (symptôme : `&&7&&&&7` en tapant
   la touche « 1 »). Sur l'Oric `&` = Shift+7 ; un Shift dérivé du même
   scancode montait exactement en même temps que la touche, et le scan
@@ -25,8 +31,8 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
   indique le mode AZERTY. En AZERTY le décodage passe par
   `(scancode, Shift) → ASCII français → matrice Oric` en réutilisant la table
   `map_char` du clavier série (factorisée dans `rtl/ascii2oric.vh`) : lettres
-  permutées (A/Q, Z/W, M…), chiffres en Shift (rangée du haut inversée),
-  symboles avec Shift Oric automatique (`(` = Shift+9, etc.). Les touches non
+  permutées (A/Q, Z/W, M…), rangée du haut en **chiffres directs** (sans
+  Shift), symboles en Shift avec Shift Oric automatique (`(` = Shift+9, etc.). Les touches non
   alphanumériques (Entrée, Échap, flèches, espace) retombent sur la table
   positionnelle. Les glyphes hors ASCII (é è à ç ù ° £ § µ) sont ignorés
   (l'Oric ne les affiche pas). Nouveau testbench `tb_azerty` (7 tests dans la

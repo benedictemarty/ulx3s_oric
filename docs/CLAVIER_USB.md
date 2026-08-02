@@ -31,14 +31,29 @@ clavier série) décide du Shift Oric éventuel.
 
 - **Lettres** permutées comme sur un clavier français : `A`↔`Q`, `Z`↔`W`, et
   `M` à sa place AZERTY.
-- **Rangée du haut inversée** : sans Shift on obtient les symboles
-  (`& " ' ( - _ ) = …`), avec Shift les chiffres (`1 2 3 4 5 6 7 8 9 0`).
+- **Rangée du haut : chiffres directs** (choix pratique pour le BASIC) :
+  sans Shift on obtient `1 2 3 4 5 6 7 8 9 0`, avec Shift les symboles
+  (`& " ' ( - _ …`).
 - **Symboles** générant un Shift Oric automatiquement : ex. `(` = Shift+9,
-  `?` = Shift+/, `%`, `<` / `>` (touche ISO), etc.
+  `?` = Shift+/, `%`, `<` / `>` (touche ISO), etc. Le Shift synthétisé est
+  séquencé (voir plus bas) pour être fiable.
 - **Touches non alphanumériques** (Entrée, Échap, flèches, espace, Ctrl,
   Funct) : identiques dans les deux modes (repli positionnel).
-- **Glyphes hors ASCII** (`é è à ç ù ° £ § µ`, accents morts) : ignorés —
-  l'Oric ne dispose pas de ces caractères.
+- **Glyphes accentués / hors ASCII** (`é è à ç ù ° £ § µ`, accents morts) :
+  indisponibles — l'Oric ne dispose pas de ces caractères, la touche ne
+  produit rien dans cet état (aucun repli QWERTY parasite).
+
+## Shift synthétisé : séquencement
+
+Un Shift dérivé du même scancode que la touche monterait exactement en même
+temps qu'elle ; le scan clavier de la ROM Oric attrape alors parfois la
+touche sans le Shift (symptôme observé : `&` donnant par moments `7`). Les
+glyphes AZERTY nécessitant un Shift Oric sont donc séquencés comme un vrai
+doigt : le Shift **précède** la touche (LEAD ~20 ms), la **maintient**
+(HOLD, minimum garanti), puis la **prolonge** au relâché (TAIL ~10 ms).
+Durées réglables via les paramètres `LEAD_TICKS` / `HOLD_MIN_TICKS` /
+`TAIL_TICKS` de `oric_keyboard`. Le Shift *physique* (QWERTY) et le clavier
+série gardent leur comportement direct.
 
 ## Tests
 

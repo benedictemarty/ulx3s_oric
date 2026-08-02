@@ -122,44 +122,52 @@ module oric_keyboard #(
     `include "ascii2oric.vh"
 
     // Disposition AZERTY française : scancode HID (positionnel) + Shift
-    // physique -> ASCII français. Renvoie 0 si la touche n'est pas
-    // réaffectée par l'AZERTY (l'appelant retombe alors sur hid2oric).
-    // Les glyphes hors ASCII (é è à ç ù ° £ § µ, accents morts) renvoient 0.
-    function [7:0] azerty_ascii;
+    // physique -> {reconnue, ASCII}.
+    //   bit8 = la touche APPARTIENT à la disposition AZERTY (même si son
+    //          glyphe est hors ASCII) ; si 0, l'appelant retombe sur le
+    //          positionnel hid2oric (Entrée, flèches, espace…).
+    //   bits[7:0] = ASCII produit, ou 0 si le glyphe est hors ASCII
+    //          (é è à ç ù ° £ § µ, accents morts) -> aucune sortie, PAS de
+    //          repli QWERTY (sinon la touche accentuée donnerait le chiffre
+    //          QWERTY, cf. bug « touche 2 reste à 2 »).
+    //
+    // Rangée du haut : CHIFFRE en accès direct (pratique pour le BASIC),
+    // symbole en Shift.
+    function [8:0] azerty_map;
         input [7:0] c;
         input      sh;   // Shift physique maintenu
         begin
             case (c)
                 // --- rangée des lettres (positions permutées vs QWERTY) ---
-                8'h14: azerty_ascii = "A";               // (QWERTY Q) -> A
-                8'h1A: azerty_ascii = "Z";               // (QWERTY W) -> Z
-                8'h1D: azerty_ascii = "W";               // (QWERTY Z) -> W
-                8'h04: azerty_ascii = "Q";               // (QWERTY A) -> Q
-                8'h33: azerty_ascii = "M";               // (QWERTY ;) -> M
-                // --- rangée des chiffres : symbole direct / chiffre en Shift ---
-                8'h1E: azerty_ascii = sh ? "1" : "&";    // & 1
-                8'h1F: azerty_ascii = sh ? "2" : 8'h00;  // é 2   (é hors ASCII)
-                8'h20: azerty_ascii = sh ? "3" : 8'h22;  // " 3
-                8'h21: azerty_ascii = sh ? "4" : "'";    // ' 4
-                8'h22: azerty_ascii = sh ? "5" : "(";    // ( 5
-                8'h23: azerty_ascii = sh ? "6" : "-";    // - 6
-                8'h24: azerty_ascii = sh ? "7" : 8'h00;  // è 7   (è hors ASCII)
-                8'h25: azerty_ascii = sh ? "8" : "_";    // _ 8
-                8'h26: azerty_ascii = sh ? "9" : 8'h00;  // ç 9   (ç hors ASCII)
-                8'h27: azerty_ascii = sh ? "0" : 8'h00;  // à 0   (à hors ASCII)
-                8'h2D: azerty_ascii = sh ? 8'h00 : ")";  // ) °   (° hors ASCII)
-                8'h2E: azerty_ascii = sh ? "+" : "=";    // = +
+                8'h14: azerty_map = {1'b1, "A"};              // (QWERTY Q) -> A
+                8'h1A: azerty_map = {1'b1, "Z"};              // (QWERTY W) -> Z
+                8'h1D: azerty_map = {1'b1, "W"};              // (QWERTY Z) -> W
+                8'h04: azerty_map = {1'b1, "Q"};              // (QWERTY A) -> Q
+                8'h33: azerty_map = {1'b1, "M"};              // (QWERTY ;) -> M
+                // --- rangée du haut : chiffre direct / symbole en Shift ---
+                8'h1E: azerty_map = {1'b1, sh ? "&"    : "1"};
+                8'h1F: azerty_map = {1'b1, sh ? 8'h00  : "2"}; // Shift = é (indispo)
+                8'h20: azerty_map = {1'b1, sh ? 8'h22  : "3"}; // Shift = "
+                8'h21: azerty_map = {1'b1, sh ? "'"    : "4"};
+                8'h22: azerty_map = {1'b1, sh ? "("    : "5"};
+                8'h23: azerty_map = {1'b1, sh ? "-"    : "6"};
+                8'h24: azerty_map = {1'b1, sh ? 8'h00  : "7"}; // Shift = è (indispo)
+                8'h25: azerty_map = {1'b1, sh ? "_"    : "8"};
+                8'h26: azerty_map = {1'b1, sh ? 8'h00  : "9"}; // Shift = ç (indispo)
+                8'h27: azerty_map = {1'b1, sh ? 8'h00  : "0"}; // Shift = à (indispo)
+                8'h2D: azerty_map = {1'b1, sh ? 8'h00  : ")"}; // ) / ° (indispo)
+                8'h2E: azerty_map = {1'b1, sh ? "+"    : "="}; // = / +
                 // --- symboles à droite ---
-                8'h30: azerty_ascii = sh ? 8'h00 : "$";  // $ £   (£ hors ASCII)
-                8'h31: azerty_ascii = sh ? 8'h00 : "*";  // * µ   (µ hors ASCII)
-                8'h34: azerty_ascii = sh ? "%" : 8'h00;  // ù %   (ù hors ASCII)
+                8'h30: azerty_map = {1'b1, sh ? 8'h00  : "$"}; // $ / £ (indispo)
+                8'h31: azerty_map = {1'b1, sh ? 8'h00  : "*"}; // * / µ (indispo)
+                8'h34: azerty_map = {1'b1, sh ? "%"    : 8'h00}; // ù (indispo) / %
                 // --- rangée du bas ---
-                8'h10: azerty_ascii = sh ? "?" : ",";    // , ?   (QWERTY M)
-                8'h36: azerty_ascii = sh ? "." : ";";    // ; .
-                8'h37: azerty_ascii = sh ? "/" : ":";    // : /
-                8'h38: azerty_ascii = sh ? 8'h00 : "!";  // ! §   (§ hors ASCII)
-                8'h64: azerty_ascii = sh ? ">" : "<";    // < >   (touche ISO)
-                default: azerty_ascii = 8'h00;           // non réaffectée
+                8'h10: azerty_map = {1'b1, sh ? "?"    : ","}; // , ?   (QWERTY M)
+                8'h36: azerty_map = {1'b1, sh ? "."    : ";"}; // ; .
+                8'h37: azerty_map = {1'b1, sh ? "/"    : ":"}; // : /
+                8'h38: azerty_map = {1'b1, sh ? 8'h00  : "!"}; // ! / § (indispo)
+                8'h64: azerty_map = {1'b1, sh ? ">"    : "<"}; // < >   (touche ISO)
+                default: azerty_map = {1'b0, 8'h00};          // non AZERTY -> repli
             endcase
         end
     endfunction
@@ -169,13 +177,14 @@ module oric_keyboard #(
     function [7:0] key_map;
         input [7:0] c;
         input      sh;   // Shift physique maintenu
-        reg  [7:0] a;
+        reg  [8:0] am;
         reg  [6:0] h;
         begin
-            a = 8'h00;
-            if (azerty) a = azerty_ascii(c, sh);
-            if (azerty && a != 8'h00) begin
-                key_map = map_char(a);            // {valide, shift, col, row}
+            am = azerty ? azerty_map(c, sh) : 9'b0;
+            if (azerty && am[8]) begin
+                // Touche AZERTY reconnue : son glyphe (ou rien si hors ASCII),
+                // JAMAIS de repli positionnel.
+                key_map = (am[7:0] != 8'h00) ? map_char(am[7:0]) : 8'h00;
             end else begin
                 h = hid2oric(c);                  // {valide, col, row}
                 key_map = {h[6], 1'b0, h[5:0]};   // pas de Shift Oric imposé
