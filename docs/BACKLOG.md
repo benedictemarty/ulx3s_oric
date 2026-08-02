@@ -42,11 +42,12 @@ dans l'ESP32 ; 6551 mappé `$031C-$031F` (standard Oric, fidèle à
       `via_irq|ext_irq|acia_irq`, pont UART ESP32 (uart_tx/uart_rx 115200) sur
       wifi_rxd (K3) / wifi_txd (K4), `wifi_en`, testbench `tb_acia`. RTL fait,
       testé (tb_acia), synthèse OK. Reste : brancher DCD réel en phase 2.
-- [ ] US-MODEM.2 **Phase 2 — Firmware ESP32** (bmarty flashe) : modem WiFi
-      type Zimodem (AT, ATDT host:port telnet/TCP, +++/ATH/ATI, CONNECT/NO
-      CARRIER), liaison 115200 8N1, exposition DCD (GPIO ESP32 ou en bande),
-      config WiFi. Points ouverts : interplay `wifi_gpio0` (alim/boot),
-      contrôle de flux, procédure de flash ESP32 sans casser la carte.
+- [~] US-MODEM.2 **Phase 2 — Firmware ESP32** : SCAFFOLD fait (2026-08-02,
+      `firmware/esp32_modem/` : AT, ATDT host:port telnet/TCP, +++/ATH/ATO/ATE/
+      ATI, config WiFi NVS, pont série↔TCP, IAC minimal, CONNECT/NO CARRIER).
+      Reste (bmarty) : confirmer le mappage UART ESP32↔FPGA, flasher l'ESP32
+      (passthru + esptool), tester une connexion réelle. Puis (optionnel)
+      câbler un wifi_gpio → `acia_dcd` pour la porteuse matérielle.
 - [ ] US-MODEM.3 **Phase 3 — Terminal Oric** : programme pilotant le 6551
       (poll RDRF, R/W $031C), v0 BASIC (PEEK/POKE pour AT/OK), v1 terminal ML
       (VT52/ANSI mini) vers un BBS. Réutiliser la logique de la référence.

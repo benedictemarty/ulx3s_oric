@@ -17,6 +17,14 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
   firmware ESP32 (Zimodem, bmarty flashe), terminal Oric.
 
 ### Ajouté
+- **Scaffold firmware ESP32 « modem Hayes WiFi » — US-MODEM phase 2**
+  (`firmware/esp32_modem/`) : sketch Arduino (WiFi STA, parseur AT —
+  `ATDT host:port`, `ATH`, `+++`, `ATO`, `ATE`, `ATI`, config SSID/pass en
+  NVS via `AT$SSID/$PASS/$C/$W`), pont transparent série↔TCP/telnet (filtrage
+  IAC minimal), porteuse en bande (`CONNECT`/`NO CARRIER`). README : câblage
+  K3/K4, compilation `arduino-cli`, procédure de flash ULX3S, points ouverts
+  (mappage UART ESP32, flash, DCD matériel). À compiler/flasher par bmarty
+  (non testé dans le dépôt).
 - **6551 ACIA + pont ESP32 — US-MODEM phase 1** : cœur `rtl/acia6551.v`
   émulé et mappé `$031C-$031F` (fidèle à `~/Oric1/src/io/acia6551.c` :
   registres data/status/command/control, `TDRE`/`RDRF`/`OVRN`, IRQ armé/
