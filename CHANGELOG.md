@@ -5,6 +5,27 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 
 ## [Non publié]
 
+### Ajouté
+- **Bascule de disposition clavier QWERTY ⇄ AZERTY** (ULX3S) sur le bouton
+  `BTN6` (RIGHT), anti-rebond ~10 ms + détection de front ; `led[4]` allumée
+  indique le mode AZERTY. En AZERTY le décodage passe par
+  `(scancode, Shift) → ASCII français → matrice Oric` en réutilisant la table
+  `map_char` du clavier série (factorisée dans `rtl/ascii2oric.vh`) : lettres
+  permutées (A/Q, Z/W, M…), chiffres en Shift (rangée du haut inversée),
+  symboles avec Shift Oric automatique (`(` = Shift+9, etc.). Les touches non
+  alphanumériques (Entrée, Échap, flèches, espace) retombent sur la table
+  positionnelle. Les glyphes hors ASCII (é è à ç ù ° £ § µ) sont ignorés
+  (l'Oric ne les affiche pas). Nouveau testbench `tb_azerty` (7 tests dans la
+  suite).
+- **`rtl/ascii2oric.vh`** : table ASCII→matrice Oric partagée entre
+  `key_injector` (clavier série UART) et `oric_keyboard` (disposition AZERTY),
+  élimine la duplication. Makefile : `-I rtl` (iverilog) et `read_verilog
+  -I../rtl` (yosys) pour l'include.
+
+### Validé sur carte
+- **Clavier USB physique fonctionnel** sur l'ULX3S (frappe réelle confirmée
+  par bmarty) — clôt le point de validation matérielle US2.
+
 ## [2.0.0-tn20k] — 2026-07-29 — Portage Gowin : premier bitstream Tang Nano 20K
 
 ### Ajouté

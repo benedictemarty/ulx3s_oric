@@ -17,7 +17,10 @@ affichage HDMI, clavier USB, son AY.
       l'écran via picocom)
 - [x] Flash permanent en SPI v1.1.0 (2026-07-29, --unprotect-flash)
 - [x] HIRES validé sur carte (2026-07-29, correctif v1.1.1 confirmé par bmarty)
-- [ ] Frappe clavier USB réelle (port US2, clavier boot-protocol)
+- [x] Frappe clavier USB réelle (2026-08-02 — clavier physique confirmé
+      fonctionnel par bmarty sur ULX3S)
+- [x] Bascule disposition QWERTY/AZERTY sur BTN6 (2026-08-02 — décodage
+      ASCII FR + table partagée, LED4 = AZERTY, testbench tb_azerty)
 - [ ] Son AY sur la prise jack (ex. `PING`, `ZAP`, `MUSIC` en BASIC)
 
 ## Sprint 2 — « On charge des programmes »

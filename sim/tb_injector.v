@@ -32,7 +32,7 @@ module tb_injector;
     wire sense;
 
     oric_keyboard kbd (
-        .clk(clk), .mods(8'd0), .k1(8'd0), .k2(8'd0), .k3(8'd0), .k4(8'd0),
+        .clk(clk), .azerty(1'b0), .mods(8'd0), .k1(8'd0), .k2(8'd0), .k3(8'd0), .k4(8'd0),
         .inj_active(inj_active), .inj_col(inj_col), .inj_row(inj_row),
         .inj_shift(inj_shift),
         .col_sel(col_sel), .ay_ioa(ay_ioa), .sense(sense)

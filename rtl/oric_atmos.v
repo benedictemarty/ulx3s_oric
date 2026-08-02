@@ -13,6 +13,7 @@ module oric_atmos #(
     input         rst,
 
     // Clavier (rapport HID synchronisé)
+    input         kbd_azerty,   // 0 = QWERTY positionnel, 1 = AZERTY français
     input  [7:0]  kbd_mods,
     input  [7:0]  kbd_k1, kbd_k2, kbd_k3, kbd_k4,
 
@@ -238,6 +239,7 @@ module oric_atmos #(
 
     oric_keyboard kbd (
         .clk        (clk),
+        .azerty     (kbd_azerty),
         .mods       (kbd_mods),
         .k1         (kbd_k1),
         .k2         (kbd_k2),

@@ -62,6 +62,29 @@ module top_ulx3s (
     wire rst_pixel = rst_pix_sync[3];
 
     // ------------------------------------------------------------------
+    // Bascule disposition clavier QWERTY <-> AZERTY sur BTN6 (RIGHT).
+    // Synchro + anti-rebond (~10 ms) + détection de front montant :
+    // chaque appui inverse layout_azerty. led[4] indique le mode AZERTY.
+    // ------------------------------------------------------------------
+    reg [1:0]  b6_sync = 2'b00;
+    reg [19:0] b6_deb  = 20'd0;   // ~42  ms max a 25 MHz
+    reg        b6_stable = 1'b0, b6_prev = 1'b0;
+    reg        layout_azerty = 1'b0;
+    always @(posedge clk_sys) begin
+        b6_sync <= {b6_sync[0], btn[6]};
+        if (b6_sync[1] == b6_stable)
+            b6_deb <= 20'd0;
+        else if (b6_deb == 20'd250_000) begin   // ~10 ms stable
+            b6_stable <= b6_sync[1];
+            b6_deb    <= 20'd0;
+        end else
+            b6_deb <= b6_deb + 20'd1;
+        b6_prev <= b6_stable;
+        if (b6_stable && !b6_prev)               // front montant confirme
+            layout_azerty <= ~layout_azerty;
+    end
+
+    // ------------------------------------------------------------------
     // Clavier USB (US2)
     // ------------------------------------------------------------------
     wire [1:0] usb_typ;
@@ -140,6 +163,7 @@ module top_ulx3s (
     oric_atmos #(.DIV(25), .ROM_FILE("basic11b.hex")) oric (
         .clk         (clk_sys),
         .rst         (rst_sys),
+        .kbd_azerty  (layout_azerty),
         .kbd_mods    (mods_s2),
         .kbd_k1      (k1_s2),
         .kbd_k2      (k2_s2),
@@ -252,6 +276,7 @@ module top_ulx3s (
     assign led[1] = (usb_typ == 2'd1);     // clavier détecté
     assign led[2] = usb_conerr;
     assign led[3] = irq_dbg;
-    assign led[7:4] = 4'b0;
+    assign led[4] = layout_azerty;         // allumee = AZERTY, eteinte = QWERTY
+    assign led[7:5] = 3'b0;
 
 endmodule

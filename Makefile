@@ -35,7 +35,7 @@ build/$(PROJ).json: $(SRC) roms/basic11b.hex
 	mkdir -p build
 	cp roms/basic11b.hex build/
 	cp third_party/usb_hid_host/src/usb_hid_host_rom.hex build/
-	cd build && yosys -q -p "synth_ecp5 -noabc9 -top $(TOP) -json $(PROJ).json" $(addprefix ../,$(SRC))
+	cd build && yosys -q -p "read_verilog -I../rtl $(addprefix ../,$(SRC)); synth_ecp5 -noabc9 -top $(TOP) -json $(PROJ).json"
 
 build/$(PROJ).config: build/$(PROJ).json $(LPF)
 	nextpnr-ecp5 --$(FPGA_SIZE) --package $(PACKAGE) --json build/$(PROJ).json \
@@ -55,7 +55,7 @@ prog-fujprog: build/$(PROJ).bit
 # ----------------------------------------------------------------------
 # Tests
 # ----------------------------------------------------------------------
-TESTS = test-via test-keyboard test-injector test-expansion test-ula test-boot
+TESTS = test-via test-keyboard test-azerty test-injector test-expansion test-ula test-boot
 
 test: $(TESTS)
 	@echo "== TOUS LES TESTS SONT PASSES =="
@@ -69,12 +69,17 @@ test-via: sim/out
 	@grep -q "ALL TESTS PASSED" sim/out/tb_via.log
 
 test-keyboard: sim/out
-	iverilog -DSIM -g2005 -o sim/out/tb_kbd.vvp sim/tb_keyboard.v rtl/oric_keyboard.v
+	iverilog -DSIM -g2005 -I rtl -o sim/out/tb_kbd.vvp sim/tb_keyboard.v rtl/oric_keyboard.v
 	vvp sim/out/tb_kbd.vvp | tee sim/out/tb_kbd.log
 	@grep -q "ALL TESTS PASSED" sim/out/tb_kbd.log
 
+test-azerty: sim/out
+	iverilog -DSIM -g2005 -I rtl -o sim/out/tb_azerty.vvp sim/tb_azerty.v rtl/oric_keyboard.v
+	vvp sim/out/tb_azerty.vvp | tee sim/out/tb_azerty.log
+	@grep -q "ALL TESTS PASSED" sim/out/tb_azerty.log
+
 test-injector: sim/out
-	iverilog -DSIM -g2005 -o sim/out/tb_inj.vvp sim/tb_injector.v \
+	iverilog -DSIM -g2005 -I rtl -o sim/out/tb_inj.vvp sim/tb_injector.v \
 	  rtl/uart_rx.v rtl/key_injector.v rtl/oric_keyboard.v
 	vvp sim/out/tb_inj.vvp | tee sim/out/tb_inj.log
 	@grep -q "ALL TESTS PASSED" sim/out/tb_inj.log
@@ -90,7 +95,7 @@ test-ula: sim/out
 	@grep -q "ALL TESTS PASSED" sim/out/tb_ula.log
 
 test-boot: sim/out
-	iverilog -DSIM -g2005 -o sim/out/tb_boot.vvp sim/tb_boot.v $(SIM_CORE)
+	iverilog -DSIM -g2005 -I rtl -o sim/out/tb_boot.vvp sim/tb_boot.v $(SIM_CORE)
 	vvp sim/out/tb_boot.vvp | tee sim/out/tb_boot.log
 	@grep -q "ALL TESTS PASSED" sim/out/tb_boot.log
 

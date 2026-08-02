@@ -7,10 +7,12 @@ module tb_keyboard;
     reg [7:0] mods = 0, k1 = 0, k2 = 0, k3 = 0, k4 = 0;
     reg [2:0] col_sel = 0;
     reg [7:0] ay_ioa = 8'hFF;
+    reg       azerty = 0;
     wire sense;
 
     oric_keyboard dut (
-        .clk(clk), .mods(mods), .k1(k1), .k2(k2), .k3(k3), .k4(k4),
+        .clk(clk), .azerty(azerty), .mods(mods), .k1(k1), .k2(k2), .k3(k3), .k4(k4),
+        .inj_active(1'b0), .inj_col(3'd0), .inj_row(3'd0), .inj_shift(1'b0),
         .col_sel(col_sel), .ay_ioa(ay_ioa), .sense(sense)
     );
 
