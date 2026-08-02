@@ -136,7 +136,7 @@ void handleAT(String line) {
     // Config WiFi (custom) : AT$SSID=..., AT$PASS=..., AT$C (connect), AT$W (état)
     if (rest.startsWith("$SSID=")) { prefs.putString("ssid", line.substring(2 + 6)); respOK(); return; }
     if (rest.startsWith("$PASS=")) { prefs.putString("pass", line.substring(2 + 6)); respOK(); return; }
-    if (rest == "$C")   { resp(wifiConnect() ? "WIFI OK" : "WIFI FAIL", wifiConnect() ? 0 : 4); return; }
+    if (rest == "$C")   { bool ok = wifiConnect(); resp(ok ? "WIFI OK" : "WIFI FAIL", ok ? 0 : 4); return; }
     if (rest == "$W")   {
         Link.print("\r\nSSID: "); Link.print(prefs.getString("ssid", "(vide)"));
         Link.print("\r\nIP:   "); Link.print(WiFi.localIP());

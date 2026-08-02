@@ -25,7 +25,25 @@ sleep 1
 
 echo "==> 2/3 téléversement du firmware sur l'ESP32 ($PORT)"
 "$ACLI" compile --fqbn "$FQBN" "$SKETCH"
-"$ACLI" upload  --fqbn "$FQBN" -p "$PORT" "$SKETCH"
+# Baud d'upload réduit (plus fiable à travers le passthru) + retry : la doc
+# ULX3S officielle recommande de réessayer jusqu'à « Hash of data verified ».
+UPFQBN="${UPFQBN:-esp32:esp32:esp32:UploadSpeed=115200}"
+ok=0
+for n in 1 2 3 4 5 6; do
+    echo "  -- tentative $n/6 --"
+    if "$ACLI" upload --fqbn "$UPFQBN" -p "$PORT" "$SKETCH"; then ok=1; break; fi
+    sleep 1
+done
+if [ "$ok" != "1" ]; then
+    echo "ÉCHEC après 6 tentatives." >&2
+    echo "Parade autoexec ESP32 (firmware d'usine websvf qui bavarde) :" >&2
+    echo "  débranche l'USB, MAINTIENS BTN0 enfoncé, rebranche l'USB ;" >&2
+    echo "  quand la LED bleue D22 clignote une fois (~0,5 s), relâche BTN0 ;" >&2
+    echo "  puis relance 'make esp32-flash'." >&2
+    echo "  (⚠️ le rebranchement efface le passthru en SRAM : il faut alors" >&2
+    echo "   d'abord le mettre en FLASH — voir tools/esp32/README.md.)" >&2
+    exit 1
+fi
 
 echo "==> 3/3 rechargement du bitstream Oric"
 if [ -f "$ORIC_BIT" ]; then
