@@ -124,13 +124,13 @@ esp32-flash:
 # Flux robuste (passthru persistant en FLASH + rebranchement + BTN0) :
 PASSTHRU_BIT = tools/esp32/passthru/ulx3s_85f_passthru.bit
 esp32-passthru-flash:
-	openFPGALoader -f -b ulx3s $(PASSTHRU_BIT)
+	openFPGALoader -f --unprotect-flash -b ulx3s $(PASSTHRU_BIT)
 
 esp32-upload:
 	tools/esp32/upload.sh $(PORT)
 
 oric-flash: build/oric_ulx3s.bit
-	openFPGALoader -f -b ulx3s build/oric_ulx3s.bit
+	openFPGALoader -f --unprotect-flash -b ulx3s build/oric_ulx3s.bit
 
 clean:
 	rm -rf build sim/out
