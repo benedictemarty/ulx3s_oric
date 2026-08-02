@@ -133,6 +133,18 @@ esp32-upload:
 esp32-flash-classic:
 	tools/esp32/flash-esptool.sh $(PORT)
 
+# Force l'ESP32 en mode download par bitstream maison, puis flash no_reset :
+build/download_esp32.bit: rtl/download_esp32.v $(LPF)
+	mkdir -p build
+	cd build && yosys -q -p "synth_ecp5 -noabc9 -top download_esp32 -json download_esp32.json" ../rtl/download_esp32.v
+	nextpnr-ecp5 --$(FPGA_SIZE) --package $(PACKAGE) --json build/download_esp32.json \
+	  --lpf $(LPF) --textcfg build/download_esp32.config --randomize-seed 2> build/dl_pnr.log \
+	  || (tail -20 build/dl_pnr.log; false)
+	ecppack --compress build/download_esp32.config build/download_esp32.bit
+
+esp32-download: build/download_esp32.bit
+	tools/esp32/flash-download.sh $(PORT)
+
 oric-flash: build/oric_ulx3s.bit
 	openFPGALoader -f --unprotect-flash -b ulx3s build/oric_ulx3s.bit
 
@@ -140,4 +152,4 @@ clean:
 	rm -rf build sim/out
 
 .PHONY: all prog prog-fujprog test $(TESTS) esp32-setup esp32-build esp32-flash \
-        esp32-passthru-flash esp32-upload esp32-flash-classic oric-flash clean
+        esp32-passthru-flash esp32-upload esp32-flash-classic esp32-download oric-flash clean
