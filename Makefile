@@ -9,8 +9,8 @@ LPF       = constraints/ulx3s_v20.lpf
 RTL = rtl/oric_atmos.v rtl/oric_ula.v rtl/oric_ram.v rtl/oric_rom.v \
       rtl/via6522.v rtl/oric_keyboard.v rtl/framebuffer.v \
       rtl/tmds_encoder.v rtl/hdmi_out.v rtl/top_ulx3s.v \
-      rtl/uart_rx.v rtl/key_injector.v rtl/expansion_port.v \
-      rtl/pll_video.v rtl/pll_sys.v
+      rtl/uart_rx.v rtl/uart_tx.v rtl/key_injector.v rtl/tape_injector.v \
+      rtl/expansion_port.v rtl/pll_video.v rtl/pll_sys.v
 
 CPU = third_party/verilog-6502/cpu.v third_party/verilog-6502/ALU.v
 
@@ -55,7 +55,7 @@ prog-fujprog: build/$(PROJ).bit
 # ----------------------------------------------------------------------
 # Tests
 # ----------------------------------------------------------------------
-TESTS = test-via test-keyboard test-azerty test-injector test-expansion test-ula test-boot
+TESTS = test-via test-keyboard test-azerty test-injector test-tape test-expansion test-ula test-boot
 
 test: $(TESTS)
 	@echo "== TOUS LES TESTS SONT PASSES =="
@@ -77,6 +77,11 @@ test-azerty: sim/out
 	iverilog -DSIM -g2005 -I rtl -o sim/out/tb_azerty.vvp sim/tb_azerty.v rtl/oric_keyboard.v
 	vvp sim/out/tb_azerty.vvp | tee sim/out/tb_azerty.log
 	@grep -q "ALL TESTS PASSED" sim/out/tb_azerty.log
+
+test-tape: sim/out
+	iverilog -DSIM -g2005 -o sim/out/tb_tape.vvp sim/tb_tape.v rtl/tape_injector.v
+	vvp sim/out/tb_tape.vvp | tee sim/out/tb_tape.log
+	@grep -q "ALL TESTS PASSED" sim/out/tb_tape.log
 
 test-injector: sim/out
 	iverilog -DSIM -g2005 -I rtl -o sim/out/tb_inj.vvp sim/tb_injector.v \

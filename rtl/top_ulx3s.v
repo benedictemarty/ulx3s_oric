@@ -5,7 +5,8 @@
 module top_ulx3s (
     input        clk_25mhz,
     input  [6:0] btn,
-    input        ftdi_txd,      // UART du PC (US1) : clavier série injecté
+    input        ftdi_txd,      // UART du PC (US1) : clavier série / .tap
+    output       ftdi_rxd,      // UART vers le PC (US1) : crédits cassette
     output [7:0] led,
     output [3:0] gpdi_dp,
     inout        usb_fpga_bd_dp,
@@ -139,15 +140,50 @@ module top_ulx3s (
         .valid (rx_valid)
     );
 
+    // Aiguillage UART : en mode cassette (tape_active), les octets vont à
+    // l'injecteur .tap et NON au clavier série.
+    wire       tape_active;
+    wire       kbd_rx_valid = rx_valid & ~tape_active;
+
     key_injector inj (
         .clk        (clk_sys),
         .rst        (rst_sys),
         .rx_data    (rx_data),
-        .rx_valid   (rx_valid),
+        .rx_valid   (kbd_rx_valid),
         .inj_active (inj_active),
         .inj_col    (inj_col),
         .inj_row    (inj_row),
         .inj_shift  (inj_shift)
+    );
+
+    // ------------------------------------------------------------------
+    // Cassette : injecteur .tap (contrôle de flux par crédits sur ftdi_rxd)
+    // ------------------------------------------------------------------
+    wire       tape_line;      // -> tape_in (VIA CB1)
+    wire       tape_motor_w;   // <- VIA PB6
+    wire [7:0] tap_tx_data;
+    wire       tap_tx_send, tap_tx_busy;
+
+    tape_injector tape (
+        .clk         (clk_sys),
+        .rst         (rst_sys),
+        .rx_data     (rx_data),
+        .rx_valid    (rx_valid),
+        .tx_data     (tap_tx_data),
+        .tx_send     (tap_tx_send),
+        .tx_busy     (tap_tx_busy),
+        .motor       (tape_motor_w),
+        .tape_line   (tape_line),
+        .tape_active (tape_active)
+    );
+
+    uart_tx #(.CLK_HZ(25_000_000), .BAUD(115_200)) uart_credits (
+        .clk  (clk_sys),
+        .rst  (rst_sys),
+        .data (tap_tx_data),
+        .send (tap_tx_send),
+        .tx   (ftdi_rxd),
+        .busy (tap_tx_busy)
     );
 
     // ------------------------------------------------------------------
@@ -187,8 +223,8 @@ module top_ulx3s (
         .prn_strobe_n(gn[26]),
         .prn_ack     (gn[27]),
         .tape_out    (gp[14]),
-        .tape_motor  (gp[15]),
-        .tape_in     (gp[16]),
+        .tape_motor  (tape_motor_w),
+        .tape_in     (tape_line),      // alimenté par l'injecteur .tap
         .fb_we       (fb_we),
         .fb_addr     (fb_waddr),
         .fb_data     (fb_wdata),
@@ -277,6 +313,7 @@ module top_ulx3s (
     assign led[2] = usb_conerr;
     assign led[3] = irq_dbg;
     assign led[4] = layout_azerty;         // allumee = AZERTY, eteinte = QWERTY
-    assign led[7:5] = 3'b0;
+    assign led[5] = tape_active;           // chargement cassette .tap en cours
+    assign led[7:6] = 2'b0;
 
 endmodule

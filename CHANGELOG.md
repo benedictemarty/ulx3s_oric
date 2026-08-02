@@ -5,6 +5,19 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 
 ## [Non publié]
 
+### Ajouté
+- **Chargement de programmes `.tap` (cassette) — US2.1** : injecteur cassette
+  dans le FPGA (`rtl/tape_injector.v`) qui reçoit un `.tap` par UART et génère
+  la forme d'onde cassette Oric exacte sur `tape_in` (→ VIA CB1 → `CLOAD`).
+  Modulation conforme à la référence `~/Oric1/src/io/cassette.c` : trame 14
+  bits (start, 8 data, parité impaire, 4 stop), amorce 64×`0x16`, bit `1`
+  416 µs / bit `0` 624 µs, joué quand le moteur (PB6) tourne. **Contrôle de
+  flux par crédits** sur la voie retour `ftdi_rxd` (nouvel `rtl/uart_tx.v`) :
+  1 octet crédit `0x5A` par octet absorbable → aucune perte quelle que soit la
+  taille (jeux 48 Ko inclus). Aiguillage UART clavier/cassette (`tape_active`),
+  LED5 = chargement. Script PC `tools/send_tap.py`, doc `docs/CASSETTE.md`,
+  testbench `tb_tape` (redécodage de la forme d'onde, framing, crédits).
+
 ### Corrigé
 - **Touche `*` AZERTY sans effet** : le scancode réel de la touche `*µ`
   variait (`0x31` mappé, mais certains claviers émettent `0x32`). Ajout de

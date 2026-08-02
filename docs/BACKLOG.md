@@ -24,7 +24,10 @@ affichage HDMI, clavier USB, son AY.
 - [ ] Son AY sur la prise jack (ex. `PING`, `ZAP`, `MUSIC` en BASIC)
 
 ## Sprint 2 — « On charge des programmes »
-- [ ] US2.1 Chargement .tap (cassette) — injection via ESP32 ou carte SD
+- [x] US2.1 Chargement .tap (cassette) (2026-08-02) — injecteur cassette FPGA
+      alimenté par UART avec contrôle de flux par crédits (voie retour
+      ftdi_rxd) ; modulation fidèle à la référence, script tools/send_tap.py,
+      testbench tb_tape. Reste à valider sur carte avec un vrai .tap.
 - [ ] US2.2 Bouton reset physique (BTN) + reset à chaud/froid
 - [ ] US2.3 LED d'activité (IRQ, VSYNC, USB)
 
