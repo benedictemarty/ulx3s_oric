@@ -27,7 +27,7 @@ affichage HDMI, clavier USB, son AY.
 - [x] US2.1 Chargement .tap (cassette) (2026-08-02) — injecteur cassette FPGA
       alimenté par UART avec contrôle de flux par crédits (voie retour
       ftdi_rxd) ; modulation fidèle à la référence, script tools/send_tap.py,
-      testbench tb_tape. Reste à valider sur carte avec un vrai .tap.
+      testbench tb_tape. VALIDÉ SUR CARTE avec un vrai .tap (bmarty, 2026-08-02).
 - [ ] US2.2 Bouton reset physique (BTN) + reset à chaud/froid
 - [ ] US2.3 LED d'activité (IRQ, VSYNC, USB)
 
