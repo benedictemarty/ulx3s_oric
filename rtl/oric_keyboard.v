@@ -160,6 +160,8 @@ module oric_keyboard #(
                 // --- symboles à droite ---
                 8'h30: azerty_map = {1'b1, sh ? 8'h00  : "$"}; // $ / £ (indispo)
                 8'h31: azerty_map = {1'b1, sh ? 8'h00  : "*"}; // * / µ (indispo)
+                8'h32: azerty_map = {1'b1, sh ? 8'h00  : "*"}; // *µ variante ISO (= 0x31)
+                8'h55: azerty_map = {1'b1, "*"};              // * du pave numerique
                 8'h34: azerty_map = {1'b1, sh ? "%"    : 8'h00}; // ù (indispo) / %
                 // --- rangée du bas ---
                 8'h10: azerty_map = {1'b1, sh ? "?"    : ","}; // , ?   (QWERTY M)

@@ -6,6 +6,9 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 ## [Non publié]
 
 ### Corrigé
+- **Touche `*` AZERTY sans effet** : le scancode réel de la touche `*µ`
+  variait (`0x31` mappé, mais certains claviers émettent `0x32`). Ajout de
+  `0x32` (variante ISO) et `0x55` (pavé numérique) → `*` = Shift+8 Oric.
 - **Touche accentuée AZERTY tombait sur le chiffre QWERTY** (« la touche 2
   reste à 2 même avec Shift »). Les touches dont le glyphe est hors ASCII
   (é è à ç ù ° £ § µ) renvoyaient 0 et `key_map` retombait alors sur la table

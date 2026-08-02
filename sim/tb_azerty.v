@@ -102,6 +102,15 @@ module tb_azerty;
         expect_cell(3'd4, 3'd4, "AZ ( : Shift present");
         k1 = 0; mods = 0; steps(TAIL + 3);
 
+        // ---- '*' = Shift+8 Oric (7,0), touche *µ (0x31) et variante ISO (0x32) ----
+        k1 = 8'h31; steps(LEAD + 2);
+        expect_cell(3'd7, 3'd0, "AZ * (0x31) : 8 Oric (7,0)");
+        expect_cell(3'd4, 3'd4, "AZ * (0x31) : Shift present");
+        k1 = 0; steps(TAIL + 3);
+        k1 = 8'h32; steps(LEAD + 2);
+        expect_cell(3'd7, 3'd0, "AZ * (0x32) : 8 Oric (7,0)");
+        k1 = 0; steps(TAIL + 3);
+
         // ---- '?' = Shift+/ (0x10 avec Shift physique) ----
         k1 = 8'h10; mods = 8'h02; steps(LEAD + 2);
         expect_cell(3'd7, 3'd3, "AZ ? : / Oric (7,3)");
