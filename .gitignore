@@ -8,3 +8,5 @@ sim/out/
 __pycache__/
 tools/esp32/bin/
 tools/esp32/passthru/
+tools/esp32/venv/
+tools/esp32/out/

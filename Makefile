@@ -129,6 +129,10 @@ esp32-passthru-flash:
 esp32-upload:
 	tools/esp32/upload.sh $(PORT)
 
+# Contourne la régression de reset esptool >=4.6 (esptool ancien en venv) :
+esp32-flash-classic:
+	tools/esp32/flash-esptool.sh $(PORT)
+
 oric-flash: build/oric_ulx3s.bit
 	openFPGALoader -f --unprotect-flash -b ulx3s build/oric_ulx3s.bit
 
@@ -136,4 +140,4 @@ clean:
 	rm -rf build sim/out
 
 .PHONY: all prog prog-fujprog test $(TESTS) esp32-setup esp32-build esp32-flash \
-        esp32-passthru-flash esp32-upload oric-flash clean
+        esp32-passthru-flash esp32-upload esp32-flash-classic oric-flash clean
