@@ -56,6 +56,15 @@ module oric_atmos #(
     output        tape_motor,
     input         tape_in,
 
+    // 6551 ACIA ($031C-$031F) : pont série vers l'ESP32 (modem WiFi)
+    output [7:0]  acia_tx_data,
+    output        acia_tx_send,
+    input         acia_tx_busy,
+    input  [7:0]  acia_rx_data,
+    input         acia_rx_valid,
+    input         acia_dcd,
+    input         acia_dsr,
+
     // Debug
     output        cpu_irq_dbg
 );
@@ -88,7 +97,7 @@ module oric_atmos #(
         .DI    (cpu_di),
         .DO    (cpu_do),
         .WE    (cpu_we),
-        .IRQ   (via_irq | ext_irq),
+        .IRQ   (via_irq | ext_irq | acia_irq),
         .NMI   (1'b0),
         .RDY   (cen1)
     );
@@ -123,10 +132,11 @@ module oric_atmos #(
     wire sel_io   = (bus_addr_q[15:8] == 8'h03);
     wire rom_area = (bus_addr_q[15:14] == 2'b11);
     wire sel_via  = sel_io & (bus_addr_q[7:4] == 4'h0) & ~ext_ioctl;
+    wire sel_acia = sel_io & (bus_addr_q[7:2] == 6'b000111) & ~ext_ioctl; // $031C-$031F
     wire sel_rom  = rom_area & ~ext_romdis;
     wire sel_ram  = ~sel_io & ~rom_area;
     wire rom_as_ram = rom_area & ext_romdis & ~ext_map;   // RAM cachée
-    wire sel_ext  = (sel_io & ~sel_via)                   // page 3 externe
+    wire sel_ext  = (sel_io & ~sel_via & ~sel_acia)       // page 3 externe (hors ACIA)
                   | (rom_area & ext_romdis & ext_map);    // overlay cartouche
 
     assign exp_addr    = bus_addr_q;
@@ -138,7 +148,8 @@ module oric_atmos #(
     // ------------------------------------------------------------------
     // Mémoires
     // ------------------------------------------------------------------
-    wire [7:0]  ram_dout, rom_dout, via_dout;
+    wire [7:0]  ram_dout, rom_dout, via_dout, acia_dout;
+    wire        acia_irq;
     wire [15:0] vram_addr;
     wire [7:0]  vram_dout;
 
@@ -166,6 +177,7 @@ module oric_atmos #(
     always @(posedge clk) begin
         if (tphase == 5'd4) begin
             if (sel_via)        cpu_di <= via_dout;
+            else if (sel_acia)  cpu_di <= acia_dout;
             else if (sel_rom)   cpu_di <= rom_dout;
             else if (rom_as_ram) cpu_di <= ram_dout;
             else if (sel_ext)   cpu_di <= 8'hFF;   // provisoire, écrasé à t23
@@ -208,6 +220,26 @@ module oric_atmos #(
         .ca2_out (via_ca2),
         .cb1_in  (tape_in),               // entrée cassette
         .cb2_out (via_cb2)
+    );
+
+    // 6551 ACIA ($031C-$031F) : registres côté CPU, pont série côté ESP32
+    acia6551 acia (
+        .clk       (clk),
+        .rst       (rst),
+        .cen       (cen1),
+        .cs        (sel_acia),
+        .we        (bus_we_q),
+        .addr      (bus_addr_q[1:0]),
+        .din       (bus_do_q),
+        .dout      (acia_dout),
+        .irq       (acia_irq),
+        .dcd       (acia_dcd),
+        .dsr       (acia_dsr),
+        .tx_data   (acia_tx_data),
+        .tx_send   (acia_tx_send),
+        .tx_busy   (acia_tx_busy),
+        .rx_data   (acia_rx_data),
+        .rx_valid  (acia_rx_valid)
     );
 
     assign prn_data     = via_pa_out;     // partagé avec le bus AY (fidèle)

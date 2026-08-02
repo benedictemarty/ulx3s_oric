@@ -17,6 +17,15 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
   firmware ESP32 (Zimodem, bmarty flashe), terminal Oric.
 
 ### Ajouté
+- **6551 ACIA + pont ESP32 — US-MODEM phase 1** : cœur `rtl/acia6551.v`
+  émulé et mappé `$031C-$031F` (fidèle à `~/Oric1/src/io/acia6551.c` :
+  registres data/status/command/control, `TDRE`/`RDRF`/`OVRN`, IRQ armé/
+  acquitté par lecture STATUS, bits DCD/DSR). Décodé dans `oric_atmos`
+  (`sel_acia`, carve hors du bus d'extension, IRQ `via_irq|ext_irq|acia_irq`).
+  Pont UART 115200 vers l'ESP32 embarqué : 6551 TX → `wifi_rxd` (K3), `wifi_txd`
+  (K4) → 6551 RX (nouveaux `uart_tx`/`uart_rx`), `wifi_en` actif. Testbench
+  `tb_acia` (registres, TX/RX, overrun, IRQ). Le firmware Hayes/WiFi de l'ESP32
+  = phase 2 (bmarty). DCD/DSR câblés à 0 en attendant.
 - **Chargement de programmes `.tap` (cassette) — US2.1** : injecteur cassette
   dans le FPGA (`rtl/tape_injector.v`) qui reçoit un `.tap` par UART et génère
   la forme d'onde cassette Oric exacte sur `tape_in` (→ VIA CB1 → `CLOAD`).

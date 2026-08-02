@@ -7,6 +7,9 @@ module top_ulx3s (
     input  [6:0] btn,
     input        ftdi_txd,      // UART du PC (US1) : clavier série / .tap
     output       ftdi_rxd,      // UART vers le PC (US1) : crédits cassette
+    output       wifi_en,       // active l'ESP32 (modem WiFi)
+    output       wifi_rxd,      // FPGA -> ESP32 : 6551 TX (modem)
+    input        wifi_txd,      // ESP32 -> FPGA : 6551 RX (modem)
     output [7:0] led,
     output [3:0] gpdi_dp,
     inout        usb_fpga_bd_dp,
@@ -187,6 +190,31 @@ module top_ulx3s (
     );
 
     // ------------------------------------------------------------------
+    // Modem WiFi : pont UART entre le 6551 ACIA et l'ESP32 embarqué
+    // (US-MODEM phase 1 ; le firmware Hayes/WiFi arrive en phase 2)
+    // ------------------------------------------------------------------
+    assign wifi_en = 1'b1;                 // maintient l'ESP32 actif
+    wire [7:0] acia_tx_data, acia_rx_data;
+    wire       acia_tx_send, acia_tx_busy, acia_rx_valid;
+
+    uart_tx #(.CLK_HZ(25_000_000), .BAUD(115_200)) uart_acia_tx (
+        .clk  (clk_sys),
+        .rst  (rst_sys),
+        .data (acia_tx_data),
+        .send (acia_tx_send),
+        .tx   (wifi_rxd),                  // FPGA -> ESP32
+        .busy (acia_tx_busy)
+    );
+
+    uart_rx #(.CLK_HZ(25_000_000), .BAUD(115_200)) uart_acia_rx (
+        .clk   (clk_sys),
+        .rst   (rst_sys),
+        .rx    (wifi_txd),                 // ESP32 -> FPGA
+        .data  (acia_rx_data),
+        .valid (acia_rx_valid)
+    );
+
+    // ------------------------------------------------------------------
     // Système Oric
     // ------------------------------------------------------------------
     wire        fb_we;
@@ -225,6 +253,13 @@ module top_ulx3s (
         .tape_out    (gp[14]),
         .tape_motor  (tape_motor_w),
         .tape_in     (tape_line),      // alimenté par l'injecteur .tap
+        .acia_tx_data (acia_tx_data),
+        .acia_tx_send (acia_tx_send),
+        .acia_tx_busy (acia_tx_busy),
+        .acia_rx_data (acia_rx_data),
+        .acia_rx_valid(acia_rx_valid),
+        .acia_dcd     (1'b0),          // v1 : porteuse/DSR pilotés par l'ESP32 en phase 2
+        .acia_dsr     (1'b0),
         .fb_we       (fb_we),
         .fb_addr     (fb_waddr),
         .fb_data     (fb_wdata),
