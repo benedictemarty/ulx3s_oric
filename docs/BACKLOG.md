@@ -49,10 +49,14 @@ dans l'ESP32 ; 6551 mappé `$031C-$031F` (standard Oric, fidèle à
       seulement en v3.1.7/R56). Épuisé : passthru officiel, esptool 5.3.1/4.5.1,
       no_reset, re-plug, bitstream `download_esp32.v`, BTN0 maintenu. → **NE PAS
       retenter l'interne.**
-- [ ] US-MODEM.2b **ESP32 externe** (issue retenue) : repointer le pont UART du
-      6551 de `wifi_rxd/txd` vers 2 broches `gp[]` accessibles + doc câblage
-      (TX/RX/GND) ; un ESP32 de dev externe se flashe trivialement par son
-      propre USB. Débloque le modem de bout en bout.
+- [ ] US-MODEM.2b **Modem WiFi externe** (issue retenue) : repointer le pont
+      UART du 6551 de `wifi_rxd/txd` vers 2 broches `gp[]` accessibles + doc
+      câblage (TX/RX/GND). Cible décidée 2026-08-02 : **Pico W** (branché sur
+      US2 pour l'ALIM 5 V ; données via UART GPIO sur le connecteur gp[], PAS
+      via l'USB de US2 — un hôte USB-CDC FPGA serait trop lourd). Firmware :
+      **arduino-pico** (réutilise le sketch modem, API WiFi ~ESP32 ; flash .uf2
+      par BOOTSEL, trivial). Reste à faire : repointage RTL + portage sketch
+      Pico W + brochage 3 fils.
 - [ ] US-MODEM.3 **Phase 3 — Terminal Oric** : programme pilotant le 6551
       (poll RDRF, R/W $031C), v0 BASIC (PEEK/POKE pour AT/OK), v1 terminal ML
       (VT52/ANSI mini) vers un BBS. Réutiliser la logique de la référence.
