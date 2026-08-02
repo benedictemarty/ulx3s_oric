@@ -17,6 +17,12 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
   firmware ESP32 (Zimodem, bmarty flashe), terminal Oric.
 
 ### Ajouté
+- **Outillage ESP32 embarqué** (`tools/esp32/` + cibles Makefile
+  `esp32-setup`/`esp32-build`/`esp32-flash`) : compile et flashe l'ESP32 de
+  l'ULX3S *à travers* le FPGA via le **bitstream passthru officiel 85F**
+  (`emard/ulx3s-bin`) + `arduino-cli`/esptool. `setup.sh` (arduino-cli local,
+  core esp32, passthru), `build.sh`, `flash.sh` (passthru → upload → recharge
+  l'Oric). README avec méthode, config WiFi, dépannage (TMS/GND, gpio5).
 - **Scaffold firmware ESP32 « modem Hayes WiFi » — US-MODEM phase 2**
   (`firmware/esp32_modem/`) : sketch Arduino (WiFi STA, parseur AT —
   `ATDT host:port`, `ATH`, `+++`, `ATO`, `ATE`, `ATI`, config SSID/pass en

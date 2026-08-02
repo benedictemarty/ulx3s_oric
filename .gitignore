@@ -6,3 +6,5 @@ build/
 *.bit
 sim/out/
 __pycache__/
+tools/esp32/bin/
+tools/esp32/passthru/

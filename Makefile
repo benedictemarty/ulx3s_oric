@@ -109,7 +109,19 @@ test-boot: sim/out
 	vvp sim/out/tb_boot.vvp | tee sim/out/tb_boot.log
 	@grep -q "ALL TESTS PASSED" sim/out/tb_boot.log
 
+# ----------------------------------------------------------------------
+# ESP32 embarqué (modem WiFi) — compilation / flash
+# ----------------------------------------------------------------------
+esp32-setup:
+	tools/esp32/setup.sh
+
+esp32-build:
+	tools/esp32/build.sh
+
+esp32-flash:
+	tools/esp32/flash.sh $(PORT)
+
 clean:
 	rm -rf build sim/out
 
-.PHONY: all prog prog-fujprog test $(TESTS) clean
+.PHONY: all prog prog-fujprog test $(TESTS) esp32-setup esp32-build esp32-flash clean
