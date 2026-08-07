@@ -57,7 +57,7 @@ prog-fujprog: build/$(PROJ).bit
 # ----------------------------------------------------------------------
 # Tests
 # ----------------------------------------------------------------------
-TESTS = test-via test-keyboard test-azerty test-injector test-tape test-acia test-expansion test-ula test-boot test-hdmi test-hdmi-packet test-hdmi-audio test-hdmi-island
+TESTS = test-via test-keyboard test-azerty test-injector test-tape test-acia test-expansion test-ula test-boot test-hdmi test-hdmi-packet test-hdmi-audio test-hdmi-island test-spi-byte test-sd
 
 test: $(TESTS)
 	@echo "== TOUS LES TESTS SONT PASSES =="
@@ -134,6 +134,17 @@ test-hdmi-island: sim/out
 	  rtl/hdmi_data_island.v rtl/hdmi_audio_packets.v rtl/hdmi_packet_assembler.v
 	vvp sim/out/tb_hdmi_island.vvp | tee sim/out/tb_hdmi_island.log
 	@grep -q "ALL TESTS PASSED" sim/out/tb_hdmi_island.log
+
+test-spi-byte: sim/out
+	iverilog -DSIM -g2005 -o sim/out/tb_spi_byte.vvp sim/tb_spi_byte.v rtl/spi_byte.v
+	vvp sim/out/tb_spi_byte.vvp | tee sim/out/tb_spi_byte.log
+	@grep -q "ALL TESTS PASSED" sim/out/tb_spi_byte.log
+
+test-sd: sim/out
+	iverilog -DSIM -g2005 -o sim/out/tb_sd.vvp sim/tb_sd_spi.v \
+	  rtl/sd_spi.v rtl/spi_byte.v sim/sd_card_model.v
+	vvp sim/out/tb_sd.vvp | tee sim/out/tb_sd.log
+	@grep -q "ALL TESTS PASSED" sim/out/tb_sd.log
 
 # ----------------------------------------------------------------------
 # ESP32 embarqué (modem WiFi) — compilation / flash
