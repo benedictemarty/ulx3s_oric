@@ -31,8 +31,18 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
     - Intégration `top_ulx3s` : broches `sd_clk`/`sd_cmd`/`sd_d` (SPI : mosi=cmd,
       miso=d0, cs=d3), test au boot lisant le secteur 0 → LEDs (`0xAA` = carte
       OK + signature valide). **Confirmé sur carte réelle par bmarty.**
-  - Suite : lecture FAT32 (répertoire, `.tap`/`.dsk`), OSD, chargement via
-    `tape_injector` (`.tap`) ; `.dsk` = épopée US-DISK (émulation Microdisc).
+  - **Incrément 2 — parseur FAT32**, **validé sur carte** :
+    - `rtl/fat32.v` : lecture seule ; détecte table MBR *ou* superfloppy, lit le
+      BPB, calcule les LBA, parcourt le répertoire racine, liste les `.TAP`/
+      `.DSK` (ignore LFN/volume/dir + autres extensions). Listing exposé par
+      port indexé (nom 8.3, cluster, taille, dsk?).
+    - `sim/sd_card_file.v` (carte servie depuis une image) +
+      `tools/gen_fat_test.py` (image FAT32 avec MBR) + `sim/tb_fat32.v`
+      (`make test-fat`) : listing vérifié en simulation.
+    - `top_ulx3s` : LEDs = nombre de `.tap`/`.dsk` trouvés. **Confirmé sur la
+      carte réelle par bmarty** (les fichiers de la carte sont bien listés).
+  - Suite : OSD à l'écran + navigation, chargement `.tap` via `tape_injector` ;
+    `.dsk` = épopée US-DISK (émulation Microdisc).
 - **Son sur HDMI — épopée US-HDMI-AUDIO (en cours)** : le son de l'Oric
   (AY-3-8912) ne sortait que sur le jack DAC 3,5 mm car la sortie GPDI est du
   **DVI pur** (vidéo seule). Objectif : transporter l'audio dans les *data
