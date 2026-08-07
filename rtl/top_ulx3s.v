@@ -171,14 +171,20 @@ module top_ulx3s (
     wire [7:0] tap_tx_data;
     wire       tap_tx_send, tap_tx_busy;
 
+    // Chargeur cassette depuis la carte SD (pilote le tape_injector à la place
+    // du PC quand un chargement est en cours ; signaux définis plus bas).
+    wire       ld_active;
+    wire [7:0] ld_rx_data;
+    wire       ld_rx_valid;
+
     tape_injector tape (
         .clk         (clk_sys),
         .rst         (rst_sys),
-        .rx_data     (rx_data),
-        .rx_valid    (rx_valid),
+        .rx_data     (ld_active ? ld_rx_data  : rx_data),
+        .rx_valid    (ld_active ? ld_rx_valid : rx_valid),
         .tx_data     (tap_tx_data),
         .tx_send     (tap_tx_send),
-        .tx_busy     (tap_tx_busy),
+        .tx_busy     (ld_active ? 1'b0 : tap_tx_busy),  // loader = jamais occupé
         .motor       (tape_motor_w),
         .tape_line   (tape_line),
         .tape_active (tape_active)
@@ -188,7 +194,7 @@ module top_ulx3s (
         .clk  (clk_sys),
         .rst  (rst_sys),
         .data (tap_tx_data),
-        .send (tap_tx_send),
+        .send (ld_active ? 1'b0 : tap_tx_send),  // en mode SD, crédits -> loader
         .tx   (ftdi_rxd),
         .busy (tap_tx_busy)
     );
@@ -375,6 +381,40 @@ module top_ulx3s (
     wire        fat_done, fat_error;
     wire [7:0]  file_count, fat_status;
 
+    // Sélection du fichier (BTN3 = suivant) et chargement (BTN4)
+    reg [1:0]   b3s, b4s;
+    reg [19:0]  b3d, b4d;
+    reg         b3stab, b4stab, b3prev, b4prev;
+    reg [5:0]   sel_idx;
+    reg         load_trigger;
+
+    always @(posedge clk_sys) begin
+        b3s <= {b3s[0], btn[3]};
+        b4s <= {b4s[0], btn[4]};
+        if (b3s[1] == b3stab) b3d <= 0;
+        else if (b3d == 20'd250_000) begin b3stab <= b3s[1]; b3d <= 0; end
+        else b3d <= b3d + 20'd1;
+        if (b4s[1] == b4stab) b4d <= 0;
+        else if (b4d == 20'd250_000) begin b4stab <= b4s[1]; b4d <= 0; end
+        else b4d <= b4d + 20'd1;
+        b3prev <= b3stab; b4prev <= b4stab;
+        load_trigger <= 1'b0;
+        if (rst_sys) sel_idx <= 6'd0;
+        else begin
+            if (b3stab && !b3prev)          // front BTN3 : fichier suivant
+                sel_idx <= (sel_idx + 6'd1 >= file_count) ? 6'd0 : sel_idx + 6'd1;
+            if (b4stab && !b4prev)          // front BTN4 : charger
+                load_trigger <= 1'b1;
+        end
+    end
+
+    // Parseur FAT + lecture de fichier (q_idx = fichier sélectionné)
+    wire [31:0] sel_size;
+    wire        sel_isdsk;
+    wire        ld_open_start, ld_fdata_ready, fat_fdata_valid, fat_feof, fat_floading;
+    wire [5:0]  ld_open_idx;
+    wire [7:0]  fat_fdata;
+
     fat32 fat (
         .clk(clk_sys), .rst(rst_sys), .start(fat_start),
         .rd_start(fat_rd_start), .rd_sector(fat_rd_sector),
@@ -382,7 +422,20 @@ module top_ulx3s (
         .sd_dvalid(sd_dvalid), .sd_data(sd_data),
         .done(fat_done), .error(fat_error),
         .file_count(file_count), .status(fat_status),
-        .q_idx(6'd0), .q_name(), .q_size(), .q_clus(), .q_isdsk()
+        .q_idx(sel_idx), .q_name(), .q_size(sel_size), .q_clus(), .q_isdsk(sel_isdsk),
+        .open_start(ld_open_start), .open_idx(ld_open_idx), .fdata_ready(ld_fdata_ready),
+        .floading(fat_floading), .feof(fat_feof), .fdata(fat_fdata), .fdata_valid(fat_fdata_valid)
+    );
+
+    // Chargeur : n'injecte que les .tap (les .dsk demandent le Microdisc)
+    tape_loader ld_inst (
+        .clk(clk_sys), .rst(rst_sys),
+        .load_trigger(load_trigger && !sel_isdsk),
+        .sel_idx(sel_idx), .file_size(sel_size), .fat_ready(fat_done),
+        .open_start(ld_open_start), .open_idx(ld_open_idx), .fdata_ready(ld_fdata_ready),
+        .fdata_valid(fat_fdata_valid), .fdata(fat_fdata), .feof(fat_feof),
+        .tape_rx_data(ld_rx_data), .tape_rx_valid(ld_rx_valid),
+        .tape_credit(tap_tx_send), .active(ld_active)
     );
 
     // Lancer le parsing une fois la carte initialisée
@@ -393,13 +446,14 @@ module top_ulx3s (
     end
 
     // ------------------------------------------------------------------
-    // LEDs (validation) : erreur SD = 0xE0, erreur FAT = 0xEE, sinon pendant
-    // le parsing = étape (0x10/0x12/0x20/0x80), et à la fin = NOMBRE de fichiers
-    // .tap/.dsk trouvés sur la carte (en binaire).
+    // LEDs : erreur SD = 0xE0, erreur FAT = 0xEE ; pendant le parsing = étape ;
+    // après = {chargement, .dsk?, nb_fichiers[2:0], index sélectionné[2:0]}.
+    // BTN3 change l'index (led[2:0]), led[6] s'allume si le fichier est un .dsk
+    // (non chargeable), led[7] = chargement en cours.
     // ------------------------------------------------------------------
-    assign led = sd_error  ? 8'hE0 :
-                 fat_error ? 8'hEE :
-                 fat_done  ? file_count :
-                             fat_status;
+    assign led = sd_error   ? 8'hE0 :
+                 fat_error  ? 8'hEE :
+                 !fat_done  ? fat_status :
+                 {tape_active, sel_isdsk, file_count[2:0], sel_idx[2:0]};
 
 endmodule

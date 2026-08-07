@@ -13,7 +13,7 @@ RTL = rtl/oric_atmos.v rtl/oric_ula.v rtl/oric_ram.v rtl/oric_rom.v \
       rtl/hdmi_out.v rtl/top_ulx3s.v \
       rtl/uart_rx.v rtl/uart_tx.v rtl/key_injector.v rtl/tape_injector.v \
       rtl/acia6551.v rtl/expansion_port.v rtl/pll_video.v rtl/pll_sys.v \
-      rtl/spi_byte.v rtl/sd_spi.v rtl/fat32.v
+      rtl/spi_byte.v rtl/sd_spi.v rtl/fat32.v rtl/tape_loader.v
 
 CPU = third_party/verilog-6502/cpu.v third_party/verilog-6502/ALU.v
 
@@ -58,7 +58,7 @@ prog-fujprog: build/$(PROJ).bit
 # ----------------------------------------------------------------------
 # Tests
 # ----------------------------------------------------------------------
-TESTS = test-via test-keyboard test-azerty test-injector test-tape test-acia test-expansion test-ula test-boot test-hdmi test-hdmi-packet test-hdmi-audio test-hdmi-island test-spi-byte test-sd test-fat
+TESTS = test-via test-keyboard test-azerty test-injector test-tape test-acia test-expansion test-ula test-boot test-hdmi test-hdmi-packet test-hdmi-audio test-hdmi-island test-spi-byte test-sd test-fat test-tape-loader
 
 test: $(TESTS)
 	@echo "== TOUS LES TESTS SONT PASSES =="
@@ -153,6 +153,13 @@ test-fat: sim/out
 	  rtl/fat32.v rtl/sd_spi.v rtl/spi_byte.v sim/sd_card_file.v
 	vvp sim/out/tb_fat32.vvp | tee sim/out/tb_fat32.log
 	@grep -q "ALL TESTS PASSED" sim/out/tb_fat32.log
+
+test-tape-loader: sim/out
+	python3 tools/gen_fat_test.py sim/out/fat_test.img
+	iverilog -DSIM -g2005 -o sim/out/tb_tl.vvp sim/tb_tape_loader.v \
+	  rtl/tape_loader.v rtl/fat32.v rtl/sd_spi.v rtl/spi_byte.v sim/sd_card_file.v
+	vvp sim/out/tb_tl.vvp | tee sim/out/tb_tl.log
+	@grep -q "ALL TESTS PASSED" sim/out/tb_tl.log
 
 # ----------------------------------------------------------------------
 # ESP32 embarqué (modem WiFi) — compilation / flash
