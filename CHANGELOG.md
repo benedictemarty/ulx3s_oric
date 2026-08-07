@@ -17,6 +17,22 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
   firmware ESP32 (Zimodem, bmarty flashe), terminal Oric.
 
 ### Ajouté
+- **Lecteur carte micro-SD (SPI) — épopée US-SDCARD (en cours)** : première
+  étape vers le chargement de programmes depuis une carte SD (le lecteur SD de
+  l'ULX3S, jusqu'ici inutilisé), alternative simple à l'USB Mass Storage —
+  clavier branché en direct + stockage sur bus séparé.
+  - **Incrément 1 — pilote SD**, **validé sur carte** :
+    - `rtl/spi_byte.v` : moteur SPI mode 0 (octet full-duplex). Testbench
+      `tb_spi_byte` (loopback).
+    - `rtl/sd_spi.v` : FSM d'init (CMD0/CMD8/ACMD41/CMD58, détection SDHC via
+      CCS) + lecture de secteur (CMD17). Octet `status` pour diagnostic LED.
+    - `sim/sd_card_model.v` + `sim/tb_sd_spi.v` (`make test-sd`) : init complète
+      + lecture secteur 0, motif + signature 0x55AA vérifiés en simulation.
+    - Intégration `top_ulx3s` : broches `sd_clk`/`sd_cmd`/`sd_d` (SPI : mosi=cmd,
+      miso=d0, cs=d3), test au boot lisant le secteur 0 → LEDs (`0xAA` = carte
+      OK + signature valide). **Confirmé sur carte réelle par bmarty.**
+  - Suite : lecture FAT32 (répertoire, `.tap`/`.dsk`), OSD, chargement via
+    `tape_injector` (`.tap`) ; `.dsk` = épopée US-DISK (émulation Microdisc).
 - **Son sur HDMI — épopée US-HDMI-AUDIO (en cours)** : le son de l'Oric
   (AY-3-8912) ne sortait que sur le jack DAC 3,5 mm car la sortie GPDI est du
   **DVI pur** (vidéo seule). Objectif : transporter l'audio dans les *data

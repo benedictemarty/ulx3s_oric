@@ -18,7 +18,11 @@ module top_ulx3s (
     output [3:0] audio_r,
     inout [27:0] gp,            // port d'extension Oric (cf. docs/PORT_EXTENSION.md)
     inout [27:0] gn,
-    output       wifi_gpio0
+    output       wifi_gpio0,
+    // Carte micro-SD (mode SPI)
+    output       sd_clk,
+    output       sd_cmd,
+    inout  [3:0] sd_d
 );
 
     // Maintien de l'alimentation de la carte
@@ -350,18 +354,51 @@ module top_ulx3s (
     assign audio_r = audio_mix[9:6];
 
     // ------------------------------------------------------------------
-    // LEDs de vie
+    // Carte micro-SD (mode SPI) — test de lecture du secteur 0
     // ------------------------------------------------------------------
-    reg [5:0] frame_div;
-    always @(posedge clk_sys)
-        if (frame_tick) frame_div <= frame_div + 6'd1;
+    wire       sd_ready, sd_busy, sd_error, sd_dvalid;
+    wire [7:0] sd_data, sd_status;
+    reg        sd_start;
+    reg        sd_trig;               // lecture déclenchée une seule fois
+    reg [9:0]  sd_bcnt;
+    reg [7:0]  b510, b511;
+    reg        sd_read_done;
 
-    assign led[0] = frame_div[5];          // clignote ~0,8 Hz si la ULA balaye
-    assign led[1] = (usb_typ == 2'd1);     // clavier détecté
-    assign led[2] = usb_conerr;
-    assign led[3] = irq_dbg;
-    assign led[4] = layout_azerty;         // allumee = AZERTY, eteinte = QWERTY
-    assign led[5] = tape_active;           // chargement cassette .tap en cours
-    assign led[7:6] = 2'b0;
+    sd_spi #(.CLK_HZ(25_000_000), .HALF(32)) sdc (
+        .clk(clk_sys), .rst(rst_sys),
+        .start_read(sd_start), .sector(32'd0),
+        .ready(sd_ready), .busy(sd_busy), .error(sd_error),
+        .data(sd_data), .data_valid(sd_dvalid), .status(sd_status),
+        .sck(sd_clk), .mosi(sd_cmd), .miso(sd_d[0]), .cs_n(sd_d[3])
+    );
+    assign sd_d[1] = 1'b1;             // non utilisées en SPI : maintenues hautes
+    assign sd_d[2] = 1'b1;
+
+    always @(posedge clk_sys) begin
+        sd_start <= 1'b0;
+        if (rst_sys) begin
+            sd_trig <= 1'b0; sd_bcnt <= 10'd0; sd_read_done <= 1'b0;
+        end else begin
+            if (sd_ready && !sd_trig && !sd_busy) begin
+                sd_start <= 1'b1; sd_trig <= 1'b1; sd_bcnt <= 10'd0;
+            end
+            if (sd_dvalid) begin
+                if (sd_bcnt == 10'd510) b510 <= sd_data;
+                if (sd_bcnt == 10'd511) begin b511 <= sd_data; sd_read_done <= 1'b1; end
+                sd_bcnt <= sd_bcnt + 10'd1;
+            end
+        end
+    end
+
+    wire sd_sig_ok = (b510 == 8'h55) && (b511 == 8'hAA);
+
+    // ------------------------------------------------------------------
+    // LEDs — pendant la validation SD : affiche l'état du pilote.
+    //   0x01..0x05 = étapes init, 0x80 = init OK, 0x81/0x82 = lecture,
+    //   0xEx = erreur (étape x), 0xAA = secteur 0 lu + signature 0x55AA OK.
+    // ------------------------------------------------------------------
+    assign led = sd_error      ? sd_status :
+                 sd_read_done  ? (sd_sig_ok ? 8'hAA : 8'hF0) :
+                                 sd_status;
 
 endmodule
