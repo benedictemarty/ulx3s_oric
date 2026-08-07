@@ -33,7 +33,7 @@ module tape_loader (
     localparam L_IDLE=0, L_HDR0=1, L_HDR1=2, L_HDR2=3, L_OPEN=4, L_DATA=5, L_DONE=6;
     reg [2:0]  state;
     reg [15:0] len;
-    reg [7:0]  credits;
+    reg [15:0] credits;          // large : le tape_injector envoie une rafale (FIFO)
 
     assign active = (state != L_IDLE);
 

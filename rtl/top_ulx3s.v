@@ -342,6 +342,9 @@ module top_ulx3s (
         aud_p2 <= aud_p1;
     end
 
+    wire [5:0]  osd_name_idx;
+    wire [87:0] osd_q2_name;
+
     hdmi_out #(.SW(16)) hdmi (
         .clk_pixel (clk_pixel),
         .clk_shift (clk_shift),
@@ -350,6 +353,11 @@ module top_ulx3s (
         .fb_rdata  (fb_rdata),
         .aud_l     (aud_p2),
         .aud_r     (aud_p2),
+        .osd_enable     (fat_done && !tape_active),
+        .osd_file_count (file_count),
+        .osd_sel_idx    (sel_idx),
+        .osd_name_idx   (osd_name_idx),
+        .osd_name       (osd_q2_name),
         .gpdi_dp   (gpdi_dp)
     );
 
@@ -423,6 +431,7 @@ module top_ulx3s (
         .done(fat_done), .error(fat_error),
         .file_count(file_count), .status(fat_status),
         .q_idx(sel_idx), .q_name(), .q_size(sel_size), .q_clus(), .q_isdsk(sel_isdsk),
+        .q2_idx(osd_name_idx), .q2_name(osd_q2_name),
         .open_start(ld_open_start), .open_idx(ld_open_idx), .fdata_ready(ld_fdata_ready),
         .floading(fat_floading), .feof(fat_feof), .fdata(fat_fdata), .fdata_valid(fat_fdata_valid)
     );
@@ -453,6 +462,7 @@ module top_ulx3s (
     // ------------------------------------------------------------------
     assign led = sd_error   ? 8'hE0 :
                  fat_error  ? 8'hEE :
+                 tape_active ? sd_status :     // chargement : état pilote SD (diag blocage)
                  !fat_done  ? fat_status :
                  {tape_active, sel_isdsk, file_count[2:0], sel_idx[2:0]};
 

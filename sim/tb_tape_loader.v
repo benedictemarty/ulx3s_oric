@@ -63,16 +63,17 @@ module tb_tape_loader;
         .tape_credit(tape_credit), .active(ld_active)
     );
 
-    // Mock tape_injector : émet un crédit toutes les ~40 cycles (jusqu'à 600),
-    // capture tout ce qui arrive en rx_valid.
-    integer credit_timer = 0, credits_sent = 0;
+    // Mock tape_injector : FIFO de 256 (comme le vrai). Émet un crédit tant qu'il
+    // reste de la place dans le FIFO (inflight < 256) — sans consommer (pire cas).
+    // Le loader doit encaisser une rafale de 256 crédits SANS que son compteur
+    // déborde et se coince à 0 (bug reproduit si le compteur est sur 8 bits).
+    integer credits_sent = 0;
+    wire [31:0] recv_data = (nc > 3) ? (nc - 3) : 0;       // octets de données reçus
+    wire [31:0] inflight  = credits_sent - recv_data;
     always @(posedge clk) begin
         tape_credit <= 1'b0;
-        if (ld_active && credits_sent < 600) begin
-            credit_timer <= credit_timer + 1;
-            if (credit_timer == 40) begin
-                tape_credit <= 1'b1; credit_timer <= 0; credits_sent <= credits_sent + 1;
-            end
+        if (ld_active && credits_sent < 600 && inflight < 256) begin
+            tape_credit <= 1'b1; credits_sent <= credits_sent + 1;
         end
     end
 

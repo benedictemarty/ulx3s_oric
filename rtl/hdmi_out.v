@@ -23,6 +23,13 @@ module hdmi_out #(
     input  [SW-1:0] aud_l,
     input  [SW-1:0] aud_r,
 
+    // OSD (liste des fichiers SD)
+    input           osd_enable,
+    input  [7:0]    osd_file_count,
+    input  [5:0]    osd_sel_idx,
+    output [5:0]    osd_name_idx,
+    input  [87:0]   osd_name,
+
     output [3:0] gpdi_dp       // {clk, r, g, b}
 );
 
@@ -62,16 +69,30 @@ module hdmi_out #(
     always @(posedge clk_pixel) in_win_q <= in_win;
 
     // Palette Oric : 8 couleurs saturées (bits {R,G,B} = index)
-    reg [7:0] red, grn, blu;
+    reg [7:0] pal_r, pal_g, pal_b;
     always @* begin
         if (in_win_q) begin
-            red = fb_rdata[0] ? 8'hFF : 8'h00;
-            grn = fb_rdata[1] ? 8'hFF : 8'h00;
-            blu = fb_rdata[2] ? 8'hFF : 8'h00;
+            pal_r = fb_rdata[0] ? 8'hFF : 8'h00;
+            pal_g = fb_rdata[1] ? 8'hFF : 8'h00;
+            pal_b = fb_rdata[2] ? 8'hFF : 8'h00;
         end else begin
-            red = 8'h00; grn = 8'h00; blu = 8'h00;
+            pal_r = 8'h00; pal_g = 8'h00; pal_b = 8'h00;
         end
     end
+
+    // Incrustation OSD par-dessus la vidéo
+    wire       osd_on;
+    wire [7:0] osd_r, osd_g, osd_b;
+    osd osd_i (
+        .hc(hc), .vc(vc), .enable(osd_enable),
+        .file_count(osd_file_count), .sel_idx(osd_sel_idx),
+        .name_idx(osd_name_idx), .name(osd_name),
+        .osd_on(osd_on), .osd_r(osd_r), .osd_g(osd_g), .osd_b(osd_b)
+    );
+
+    wire [7:0] red = osd_on ? osd_r : pal_r;
+    wire [7:0] grn = osd_on ? osd_g : pal_g;
+    wire [7:0] blu = osd_on ? osd_b : pal_b;
 
     // ------------------------------------------------------------------
     // Ordonnanceur data islands (mode + nibbles TERC4 + contrôle)

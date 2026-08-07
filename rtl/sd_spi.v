@@ -61,7 +61,8 @@ module sd_spi #(
         S_READY  = 8'd25,
         S_CMD17  = 8'd26, S_CMD17D = 8'd27, S_TOKEN  = 8'd28, S_TOKENC = 8'd29,
         S_DATA   = 8'd30, S_DATAC  = 8'd31, S_CRC    = 8'd32, S_END    = 8'd33,
-        S_ERROR  = 8'd34;
+        S_ERROR  = 8'd34,
+        S_SC0    = 8'd35, S_POST   = 8'd36, S_POST2  = 8'd37;
 
     reg [7:0]  state, ret;
     reg [7:0]  rxb;
@@ -114,7 +115,9 @@ module sd_spi #(
                 S_CS0: begin cs_n <= 1'b0; state <= S_CMD0; end
 
                 // ---- sous-programme : envoyer commande + lire R1 ----
-                S_SC:   begin cmd_i <= 3'd0; state <= S_SC_B; end
+                // dummy clock (8 cycles) avant chaque commande : robustesse
+                S_SC:   begin spi_tx <= 8'hFF; ret <= S_SC0; state <= S_XFER; end
+                S_SC0:  begin cmd_i <= 3'd0; state <= S_SC_B; end
                 S_SC_B: begin spi_tx <= cmd_byte(cmd_i, cmdreg, argreg, crcreg);
                               ret <= S_SC_N; state <= S_XFER; end
                 S_SC_N: begin
@@ -212,9 +215,12 @@ module sd_spi #(
                 S_CRC: begin spi_tx <= 8'hFF; ret <= S_END; state <= S_XFER; end
                 S_END: begin
                     if (auxn == 3'd1) begin
-                        cs_n <= 1'b1; busy <= 1'b0; status <= 8'h82; state <= S_READY;
+                        cs_n <= 1'b1; state <= S_POST;   // désélection + dummy clock
                     end else begin auxn <= auxn + 3'd1; state <= S_CRC; end
                 end
+                // 8 cycles d'horloge cs haut : la carte finalise avant la commande suivante
+                S_POST:  begin spi_tx <= 8'hFF; ret <= S_POST2; state <= S_XFER; end
+                S_POST2: begin busy <= 1'b0; status <= 8'h82; state <= S_READY; end
 
                 // ---- erreur ----
                 S_ERROR: begin

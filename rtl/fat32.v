@@ -39,6 +39,10 @@ module fat32 #(
     output     [31:0] q_clus,
     output            q_isdsk,
 
+    // 2e port de lecture (OSD)
+    input      [5:0]  q2_idx,
+    output     [87:0] q2_name,
+
     // Lecture de fichier (streaming octet par octet, avec contrôle de flux)
     input             open_start,    // pulse : ouvrir le fichier open_idx
     input      [5:0]  open_idx,
@@ -54,6 +58,7 @@ module fat32 #(
     reg [31:0] clus_mem [0:MAXFILES-1];
     reg        dsk_mem  [0:MAXFILES-1];
     assign q_name   = name_mem[q_idx];
+    assign q2_name  = name_mem[q2_idx];
     assign q_size   = size_mem[q_idx];
     assign q_clus   = clus_mem[q_idx];
     assign q_isdsk  = dsk_mem[q_idx];
@@ -68,8 +73,8 @@ module fat32 #(
     reg [31:0] part_lba;
     reg [31:0] first_data, root_lba, fat_lba;
 
-    // Lecture de fichier
-    reg [7:0]  secbuf [0:511];
+    // Lecture de fichier (buffer en RAM distribuée : lecture asynchrone fiable)
+    (* ram_style = "distributed" *) reg [7:0] secbuf [0:511];
     reg [31:0] cur_clus, bytes_left, next_clus;
     reg [8:0]  rdpos;
     reg [7:0]  sec_in_clus;
