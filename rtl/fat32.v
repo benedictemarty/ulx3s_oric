@@ -73,8 +73,9 @@ module fat32 #(
     reg [31:0] part_lba;
     reg [31:0] first_data, root_lba, fat_lba;
 
-    // Lecture de fichier (buffer en RAM distribuée : lecture asynchrone fiable)
-    (* ram_style = "distributed" *) reg [7:0] secbuf [0:511];
+    // Lecture de fichier. Buffer secteur forcé en logique (registres) : lecture
+    // combinatoire garantie, sans le décalage d'une BRAM à lecture synchrone.
+    (* ram_style = "logic" *) (* ramstyle = "logic" *) reg [7:0] secbuf [0:511];
     reg [31:0] cur_clus, bytes_left, next_clus;
     reg [8:0]  rdpos;
     reg [7:0]  sec_in_clus;
@@ -228,11 +229,11 @@ module fat32 #(
                 FO_INIT: state <= FO_RD;
 
                 // ---- lire un secteur de données du cluster courant ----
-                FO_RD: if (sd_ready && !sd_busy) begin
+                FO_RD: if (sd_ready && !sd_busy) begin status <= 8'h91;   // lecture données
                     rd_sector <= first_data + (cur_clus - 32'd2) * spc + sec_in_clus;
                     rd_start <= 1'b1; bidx <= 0; state <= FO_CAP;
                 end
-                FO_CAP: if (sd_dvalid) begin
+                FO_CAP: if (sd_dvalid) begin status <= 8'h92;   // réception données
                     secbuf[bidx] <= sd_data;
                     if (bidx == 511) begin rdpos <= 9'd0; state <= FO_EMIT; end
                     else bidx <= bidx + 10'd1;
@@ -240,6 +241,7 @@ module fat32 #(
 
                 // ---- débiter les octets vers le consommateur ----
                 FO_EMIT: begin
+                    status <= 8'h93;                 // débit (attend crédits)
                     if (bytes_left == 32'd0) begin
                         floading <= 1'b0; feof <= 1'b1; state <= FO_EOF;
                     end else if (fdata_ready) begin
@@ -257,6 +259,7 @@ module fat32 #(
 
                 // ---- suivre la chaîne FAT : cluster suivant ----
                 FO_FAT: if (sd_ready && !sd_busy) begin
+                    status <= 8'h94;                          // suivi chaîne FAT
                     rd_sector <= fat_lba + (cur_clus >> 7);   // 128 entrées/secteur
                     rd_start <= 1'b1; bidx <= 0; state <= FO_FATC;
                 end

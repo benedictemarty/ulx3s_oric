@@ -454,6 +454,13 @@ module top_ulx3s (
         else if (sd_ready && !fat_trig) begin fat_start <= 1'b1; fat_trig <= 1'b1; end
     end
 
+    // Diagnostic : compteur de secteurs lus DEPUIS le début du chargement
+    // (remis à zéro à chaque déclenchement) ; figé = bloqué.
+    reg [7:0] sec_cnt;
+    always @(posedge clk_sys)
+        if (rst_sys || load_trigger) sec_cnt <= 8'd0;
+        else if (fat_rd_start) sec_cnt <= sec_cnt + 8'd1;
+
     // ------------------------------------------------------------------
     // LEDs : erreur SD = 0xE0, erreur FAT = 0xEE ; pendant le parsing = étape ;
     // après = {chargement, .dsk?, nb_fichiers[2:0], index sélectionné[2:0]}.
@@ -462,7 +469,7 @@ module top_ulx3s (
     // ------------------------------------------------------------------
     assign led = sd_error   ? 8'hE0 :
                  fat_error  ? 8'hEE :
-                 tape_active ? sd_status :     // chargement : état pilote SD (diag blocage)
+                 tape_active ? fat_status :    // etat fat32 : 91/92 lecture, 93 debit, 94/95 FAT
                  !fat_done  ? fat_status :
                  {tape_active, sel_isdsk, file_count[2:0], sel_idx[2:0]};
 

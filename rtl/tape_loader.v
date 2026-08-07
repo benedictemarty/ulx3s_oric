@@ -7,7 +7,9 @@
 //   -> pour chaque crédit reçu du tape_injector, fournit l'octet suivant du
 //   fichier (contrôle de flux par compteur de crédits).
 
-module tape_loader (
+module tape_loader #(
+    parameter DELAY = 2170        // cycles entre octets (~115200 bauds à 25 MHz)
+) (
     input             clk,
     input             rst,
     input             load_trigger,   // pulse : charger le fichier sel_idx
@@ -34,6 +36,7 @@ module tape_loader (
     reg [2:0]  state;
     reg [15:0] len;
     reg [15:0] credits;          // large : le tape_injector envoie une rafale (FIFO)
+    reg [15:0] dly;              // limitation de débit (évite la rafale d'octets)
 
     assign active = (state != L_IDLE);
 
@@ -41,7 +44,7 @@ module tape_loader (
         open_start    <= 1'b0;
         tape_rx_valid <= 1'b0;
         if (rst) begin
-            state <= L_IDLE; credits <= 8'd0; fdata_ready <= 1'b0;
+            state <= L_IDLE; credits <= 16'd0; fdata_ready <= 1'b0; dly <= 16'd0;
         end else begin
             // compteur de crédits : +1 par crédit reçu, -1 par octet envoyé
             credits <= credits + (tape_credit ? 8'd1 : 8'd0)
@@ -49,7 +52,7 @@ module tape_loader (
             case (state)
                 L_IDLE: if (load_trigger && fat_ready) begin
                     len <= file_size[15:0]; open_idx <= sel_idx;
-                    credits <= 8'd0; state <= L_HDR0;
+                    credits <= 16'd0; dly <= 16'd0; state <= L_HDR0;
                 end
                 // en-tête (accepté sans crédit : tape_injector en S_IDLE/S_LEN)
                 L_HDR0: begin tape_rx_data <= 8'h01;    tape_rx_valid <= 1'b1; state <= L_HDR1; end
@@ -58,10 +61,12 @@ module tape_loader (
                 L_OPEN: begin open_start <= 1'b1; state <= L_DATA; end
                 // données : un octet par crédit
                 L_DATA: begin
-                    fdata_ready <= (credits != 8'd0);
+                    if (dly != 16'd0) dly <= dly - 16'd1;
+                    fdata_ready <= (credits != 16'd0) && (dly == 16'd0);
                     if (fdata_valid) begin
                         tape_rx_data  <= fdata;
                         tape_rx_valid <= 1'b1;
+                        dly <= DELAY[15:0];         // espace le prochain octet
                     end
                     if (feof) begin fdata_ready <= 1'b0; state <= L_DONE; end
                 end
