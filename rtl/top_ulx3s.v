@@ -354,19 +354,16 @@ module top_ulx3s (
     assign audio_r = audio_mix[9:6];
 
     // ------------------------------------------------------------------
-    // Carte micro-SD (mode SPI) — test de lecture du secteur 0
+    // Carte micro-SD (SPI) + parseur FAT32 — liste les .tap/.dsk de la carte
     // ------------------------------------------------------------------
-    wire       sd_ready, sd_busy, sd_error, sd_dvalid;
-    wire [7:0] sd_data, sd_status;
-    reg        sd_start;
-    reg        sd_trig;               // lecture déclenchée une seule fois
-    reg [9:0]  sd_bcnt;
-    reg [7:0]  b510, b511;
-    reg        sd_read_done;
+    wire        sd_ready, sd_busy, sd_error, sd_dvalid;
+    wire [7:0]  sd_data, sd_status;
+    wire        fat_rd_start;
+    wire [31:0] fat_rd_sector;
 
     sd_spi #(.CLK_HZ(25_000_000), .HALF(32)) sdc (
         .clk(clk_sys), .rst(rst_sys),
-        .start_read(sd_start), .sector(32'd0),
+        .start_read(fat_rd_start), .sector(fat_rd_sector),
         .ready(sd_ready), .busy(sd_busy), .error(sd_error),
         .data(sd_data), .data_valid(sd_dvalid), .status(sd_status),
         .sck(sd_clk), .mosi(sd_cmd), .miso(sd_d[0]), .cs_n(sd_d[3])
@@ -374,31 +371,35 @@ module top_ulx3s (
     assign sd_d[1] = 1'b1;             // non utilisées en SPI : maintenues hautes
     assign sd_d[2] = 1'b1;
 
+    reg         fat_start, fat_trig;
+    wire        fat_done, fat_error;
+    wire [7:0]  file_count, fat_status;
+
+    fat32 fat (
+        .clk(clk_sys), .rst(rst_sys), .start(fat_start),
+        .rd_start(fat_rd_start), .rd_sector(fat_rd_sector),
+        .sd_ready(sd_ready), .sd_busy(sd_busy),
+        .sd_dvalid(sd_dvalid), .sd_data(sd_data),
+        .done(fat_done), .error(fat_error),
+        .file_count(file_count), .status(fat_status),
+        .q_idx(6'd0), .q_name(), .q_size(), .q_clus(), .q_isdsk()
+    );
+
+    // Lancer le parsing une fois la carte initialisée
     always @(posedge clk_sys) begin
-        sd_start <= 1'b0;
-        if (rst_sys) begin
-            sd_trig <= 1'b0; sd_bcnt <= 10'd0; sd_read_done <= 1'b0;
-        end else begin
-            if (sd_ready && !sd_trig && !sd_busy) begin
-                sd_start <= 1'b1; sd_trig <= 1'b1; sd_bcnt <= 10'd0;
-            end
-            if (sd_dvalid) begin
-                if (sd_bcnt == 10'd510) b510 <= sd_data;
-                if (sd_bcnt == 10'd511) begin b511 <= sd_data; sd_read_done <= 1'b1; end
-                sd_bcnt <= sd_bcnt + 10'd1;
-            end
-        end
+        fat_start <= 1'b0;
+        if (rst_sys) fat_trig <= 1'b0;
+        else if (sd_ready && !fat_trig) begin fat_start <= 1'b1; fat_trig <= 1'b1; end
     end
 
-    wire sd_sig_ok = (b510 == 8'h55) && (b511 == 8'hAA);
-
     // ------------------------------------------------------------------
-    // LEDs — pendant la validation SD : affiche l'état du pilote.
-    //   0x01..0x05 = étapes init, 0x80 = init OK, 0x81/0x82 = lecture,
-    //   0xEx = erreur (étape x), 0xAA = secteur 0 lu + signature 0x55AA OK.
+    // LEDs (validation) : erreur SD = 0xE0, erreur FAT = 0xEE, sinon pendant
+    // le parsing = étape (0x10/0x12/0x20/0x80), et à la fin = NOMBRE de fichiers
+    // .tap/.dsk trouvés sur la carte (en binaire).
     // ------------------------------------------------------------------
-    assign led = sd_error      ? sd_status :
-                 sd_read_done  ? (sd_sig_ok ? 8'hAA : 8'hF0) :
-                                 sd_status;
+    assign led = sd_error  ? 8'hE0 :
+                 fat_error ? 8'hEE :
+                 fat_done  ? file_count :
+                             fat_status;
 
 endmodule
