@@ -321,17 +321,30 @@ module top_ulx3s (
         .rdata (fb_rdata)
     );
 
-    hdmi_out hdmi (
+    // Audio pour le HDMI : PSG 10 bits non signé -> PCM 16 bits signé.
+    // Décalage à gauche (cadrage MSB) + inversion du bit de signe
+    // (offset-binary -> complément à deux). Traversée du domaine clk_sys ->
+    // clk_pixel par double bascule (signal audio lent : skew négligeable).
+    wire [15:0] aud_signed = {audio_mix, 6'b0} ^ 16'h8000;
+    reg  [15:0] aud_p1, aud_p2;
+    always @(posedge clk_pixel) begin
+        aud_p1 <= aud_signed;
+        aud_p2 <= aud_p1;
+    end
+
+    hdmi_out #(.SW(16)) hdmi (
         .clk_pixel (clk_pixel),
         .clk_shift (clk_shift),
         .rst       (rst_pixel),
         .fb_raddr  (fb_raddr),
         .fb_rdata  (fb_rdata),
+        .aud_l     (aud_p2),
+        .aud_r     (aud_p2),
         .gpdi_dp   (gpdi_dp)
     );
 
     // ------------------------------------------------------------------
-    // Audio : DAC résistif 4 bits de l'ULX3S
+    // Audio : DAC résistif 4 bits de l'ULX3S (jack 3.5 mm, conservé)
     // ------------------------------------------------------------------
     assign audio_l = audio_mix[9:6];
     assign audio_r = audio_mix[9:6];

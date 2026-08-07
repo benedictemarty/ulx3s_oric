@@ -8,7 +8,9 @@ LPF       = constraints/ulx3s_v20.lpf
 
 RTL = rtl/oric_atmos.v rtl/oric_ula.v rtl/oric_ram.v rtl/oric_rom.v \
       rtl/via6522.v rtl/oric_keyboard.v rtl/framebuffer.v \
-      rtl/tmds_encoder.v rtl/hdmi_out.v rtl/top_ulx3s.v \
+      rtl/tmds_encoder.v rtl/hdmi_tmds_channel.v rtl/hdmi_packet_assembler.v \
+      rtl/hdmi_audio_packets.v rtl/hdmi_data_island.v \
+      rtl/hdmi_out.v rtl/top_ulx3s.v \
       rtl/uart_rx.v rtl/uart_tx.v rtl/key_injector.v rtl/tape_injector.v \
       rtl/acia6551.v rtl/expansion_port.v rtl/pll_video.v rtl/pll_sys.v
 
@@ -55,7 +57,7 @@ prog-fujprog: build/$(PROJ).bit
 # ----------------------------------------------------------------------
 # Tests
 # ----------------------------------------------------------------------
-TESTS = test-via test-keyboard test-azerty test-injector test-tape test-acia test-expansion test-ula test-boot
+TESTS = test-via test-keyboard test-azerty test-injector test-tape test-acia test-expansion test-ula test-boot test-hdmi test-hdmi-packet test-hdmi-audio test-hdmi-island
 
 test: $(TESTS)
 	@echo "== TOUS LES TESTS SONT PASSES =="
@@ -108,6 +110,30 @@ test-boot: sim/out
 	iverilog -DSIM -g2005 -I rtl -o sim/out/tb_boot.vvp sim/tb_boot.v $(SIM_CORE)
 	vvp sim/out/tb_boot.vvp | tee sim/out/tb_boot.log
 	@grep -q "ALL TESTS PASSED" sim/out/tb_boot.log
+
+test-hdmi: sim/out
+	iverilog -DSIM -g2005 -o sim/out/tb_hdmi.vvp sim/tb_hdmi_tmds.v \
+	  rtl/hdmi_tmds_channel.v rtl/tmds_encoder.v
+	vvp sim/out/tb_hdmi.vvp | tee sim/out/tb_hdmi.log
+	@grep -q "ALL TESTS PASSED" sim/out/tb_hdmi.log
+
+test-hdmi-packet: sim/out
+	iverilog -DSIM -g2005 -o sim/out/tb_hdmi_packet.vvp sim/tb_hdmi_packet.v \
+	  rtl/hdmi_packet_assembler.v
+	vvp sim/out/tb_hdmi_packet.vvp | tee sim/out/tb_hdmi_packet.log
+	@grep -q "ALL TESTS PASSED" sim/out/tb_hdmi_packet.log
+
+test-hdmi-audio: sim/out
+	iverilog -DSIM -g2005 -o sim/out/tb_hdmi_audio.vvp sim/tb_hdmi_audio.v \
+	  rtl/hdmi_audio_packets.v
+	vvp sim/out/tb_hdmi_audio.vvp | tee sim/out/tb_hdmi_audio.log
+	@grep -q "ALL TESTS PASSED" sim/out/tb_hdmi_audio.log
+
+test-hdmi-island: sim/out
+	iverilog -DSIM -g2005 -o sim/out/tb_hdmi_island.vvp sim/tb_hdmi_island.v \
+	  rtl/hdmi_data_island.v rtl/hdmi_audio_packets.v rtl/hdmi_packet_assembler.v
+	vvp sim/out/tb_hdmi_island.vvp | tee sim/out/tb_hdmi_island.log
+	@grep -q "ALL TESTS PASSED" sim/out/tb_hdmi_island.log
 
 # ----------------------------------------------------------------------
 # ESP32 embarqué (modem WiFi) — compilation / flash

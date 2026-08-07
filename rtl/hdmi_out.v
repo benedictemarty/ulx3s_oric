@@ -1,9 +1,16 @@
-// Sortie DVI 640x480@60 : lit le framebuffer 240x224 (zoom x2, centré),
-// palette Oric 8 couleurs, encodage TMDS et sérialisation 10:1 en DDR
-// (ODDRX1F à 125 MHz). Les broches GPDI de l'ULX3S sont câblées en direct :
-// IO_TYPE LVCMOS33D sur les broches _dp, paire négative générée par l'IO.
+// Sortie HDMI 640x480@60 avec audio : lit le framebuffer 240x224 (zoom x2,
+// centré), palette Oric 8 couleurs, encodage TMDS + data islands audio, et
+// sérialisation 10:1 en DDR (ODDRX1F à 125 MHz). Les broches GPDI de l'ULX3S
+// sont câblées en direct (LVCMOS33D sur les broches _dp).
+//
+// L'audio (aud_l/aud_r, PCM signé 16 bits, domaine clk_pixel) est transporté
+// dans les data islands HDMI (hdmi_data_island + hdmi_tmds_channel). Sur un
+// écran DVI (sans audio), l'image reste identique : les data islands occupent
+// le blanking et sont ignorés.
 
-module hdmi_out (
+module hdmi_out #(
+    parameter SW = 16
+) (
     input        clk_pixel,    // 25 MHz
     input        clk_shift,    // 125 MHz
     input        rst,
@@ -12,10 +19,14 @@ module hdmi_out (
     output [15:0] fb_raddr,
     input  [3:0]  fb_rdata,
 
+    // Audio (domaine clk_pixel)
+    input  [SW-1:0] aud_l,
+    input  [SW-1:0] aud_r,
+
     output [3:0] gpdi_dp       // {clk, r, g, b}
 );
 
-    // Timing 640x480@60 (25,175 MHz nominal ; 25 MHz accepté par les écrans)
+    // Timing 640x480@60 (pixel clock 25 MHz exact)
     localparam H_VISIBLE = 640, H_FRONT = 16, H_SYNC = 96, H_BACK = 48;
     localparam V_VISIBLE = 480, V_FRONT = 10, V_SYNC = 2,  V_BACK = 33;
     localparam H_TOTAL = 800, V_TOTAL = 525;
@@ -62,20 +73,47 @@ module hdmi_out (
         end
     end
 
-    // Encodage TMDS
+    // ------------------------------------------------------------------
+    // Ordonnanceur data islands (mode + nibbles TERC4 + contrôle)
+    // ------------------------------------------------------------------
+    wire [2:0] mode;
+    wire [3:0] aux0, aux1, aux2;
+    wire [1:0] ctl0, ctl1, ctl2;
+
+    hdmi_data_island #(
+        .H_ACTIVE(H_VISIBLE), .H_TOTAL(H_TOTAL),
+        .V_ACTIVE(V_VISIBLE), .V_TOTAL(V_TOTAL),
+        .ACR_N(20'd4096), .ACR_CTS(20'd25000),
+        .PIXEL_RATE(25000000), .AUDIO_RATE(32000),
+        .EMIT_VGUARD(1),          // video guard band (obligatoire HDMI avec data islands)
+        .ISLANDS(1),              // data islands (audio) + AVI/Audio InfoFrame + ACR
+        .VBLANK_ONLY(0),          // son complet (le ghost venait de l'AVI manquant)
+        .SW(SW)
+    ) di (
+        .clk(clk_pixel), .rst(rst),
+        .hc(hc), .vc(vc), .hsync(hsync), .vsync(vsync), .de(de),
+        .aud_l(aud_l), .aud_r(aud_r),
+        .mode(mode), .aux0(aux0), .aux1(aux1), .aux2(aux2),
+        .ctl0(ctl0), .ctl1(ctl1), .ctl2(ctl2)
+    );
+
+    // ------------------------------------------------------------------
+    // Encodage TMDS HDMI (3 canaux)
+    // ------------------------------------------------------------------
     wire [9:0] tmds_r, tmds_g, tmds_b;
-    tmds_encoder enc_b (.clk(clk_pixel), .data(blu), .ctrl({vsync, hsync}), .de(de), .tmds(tmds_b));
-    tmds_encoder enc_g (.clk(clk_pixel), .data(grn), .ctrl(2'b00),          .de(de), .tmds(tmds_g));
-    tmds_encoder enc_r (.clk(clk_pixel), .data(red), .ctrl(2'b00),          .de(de), .tmds(tmds_r));
+    hdmi_tmds_channel #(.CN(0)) enc_b (
+        .clk(clk_pixel), .mode(mode), .video_data(blu),
+        .aux_data(aux0), .ctrl_data(ctl0), .tmds(tmds_b));
+    hdmi_tmds_channel #(.CN(1)) enc_g (
+        .clk(clk_pixel), .mode(mode), .video_data(grn),
+        .aux_data(aux1), .ctrl_data(ctl1), .tmds(tmds_g));
+    hdmi_tmds_channel #(.CN(2)) enc_r (
+        .clk(clk_pixel), .mode(mode), .video_data(red),
+        .aux_data(aux2), .ctrl_data(ctl2), .tmds(tmds_r));
 
 `ifndef SIM
-    // Sérialisation 10:1 : 2 bits par cycle 125 MHz (DDR).
-    // Chargement aligné en phase : clk_pixel (même PLL, x5) est échantillonné
-    // dans le domaine 125 MHz ; son front montant déclenche le chargement
-    // ~2 cycles (16 ns) après la mise à jour des mots TMDS côté pixel —
-    // marge confortable, phase constante (horloges liées). Un compteur mod-5
-    // libre pouvait verrouiller pendant la transition des mots (image
-    // intermittente selon la phase de démarrage de la PLL).
+    // Sérialisation 10:1 : 2 bits par cycle 125 MHz (DDR), chargement aligné
+    // en phase (cf. historique). clk_pixel échantillonné dans le domaine 125.
     reg [2:0] pix_sync;
     always @(posedge clk_shift) pix_sync <= {pix_sync[1:0], clk_pixel};
     wire load = pix_sync[1] & ~pix_sync[2];

@@ -17,6 +17,54 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
   firmware ESP32 (Zimodem, bmarty flashe), terminal Oric.
 
 ### Ajouté
+- **Son sur HDMI — épopée US-HDMI-AUDIO (en cours)** : le son de l'Oric
+  (AY-3-8912) ne sortait que sur le jack DAC 3,5 mm car la sortie GPDI est du
+  **DVI pur** (vidéo seule). Objectif : transporter l'audio dans les *data
+  islands* HDMI, en réécrivant en Verilog-2005 la logique standard (le module
+  de référence `hdl-util/hdmi` est en SystemVerilog, incompatible en direct
+  avec le flow yosys/iverilog du projet). Jack conservé en parallèle (aucune
+  interaction avec l'entrée cassette, câblée sur `gp[14]`).
+  - **Incrément 1 — encodeur TMDS 3-modes** (`rtl/hdmi_tmds_channel.v`) :
+    control / video (8b/10b) / **data island TERC4** / guard bands vidéo et
+    data-island, par canal (CN=0/1/2). Testbench `sim/tb_hdmi_tmds.v`
+    (cible `make test-hdmi`) : **non-régression** stricte contre l'ancien
+    `tmds_encoder.v` sur 512 cycles + vérification littérale des 16 codes
+    TERC4, des guard bands et des codes de contrôle.
+  - **Incrément 2 — packets audio** :
+    - `rtl/hdmi_packet_assembler.v` : assemble un data island packet (header
+      24 bits + 8 ECC, 4 subpackets 56 bits + 8 ECC) et le sérialise sur les
+      32 pixels. ECC BCH par LFSR (polynôme 0x83). Testbench
+      `sim/tb_hdmi_packet.v` (`make test-hdmi-packet`) : framing exact +
+      **syndrome BCH nul** sur les mots reconstitués.
+    - `rtl/hdmi_audio_packets.v` : contenu des packets Audio Clock
+      Regeneration (N/CTS, N=4096 pour 32 kHz), Audio InfoFrame (LPCM 2 canaux,
+      checksum), Audio Sample Packet (échantillon IEC60958 stéréo, preamble
+      P/C/U/V, parité). Testbench `sim/tb_hdmi_audio.v`
+      (`make test-hdmi-audio`) : headers, slices N/CTS, checksum nul, parité
+      recalculée (1 et 2 échantillons).
+  - **Incrément 3 — ordonnanceur + cadence audio** (`rtl/hdmi_data_island.v`) :
+    place un data island par ligne dans le blanking (preamble + guard bands +
+    island), plus video preamble/guard avant la reprise vidéo ; ordonnance
+    InfoFrame (ligne 0), ACR (ligne 1) et Audio Sample Packets (autres lignes).
+    Cadence audio 32 kHz exacte par accumulateur rationnel (pixel clock 25 MHz),
+    jusqu'à 4 échantillons/packet (cadence ligne 31,25 kHz < 32 kHz). Testbench
+    `sim/tb_hdmi_island.v` (`make test-hdmi-island`) : séquence complète des
+    modes vérifiée pixel par pixel.
+  - **Intégration** : `rtl/hdmi_out.v` passe de DVI pur à HDMI (3 canaux
+    `hdmi_tmds_channel` + data islands) ; image inchangée sur écran DVI.
+    `rtl/top_ulx3s.v` : audio PSG converti en PCM 16 bits signé, traversée de
+    domaine clk_sys→clk_pixel, **jack 3.5 mm conservé** en parallèle.
+  - **AVI InfoFrame** (`hdmi_audio_packets` type 0x82, ligne 2) : décrit la
+    vidéo à l'écran passé en mode HDMI. **VIC=0** (format non-CEA) : sans lui
+    (VIC=1) l'écran imposait le timing 25,175 MHz de la norme 640×480 et coupait
+    l'image après ~30 s (on génère 25,000 MHz). **PB1 underscan (S=10)** :
+    supprime le traitement d'image (halo/fantômes autour des glyphes) sans
+    couper le son. NB : le bit `IT_CONTENT` (mode « PC ») supprime aussi le halo
+    mais **coupe les haut-parleurs** de certaines TV — non retenu.
+  - **Validé sur carte (ULX3S)** : image nette + audio HDMI dans le signal +
+    stable, jack conservé. Cadence audio et compatibilité écran confirmées par
+    bmarty. Flash en FLASH (`make oric-flash`) recommandé (le load SRAM peut
+    être perdu au reboot).
 - **Outillage ESP32 embarqué** (`tools/esp32/` + cibles Makefile
   `esp32-setup`/`esp32-build`/`esp32-flash`) : compile et flashe l'ESP32 de
   l'ULX3S *à travers* le FPGA via le **bitstream passthru officiel 85F**
