@@ -13,7 +13,7 @@ RTL = rtl/oric_atmos.v rtl/oric_ula.v rtl/oric_ram.v rtl/oric_rom.v \
       rtl/hdmi_out.v rtl/top_ulx3s.v \
       rtl/uart_rx.v rtl/uart_tx.v rtl/key_injector.v rtl/tape_injector.v \
       rtl/acia6551.v rtl/expansion_port.v rtl/pll_video.v rtl/pll_sys.v \
-      rtl/spi_byte.v rtl/sd_spi.v rtl/fat32.v rtl/tape_loader.v rtl/osd.v
+      rtl/spi_byte.v rtl/sd_spi.v rtl/fat32.v rtl/tape_loader.v rtl/osd.v rtl/fat_dump.v
 
 CPU = third_party/verilog-6502/cpu.v third_party/verilog-6502/ALU.v
 

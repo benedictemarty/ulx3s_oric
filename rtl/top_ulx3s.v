@@ -193,8 +193,8 @@ module top_ulx3s (
     uart_tx #(.CLK_HZ(25_000_000), .BAUD(115_200)) uart_credits (
         .clk  (clk_sys),
         .rst  (rst_sys),
-        .data (tap_tx_data),
-        .send (ld_active ? 1'b0 : tap_tx_send),  // en mode SD, crédits -> loader
+        .data (dump_active ? dump_tx_data : tap_tx_data),
+        .send (dump_active ? dump_tx_send : (ld_active ? 1'b0 : tap_tx_send)),
         .tx   (ftdi_rxd),
         .busy (tap_tx_busy)
     );
@@ -389,30 +389,37 @@ module top_ulx3s (
     wire        fat_done, fat_error;
     wire [7:0]  file_count, fat_status;
 
-    // Sélection du fichier (BTN3 = suivant) et chargement (BTN4)
-    reg [1:0]   b3s, b4s;
-    reg [19:0]  b3d, b4d;
-    reg         b3stab, b4stab, b3prev, b4prev;
+    // Sélection (BTN3 = suivant), chargement (BTN4), dump debug UART (BTN2)
+    reg [1:0]   b2s, b3s, b4s;
+    reg [19:0]  b2d, b3d, b4d;
+    reg         b2stab, b3stab, b4stab, b2prev, b3prev, b4prev;
     reg [5:0]   sel_idx;
-    reg         load_trigger;
+    reg         load_trigger, dump_trigger;
 
     always @(posedge clk_sys) begin
+        b2s <= {b2s[0], btn[2]};
         b3s <= {b3s[0], btn[3]};
         b4s <= {b4s[0], btn[4]};
+        if (b2s[1] == b2stab) b2d <= 0;
+        else if (b2d == 20'd250_000) begin b2stab <= b2s[1]; b2d <= 0; end
+        else b2d <= b2d + 20'd1;
         if (b3s[1] == b3stab) b3d <= 0;
         else if (b3d == 20'd250_000) begin b3stab <= b3s[1]; b3d <= 0; end
         else b3d <= b3d + 20'd1;
         if (b4s[1] == b4stab) b4d <= 0;
         else if (b4d == 20'd250_000) begin b4stab <= b4s[1]; b4d <= 0; end
         else b4d <= b4d + 20'd1;
-        b3prev <= b3stab; b4prev <= b4stab;
+        b2prev <= b2stab; b3prev <= b3stab; b4prev <= b4stab;
         load_trigger <= 1'b0;
+        dump_trigger <= 1'b0;
         if (rst_sys) sel_idx <= 6'd0;
         else begin
             if (b3stab && !b3prev)          // front BTN3 : fichier suivant
                 sel_idx <= (sel_idx + 6'd1 >= file_count) ? 6'd0 : sel_idx + 6'd1;
-            if (b4stab && !b4prev)          // front BTN4 : charger
+            if (b4stab && !b4prev)          // front BTN4 : charger (cassette)
                 load_trigger <= 1'b1;
+            if (b2stab && !b2prev)          // front BTN2 : dump debug vers UART
+                dump_trigger <= 1'b1;
         end
     end
 
@@ -422,6 +429,9 @@ module top_ulx3s (
     wire        ld_open_start, ld_fdata_ready, fat_fdata_valid, fat_feof, fat_floading;
     wire [5:0]  ld_open_idx;
     wire [7:0]  fat_fdata;
+    // Dump debug UART (BTN2)
+    wire        dump_open_start, dump_fdata_ready, dump_active, dump_tx_send;
+    wire [7:0]  dump_tx_data;
 
     fat32 fat (
         .clk(clk_sys), .rst(rst_sys), .start(fat_start),
@@ -432,8 +442,19 @@ module top_ulx3s (
         .file_count(file_count), .status(fat_status),
         .q_idx(sel_idx), .q_name(), .q_size(sel_size), .q_clus(), .q_isdsk(sel_isdsk),
         .q2_idx(osd_name_idx), .q2_name(osd_q2_name),
-        .open_start(ld_open_start), .open_idx(ld_open_idx), .fdata_ready(ld_fdata_ready),
+        .open_start(dump_active ? dump_open_start : ld_open_start),
+        .open_idx(sel_idx),
+        .fdata_ready(dump_active ? dump_fdata_ready : ld_fdata_ready),
         .floading(fat_floading), .feof(fat_feof), .fdata(fat_fdata), .fdata_valid(fat_fdata_valid)
+    );
+
+    fat_dump dbg (
+        .clk(clk_sys), .rst(rst_sys), .trigger(dump_trigger),
+        .sel_idx(sel_idx), .fat_ready(fat_done),
+        .open_start(dump_open_start), .open_idx(), .fdata_ready(dump_fdata_ready),
+        .fdata_valid(fat_fdata_valid), .fdata(fat_fdata), .feof(fat_feof),
+        .tx_data(dump_tx_data), .tx_send(dump_tx_send), .tx_busy(tap_tx_busy),
+        .active(dump_active)
     );
 
     // Chargeur : n'injecte que les .tap (les .dsk demandent le Microdisc)
