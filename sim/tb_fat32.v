@@ -1,7 +1,7 @@
-// Testbench du parseur FAT32 (rtl/fat32.v) : le pilote SD (rtl/sd_spi.v) lit une
-// image FAT32 réelle (générée par tools/gen_fat_test.py) servie par
-// sim/sd_card_file.v. On vérifie que le parseur liste les bons fichiers .TAP/.DSK
-// du répertoire racine (README.TXT ignoré), via une table MBR.
+// Testbench du parseur FAT32 (rtl/fat32.v) + lecture de fichier. Le pilote SD
+// lit une image FAT32 réelle (tools/gen_fat_test.py) via sim/sd_card_file.v.
+// Vérifie : (1) le listing des .TAP/.DSK ; (2) la lecture du fichier TEST.TAP
+// (600 octets sur 2 clusters chaînés) restitue le motif i&0xFF.
 `timescale 1ns/1ps
 
 module tb_fat32;
@@ -10,7 +10,6 @@ module tb_fat32;
     always #10 clk = ~clk;
     reg rst = 1;
 
-    // Pilote SD <-> parseur
     wire        rd_start;
     wire [31:0] rd_sector;
     wire        sd_ready, sd_busy, sd_error, sd_dvalid;
@@ -35,13 +34,21 @@ module tb_fat32;
     wire [87:0] q_name;
     wire [31:0] q_size, q_clus;
     wire        q_isdsk;
+    reg         open_start;
+    reg  [5:0]  open_idx;
+    reg         fdata_ready;
+    wire        floading, feof;
+    wire [7:0]  fdata;
+    wire        fdata_valid;
 
     fat32 fat (
         .clk(clk), .rst(rst), .start(fat_start),
         .rd_start(rd_start), .rd_sector(rd_sector),
         .sd_ready(sd_ready), .sd_busy(sd_busy), .sd_dvalid(sd_dvalid), .sd_data(sd_data),
         .done(fat_done), .error(fat_error), .file_count(file_count), .status(fat_status),
-        .q_idx(q_idx), .q_name(q_name), .q_size(q_size), .q_clus(q_clus), .q_isdsk(q_isdsk)
+        .q_idx(q_idx), .q_name(q_name), .q_size(q_size), .q_clus(q_clus), .q_isdsk(q_isdsk),
+        .open_start(open_start), .open_idx(open_idx), .fdata_ready(fdata_ready),
+        .floading(floading), .feof(feof), .fdata(fdata), .fdata_valid(fdata_valid)
     );
 
     integer errors = 0;
@@ -49,31 +56,39 @@ module tb_fat32;
         if (!cond) begin $display("FAIL: %0s", msg); errors = errors + 1; end
     endtask
 
+    // Capture du flux de fichier
+    integer fi = 0, fbad = 0;
+    always @(posedge clk) if (fdata_valid) begin
+        if (fdata !== (fi & 8'hFF)) fbad = fbad + 1;
+        fi = fi + 1;
+    end
+
     initial begin
-        rst = 1; fat_start = 0; q_idx = 0;
+        rst = 1; fat_start = 0; q_idx = 0; open_start = 0; open_idx = 0; fdata_ready = 0;
         repeat (4) @(negedge clk); rst = 0;
 
-        wait (sd_ready === 1'b1);          // init SD
+        wait (sd_ready === 1'b1);
         @(negedge clk); fat_start = 1;
         @(negedge clk); fat_start = 0;
 
         wait (fat_done === 1'b1);
         $display("PARSE OK (status=%02x, %0d fichiers)", fat_status, file_count);
-
         check(!fat_error, "parsing sans erreur");
-        check(file_count === 8'd3, "3 fichiers .tap/.dsk (README.TXT ignoré)");
+        check(file_count === 8'd4, "4 fichiers .tap/.dsk (README.TXT ignoré)");
 
-        q_idx = 0; #1;
-        check(q_name === "DEFENDERTAP", "fichier 0 = DEFENDER.TAP");
-        check(q_isdsk === 1'b0, "fichier 0 = TAP");
-        check(q_size === 32'd58683, "taille fichier 0");
+        q_idx = 0; #1; check(q_name === "DEFENDERTAP", "fichier 0 = DEFENDER.TAP");
+        q_idx = 2; #1; check(q_name === "ORICCHESDSK" && q_isdsk, "fichier 2 = ORICCHES.DSK");
+        q_idx = 3; #1; check(q_name === "TEST    TAP" && q_size===32'd600, "fichier 3 = TEST.TAP 600o");
 
-        q_idx = 1; #1;
-        check(q_name === "CITADEL TAP", "fichier 1 = CITADEL.TAP");
+        // ---- lecture du fichier TEST.TAP (index 3) ----
+        fdata_ready = 1'b1;
+        @(negedge clk); open_idx = 3; open_start = 1'b1;
+        @(negedge clk); open_start = 1'b0;
 
-        q_idx = 2; #1;
-        check(q_name === "ORICCHESDSK", "fichier 2 = ORICCHES.DSK");
-        check(q_isdsk === 1'b1, "fichier 2 = DSK");
+        wait (feof === 1'b1);
+        @(negedge clk);
+        check(fi === 600, "600 octets lus");
+        check(fbad === 0, "contenu conforme au motif");
 
         if (errors == 0)
             $display("ALL TESTS PASSED (tb_fat32)");
@@ -83,7 +98,7 @@ module tb_fat32;
     end
 
     initial begin
-        #200_000_000; $display("FAIL: timeout (status=%02x)", fat_status); $finish;
+        #400_000_000; $display("FAIL: timeout (status=%02x fi=%0d)", fat_status, fi); $finish;
     end
 
 endmodule

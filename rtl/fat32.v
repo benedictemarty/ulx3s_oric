@@ -37,7 +37,16 @@ module fat32 #(
     output     [87:0] q_name,          // 11 octets (nom 8.3)
     output     [31:0] q_size,
     output     [31:0] q_clus,
-    output            q_isdsk
+    output            q_isdsk,
+
+    // Lecture de fichier (streaming octet par octet, avec contrôle de flux)
+    input             open_start,    // pulse : ouvrir le fichier open_idx
+    input      [5:0]  open_idx,
+    input             fdata_ready,   // le consommateur peut prendre un octet
+    output reg        floading,
+    output reg        feof,
+    output reg [7:0]  fdata,
+    output reg        fdata_valid    // pulse : `fdata` valide
 );
     // Mémoires de listing
     reg [87:0] name_mem [0:MAXFILES-1];
@@ -57,7 +66,13 @@ module fat32 #(
     reg [31:0] fatsz;
     reg [31:0] root_clus;
     reg [31:0] part_lba;
-    reg [31:0] first_data, root_lba;
+    reg [31:0] first_data, root_lba, fat_lba;
+
+    // Lecture de fichier
+    reg [7:0]  secbuf [0:511];
+    reg [31:0] cur_clus, bytes_left, next_clus;
+    reg [8:0]  rdpos;
+    reg [7:0]  sec_in_clus;
 
     // Entrée de répertoire en cours
     reg [7:0]  ntmp [0:10];
@@ -65,8 +80,10 @@ module fat32 #(
     reg [31:0] eclus, esize;
 
     localparam S_IDLE=0, S_RD0_R=1, S_RD0_C=2, S_BPB_R=3, S_BPB_C=4,
-               S_CALC=5, S_DIR_R=6, S_DIR_C=7, S_DONE=8, S_ERR=9;
-    reg [3:0]  state;
+               S_CALC=5, S_DIR_R=6, S_DIR_C=7, S_DONE=8, S_ERR=9,
+               FO_INIT=10, FO_RD=11, FO_CAP=12, FO_EMIT=13,
+               FO_FAT=14, FO_FATC=15, FO_EOF=16;
+    reg [4:0]  state;
     reg [9:0]  bidx;                 // 0..511 octet dans le secteur
     reg [3:0]  dirsec;               // secteur de répertoire courant (0..DIRSECS-1)
     reg        stop_dir;             // fin de répertoire (entrée 0x00) rencontrée
@@ -79,9 +96,11 @@ module fat32 #(
 
     always @(posedge clk) begin
         rd_start <= 1'b0;
+        fdata_valid <= 1'b0;
         if (rst) begin
             state <= S_IDLE; done <= 0; error <= 0; file_count <= 0;
             status <= 8'h00; rd_sector <= 0; bidx <= 0; dirsec <= 0; stop_dir <= 0;
+            floading <= 0; feof <= 0;
         end else begin
             case (state)
                 S_IDLE: if (start) begin
@@ -144,6 +163,7 @@ module fat32 #(
 
                 // ---- calcul des LBA ----
                 S_CALC: begin
+                    fat_lba    <= part_lba + reserved;
                     first_data <= part_lba + reserved + nfat*fatsz;
                     root_lba   <= part_lba + reserved + nfat*fatsz
                                   + (root_clus - 32'd2) * spc;
@@ -188,7 +208,71 @@ module fat32 #(
                     end else bidx <= bidx + 10'd1;
                 end
 
-                S_DONE: begin done <= 1'b1; end
+                S_DONE: begin
+                    done <= 1'b1; feof <= 1'b0;
+                    if (open_start) begin
+                        cur_clus   <= clus_mem[open_idx];
+                        bytes_left <= size_mem[open_idx];
+                        sec_in_clus <= 8'd0;
+                        floading <= 1'b1; feof <= 1'b0;
+                        state <= FO_INIT;
+                    end
+                end
+
+                // ---- ouverture : lire le premier secteur ----
+                FO_INIT: state <= FO_RD;
+
+                // ---- lire un secteur de données du cluster courant ----
+                FO_RD: if (sd_ready && !sd_busy) begin
+                    rd_sector <= first_data + (cur_clus - 32'd2) * spc + sec_in_clus;
+                    rd_start <= 1'b1; bidx <= 0; state <= FO_CAP;
+                end
+                FO_CAP: if (sd_dvalid) begin
+                    secbuf[bidx] <= sd_data;
+                    if (bidx == 511) begin rdpos <= 9'd0; state <= FO_EMIT; end
+                    else bidx <= bidx + 10'd1;
+                end
+
+                // ---- débiter les octets vers le consommateur ----
+                FO_EMIT: begin
+                    if (bytes_left == 32'd0) begin
+                        floading <= 1'b0; feof <= 1'b1; state <= FO_EOF;
+                    end else if (fdata_ready) begin
+                        fdata <= secbuf[rdpos];
+                        fdata_valid <= 1'b1;
+                        bytes_left <= bytes_left - 32'd1;
+                        if (rdpos == 9'd511) begin
+                            // secteur épuisé : suivant dans le cluster ou chaîne FAT
+                            if (sec_in_clus + 8'd1 < spc) begin
+                                sec_in_clus <= sec_in_clus + 8'd1; state <= FO_RD;
+                            end else state <= FO_FAT;
+                        end else rdpos <= rdpos + 9'd1;
+                    end
+                end
+
+                // ---- suivre la chaîne FAT : cluster suivant ----
+                FO_FAT: if (sd_ready && !sd_busy) begin
+                    rd_sector <= fat_lba + (cur_clus >> 7);   // 128 entrées/secteur
+                    rd_start <= 1'b1; bidx <= 0; state <= FO_FATC;
+                end
+                FO_FATC: if (sd_dvalid) begin
+                    // entrée FAT de cur_clus à l'offset (cur_clus%128)*4
+                    if (bidx[8:0] == {cur_clus[6:0], 2'd0})       next_clus[7:0]   <= sd_data;
+                    if (bidx[8:0] == {cur_clus[6:0], 2'd0} + 9'd1) next_clus[15:8]  <= sd_data;
+                    if (bidx[8:0] == {cur_clus[6:0], 2'd0} + 9'd2) next_clus[23:16] <= sd_data;
+                    if (bidx[8:0] == {cur_clus[6:0], 2'd0} + 9'd3) next_clus[31:24] <= sd_data;
+                    if (bidx == 511) begin
+                        if ((next_clus & 32'h0FFFFFFF) >= 32'h0FFFFFF8) begin
+                            floading <= 1'b0; feof <= 1'b1; state <= FO_EOF;
+                        end else begin
+                            cur_clus <= next_clus & 32'h0FFFFFFF;
+                            sec_in_clus <= 8'd0; state <= FO_RD;
+                        end
+                    end else bidx <= bidx + 10'd1;
+                end
+
+                FO_EOF: begin floading <= 1'b0; feof <= 1'b1; state <= S_DONE; end
+
                 S_ERR:  begin error <= 1'b1; end
                 default: state <= S_ERR;
             endcase
