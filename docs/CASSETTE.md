@@ -64,3 +64,11 @@ que le nombre de crédits.
 
 - Taille ≤ 65535 octets (limite ROM Oric).
 - Un seul fichier à la fois ; relance `CLOAD""` + le script pour le suivant.
+- **Jeux à loader protégé/maison** (ex. `citadel.tap`, Loriciels 84 : bloc 1
+  autorun qui recharge la suite avec sa propre routine) : « Errors found » en
+  mode signal — **y compris dans l'émulateur de référence `~/Oric1`**
+  (`--tape-signal`), qui échoue à l'identique ; le fichier est pourtant sain
+  (`--fast-load` OK). Limitation connue de la reconstruction signal du format
+  `.tap`, pas du RTL. Issues possibles : un futur « fast-load » FPGA
+  (injection directe façon émulateur, rejoint la ROM patchée US-ULA-NG.6),
+  ou la version disquette via US-DISK (`Citadelle.dsk` existe).
