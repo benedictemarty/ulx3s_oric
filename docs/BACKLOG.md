@@ -86,6 +86,32 @@ JSON. Partage le lien ESP32↔FPGA de l'épopée MODEM.
       (à la demande ou par piste ; stockage SDRAM/BRAM), protocole secteur.
 - [ ] US-DISK.3 Intégration OSD : sélectionner un .dsk « insère » la disquette.
 
+## Épopée ULA-NG — « Oric 2 » : banques mémoire + modes vidéo étendus
+Objectif : étendre l'ULA FPGA vers la spec ULA-NG de la référence
+(`~/Oric1/docs/ula-ng/ULA-NG-SPEC.md`) : commutation ROM/RAM pilotée par
+l'ULA, banques ROM, puis modes vidéo NG (80 colonnes, chunky 4bpp).
+Décisions (bmarty, 2026-08-10) : registre de banque logé dans la fenêtre
+ULA-NG (`$03E0-$03EF`, toujours visible) ; l'ULA exporte le signal de
+sélection vers le décodage existant de `oric_atmos.v` (sémantique
+`sel_rom`/`rom_as_ram` conservée — changement minimal) ; comportement
+HCS10017 strict par défaut (verrouillage NG), boot sur la banque BASIC.
+Cible mémoire : 48 Ko RAM fixe + fenêtre 16 Ko à `$C000` commutée
+(jusqu'à 4-8 banques ROM + RAM haute = « 64 Ko ROM / 64 Ko RAM »).
+L'émulateur `~/Oric1` sert de modèle de référence à chaque incrément.
+- [ ] US-ULA-NG.1 **Registre NG_BANK + commutation ROM/RAM** : registre dans
+      `$03E0-$03EF` (bit ROM/RAM + n° de banque), signal de sélection exporté
+      par l'ULA vers `oric_atmos.v`, banques ROM en BRAM (BASIC 1.1b =
+      banque de boot). Testbench : POKE registre → le BASIC disparaît/
+      réapparaît ; non-régression boot verrouillé.
+- [ ] US-ULA-NG.2 **Palette + registres NG** : LUT palette redéfinissable,
+      mécanisme de déverrouillage, fidèle à la spec et à l'émulateur.
+- [ ] US-ULA-NG.3 **Texte 80 colonnes** (480 px, charset RAM natif,
+      `NG_SCRSTART`, modes latchés en début de trame).
+- [ ] US-ULA-NG.4 **Chunky 4bpp** 320×224, 16 couleurs (LUT NG).
+- [ ] US-ULA-NG.5 **ROM système façon Orix** (exploratoire) : OS 6502 (cc65)
+      en banque(s) ROM — boot, services fichiers (SD via RTL FAT32), appels
+      vidéo NG. Alternative : portage Orix (mapping Twilighte à étudier).
+
 ## Sprint 3 — « Confort »
 - [ ] US3.1 OSD de sélection de fichiers .tap → couvert par US-NETFS.2 (OSD
       incrusté FPGA) ; la source de fichiers devient le serveur WiFi.

@@ -6,6 +6,13 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 ## [Non publié]
 
 ### Documenté
+- **Épopée US-ULA-NG « Oric 2 »** au backlog : banques mémoire pilotées par
+  l'ULA (registre NG_BANK dans `$03E0-$03EF`, fenêtre 16 Ko à `$C000`
+  commutée ROM/RAM, jusqu'à 64 Ko de ROM + 64 Ko de RAM) puis modes vidéo
+  étendus de la spec ULA-NG de la référence `~/Oric1` (palette, texte
+  80 colonnes, chunky 4bpp), et à terme une ROM système façon Orix (cc65).
+  Compatibilité par défaut : comportement HCS10017 strict tant que le mode
+  NG n'est pas déverrouillé, boot sur la banque BASIC.
 - **Plan « Navigateur de fichiers WiFi »** (`docs/NETFS_WIFI.md`) + épopées
   US-NETFS et US-DISK au backlog : parcourir une arborescence de `.tap`/`.dsk`
   servie en HTTP (listing JSON) via WiFi, OSD incrusté par le FPGA, chargement
