@@ -6,6 +6,11 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 ## [Non publié]
 
 ### Documenté
+- **US-ULA-NG.8 : mode turbo 6502** au backlog : registre NG_TURBO
+  (fenêtre ULA-NG) commutant l'horloge CPU 1 MHz fidèle → 8/16 MHz+
+  (BRAM sans wait state) ; VIA/AY/cassette restent au 1 MHz réel ;
+  retour 1 MHz sur reset. Retenu comme alternative au 65C816 dans ce
+  projet (le 65C816 = territoire du workspace séparé `~/oric2`).
 - **US-ULA-NG.5 : architecture DOS/BASIC actée** (bmarty, 2026-08-10) :
   banque 0 (boot, vecteur reset) = DOS cc65 (SD/FAT32, menu, hooks) qui
   fait ensuite le handover vers la banque 1 = BASIC 1.1b patché. Le DOS

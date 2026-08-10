@@ -146,6 +146,14 @@ L'émulateur `~/Oric1` sert de modèle de référence à chaque incrément.
       à trancher) + hires 640×400 monochrome. Extension AU-DELÀ de la spec
       ULA-NG actuelle (480 px max, lecture RAM principale) → à spécifier
       d'abord dans `ULA-NG-SPEC.md` + émulateur, puis FPGA.
+- [ ] US-ULA-NG.8 **Mode turbo 6502** : registre NG_TURBO (fenêtre ULA-NG,
+      déverrouillage NG requis) commutant l'horloge CPU 1 MHz fidèle
+      (défaut au boot) → 8/16 MHz+ (RAM/ROM en BRAM sans wait state).
+      VIA, AY et timings cassette RESTENT au 1 MHz réel (musique, délais,
+      IRQ timer inchangés) — synchronisation propre des franchissements de
+      domaine CPU↔périphériques. Commande BASIC étendu ou POKE registre ;
+      retour 1 MHz sur reset. Testbench : non-régression boot 1 MHz +
+      exécution correcte à haute vitesse.
 
 ## Épopée SPEECH — synthèse vocale TMS5220 (le chip voix de l'EXL 100)
 Objectif : intégrer un TMS5220 (synthèse LPC Texas Instruments) en RTL dans
