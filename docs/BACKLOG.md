@@ -86,7 +86,12 @@ JSON. Partage le lien ESP32↔FPGA de l'épopée MODEM.
       (à la demande ou par piste ; stockage SDRAM/BRAM), protocole secteur.
 - [ ] US-DISK.3 Intégration OSD : sélectionner un .dsk « insère » la disquette.
 
-## Épopée ULA-NG — « Oric 2 » : banques mémoire + modes vidéo étendus
+## Épopée ULA-NG — extensions « voie Telestrat » : banques mémoire + vidéo étendue
+> **Frontière avec `~/oric2`** (2026-08-10) : le projet Oric 2 « chimère »
+> (65C816, OricOS multitâche, GPU blitter, golden model Phosphoric) est un
+> **workspace séparé** (`~/oric2`). Ici, `ulx3s_oric` reste l'Atmos fidèle
+> en 6502, étendu à la manière de l'époque (Telestrat/Sedoric) — pas de
+> duplication de la chimère.
 Objectif : étendre l'ULA FPGA vers la spec ULA-NG de la référence
 (`~/Oric1/docs/ula-ng/ULA-NG-SPEC.md`) : commutation ROM/RAM pilotée par
 l'ULA, banques ROM, puis modes vidéo NG (80 colonnes, chunky 4bpp).
