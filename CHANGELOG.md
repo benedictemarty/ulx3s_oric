@@ -5,6 +5,28 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 
 ## [Non publié]
 
+### Corrigé
+- **Chargement `.tap` depuis la SD — bug résolu, VALIDÉ SUR CARTE**
+  (bmarty, 2026-08-10, BREAKOUT chargé et fonctionnel) : le point ouvert
+  des sessions précédentes était un défaut de protocole du flux fichier.
+  `fat32` émettait un octet à CHAQUE cycle où `fdata_ready` était haut,
+  or `tape_loader` tenait ce signal haut 2-3 cycles par crédit → 2-3
+  octets partaient en rafale par crédit, le compteur de crédits passait
+  en underflow 16 bits (65535 crédits fantômes) → plus aucun contrôle de
+  flux → débordement de la FIFO 256 du `tape_injector` → données
+  corrompues, l'Oric coupait le moteur. `fat_dump` avait le bug inverse
+  (impulsion `fdata_ready` d'un cycle, perdue si `fat32` lisait le
+  secteur suivant → blocage aux frontières de secteur).
+  - Correctif : handshake **valid/ready** standard dans `rtl/fat32.v`
+    (FO_EMIT : octet présenté, `fdata_valid` tenu jusqu'au cycle où
+    valid ET ready sont hauts — exactement un octet par transfert),
+    `rtl/tape_loader.v` (transfert compté une seule fois, décrément
+    exact des crédits) et `rtl/fat_dump.v` (`ready` en niveau).
+  - Testbench `tb_tape_loader` durci : crédits espacés + détection des
+    rafales (espacement < DELAY = échec) et des octets excédentaires.
+    Vérifié : l'ancien RTL échoue (« rafale, espacement 1 cycle »), le
+    nouveau passe. Suite complète : 17/17 testbenches verts, timing OK.
+
 ### Documenté
 - **US-ULA-NG.8 : mode turbo 6502** au backlog : registre NG_TURBO
   (fenêtre ULA-NG) commutant l'horloge CPU 1 MHz fidèle → 8/16 MHz+

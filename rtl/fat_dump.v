@@ -13,7 +13,7 @@ module fat_dump (
     // Vers fat32 (lecture de fichier)
     output reg        open_start,
     output     [5:0]  open_idx,
-    output reg        fdata_ready,
+    output            fdata_ready,
     input             fdata_valid,
     input      [7:0]  fdata,
     input             feof,
@@ -27,33 +27,31 @@ module fat_dump (
 );
     localparam D_IDLE=0, D_RUN=2, D_DONE=3;
     reg [1:0] state;
-    reg       armed;     // un octet a été demandé à fat32, on attend fdata_valid
 
     assign open_idx = sel_idx;
     assign active   = (state != D_IDLE);
 
+    // Handshake valid/ready en niveau : ready tant que l'UART est libre ;
+    // le transfert a lieu au cycle où fat32 présente valid (un seul octet,
+    // tx_send/tx_busy couvrent la retombée). Survit aux absences de valid
+    // pendant que fat32 lit le secteur suivant.
+    assign fdata_ready = (state == D_RUN) && !tx_busy && !tx_send;
+
     always @(posedge clk) begin
-        open_start  <= 1'b0;
-        tx_send     <= 1'b0;
-        fdata_ready <= 1'b0;      // impulsion d'un seul cycle
+        open_start <= 1'b0;
+        tx_send    <= 1'b0;
         if (rst) begin
-            state <= D_IDLE; armed <= 1'b0;
+            state <= D_IDLE;
         end else begin
             case (state)
                 D_IDLE: if (trigger && fat_ready) begin
-                    open_start <= 1'b1; armed <= 1'b0; state <= D_RUN;
+                    open_start <= 1'b1; state <= D_RUN;
                 end
                 D_RUN: begin
-                    if (armed) begin
-                        // octet demandé : l'envoyer dès qu'il arrive
-                        if (fdata_valid) begin
-                            tx_data <= fdata; tx_send <= 1'b1; armed <= 1'b0;
-                        end
+                    if (fdata_valid && fdata_ready) begin
+                        tx_data <= fdata; tx_send <= 1'b1;   // transfert accepté
                     end else if (feof) begin
                         state <= D_DONE;
-                    end else if (!tx_busy && !tx_send) begin
-                        // UART libre : demander un octet (une impulsion)
-                        fdata_ready <= 1'b1; armed <= 1'b1;
                     end
                 end
                 D_DONE: state <= D_IDLE;

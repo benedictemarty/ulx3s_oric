@@ -46,11 +46,12 @@ module fat32 #(
     // Lecture de fichier (streaming octet par octet, avec contrôle de flux)
     input             open_start,    // pulse : ouvrir le fichier open_idx
     input      [5:0]  open_idx,
-    input             fdata_ready,   // le consommateur peut prendre un octet
+    input             fdata_ready,   // niveau : le consommateur peut prendre un octet
     output reg        floading,
     output reg        feof,
     output reg [7:0]  fdata,
-    output reg        fdata_valid    // pulse : `fdata` valide
+    output reg        fdata_valid    // niveau : tenu jusqu'à l'acceptation ;
+                                     // transfert au cycle où valid ET ready sont hauts
 );
     // Mémoires de listing
     reg [87:0] name_mem [0:MAXFILES-1];
@@ -102,8 +103,8 @@ module fat32 #(
 
     always @(posedge clk) begin
         rd_start <= 1'b0;
-        fdata_valid <= 1'b0;
         if (rst) begin
+            fdata_valid <= 1'b0;
             state <= S_IDLE; done <= 0; error <= 0; file_count <= 0;
             status <= 8'h00; rd_sector <= 0; bidx <= 0; dirsec <= 0; stop_dir <= 0;
             floading <= 0; feof <= 0;
@@ -220,7 +221,7 @@ module fat32 #(
                         cur_clus   <= clus_mem[open_idx];
                         bytes_left <= size_mem[open_idx];
                         sec_in_clus <= 8'd0;
-                        floading <= 1'b1; feof <= 1'b0;
+                        floading <= 1'b1; feof <= 1'b0; fdata_valid <= 1'b0;
                         state <= FO_INIT;
                     end
                 end
@@ -240,13 +241,22 @@ module fat32 #(
                 end
 
                 // ---- débiter les octets vers le consommateur ----
+                // Handshake valid/ready : l'octet est présenté (valid tenu haut)
+                // et n'est consommé qu'au cycle où valid ET ready sont hauts —
+                // exactement un octet par transfert, quel que soit le nombre de
+                // cycles où le consommateur laisse ready haut.
                 FO_EMIT: begin
                     status <= 8'h93;                 // débit (attend crédits)
-                    if (bytes_left == 32'd0) begin
-                        floading <= 1'b0; feof <= 1'b1; state <= FO_EOF;
+                    if (!fdata_valid) begin
+                        if (bytes_left == 32'd0) begin
+                            floading <= 1'b0; feof <= 1'b1; state <= FO_EOF;
+                        end else begin
+                            fdata <= secbuf[rdpos];
+                            fdata_valid <= 1'b1;
+                        end
                     end else if (fdata_ready) begin
-                        fdata <= secbuf[rdpos];
-                        fdata_valid <= 1'b1;
+                        // transfert accepté ce cycle
+                        fdata_valid <= 1'b0;
                         bytes_left <= bytes_left - 32'd1;
                         if (rdpos == 9'd511) begin
                             // secteur épuisé : suivant dans le cluster ou chaîne FAT

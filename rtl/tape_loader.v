@@ -40,15 +40,18 @@ module tape_loader #(
 
     assign active = (state != L_IDLE);
 
+    // Transfert fat32 : exactement un octet au cycle où valid ET ready sont hauts
+    wire xfer = fdata_valid && fdata_ready;
+
     always @(posedge clk) begin
         open_start    <= 1'b0;
         tape_rx_valid <= 1'b0;
         if (rst) begin
             state <= L_IDLE; credits <= 16'd0; fdata_ready <= 1'b0; dly <= 16'd0;
         end else begin
-            // compteur de crédits : +1 par crédit reçu, -1 par octet envoyé
-            credits <= credits + (tape_credit ? 8'd1 : 8'd0)
-                               - ((state==L_DATA && fdata_valid) ? 8'd1 : 8'd0);
+            // compteur de crédits : +1 par crédit reçu, -1 par octet transféré
+            credits <= credits + (tape_credit ? 16'd1 : 16'd0)
+                               - ((state==L_DATA && xfer) ? 16'd1 : 16'd0);
             case (state)
                 L_IDLE: if (load_trigger && fat_ready) begin
                     len <= file_size[15:0]; open_idx <= sel_idx;
@@ -62,8 +65,10 @@ module tape_loader #(
                 // données : un octet par crédit
                 L_DATA: begin
                     if (dly != 16'd0) dly <= dly - 16'd1;
-                    fdata_ready <= (credits != 16'd0) && (dly == 16'd0);
-                    if (fdata_valid) begin
+                    // ready retombe dès le transfert (dly rechargé) : pas de
+                    // double débit même si fat32 présente l'octet suivant vite
+                    fdata_ready <= (credits != 16'd0) && (dly == 16'd0) && !xfer;
+                    if (xfer) begin
                         tape_rx_data  <= fdata;
                         tape_rx_valid <= 1'b1;
                         dly <= DELAY[15:0];         // espace le prochain octet

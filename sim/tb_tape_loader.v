@@ -68,11 +68,14 @@ module tb_tape_loader;
     // Le loader doit encaisser une rafale de 256 crédits SANS que son compteur
     // déborde et se coince à 0 (bug reproduit si le compteur est sur 8 bits).
     integer credits_sent = 0;
+    integer pace = 0;
     wire [31:0] recv_data = (nc > 3) ? (nc - 3) : 0;       // octets de données reçus
     wire [31:0] inflight  = credits_sent - recv_data;
     always @(posedge clk) begin
         tape_credit <= 1'b0;
-        if (ld_active && credits_sent < 600 && inflight < 256) begin
+        pace <= pace + 1;
+        // crédits espacés (1 tous les 8 cycles) : le loader doit ATTENDRE
+        if (ld_active && credits_sent < 600 && inflight < 256 && pace[2:0]==0) begin
             tape_credit <= 1'b1; credits_sent <= credits_sent + 1;
         end
     end
@@ -80,6 +83,30 @@ module tb_tape_loader;
     reg [7:0] cap [0:1023];
     integer   nc = 0;
     always @(posedge clk) if (tape_rx_valid) begin cap[nc] = tape_rx_data; nc = nc + 1; end
+
+    // Contrôle de flux STRICT : jamais plus d'octets de données que de crédits
+    // accordés, ET espacement minimal DELAY entre octets de données (c'était le
+    // bug : fat32 émettait 2-3 octets par crédit — rafale à quelques cycles
+    // d'écart + underflow du compteur de crédits → débordement de la FIFO du
+    // tape_injector sur carte).
+    integer last_byte_t = -100000;
+    always @(posedge clk) begin
+        if (recv_data > credits_sent) begin
+            $display("FAIL: octets sans credit (recus=%0d, credits=%0d)",
+                     recv_data, credits_sent);
+            $finish;
+        end
+        if (tape_rx_valid && nc > 3) begin         // octets de données seulement
+                                                   // (1er octet de données exempté :
+                                                   // il suit l'en-tête sans délai)
+            if (pace - last_byte_t < 2000) begin
+                $display("FAIL: octets en rafale (espacement %0d cycles < DELAY, nc=%0d)",
+                         pace - last_byte_t, nc);
+                $finish;
+            end
+            last_byte_t = pace;
+        end
+    end
 
     integer errors = 0, i, bad;
     task check(input cond, input [255:0] msg);
@@ -96,7 +123,8 @@ module tb_tape_loader;
         @(negedge clk); load_trigger = 1; @(negedge clk); load_trigger = 0;
 
         wait (nc == 603);                 // 3 (en-tête) + 600 (données)
-        @(negedge clk);
+        repeat (8000) @(negedge clk);     // > 3×DELAY : aucun octet excédentaire
+        check(nc == 603, "aucun octet au-dela des 600 attendus");
 
         check(cap[0] === 8'h01,  "en-tete START 0x01");
         check(cap[1] === 8'h58,  "len_lo = 600 & 0xFF");
