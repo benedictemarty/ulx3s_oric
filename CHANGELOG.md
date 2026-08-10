@@ -6,6 +6,12 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 ## [Non publié]
 
 ### Documenté
+- **Épopée US-SPEECH** au backlog : synthèse vocale **TMS5220** (le chip
+  voix TI de l'Exelvision EXL 100) en RTL, réécrit d'après la référence
+  MAME `tms5220.cpp` avec testbench de non-régression. Mode Speak External
+  (données LPC streamées par le CPU, pas de ROM VSM), 2 registres page
+  `$03xx`, sortie mixée avec l'AY (jack + HDMI). Outillage PC WAV→LPC et
+  démo à venir ; exploité par notre propre soft (BASIC, puis ROM système).
 - **Épopée US-ULA-NG « Oric 2 »** au backlog : banques mémoire pilotées par
   l'ULA (registre NG_BANK dans `$03E0-$03EF`, fenêtre 16 Ko à `$C000`
   commutée ROM/RAM, jusqu'à 64 Ko de ROM + 64 Ko de RAM) puis modes vidéo

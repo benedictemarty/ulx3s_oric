@@ -112,6 +112,28 @@ L'émulateur `~/Oric1` sert de modèle de référence à chaque incrément.
       en banque(s) ROM — boot, services fichiers (SD via RTL FAT32), appels
       vidéo NG. Alternative : portage Orix (mapping Twilighte à étudier).
 
+## Épopée SPEECH — synthèse vocale TMS5220 (le chip voix de l'EXL 100)
+Objectif : intégrer un TMS5220 (synthèse LPC Texas Instruments) en RTL dans
+le cœur Oric. Décisions (bmarty, 2026-08-10) : réécriture Verilog-2005
+fidèle à la référence MAME `tms5220.cpp` (pas de vrai chip 5 V sur le port
+d'extension) ; mode **Speak External** uniquement (le CPU streame les
+données LPC dans la FIFO — pas de ROM VSM propriétaire) ; pilotage par
+2 adresses dans la page `$03xx` (fenêtre libre à choisir entre les zones
+réservées Microdisc/LOCI/ACIA/ULA-NG) ; sortie mixée avec l'AY dans le
+chemin audio existant (jack + HDMI). Aucun logiciel Oric d'époque ne le
+supporte : c'est notre soft (BASIC POKE, puis ROM système US-ULA-NG.5)
+qui l'exploitera.
+- [ ] US-SPEECH.1 **Cœur LPC TMS5220** : filtre en treillis 10 coefficients,
+      excitation chirp/bruit, interpolation de trames, FIFO Speak External,
+      status /READY. Testbench de non-régression contre la référence MAME
+      (mêmes trames LPC → mêmes échantillons).
+- [ ] US-SPEECH.2 **Intégration Oric** : décodage 2 registres page `$03xx`
+      dans `oric_atmos.v` (data/status + handshake), mixage avec l'AY vers
+      jack + HDMI, synthèse 85F en timing.
+- [ ] US-SPEECH.3 **Outillage + démo** : encodeur PC WAV → flux LPC
+      (python_wizard ou équivalent), envoi depuis l'Oric (BASIC POKE ou
+      loader), démo « l'Oric parle » validée sur carte.
+
 ## Sprint 3 — « Confort »
 - [ ] US3.1 OSD de sélection de fichiers .tap → couvert par US-NETFS.2 (OSD
       incrusté FPGA) ; la source de fichiers devient le serveur WiFi.
