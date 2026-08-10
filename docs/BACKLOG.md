@@ -115,9 +115,20 @@ L'émulateur `~/Oric1` sert de modèle de référence à chaque incrément.
 - [ ] US-ULA-NG.3 **Texte 80 colonnes** (480 px, charset RAM natif,
       `NG_SCRSTART`, modes latchés en début de trame).
 - [ ] US-ULA-NG.4 **Chunky 4bpp** 320×224, 16 couleurs (LUT NG).
-- [ ] US-ULA-NG.5 **ROM système façon Orix** (exploratoire) : OS 6502 (cc65)
-      en banque(s) ROM — boot, services fichiers (SD via RTL FAT32), appels
-      vidéo NG. Alternative : portage Orix (mapping Twilighte à étudier).
+- [ ] US-ULA-NG.5 **DOS en banque de boot + hooks façon Sedoric** (décision
+      bmarty, 2026-08-10 — architecture actée, remplace l'« exploratoire ») :
+      - Banque 0 (vecteur reset `$FFFC`) = **DOS** (cc65) : init, SD/FAT32
+        (RTL existant), menu/chargement, installation des hooks, puis
+        handover vers la banque BASIC (trampoline RAM basse + entrée à
+        froid du BASIC). Modèle = ROM de boot Microdisc.
+      - Banque 1 = BASIC 1.1b patché (`HIRES 1`, cf. US-ULA-NG.6) ;
+        banques 2+ = extensions ; 5e position = RAM haute.
+      - **DOS appelable depuis le BASIC** : hooks dans les vecteurs RAM
+        page 2 + petit résident RAM basse ; commandes style Sedoric
+        (`!DIR`, `!LOAD"X"`) → commutation NG_BANK aller-retour,
+        échanges de données par la RAM basse (< `$C000`, seule zone
+        visible des deux banques). Choisir l'emplacement du résident
+        hors des zones système BASIC.
 - [ ] US-ULA-NG.6 **BASIC étendu — bascule `HIRES 1`** : ROM 1.1b patchée
       (handler HIRES : argument optionnel ; sans argument = code d'origine),
       déverrouillage NG + commandes étendues en banque d'extension

@@ -6,6 +6,12 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 ## [Non publié]
 
 ### Documenté
+- **US-ULA-NG.5 : architecture DOS/BASIC actée** (bmarty, 2026-08-10) :
+  banque 0 (boot, vecteur reset) = DOS cc65 (SD/FAT32, menu, hooks) qui
+  fait ensuite le handover vers la banque 1 = BASIC 1.1b patché. Le DOS
+  reste appelable depuis le BASIC façon Sedoric : hooks vecteurs page 2 +
+  résident RAM basse, commandes `!DIR`/`!LOAD`, commutation NG_BANK
+  aller-retour, échanges par la RAM basse (< `$C000`).
 - **US-ULA-NG : expérience utilisateur + VRAM dédiée** (décisions bmarty,
   2026-08-10) : boot 100 % classique ; la commande **`HIRES 1`** (BASIC
   étendu, ROM 1.1b patchée en banque de boot) bascule en mode OCULA/NG,
