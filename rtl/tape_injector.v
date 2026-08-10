@@ -5,6 +5,17 @@
 //
 //   - Trame de 14 bits, LSB d'abord : start(0), 8 data, parité IMPAIRE, 4 stop(1).
 //   - Amorce : LEADER_SYNCS trames de l'octet de synchro 0x16, puis les données.
+//   - Fichiers MULTI-PARTIES : le .tap ne garde que ~3 octets 0x16 entre les
+//     blocs (la longue amorce de la vraie bande est supprimée). Or entre deux
+//     parties l'Oric traite le bloc chargé moteur actif : les 3 syncs passent
+//     dans le vide et le CLOAD suivant reste en « Searching... ». L'injecteur
+//     parse donc la structure des blocs (sync -> 0x24 -> en-tête 9 octets avec
+//     adresses fin/début -> nom terminé par 0x00 -> données de fin-début+1
+//     octets) et RÉ-INSÈRE une longue amorce (INTER_SYNCS trames 0x16) à
+//     chaque frontière de bloc. Sans risque : des 0x16 devant une amorce sont
+//     transparents pour la ROM, et le parsing garantit de ne jamais insérer au
+//     milieu des données. En cas de flux non conforme, le parseur se
+//     désynchronise sans effet (aucune insertion = comportement d'avant).
 //   - Chaque bit = 2 demi-pulses ; le front montant tombe toujours à +HALF_ONE :
 //       demi 0 : niveau BAS pendant HALF_ONE ;
 //       demi 1 : niveau HAUT pendant HALF_ONE (bit '1') ou HALF_LONG (bit '0').
@@ -23,6 +34,7 @@ module tape_injector #(
     parameter CYC_HALF_ONE  = 5200,
     parameter CYC_HALF_LONG = 10400,
     parameter LEADER_SYNCS  = 64,
+    parameter INTER_SYNCS   = 255,   // amorce ré-insérée entre les blocs (~1,8 s)
     parameter SYNC_BYTE      = 8'h16,
     parameter START_BYTE     = 8'h01,
     parameter CREDIT_BYTE    = 8'h5A
@@ -92,6 +104,15 @@ module tape_injector #(
     reg        cur_bit;
 
     // ------------------------------------------------------------------
+    // Parseur de blocs .tap (pour l'amorce inter-parties)
+    // ------------------------------------------------------------------
+    localparam P_SYNC = 2'd0, P_HDR = 2'd1, P_NAME = 2'd2, P_DATA = 2'd3;
+    reg [1:0]  pstate;
+    reg [3:0]  hcnt;                 // index dans l'en-tête (0..8)
+    reg [15:0] end_a, start_a;
+    reg [16:0] dcnt;                 // octets de données restants (max 65536)
+
+    // ------------------------------------------------------------------
     // Séquenceur principal
     // ------------------------------------------------------------------
     integer k;
@@ -116,6 +137,7 @@ module tape_injector #(
                     len[15:8] <= rx_data;
                     received <= 0; consumed <= 0; granted <= 0;
                     leader_left <= LEADER_SYNCS[7:0];
+                    pstate <= P_SYNC; hcnt <= 0;
                     wf <= W_LOAD; tape_line <= 1'b1;
                     state <= S_LOAD;
                 end
@@ -184,6 +206,36 @@ module tape_injector #(
                                 tape_line <= 1'b0;
                                 wf_cnt    <= CYC_HALF_ONE - 1;
                                 wf        <= W_H0;
+                                // ---- parseur de blocs : suit la structure du
+                                // .tap sur l'octet consommé ----
+                                case (pstate)
+                                    P_SYNC: if (fifo[rptr] == 8'h24) begin
+                                        hcnt <= 4'd0; pstate <= P_HDR;
+                                    end                     // 0x16/autre : attendre
+                                    P_HDR: begin
+                                        if (hcnt == 4'd4) end_a[15:8]   <= fifo[rptr];
+                                        if (hcnt == 4'd5) end_a[7:0]    <= fifo[rptr];
+                                        if (hcnt == 4'd6) start_a[15:8] <= fifo[rptr];
+                                        if (hcnt == 4'd7) start_a[7:0]  <= fifo[rptr];
+                                        if (hcnt == 4'd8) pstate <= P_NAME;
+                                        else hcnt <= hcnt + 4'd1;
+                                    end
+                                    P_NAME: if (fifo[rptr] == 8'h00) begin
+                                        dcnt <= {1'b0, end_a} - {1'b0, start_a} + 17'd1;
+                                        pstate <= P_DATA;
+                                    end
+                                    P_DATA: begin
+                                        if (dcnt <= 17'd1) begin
+                                            // dernier octet du bloc : ré-armer
+                                            // l'amorce avant le bloc suivant
+                                            // (sauf fin de fichier : rien après)
+                                            if ((consumed + 17'd1) < {1'b0, len})
+                                                leader_left <= INTER_SYNCS[7:0];
+                                            pstate <= P_SYNC;
+                                        end else
+                                            dcnt <= dcnt - 17'd1;
+                                    end
+                                endcase
                             end
                             // sinon : sous-alimentation (attend des données)
                         end

@@ -6,6 +6,24 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 ## [Non publié]
 
 ### Corrigé
+- **`.tap` multi-parties : amorce ré-insérée entre les blocs — VALIDÉ SUR
+  CARTE** (bmarty, 2026-08-10, Defense Force — 4 blocs, 59 Ko — chargé et
+  fonctionnel) : le format `.tap` ne conserve que ~3 octets de sync `0x16`
+  entre les parties (la longue amorce de la vraie bande est supprimée). Or
+  entre deux parties l'Oric traite le bloc chargé moteur actif : les ~20 ms
+  de sync partaient dans le vide et le `CLOAD` suivant restait en
+  « Searching... ». `rtl/tape_injector.v` parse désormais la structure des
+  blocs (sync → `0x24` → en-tête 9 octets avec adresses fin/début → nom →
+  données de fin−début+1 octets) et ré-insère `INTER_SYNCS` (255, ~1,8 s)
+  trames d'amorce à chaque frontière de bloc — comme la vraie cassette.
+  Sans risque : des `0x16` devant une amorce sont transparents pour la ROM,
+  le parsing garantit de ne jamais insérer dans les données (structure
+  vérifiée sur DEFENDER.TAP : les 4 frontières tombent exactement), pas
+  d'insertion après le dernier octet, et un flux non conforme désactive
+  simplement l'insertion. Testbench `tb_tape` : scénario multi-parties
+  (2 blocs complets) — amorce initiale + bloc 1 + amorce inter-blocs +
+  bloc 2 vérifiés trame par trame. Bénéficie aussi au chargement UART
+  (`send_tap.py`), même injecteur.
 - **Chargement `.tap` depuis la SD — bug résolu, VALIDÉ SUR CARTE**
   (bmarty, 2026-08-10, BREAKOUT chargé et fonctionnel) : le point ouvert
   des sessions précédentes était un défaut de protocole du flux fichier.

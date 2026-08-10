@@ -7,7 +7,7 @@
 module tb_tape;
 
     // Durées réduites pour la simulation.
-    localparam CH1 = 4, CHL = 8, LEAD = 4;
+    localparam CH1 = 4, CHL = 8, LEAD = 4, INTER = 6;
     localparam THRESH = (2*CH1 + (CH1+CHL)) / 2;   // seuil '1'(=8) / '0'(=12) = 10
 
     reg clk = 0, rst = 1;
@@ -18,7 +18,8 @@ module tb_tape;
     reg        motor = 1;
     wire       tape_line, tape_active;
 
-    tape_injector #(.CYC_HALF_ONE(CH1), .CYC_HALF_LONG(CHL), .LEADER_SYNCS(LEAD)) dut (
+    tape_injector #(.CYC_HALF_ONE(CH1), .CYC_HALF_LONG(CHL), .LEADER_SYNCS(LEAD),
+                    .INTER_SYNCS(INTER)) dut (
         .clk(clk), .rst(rst),
         .rx_data(rx_data), .rx_valid(rx_valid),
         .tx_data(tx_data), .tx_send(tx_send), .tx_busy(1'b0),
@@ -35,6 +36,23 @@ module tb_tape;
     // ---- Données à envoyer ----
     localparam NDATA = 3;
     reg [7:0] data_arr [0:NDATA-1];
+
+    // ---- Flux multi-parties : 2 blocs .tap complets concaténés ----
+    // Bloc = 3×0x16, 0x24, en-tête 9 octets (fin=0x6001, début=0x6000 -> 2
+    // octets de données), nom vide (0x00), 2 octets de données.
+    localparam NB2 = 32;                     // 2 × 16 octets
+    reg [7:0] mp [0:NB2-1];
+    task build_block(input integer base, input [7:0] d0, input [7:0] d1);
+        begin
+            mp[base+0]=8'h16; mp[base+1]=8'h16; mp[base+2]=8'h16; mp[base+3]=8'h24;
+            mp[base+4]=8'h00; mp[base+5]=8'h00; mp[base+6]=8'h80; mp[base+7]=8'h00;
+            mp[base+8]=8'h60; mp[base+9]=8'h01;   // fin   = 0x6001
+            mp[base+10]=8'h60; mp[base+11]=8'h00; // début = 0x6000
+            mp[base+12]=8'h00;                    // 9e octet d'en-tête
+            mp[base+13]=8'h00;                    // nom vide
+            mp[base+14]=d0; mp[base+15]=d1;       // 2 octets de données
+        end
+    endtask
 
     // ---- Comptage des crédits (concurrent) ----
     integer credit_cnt = 0;
@@ -91,7 +109,7 @@ module tb_tape;
         end
     end
 
-    integer i;
+    integer i, c0;
     initial begin
         data_arr[0] = 8'h55;
         data_arr[1] = 8'hC3;
@@ -126,6 +144,39 @@ module tb_tape;
             check(dec[i] == 8'h16, "amorce = 0x16");
         for (i = 0; i < NDATA; i = i + 1)
             check(dec[LEAD + i] == data_arr[i], "donnee decodee == envoyee");
+
+        // ------------------------------------------------------------------
+        // Scénario 2 : fichier MULTI-PARTIES (2 blocs) -> l'amorce doit être
+        // ré-insérée entre les blocs (INTER trames 0x16), jamais dans les
+        // données, et pas après le dernier octet du fichier.
+        // ------------------------------------------------------------------
+        build_block(0,  8'hAA, 8'hBB);
+        build_block(16, 8'hCC, 8'hDD);
+        ndec = 0; dbit = 0; have_last = 0;
+        c0 = credit_cnt;
+
+        send_byte(8'h01);
+        send_byte(NB2[7:0]);
+        send_byte(8'h00);
+        for (i = 0; i < NB2; i = i + 1) begin
+            wait (credit_cnt > c0 + i);
+            send_byte(mp[i]);
+        end
+        wait (tape_active == 1'b0);
+        repeat (200) @(negedge clk);
+        if (dbit >= 13) validate_frame(dframe, 0);
+
+        check(credit_cnt - c0 == NB2, "multi: credits == 32");
+        check(ndec == LEAD + 16 + INTER + 16,
+              "multi: nb trames = amorce + bloc1 + INTER + bloc2");
+        for (i = 0; i < LEAD; i = i + 1)
+            check(dec[i] == 8'h16, "multi: amorce initiale = 0x16");
+        for (i = 0; i < 16; i = i + 1)
+            check(dec[LEAD + i] == mp[i], "multi: bloc1 intact");
+        for (i = 0; i < INTER; i = i + 1)
+            check(dec[LEAD + 16 + i] == 8'h16, "multi: amorce inter-blocs = 0x16");
+        for (i = 0; i < 16; i = i + 1)
+            check(dec[LEAD + 16 + INTER + i] == mp[16 + i], "multi: bloc2 intact");
 
         if (errors == 0) $display("ALL TESTS PASSED (tb_tape)");
         else             $display("%0d ERREUR(S)", errors);
