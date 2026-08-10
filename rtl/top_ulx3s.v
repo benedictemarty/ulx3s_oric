@@ -177,6 +177,12 @@ module top_ulx3s (
     wire [7:0] ld_rx_data;
     wire       ld_rx_valid;
 
+    // Mode TURBO automatique pendant un chargement cassette : tout le domaine
+    // cen1 (CPU+VIA+AY) passe de 1 MHz à ~4,17 MHz et l'injecteur réduit ses
+    // demi-périodes du même ratio — cohérence CLOAD/Timer 2 préservée, le
+    // chargement réel est ~4× plus court. Retour à 1 MHz dès la fin du fichier.
+    wire turbo = tape_active;
+
     tape_injector tape (
         .clk         (clk_sys),
         .rst         (rst_sys),
@@ -185,6 +191,7 @@ module top_ulx3s (
         .tx_data     (tap_tx_data),
         .tx_send     (tap_tx_send),
         .tx_busy     (ld_active ? 1'b0 : tap_tx_busy),  // loader = jamais occupé
+        .turbo       (turbo),
         .motor       (tape_motor_w),
         .tape_line   (tape_line),
         .tape_active (tape_active)
@@ -237,6 +244,7 @@ module top_ulx3s (
     oric_atmos #(.DIV(25), .ROM_FILE("basic11b.hex")) oric (
         .clk         (clk_sys),
         .rst         (rst_sys),
+        .turbo       (turbo),
         .kbd_azerty  (layout_azerty),
         .kbd_mods    (mods_s2),
         .kbd_k1      (k1_s2),

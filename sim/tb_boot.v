@@ -19,7 +19,7 @@ module tb_boot;
     wire irq_dbg;
 
     oric_atmos #(.DIV(DIV), .ROM_FILE("roms/basic11b.hex")) dut (
-        .clk(clk), .rst(rst),
+        .clk(clk), .rst(rst), .turbo(tb_turbo),
         .kbd_azerty(1'b0), .kbd_mods(8'd0), .kbd_k1(8'd0), .kbd_k2(8'd0), .kbd_k3(8'd0), .kbd_k4(8'd0),
         .inj_active(1'b0), .inj_col(3'd0), .inj_row(3'd0), .inj_shift(1'b0),
         .exp_addr(), .exp_we(), .exp_do(), .exp_io_page(), .exp_tphase(),
@@ -35,10 +35,12 @@ module tb_boot;
 
     always #10 clk = ~clk;
 
+    reg tb_turbo = 0;
     integer cycles = 0;
     integer i, r, c;
     reg found = 0;
     reg charset_ok = 0;
+    reg turbo_alive = 0;
     reg [7:0] ch;
     reg [40*8-1:0] line;
 
@@ -84,11 +86,26 @@ module tb_boot;
         $display("=== Ecran final ===");
         dump_screen;
 
-        if (found && charset_ok)
+        // ---- Mode TURBO : bascule à chaud, la machine doit rester vivante ----
+        // (cen1 passe de DIV=13 à TURBO_DIV=6 en cours d'exécution : on vérifie
+        // que le CPU continue d'exécuter la ROM — IRQ 100 Hz toujours servie —
+        // et que l'écran n'est pas corrompu, puis retour normal.)
+        turbo_alive = 0;
+        tb_turbo = 1;
+        for (i = 0; i < 200_000 && !turbo_alive; i = i + 1) begin
+            @(negedge clk);
+            if (irq_dbg) turbo_alive = 1;      // une IRQ vue en turbo
+        end
+        repeat (100_000) @(negedge clk);       // laisse tourner en turbo
+        tb_turbo = 0;
+        repeat (10_000) @(negedge clk);        // retour 1 MHz
+        scan_screen;                            // bannière toujours en place ?
+
+        if (found && charset_ok && turbo_alive)
             $display("ALL TESTS PASSED (tb_boot)");
         else
-            $display("FAIL: banniere=%0d charset=%0d apres %0d cycles CPU",
-                     found, charset_ok, cycles);
+            $display("FAIL: banniere=%0d charset=%0d turbo_alive=%0d apres %0d cycles CPU",
+                     found, charset_ok, turbo_alive, cycles);
         $finish;
     end
 

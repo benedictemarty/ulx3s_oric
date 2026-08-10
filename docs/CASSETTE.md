@@ -65,10 +65,14 @@ que le nombre de crédits.
 - Taille ≤ 65535 octets (limite ROM Oric).
 - Un seul fichier à la fois ; relance `CLOAD""` + le script pour le suivant.
 - **Jeux à loader protégé/maison** (ex. `citadel.tap`, Loriciels 84 : bloc 1
-  autorun qui recharge la suite avec sa propre routine) : « Errors found » en
-  mode signal — **y compris dans l'émulateur de référence `~/Oric1`**
-  (`--tape-signal`), qui échoue à l'identique ; le fichier est pourtant sain
-  (`--fast-load` OK). Limitation connue de la reconstruction signal du format
-  `.tap`, pas du RTL. Issues possibles : un futur « fast-load » FPGA
-  (injection directe façon émulateur, rejoint la ROM patchée US-ULA-NG.6),
-  ou la version disquette via US-DISK (`Citadelle.dsk` existe).
+  autorun qui recharge la suite via des points d'entrée INTERNES de la ROM,
+  après vérification d'empreinte `$FFF9`/`$E4B6`) : ces jeux sont sensibles à
+  la **révision exacte de la ROM**. Citadel connaît la 1.0 et la 1.1
+  d'origine (`$E4B6=$A2`) mais PAS notre 1.1b (code décalé, `$E4B6=$8E`) →
+  « Errors found » quel que soit le flux. **Vérifié en émulateur
+  (2026-08-11)** : avec la ROM **1.0** ET l'amorce inter-blocs (celle que
+  notre RTL insère — l'émulateur ne l'a pas, il a fallu la simuler dans le
+  fichier), Citadel charge et tourne. → Prise en charge = **banque ROM 1.0
+  sélectionnable** (US-ULA-NG.1) ; le RTL cassette actuel suffit. NB : le
+  mode signal de la référence `~/Oric1` bénéficierait aussi de l'insertion
+  d'amorce inter-blocs (amélioration à reporter).

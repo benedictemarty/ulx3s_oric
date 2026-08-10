@@ -33,6 +33,11 @@ module tape_injector #(
     // Durées en cycles de clk. Défaut 25 MHz : 208 µs et 416 µs.
     parameter CYC_HALF_ONE  = 5200,
     parameter CYC_HALF_LONG = 10400,
+    // Mode turbo : mêmes durées × TURBO_DIV/DIV (6/25) — la bande accélère du
+    // même ratio que le domaine CPU/VIA, donc en cycles CPU rien ne change
+    // pour la routine CLOAD (Timer 2). 5200×6/25 = 1248 ; 10400×6/25 = 2496.
+    parameter CYC_HALF_ONE_T  = 1248,
+    parameter CYC_HALF_LONG_T = 2496,
     parameter LEADER_SYNCS  = 64,
     parameter INTER_SYNCS   = 255,   // amorce ré-insérée entre les blocs (~1,8 s)
     parameter SYNC_BYTE      = 8'h16,
@@ -49,6 +54,7 @@ module tape_injector #(
     output reg        tx_send,
     input             tx_busy,
     // Signaux cassette
+    input             turbo,        // demi-périodes réduites (chargement accéléré)
     input             motor,        // VIA PB6 (moteur)
     output reg        tape_line,    // -> tape_in (VIA CB1)
     // Aiguillage : haut pendant tout le chargement (supprime le clavier série)
@@ -102,6 +108,11 @@ module tape_injector #(
     reg [15:0] wf_cnt;
     reg [7:0]  leader_left;
     reg        cur_bit;
+
+    // Demi-périodes effectives (turbo constant pendant tout un chargement :
+    // piloté par tape_active au top, il ne change qu'entre deux fichiers)
+    wire [15:0] half_one  = turbo ? CYC_HALF_ONE_T[15:0]  : CYC_HALF_ONE[15:0];
+    wire [15:0] half_long = turbo ? CYC_HALF_LONG_T[15:0] : CYC_HALF_LONG[15:0];
 
     // ------------------------------------------------------------------
     // Parseur de blocs .tap (pour l'amorce inter-parties)
@@ -195,7 +206,7 @@ module tape_injector #(
                             bitpos      <= 0;
                             cur_bit     <= 1'b0;   // bit0 = start
                             tape_line   <= 1'b0;   // demi 0 : BAS
-                            wf_cnt      <= CYC_HALF_ONE - 1;
+                            wf_cnt      <= half_one - 16'd1;
                             wf          <= W_H0;
                         end else if (consumed < {1'b0, len}) begin
                             if (!fifo_empty) begin
@@ -204,7 +215,7 @@ module tape_injector #(
                                 bitpos    <= 0;
                                 cur_bit   <= 1'b0;
                                 tape_line <= 1'b0;
-                                wf_cnt    <= CYC_HALF_ONE - 1;
+                                wf_cnt    <= half_one - 16'd1;
                                 wf        <= W_H0;
                                 // ---- parseur de blocs : suit la structure du
                                 // .tap sur l'octet consommé ----
@@ -244,7 +255,7 @@ module tape_injector #(
                     W_H0: begin                    // demi 0 : niveau BAS
                         if (wf_cnt == 0) begin
                             tape_line <= 1'b1;     // demi 1 : HAUT
-                            wf_cnt    <= (cur_bit ? CYC_HALF_ONE : CYC_HALF_LONG) - 1;
+                            wf_cnt    <= (cur_bit ? half_one : half_long) - 16'd1;
                             wf        <= W_H1;
                         end else
                             wf_cnt <= wf_cnt - 16'd1;
@@ -257,7 +268,7 @@ module tape_injector #(
                                 bitpos    <= bitpos + 4'd1;
                                 cur_bit   <= frame[bitpos + 4'd1];
                                 tape_line <= 1'b0; // demi 0 du bit suivant
-                                wf_cnt    <= CYC_HALF_ONE - 1;
+                                wf_cnt    <= half_one - 16'd1;
                                 wf        <= W_H0;
                             end
                         end else

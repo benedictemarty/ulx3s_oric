@@ -8,7 +8,9 @@ module tb_tape;
 
     // Durées réduites pour la simulation.
     localparam CH1 = 4, CHL = 8, LEAD = 4, INTER = 6;
+    localparam CH1T = 2, CHLT = 4;                 // demi-périodes turbo (÷2)
     localparam THRESH = (2*CH1 + (CH1+CHL)) / 2;   // seuil '1'(=8) / '0'(=12) = 10
+    localparam THRESHT = (2*CH1T + (CH1T+CHLT)) / 2;
 
     reg clk = 0, rst = 1;
     reg  [7:0] rx_data = 0;
@@ -16,14 +18,16 @@ module tb_tape;
     wire [7:0] tx_data;
     wire       tx_send;
     reg        motor = 1;
+    reg        turbo = 0;
     wire       tape_line, tape_active;
 
     tape_injector #(.CYC_HALF_ONE(CH1), .CYC_HALF_LONG(CHL), .LEADER_SYNCS(LEAD),
+                    .CYC_HALF_ONE_T(CH1T), .CYC_HALF_LONG_T(CHLT),
                     .INTER_SYNCS(INTER)) dut (
         .clk(clk), .rst(rst),
         .rx_data(rx_data), .rx_valid(rx_valid),
         .tx_data(tx_data), .tx_send(tx_send), .tx_busy(1'b0),
-        .motor(motor), .tape_line(tape_line), .tape_active(tape_active)
+        .turbo(turbo), .motor(motor), .tape_line(tape_line), .tape_active(tape_active)
     );
 
     always #10 clk = ~clk;
@@ -71,6 +75,7 @@ module tb_tape;
     // Décodeur de forme d'onde : période entre fronts montants -> bit
     // ------------------------------------------------------------------
     reg        tl_prev = 1;
+    integer    thresh = THRESH;
     reg [31:0] cyc = 0, last_rise = 0;
     reg        have_last = 0;
     reg [13:0] dframe = 0;
@@ -96,7 +101,7 @@ module tb_tape;
         if (tape_line && !tl_prev) begin           // front montant
             if (have_last) begin
                 delta = cyc - last_rise;
-                bitv  = (delta <= THRESH) ? 1 : 0;
+                bitv  = (delta <= thresh) ? 1 : 0;
                 dframe[dbit] = bitv;
                 dbit = dbit + 1;
                 if (dbit == 14) begin
@@ -177,6 +182,31 @@ module tb_tape;
             check(dec[LEAD + 16 + i] == 8'h16, "multi: amorce inter-blocs = 0x16");
         for (i = 0; i < 16; i = i + 1)
             check(dec[LEAD + 16 + INTER + i] == mp[16 + i], "multi: bloc2 intact");
+
+        // ------------------------------------------------------------------
+        // Scénario 3 : mode TURBO — mêmes données que le scénario 1, demi-
+        // périodes réduites (CH1T/CHLT), le décodeur suit avec son seuil turbo.
+        // ------------------------------------------------------------------
+        turbo = 1; thresh = THRESHT;
+        ndec = 0; dbit = 0; have_last = 0;
+        c0 = credit_cnt;
+
+        send_byte(8'h01);
+        send_byte(NDATA[7:0]);
+        send_byte(8'h00);
+        for (i = 0; i < NDATA; i = i + 1) begin
+            wait (credit_cnt > c0 + i);
+            send_byte(data_arr[i]);
+        end
+        wait (tape_active == 1'b0);
+        repeat (200) @(negedge clk);
+        if (dbit >= 13) validate_frame(dframe, 0);
+
+        check(ndec == LEAD + NDATA, "turbo: nb trames = amorce + donnees");
+        for (i = 0; i < LEAD; i = i + 1)
+            check(dec[i] == 8'h16, "turbo: amorce = 0x16");
+        for (i = 0; i < NDATA; i = i + 1)
+            check(dec[LEAD + i] == data_arr[i], "turbo: donnee decodee == envoyee");
 
         if (errors == 0) $display("ALL TESTS PASSED (tb_tape)");
         else             $display("%0d ERREUR(S)", errors);

@@ -7,10 +7,19 @@
 
 module oric_atmos #(
     parameter DIV      = 25,               // clk_sys / DIV = 1 MHz
+    parameter TURBO_DIV = 6,               // clk_sys / TURBO_DIV en mode turbo
+                                           // (min 6 : DI verrouillé à t4, cen1 à t5)
     parameter ROM_FILE = "basic11b.hex"
 )(
     input         clk,
     input         rst,
+    input         turbo,        // accélère TOUT le domaine cen1 (CPU+VIA+AY) :
+                                // la cohérence interne (Timer 2 vs cassette,
+                                // délais ROM) est préservée si la source
+                                // cassette accélère du même ratio. NB : les
+                                // phases d'échantillonnage cartouche (t22/t23)
+                                // ne sont pas atteintes en turbo — réservé aux
+                                // chargements, sans cartouche active.
 
     // Clavier (rapport HID synchronisé)
     input         kbd_azerty,   // 0 = QWERTY positionnel, 1 = AZERTY français
@@ -71,15 +80,19 @@ module oric_atmos #(
 
     // ------------------------------------------------------------------
     // Générateur de phases : tphase 0..DIV-1, cen1 = 1 MHz
+    // (turbo : 0..TURBO_DIV-1). Comparaison >= et remise à zéro sur cen1 :
+    // un basculement de `turbo` en cours de cycle donne au pire un cycle bus
+    // unique raccourci (jamais < t5, DI déjà verrouillé à t4) ou rallongé.
     // ------------------------------------------------------------------
     reg [4:0] tphase;
+    wire [4:0] wrapv = turbo ? TURBO_DIV[4:0] - 5'd1 : DIV[4:0] - 5'd1;
+    wire cen1 = (tphase >= wrapv);
+
     always @(posedge clk)
         if (rst)
             tphase <= 5'd0;
         else
-            tphase <= (tphase == DIV - 1) ? 5'd0 : tphase + 5'd1;
-
-    wire cen1 = (tphase == DIV - 1);
+            tphase <= cen1 ? 5'd0 : tphase + 5'd1;
 
     // ------------------------------------------------------------------
     // CPU 6502

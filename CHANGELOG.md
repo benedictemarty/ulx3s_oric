@@ -5,6 +5,17 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 
 ## [Non publié]
 
+### En cours
+- **Mode turbo chargement (US-ULA-NG.8) — POINT OUVERT** : domaine `cen1`
+  commutable 1 MHz → ~4,17 MHz (`oric_atmos.turbo`, TURBO_DIV=6, bascule à
+  chaud sûre) + demi-périodes cassette réduites du même ratio (cohérence
+  Timer 2 en cycles CPU), activé par `tape_active`. 17/17 tests verts (dont
+  `tb_boot` bascule à chaud et `tb_tape` scénario turbo), timing OK — mais
+  **sur carte le CLOAD reste en « Searching »**. Nouveau banc bout-en-bout
+  `sim/tb_cload.v` (boot ROM réel + frappe `CLOAD""` + cassette) : reproduit
+  le succès en mode normal ; l'exécution turbo instrumentée (périodes en
+  cycles CPU, flag CB1) est en cours pour isoler la divergence.
+
 ### Corrigé
 - **`.tap` multi-parties : amorce ré-insérée entre les blocs — VALIDÉ SUR
   CARTE** (bmarty, 2026-08-10, Defense Force — 4 blocs, 59 Ko — chargé et
