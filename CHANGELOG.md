@@ -6,6 +6,13 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 ## [Non publié]
 
 ### Documenté
+- **US-ULA-NG : expérience utilisateur + VRAM dédiée** (décisions bmarty,
+  2026-08-10) : boot 100 % classique ; la commande **`HIRES 1`** (BASIC
+  étendu, ROM 1.1b patchée en banque de boot) bascule en mode OCULA/NG,
+  `HIRES` sans argument inchangé. Les modes vidéo étendus utilisent une
+  **VRAM à part** (BRAM séparée de la RAM 6502, accès par port indexé
+  style VDP) — nouveaux incréments US-ULA-NG.6 (BASIC étendu) et
+  US-ULA-NG.7 (VRAM + texte haute qualité 8×16/14×18 + hires 640×400).
 - **Épopée US-SPEECH** au backlog : synthèse vocale **TMS5220** (le chip
   voix TI de l'Exelvision EXL 100) en RTL, réécrit d'après la référence
   MAME `tms5220.cpp` avec testbench de non-régression. Mode Speak External

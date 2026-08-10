@@ -95,6 +95,13 @@ ULA-NG (`$03E0-$03EF`, toujours visible) ; l'ULA exporte le signal de
 sélection vers le décodage existant de `oric_atmos.v` (sémantique
 `sel_rom`/`rom_as_ram` conservée — changement minimal) ; comportement
 HCS10017 strict par défaut (verrouillage NG), boot sur la banque BASIC.
+Expérience utilisateur (bmarty, 2026-08-10) : boot 100 % classique ; la
+commande **`HIRES 1`** (argument inexistant en BASIC standard) bascule en
+mode OCULA/NG + BASIC étendu ; `HIRES` sans argument = HIRES classique
+inchangé. Implique une ROM 1.1b patchée (handler HIRES seul modifié) en
+banque de boot + banque(s) d'extension via NG_BANK (trampoline RAM basse).
+Prototypage de la ROM patchée dans l'émulateur `~/Oric1` d'abord.
+ROM patchée = usage personnel uniquement (cf. dette technique).
 Cible mémoire : 48 Ko RAM fixe + fenêtre 16 Ko à `$C000` commutée
 (jusqu'à 4-8 banques ROM + RAM haute = « 64 Ko ROM / 64 Ko RAM »).
 L'émulateur `~/Oric1` sert de modèle de référence à chaque incrément.
@@ -111,6 +118,18 @@ L'émulateur `~/Oric1` sert de modèle de référence à chaque incrément.
 - [ ] US-ULA-NG.5 **ROM système façon Orix** (exploratoire) : OS 6502 (cc65)
       en banque(s) ROM — boot, services fichiers (SD via RTL FAT32), appels
       vidéo NG. Alternative : portage Orix (mapping Twilighte à étudier).
+- [ ] US-ULA-NG.6 **BASIC étendu — bascule `HIRES 1`** : ROM 1.1b patchée
+      (handler HIRES : argument optionnel ; sans argument = code d'origine),
+      déverrouillage NG + commandes étendues en banque d'extension
+      (trampoline RAM basse). Prototype dans l'émulateur `~/Oric1` d'abord.
+- [ ] US-ULA-NG.7 **VRAM dédiée + modes « Hercules »** (décision bmarty,
+      2026-08-10 : la vidéo étendue a sa VRAM à part) : framebuffer en BRAM
+      séparé de la RAM 6502 (zéro contention CPU/vidéo), accès CPU par port
+      indexé style VDP (registres adresse+données en `$03xx`). Modes visés :
+      texte haute qualité (police 8×16 → 80×30, ou gros texte 14×18 → 45×26,
+      à trancher) + hires 640×400 monochrome. Extension AU-DELÀ de la spec
+      ULA-NG actuelle (480 px max, lecture RAM principale) → à spécifier
+      d'abord dans `ULA-NG-SPEC.md` + émulateur, puis FPGA.
 
 ## Épopée SPEECH — synthèse vocale TMS5220 (le chip voix de l'EXL 100)
 Objectif : intégrer un TMS5220 (synthèse LPC Texas Instruments) en RTL dans
