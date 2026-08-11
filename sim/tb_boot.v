@@ -18,8 +18,8 @@ module tb_boot;
     wire [9:0] audio;
     wire irq_dbg;
 
-    oric_atmos #(.DIV(DIV), .ROM_FILE("roms/basic11b.hex")) dut (
-        .clk(clk), .rst(rst), .turbo(tb_turbo),
+    oric_atmos #(.DIV(DIV), .ROM_FILE("roms/basic11b.hex"), .ROM_FILE_B("roms/basic10.hex")) dut (
+        .clk(clk), .rst(rst), .rom_bank(tb_bank), .turbo(tb_turbo),
         .kbd_azerty(1'b0), .kbd_mods(8'd0), .kbd_k1(8'd0), .kbd_k2(8'd0), .kbd_k3(8'd0), .kbd_k4(8'd0),
         .inj_active(1'b0), .inj_col(3'd0), .inj_row(3'd0), .inj_shift(1'b0),
         .exp_addr(), .exp_we(), .exp_do(), .exp_io_page(), .exp_tphase(),
@@ -36,6 +36,10 @@ module tb_boot;
     always #10 clk = ~clk;
 
     reg tb_turbo = 0;
+    // +bank=1 : boot sur la banque BASIC 1.0 (sa bannière contient aussi ORIC)
+    integer bank_arg = 0;
+    initial if (!$value$plusargs("bank=%d", bank_arg)) bank_arg = 0;
+    wire tb_bank = (bank_arg != 0);
     integer cycles = 0;
     integer i, r, c;
     reg found = 0;

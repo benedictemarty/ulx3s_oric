@@ -6,8 +6,8 @@ module tb_trace;
     localparam DIV = 13;
     reg clk = 0, rst = 1;
 
-    oric_atmos #(.DIV(DIV), .ROM_FILE("roms/basic11b.hex")) dut (
-        .clk(clk), .rst(rst), .turbo(1'b0),
+    oric_atmos #(.DIV(DIV), .ROM_FILE("roms/basic11b.hex"), .ROM_FILE_B("roms/basic10.hex")) dut (
+        .clk(clk), .rst(rst), .rom_bank(1'b0), .turbo(1'b0),
         .kbd_azerty(1'b0), .kbd_mods(8'd0), .kbd_k1(8'd0), .kbd_k2(8'd0), .kbd_k3(8'd0), .kbd_k4(8'd0),
         .inj_active(1'b0), .inj_col(3'd0), .inj_row(3'd0), .inj_shift(1'b0),
         .exp_addr(), .exp_we(), .exp_do(), .exp_io_page(), .exp_tphase(),

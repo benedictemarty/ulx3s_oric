@@ -9,10 +9,13 @@ module oric_atmos #(
     parameter DIV      = 25,               // clk_sys / DIV = 1 MHz
     parameter TURBO_DIV = 6,               // clk_sys / TURBO_DIV en mode turbo
                                            // (min 6 : DI verrouillé à t4, cen1 à t5)
-    parameter ROM_FILE = "basic11b.hex"
+    parameter ROM_FILE   = "basic11b.hex",
+    parameter ROM_FILE_B = "basic10.hex"
 )(
     input         clk,
     input         rst,
+    input         rom_bank,     // 0 = BASIC 1.1b (défaut), 1 = BASIC 1.0 —
+                                // à ne changer qu'avec un reset
     input         turbo,        // accélère TOUT le domaine cen1 (CPU+VIA+AY) :
                                 // la cohérence interne (Timer 2 vs cassette,
                                 // délais ROM) est préservée si la source
@@ -176,8 +179,9 @@ module oric_atmos #(
         .dout_b (vram_dout)
     );
 
-    oric_rom #(.ROM_FILE(ROM_FILE)) rom (
+    oric_rom #(.ROM_FILE(ROM_FILE), .ROM_FILE_B(ROM_FILE_B)) rom (
         .clk  (clk),
+        .bank (rom_bank),
         .addr (bus_addr_q[13:0]),
         .dout (rom_dout)
     );

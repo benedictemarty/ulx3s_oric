@@ -59,7 +59,34 @@ module top_ulx3s (
             por <= por - 16'd1;
 
     wire ext_rst_req;
-    wire rst_sys = (por != 0) || btn[1] || ext_rst_req;
+    wire rst_sys = (por != 0) || btn[1] || ext_rst_req || (bank_rst != 0);
+
+    // ------------------------------------------------------------------
+    // Banque ROM sur BTN5 (UP) : chaque appui bascule BASIC 1.1b <-> 1.0
+    // et déclenche un reset à froid (~5 ms) — le vecteur $FFFC change de
+    // banque. Indicateur = la bannière au boot (V1.1 / V1.0).
+    // ------------------------------------------------------------------
+    reg [1:0]  b5_sync = 2'b00;
+    reg [19:0] b5_deb  = 20'd0;
+    reg        b5_stable = 1'b0, b5_prev = 1'b0;
+    reg        rom_bank = 1'b0;
+    reg [16:0] bank_rst = 17'd0;
+    always @(posedge clk_sys) begin
+        b5_sync <= {b5_sync[0], btn[5]};
+        if (b5_sync[1] == b5_stable)
+            b5_deb <= 20'd0;
+        else if (b5_deb == 20'd250_000) begin   // ~10 ms stable
+            b5_stable <= b5_sync[1];
+            b5_deb    <= 20'd0;
+        end else
+            b5_deb <= b5_deb + 20'd1;
+        b5_prev <= b5_stable;
+        if (b5_stable && !b5_prev) begin
+            rom_bank <= ~rom_bank;
+            bank_rst <= 17'd125_000;            // ~5 ms de reset
+        end else if (bank_rst != 0)
+            bank_rst <= bank_rst - 17'd1;
+    end
 
     reg [3:0] rst_usb_sync = 4'hF;
     always @(posedge clk_usb) rst_usb_sync <= {rst_usb_sync[2:0], rst_sys};
@@ -181,7 +208,9 @@ module top_ulx3s (
     // cen1 (CPU+VIA+AY) passe de 1 MHz à ~4,17 MHz et l'injecteur réduit ses
     // demi-périodes du même ratio — cohérence CLOAD/Timer 2 préservée, le
     // chargement réel est ~4× plus court. Retour à 1 MHz dès la fin du fichier.
-    wire turbo = tape_active;
+    // ⚠ POINT OUVERT US-ULA-NG.8 : sur carte le CLOAD reste en « Searching »
+    // (la sim tb_cload instrumentée est en cours) → DÉSACTIVÉ en attendant.
+    wire turbo = 1'b0;   // TODO: rebrancher sur tape_active une fois corrigé
 
     tape_injector tape (
         .clk         (clk_sys),
@@ -244,6 +273,7 @@ module top_ulx3s (
     oric_atmos #(.DIV(25), .ROM_FILE("basic11b.hex")) oric (
         .clk         (clk_sys),
         .rst         (rst_sys),
+        .rom_bank    (rom_bank),
         .turbo       (turbo),
         .kbd_azerty  (layout_azerty),
         .kbd_mods    (mods_s2),

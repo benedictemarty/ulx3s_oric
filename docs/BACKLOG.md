@@ -110,11 +110,14 @@ ROM patchée = usage personnel uniquement (cf. dette technique).
 Cible mémoire : 48 Ko RAM fixe + fenêtre 16 Ko à `$C000` commutée
 (jusqu'à 4-8 banques ROM + RAM haute = « 64 Ko ROM / 64 Ko RAM »).
 L'émulateur `~/Oric1` sert de modèle de référence à chaque incrément.
-- [ ] US-ULA-NG.1 **Registre NG_BANK + commutation ROM/RAM** : registre dans
-      `$03E0-$03EF` (bit ROM/RAM + n° de banque), signal de sélection exporté
-      par l'ULA vers `oric_atmos.v`, banques ROM en BRAM (BASIC 1.1b =
-      banque de boot). Testbench : POKE registre → le BASIC disparaît/
-      réapparaît ; non-régression boot verrouillé.
+- [~] US-ULA-NG.1 **Registre NG_BANK + commutation ROM/RAM** — première
+      tranche FAITE (2026-08-11, validée sur carte) : `oric_rom.v` à
+      2 banques (1.1b défaut + **BASIC 1.0**), bascule BTN5 + reset,
+      Citadel (loader protégé, sensible à la révision ROM) chargé jusqu'au
+      bout sur la banque 1.0. Reste : registre NG_BANK dans `$03E0-$03EF`
+      (bit ROM/RAM + n° de banque, sélection via l'ULA), RAM haute,
+      testbench POKE ; + nettoyage signature warm-boot à la bascule
+      (bannière absente aujourd'hui : warm-boot silencieux).
 - [ ] US-ULA-NG.2 **Palette + registres NG** : LUT palette redéfinissable,
       mécanisme de déverrouillage, fidèle à la spec et à l'émulateur.
 - [ ] US-ULA-NG.3 **Texte 80 colonnes** (480 px, charset RAM natif,

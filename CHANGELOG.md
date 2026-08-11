@@ -5,6 +5,21 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 
 ## [Non publié]
 
+### Ajouté
+- **Deux banques ROM (US-ULA-NG.1, première tranche) — VALIDÉ SUR CARTE**
+  (bmarty, 2026-08-11, **Citadel chargé jusqu'au « Choix des couleurs »**) :
+  `rtl/oric_rom.v` héberge 2 banques de 16 Ko en BRAM — banque 0 = BASIC
+  1.1b (défaut), banque 1 = **BASIC 1.0** (`roms/basic10.hex`, généré depuis
+  la ROM de l'émulateur). **BTN5 (gauche)** bascule la banque et déclenche
+  un reset (~5 ms) ; vérification de la banque active : `PRINT PEEK(#FFF9)`
+  (1 = 1.1b). Décidé après le diagnostic Citadel : les jeux à loader protégé
+  vérifient la révision exacte de la ROM et sautent dans ses entrailles —
+  la 1.0 est un des deux chemins supportés par Citadel, et sur carte les
+  4 blocs s'enchaînent grâce à l'amorce inter-blocs. Testbenches : `tb_boot`
+  boote les deux banques (`+bank=1`). Limitation connue : la bascule fait
+  un warm-boot silencieux (pas de bannière — la RAM n'est pas effacée) ;
+  nettoyage de la signature à prévoir pour un vrai boot à froid.
+
 ### En cours
 - **Mode turbo chargement (US-ULA-NG.8) — POINT OUVERT** : domaine `cen1`
   commutable 1 MHz → ~4,17 MHz (`oric_atmos.turbo`, TURBO_DIV=6, bascule à

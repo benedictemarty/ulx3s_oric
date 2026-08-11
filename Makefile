@@ -34,9 +34,10 @@ SIM_CORE = rtl/oric_atmos.v rtl/oric_ula.v rtl/oric_ram.v rtl/oric_rom.v \
 
 all: build/$(PROJ).bit
 
-build/$(PROJ).json: $(SRC) roms/basic11b.hex
+build/$(PROJ).json: $(SRC) roms/basic11b.hex roms/basic10.hex
 	mkdir -p build
 	cp roms/basic11b.hex build/
+	cp roms/basic10.hex build/
 	cp roms/font8x8.hex build/
 	cp third_party/usb_hid_host/src/usb_hid_host_rom.hex build/
 	cd build && yosys -q -p "read_verilog -I../rtl $(addprefix ../,$(SRC)); synth_ecp5 -noabc9 -top $(TOP) -json $(PROJ).json"

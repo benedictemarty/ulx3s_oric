@@ -45,8 +45,8 @@ module tb_cload;
     );
 
     // ---- Oric ----
-    oric_atmos #(.DIV(25), .ROM_FILE("roms/basic11b.hex")) dut (
-        .clk(clk), .rst(rst), .turbo(turbo),
+    oric_atmos #(.DIV(25), .ROM_FILE("roms/basic11b.hex"), .ROM_FILE_B("roms/basic10.hex")) dut (
+        .clk(clk), .rst(rst), .rom_bank(1'b0), .turbo(turbo),
         .kbd_azerty(1'b0), .kbd_mods(8'd0), .kbd_k1(8'd0), .kbd_k2(8'd0), .kbd_k3(8'd0), .kbd_k4(8'd0),
         .inj_active(inj_active), .inj_col(inj_col), .inj_row(inj_row), .inj_shift(inj_shift),
         .exp_addr(), .exp_we(), .exp_do(), .exp_io_page(), .exp_tphase(),
@@ -115,6 +115,30 @@ module tb_cload;
                          edges_shown, cen_cnt - last_edge_cen, dut.via.ifr[4]);
             last_edge_cen = cen_cnt;
             edges_shown = edges_shown + 1;
+        end
+    end
+
+    // ---- Trace VIA (+viatrace=1) : tous les accès VIA + poses de flag CB1
+    // pendant la cassette, en cycles CPU. À diff-er entre turbo=0 et turbo=1.
+    integer viatrace = 0;
+    initial if (!$value$plusargs("viatrace=%d", viatrace)) viatrace = 0;
+    integer via_ev = 0;
+    reg tr_on = 0;
+    always @(posedge clk) if (viatrace != 0) begin
+        if (tape_active && tape_line === 1'b0 && !tr_on) begin
+            tr_on = 1; $display("T START @%0d", cen_cnt);
+        end
+        if (tr_on && dut.cen1 && via_ev < 5000) begin
+            if (dut.via.cb1_edge) begin
+                $display("T CB1SET @%0d", cen_cnt); via_ev = via_ev + 1;
+            end
+            if (dut.sel_via) begin
+                $display("T VIA%0s %h w=%h r=%h ifr=%h t2=%h @%0d",
+                         dut.bus_we_q ? "W" : "R", dut.bus_addr_q[3:0],
+                         dut.bus_do_q, dut.via.dout, dut.via.ifr,
+                         dut.via.t2c, cen_cnt);
+                via_ev = via_ev + 1;
+            end
         end
     end
 

@@ -73,6 +73,9 @@ que le nombre de crédits.
   (2026-08-11)** : avec la ROM **1.0** ET l'amorce inter-blocs (celle que
   notre RTL insère — l'émulateur ne l'a pas, il a fallu la simuler dans le
   fichier), Citadel charge et tourne. → Prise en charge = **banque ROM 1.0
-  sélectionnable** (US-ULA-NG.1) ; le RTL cassette actuel suffit. NB : le
-  mode signal de la référence `~/Oric1` bénéficierait aussi de l'insertion
-  d'amorce inter-blocs (amélioration à reporter).
+  sélectionnable sur BTN5** (US-ULA-NG.1) — **VALIDÉ SUR CARTE le
+  2026-08-11** : Citadel charge ses 4 blocs jusqu'au « Choix des couleurs »
+  sur la banque 1.0. Vérifier la banque active : `PRINT PEEK(#FFF9)`
+  (1 = 1.1b, autre = 1.0 ; la bascule fait un warm-boot silencieux, pas de
+  bannière). NB : le mode signal de la référence `~/Oric1` bénéficierait
+  aussi de l'insertion d'amorce inter-blocs (amélioration à reporter).
