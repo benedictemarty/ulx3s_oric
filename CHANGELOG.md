@@ -21,7 +21,8 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
   nettoyage de la signature à prévoir pour un vrai boot à froid.
 
 ### Ajouté
-- **Interface Microdisc (US-DISK.2) — validée en simulation** (2026-08-12) :
+- **Interface Microdisc (US-DISK.2) — VALIDÉE SUR CARTE** (bmarty,
+  2026-08-12 : SW1 ON → « insert system disc », SW1 OFF → Atmos intact) :
   `rtl/microdisc.v` fidèle à `~/Oric1/src/io/microdisc.c` — registres
   `$0310-$0313` (WD1793), `$0314` W = contrôle (b0 INTENA, b1 /ROMDIS,
   b4 side, b6:5 drive, b7 /EPROM), `$0314`/`$0318` R = /INTRQ//DRQ

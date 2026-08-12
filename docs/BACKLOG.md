@@ -93,18 +93,18 @@ Microdisc s'arrête à `$0318`, l'ACIA est à `$031C-$031F` (comme la réf).
 Architecture retenue : **buffer de PISTE en BRAM** (~6,4 Ko, piste MFM
 brute du format MFM_DISK) rechargé depuis la SD à chaque seek (~200 ms,
 comparable à une vraie mécanique 3") ; v1 en LECTURE SEULE.
-- [ ] US-DISK.1 **Cœur WD1793 RTL** fidèle à `disk.c` : registres
+- [x] US-DISK.1 **Cœur WD1793 RTL** (2026-08-12, validé en sim) fidèle à `disk.c` : registres
       cmd/track/sector/data, commandes type I (seek/step, h/V/r1r0),
       type II (read sector : recherche d'ID dans la piste MFM, DRQ par
       octet), type III (read address), type IV (force interrupt), status
       par type, timings réels (step 6-30 ms, latence rotation, RNF après
       5 tours d'index). Testbench : piste MFM synthétique en BRAM,
       séquences lecture/seek vérifiées contre le comportement de la réf.
-- [ ] US-DISK.2 **Wrapper Microdisc + intégration** : registres `$0310-$0318`
-      (conventions actives-bas exactes), EPROM 8 Ko en BRAM overlay
-      `$E000-$FFFF` via la sémantique /ROMDIS-/MAP existante (au boot :
-      ROMDIS + EPROM actifs comme la réf), IRQ vers le 6502 si INTENA.
-      Boot attendu sur carte : bannière du Microdisc sans disquette.
+- [x] US-DISK.2 **Wrapper Microdisc + intégration** (2026-08-12, VALIDÉ SUR
+      CARTE) : registres `$0310-$0318` actifs-bas, EPROM 8 Ko overlay
+      `$E000-$FFFF`, /ROMDIS combiné, IRQ si INTENA, **SW1 (DIP) =
+      interface branchée** (OFF = Atmos intact). Sur carte : SW1 ON →
+      « insert system disc », SW1 OFF → Atmos normal.
 - [ ] US-DISK.3 **Pistes depuis la SD** : accès aléatoire dans le fichier
       .dsk (fat32 : seek par re-suivi de chaîne de clusters + offset
       piste = f(side, track) de l'en-tête MFM_DISK), chargement du buffer
