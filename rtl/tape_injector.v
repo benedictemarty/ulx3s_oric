@@ -38,6 +38,18 @@ module tape_injector #(
     // pour la routine CLOAD (Timer 2). 5200×6/25 = 1248 ; 10400×6/25 = 2496.
     parameter CYC_HALF_ONE_T  = 1248,
     parameter CYC_HALF_LONG_T = 2496,
+    // STOP BITS SUPPLÉMENTAIRES en TURBO, sur les trames de DONNÉES uniquement
+    // (trame 14 -> 18 bits : 4 bits '1' de plus, avec leurs fronts). D'après le
+    // désassemblage de GetTapeByte ($E6C9, ROM 1.1b) : la ROM BRÛLE un front
+    // (mesure jetée — c'est son amortisseur anti-retard), SAUTE les périodes
+    // courtes (stops '1') puis prend la première période longue comme start.
+    // Si son traitement inter-octets + une IRQ T1 dépassent les 4 stops
+    // (1664 cycles), le start est fusionné-brûlé et elle raccroche 2 bits trop
+    // tard (octet faux -> « Errors found »). 4 stops de plus => fenêtre de
+    // 3328 cycles. Un GAP SILENCIEUX ne convient PAS : le front qui le termine
+    // (= le vrai start) se fait manger par le brûleur (vérifié en sim). Des
+    // '1' supplémentaires ne gênent ni la chasse au sync (fenêtre glissante)
+    // ni la lecture d'octets. Comportement 1 MHz inchangé (validé sur carte).
     parameter LEADER_SYNCS  = 64,
     parameter INTER_SYNCS   = 255,   // amorce ré-insérée entre les blocs (~1,8 s)
     parameter SYNC_BYTE      = 8'h16,
@@ -103,8 +115,9 @@ module tape_injector #(
     // ------------------------------------------------------------------
     localparam W_LOAD = 2'd0, W_H0 = 2'd1, W_H1 = 2'd2;
     reg [1:0]  wf = W_LOAD;
-    reg [13:0] frame;
-    reg [3:0]  bitpos;
+    reg [17:0] frame;        // 14 bits + jusqu'à 4 stops turbo supplémentaires
+    reg [4:0]  bitpos;
+    reg [4:0]  lastbit;      // 13 (trame normale) ou 17 (turbo, données)
     reg [15:0] wf_cnt;
     reg [7:0]  leader_left;
     reg        cur_bit;
@@ -153,8 +166,18 @@ module tape_injector #(
                     state <= S_LOAD;
                 end
                 S_LOAD: begin
+                    // Fin : tout consommé et plus rien d'utile à jouer. Le cas
+                    // `bitpos >= 10` couvre les jeux autorun qui COUPENT LE
+                    // MOTEUR dès leur dernier octet lu (parité comprise, bits
+                    // 0-9) : il ne reste que des stop bits '1' (niveau haut,
+                    // = repos) — sans cette clause, moteur coupé = forme
+                    // d'onde gelée = tape_active (et le turbo) bloqués.
+                    // Moteur en marche : on joue la trame jusqu'au bout
+                    // (forme d'onde fidèle) ; moteur coupé sur les stops :
+                    // on conclut malgré le gel.
                     if (consumed == {1'b0, len} && leader_left == 0 &&
-                        wf == W_LOAD && fifo_empty)
+                        fifo_empty &&
+                        (wf == W_LOAD || (!motor && bitpos >= 5'd10)))
                         state <= S_DONE;    // toutes les données jouées
                 end
                 S_DONE: begin
@@ -201,7 +224,9 @@ module tape_injector #(
                 case (wf)
                     W_LOAD: begin
                         if (leader_left != 0) begin
-                            frame       <= encode(SYNC_BYTE);
+                            frame       <= {4'b1111, encode(SYNC_BYTE)};
+                            lastbit     <= 5'd13;  // amorce : trame 14 bits pure
+                                                   // (chasse au sync bit à bit)
                             leader_left <= leader_left - 8'd1;
                             bitpos      <= 0;
                             cur_bit     <= 1'b0;   // bit0 = start
@@ -210,7 +235,9 @@ module tape_injector #(
                             wf          <= W_H0;
                         end else if (consumed < {1'b0, len}) begin
                             if (!fifo_empty) begin
-                                frame     <= encode(fifo[rptr]);
+                                frame     <= {4'b1111, encode(fifo[rptr])};
+                                lastbit   <= turbo ? 5'd17 : 5'd13; // stops
+                                                    // supplémentaires en turbo
                                 wf_pop    <= 1'b1;
                                 bitpos    <= 0;
                                 cur_bit   <= 1'b0;
@@ -262,11 +289,11 @@ module tape_injector #(
                     end
                     W_H1: begin                    // demi 1 : niveau HAUT
                         if (wf_cnt == 0) begin
-                            if (bitpos == 4'd13) begin
+                            if (bitpos == lastbit) begin
                                 wf <= W_LOAD;      // trame finie
                             end else begin
-                                bitpos    <= bitpos + 4'd1;
-                                cur_bit   <= frame[bitpos + 4'd1];
+                                bitpos    <= bitpos + 5'd1;
+                                cur_bit   <= frame[bitpos + 5'd1];
                                 tape_line <= 1'b0; // demi 0 du bit suivant
                                 wf_cnt    <= half_one - 16'd1;
                                 wf        <= W_H0;

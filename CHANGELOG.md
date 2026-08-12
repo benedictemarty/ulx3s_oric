@@ -20,16 +20,37 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
   un warm-boot silencieux (pas de bannière — la RAM n'est pas effacée) ;
   nettoyage de la signature à prévoir pour un vrai boot à froid.
 
-### En cours
-- **Mode turbo chargement (US-ULA-NG.8) — POINT OUVERT** : domaine `cen1`
-  commutable 1 MHz → ~4,17 MHz (`oric_atmos.turbo`, TURBO_DIV=6, bascule à
-  chaud sûre) + demi-périodes cassette réduites du même ratio (cohérence
-  Timer 2 en cycles CPU), activé par `tape_active`. 17/17 tests verts (dont
-  `tb_boot` bascule à chaud et `tb_tape` scénario turbo), timing OK — mais
-  **sur carte le CLOAD reste en « Searching »**. Nouveau banc bout-en-bout
-  `sim/tb_cload.v` (boot ROM réel + frappe `CLOAD""` + cassette) : reproduit
-  le succès en mode normal ; l'exécution turbo instrumentée (périodes en
-  cycles CPU, flag CB1) est en cours pour isoler la divergence.
+### Ajouté
+- **Mode turbo chargement (US-ULA-NG.8) — RÉSOLU, VALIDÉ SUR CARTE**
+  (bmarty, 2026-08-12) : pendant un chargement cassette (`tape_active`),
+  tout le domaine `cen1` (CPU+VIA+AY) passe de 1 MHz à ~4,17 MHz
+  (`TURBO_DIV=6`, bascule à chaud sûre) et l'injecteur réduit ses
+  demi-périodes du même ratio — chargement effectif ~3×, retour 1 MHz
+  automatique dès la fin (y compris jeux autorun qui coupent le moteur).
+  L'enquête (banc bout-en-bout `sim/tb_cload.v` : boot ROM réel + frappe
+  `CLOAD""` + cassette, traces VIA/RAM, **désassemblage de GetTapeByte
+  `$E6C9`**) a livré trois correctifs :
+  1. **Stops supplémentaires** (trame 14→18 bits, données seulement) : la
+     fenêtre inter-octets de la ROM (traitement + IRQ T1 100 Hz) dépassait
+     les 4 stop bits → fronts manqués → raccrochage 2 bits trop tard
+     (octet faux, signature `$41`→`$D0`) → « Errors found ». La ROM brûle
+     un front puis saute les périodes courtes : des '1' en plus sont
+     transparents. (Un gap silencieux ne convient PAS : son front terminal
+     — le vrai start — se fait manger par le brûleur.) Course d'ailleurs
+     LATENTE à 1 MHz (reproduite en tb), jamais vue sur carte avec les
+     vrais jeux — comportement 1 MHz inchangé.
+  2. **Phase vidéo dédiée `tphase_v`** (toujours 1 MHz) pour l'ULA et le
+     port d'extension : sinon l'ULA ne voit plus les phases 6..24 en turbo
+     → image figée (le chargement marchait, l'écran restait sur
+     « Searching » — diagnostic décisif : reset → l'écran chargé apparaît).
+  3. **Fin de bande moteur coupé** : les jeux autorun stoppent le moteur
+     dès leur dernier octet lu ; l'injecteur conclut (S_DONE) s'il ne
+     reste que des stop bits gelés — sinon `tape_active`/turbo/OSD
+     restaient bloqués (jeu à 3×).
+  Bancs : `tb_tape` scénarios turbo + moteur-coupé, `tb_cload`
+  (`ALL TESTS PASSED turbo=1`, données `$0501-0504` exactes),
+  `tb_cload_sd` (chaîne SD complète) disponible ; image de test
+  `gen_fat_test.py` enrichie d'un `VALID.TAP`. 17/17 tests, timing 50 MHz.
 
 ### Corrigé
 - **`.tap` multi-parties : amorce ré-insérée entre les blocs — VALIDÉ SUR

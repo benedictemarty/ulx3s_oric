@@ -97,6 +97,18 @@ module oric_atmos #(
         else
             tphase <= cen1 ? 5'd0 : tphase + 5'd1;
 
+    // Phase VIDÉO : toujours à 1 MHz, indépendante du turbo. L'ULA balaye la
+    // RAM (port B, sans contention) et nourrit le framebuffer/HDMI à cadence
+    // réelle — en turbo, l'écran reste vivant (sinon : image figée, l'ULA ne
+    // voyant plus les phases 6..24). Sert aussi au port d'extension
+    // (échantillonnage cartouche t22/t23 = temps réel).
+    reg [4:0] tphase_v;
+    always @(posedge clk)
+        if (rst)
+            tphase_v <= 5'd0;
+        else
+            tphase_v <= (tphase_v == DIV - 1) ? 5'd0 : tphase_v + 5'd1;
+
     // ------------------------------------------------------------------
     // CPU 6502
     // ------------------------------------------------------------------
@@ -159,7 +171,7 @@ module oric_atmos #(
     assign exp_we      = bus_we_q;
     assign exp_do      = bus_do_q;
     assign exp_io_page = sel_io;
-    assign exp_tphase  = tphase;
+    assign exp_tphase  = tphase_v;
 
     // ------------------------------------------------------------------
     // Mémoires
@@ -309,7 +321,7 @@ module oric_atmos #(
     oric_ula #(.DIV(DIV)) ula (
         .clk        (clk),
         .rst        (rst),
-        .tphase     (tphase),
+        .tphase     (tphase_v),
         .vram_addr  (vram_addr),
         .vram_din   (vram_dout),
         .fb_we      (fb_we),

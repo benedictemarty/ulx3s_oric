@@ -25,7 +25,13 @@ def clus_lba(c): return first_data + (c - 2) * SPC
 TEST_SIZE  = 600
 TEST_CLUS  = 10
 CLUS_NEXT  = 11
-last_used  = clus_lba(CLUS_NEXT)                        # dernier secteur écrit
+# VALID.TAP : un .tap VALIDE minimal (1 bloc, 4 octets 'ABCD' en $0501-$0504)
+# pour le banc bout-en-bout tb_cload_sd (ROM réelle + chaîne SD complète).
+VALID_TAP  = bytes([0x16,0x16,0x16,0x24, 0x00,0x00,0x80,0x00,
+                    0x05,0x04, 0x05,0x01, 0x00, 0x00,
+                    0x41,0x42,0x43,0x44])
+VALID_CLUS = 12
+last_used  = clus_lba(VALID_CLUS)                       # dernier secteur écrit
 total_sec  = last_used + 2
 img = bytearray(total_sec * SEC)
 
@@ -57,6 +63,7 @@ set_fat(1, 0x0FFFFFFF)
 set_fat(2, 0x0FFFFFFF)                                  # root dir (1 cluster)
 set_fat(TEST_CLUS, CLUS_NEXT)                           # chaîne TEST.TAP
 set_fat(CLUS_NEXT, 0x0FFFFFFF)
+set_fat(VALID_CLUS, 0x0FFFFFFF)                         # VALID.TAP (1 cluster)
 
 # --- Données de TEST.TAP (motif i & 0xFF) ---
 for i in range(TEST_SIZE):
@@ -64,6 +71,10 @@ for i in range(TEST_SIZE):
     off = i % SEC
     clus = TEST_CLUS if sec == 0 else CLUS_NEXT
     img[clus_lba(clus)*SEC + off] = i & 0xFF
+
+# --- Données de VALID.TAP ---
+v = clus_lba(VALID_CLUS) * SEC
+img[v : v + len(VALID_TAP)] = VALID_TAP
 
 # --- Répertoire racine (secteur root_dir_lba) ---
 def entry(n83, attr, clus, size):
@@ -81,6 +92,7 @@ ents = [
     entry('ORICCHESDSK', 0x20, 5, 141056),
     entry('README  TXT', 0x20, 6, 100),                # ignoré (TXT)
     entry('TEST    TAP', 0x20, TEST_CLUS, TEST_SIZE),  # contenu réel
+    entry('VALID   TAP', 0x20, VALID_CLUS, len(VALID_TAP)),  # .tap valide
 ]
 d = root_dir_lba * SEC
 for i, e in enumerate(ents):

@@ -75,7 +75,7 @@ module tb_tape;
     // Décodeur de forme d'onde : période entre fronts montants -> bit
     // ------------------------------------------------------------------
     reg        tl_prev = 1;
-    integer    thresh = THRESH;
+    integer    thresh = THRESH, gapthresh = 1_000_000;
     reg [31:0] cyc = 0, last_rise = 0;
     reg        have_last = 0;
     reg [13:0] dframe = 0;
@@ -102,11 +102,17 @@ module tb_tape;
             if (have_last) begin
                 delta = cyc - last_rise;
                 bitv  = (delta <= thresh) ? 1 : 0;
-                dframe[dbit] = bitv;
-                dbit = dbit + 1;
-                if (dbit == 14) begin
-                    validate_frame(dframe, 1);
-                    dbit = 0;
+                // Comme la chasse au start de la ROM : les '1' entre trames
+                // (stops turbo supplémentaires) sont ignorés en tête de trame.
+                if (dbit == 0 && bitv == 1) begin
+                    // stop inter-trames : ignorer
+                end else begin
+                    dframe[dbit] = bitv;
+                    dbit = dbit + 1;
+                    if (dbit == 14) begin
+                        validate_frame(dframe, 1);
+                        dbit = 0;
+                    end
                 end
             end
             last_rise = cyc;
@@ -187,7 +193,7 @@ module tb_tape;
         // Scénario 3 : mode TURBO — mêmes données que le scénario 1, demi-
         // périodes réduites (CH1T/CHLT), le décodeur suit avec son seuil turbo.
         // ------------------------------------------------------------------
-        turbo = 1; thresh = THRESHT;
+        turbo = 1; thresh = THRESHT; gapthresh = 2*(CH1T+CHLT);
         ndec = 0; dbit = 0; have_last = 0;
         c0 = credit_cnt;
 
@@ -207,6 +213,24 @@ module tb_tape;
             check(dec[i] == 8'h16, "turbo: amorce = 0x16");
         for (i = 0; i < NDATA; i = i + 1)
             check(dec[LEAD + i] == data_arr[i], "turbo: donnee decodee == envoyee");
+
+        // ------------------------------------------------------------------
+        // Scénario 4 : jeu autorun qui COUPE LE MOTEUR dès son dernier octet
+        // lu — l'injecteur doit quand même finir (tape_active retombe) alors
+        // qu'il ne reste que des stop bits gelés.
+        // ------------------------------------------------------------------
+        ndec = 0; dbit = 0; have_last = 0;
+        c0 = credit_cnt;
+        send_byte(8'h01); send_byte(8'd1); send_byte(8'h00);   // 1 octet
+        wait (credit_cnt > c0);
+        send_byte(8'hA5);
+        // attendre que la trame de données atteigne ses stop bits, puis
+        // couper le moteur (comme le ferait le loader du jeu)
+        wait (dut.consumed == 17'd1 && dut.wf != 0 && dut.bitpos >= 10);
+        motor = 0;
+        for (i = 0; i < 200 && tape_active; i = i + 1) @(negedge clk);
+        check(tape_active == 1'b0, "autorun: tape_active retombe moteur coupe");
+        motor = 1;
 
         if (errors == 0) $display("ALL TESTS PASSED (tb_tape)");
         else             $display("%0d ERREUR(S)", errors);

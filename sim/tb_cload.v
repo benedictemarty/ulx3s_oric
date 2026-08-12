@@ -132,13 +132,36 @@ module tb_cload;
             if (dut.via.cb1_edge) begin
                 $display("T CB1SET @%0d", cen_cnt); via_ev = via_ev + 1;
             end
-            if (dut.sel_via) begin
+            // Filtre : on saute les polls IFR ($030D en lecture, spam ~1/10
+            // cycles) pour couvrir ~100 octets décodés au lieu de ~13.
+            if (dut.sel_via &&
+                !(dut.bus_addr_q[3:0] == 4'hd && !dut.bus_we_q)) begin
                 $display("T VIA%0s %h w=%h r=%h ifr=%h t2=%h @%0d",
                          dut.bus_we_q ? "W" : "R", dut.bus_addr_q[3:0],
                          dut.bus_do_q, dut.via.dout, dut.via.ifr,
                          dut.via.t2c, cen_cnt);
                 via_ev = via_ev + 1;
             end
+        end
+    end
+
+    // ---- Trace RAM basse (+ramtrace=1) : écritures pages 0-2 pendant la
+    // cassette (variables de la routine de sync ROM). Diff normal vs turbo :
+    // la première écriture divergente identifie la variable qui déraille.
+    integer ramtrace = 0;
+    initial if (!$value$plusargs("ramtrace=%d", ramtrace)) ramtrace = 0;
+    integer ram_ev = 0;
+    reg rtr_on = 0;
+    always @(posedge clk) if (ramtrace != 0) begin
+        // Déclenchement au 1er octet du FICHIER (l'amorce injectée est passée) :
+        // c'est là que la reconnaissance 0x16/0x24 de la ROM peut diverger.
+        if (tape_active && tape.consumed != 0 && !rtr_on) begin
+            rtr_on = 1; $display("R START @%0d", cen_cnt);
+        end
+        if (rtr_on && dut.cen1 && ram_ev < 5000 &&
+            dut.bus_we_q && dut.bus_addr_q < 16'h0600) begin  // inclut $0501-$0504 (donnees chargees)
+            $display("R W %h=%h @%0d", dut.bus_addr_q, dut.bus_do_q, cen_cnt);
+            ram_ev = ram_ev + 1;
         end
     end
 
@@ -149,6 +172,30 @@ module tb_cload;
             repeat (3) @(negedge clk);
         end
     endtask
+
+    // ---- Dump écran périodique (+screendump=1) : que voit-on VRAIMENT ? ----
+    integer screendump = 0;
+    initial if (!$value$plusargs("screendump=%d", screendump)) screendump = 0;
+    integer sd_r, sd_c, sd_n = 0;
+    reg [7:0] sd_ch;
+    reg [40*8-1:0] sd_line;
+    task dump_screen_now;
+        begin
+            $display("=== ECRAN (dump %0d) @%0d ===", sd_n, cen_cnt);
+            for (sd_r = 0; sd_r < 28; sd_r = sd_r + 1) begin
+                for (sd_c = 0; sd_c < 40; sd_c = sd_c + 1) begin
+                    sd_ch = dut.ram.mem[16'hBB80 + sd_r*40 + sd_c];
+                    if (sd_ch < 8'h20 || sd_ch > 8'h7E) sd_ch = " ";
+                    sd_line[(39-sd_c)*8 +: 8] = sd_ch;
+                end
+                if (sd_line != {40{8'h20}}) $display("|%0d|%s|", sd_r, sd_line);
+            end
+            sd_n = sd_n + 1;
+        end
+    endtask
+    always @(posedge clk)
+        if (screendump != 0 && rtr_on && sd_n < 12 && (cen_cnt % 300_000 == 0) && dut.cen1)
+            dump_screen_now;
 
     integer cpu_cycles, errors = 0;
     reg searching_seen = 0, loading_seen = 0;
@@ -187,19 +234,20 @@ module tb_cload;
             tap_byte(tap[j]);
         end
 
-        // 5) Attendre « Loading » (amorce trouvée + en-tête lu)
-        for (cpu_cycles = 0; cpu_cycles < 3_000_000 && !loading_seen; cpu_cycles = cpu_cycles + 1) begin
-            repeat (25) @(negedge clk);
-            if (cpu_cycles % 100_000 == 0) begin
-                scan_for("oading", 6);
-                if (found) loading_seen = 1;
-            end
-        end
-
-        if (loading_seen)
+        // 5) Laisser le chargement aller AU BOUT (bande ~0,6 s + marge), puis
+        // vérifier le RÉSULTAT : données en $0501-$0504 et écran final.
+        repeat (60_000_000) @(negedge clk);
+        scan_for("oading", 6);  loading_seen = found;
+        scan_for("rrors", 5);
+        $display("VERDICT turbo=%0d : Loading=%0d Errors=%0d  $0501..0504 = %h %h %h %h",
+                 turbo_mode, loading_seen, found,
+                 dut.ram.mem[16'h0501], dut.ram.mem[16'h0502],
+                 dut.ram.mem[16'h0503], dut.ram.mem[16'h0504]);
+        if (dut.ram.mem[16'h0501] === 8'h41 && dut.ram.mem[16'h0502] === 8'h42 &&
+            dut.ram.mem[16'h0503] === 8'h43 && dut.ram.mem[16'h0504] === 8'h44 && !found)
             $display("ALL TESTS PASSED (tb_cload, turbo=%0d)", turbo_mode);
         else
-            $display("FAIL: reste en Searching (turbo=%0d)", turbo_mode);
+            $display("FAIL: chargement incorrect (turbo=%0d)", turbo_mode);
         $finish;
     end
 

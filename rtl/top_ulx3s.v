@@ -208,9 +208,10 @@ module top_ulx3s (
     // cen1 (CPU+VIA+AY) passe de 1 MHz à ~4,17 MHz et l'injecteur réduit ses
     // demi-périodes du même ratio — cohérence CLOAD/Timer 2 préservée, le
     // chargement réel est ~4× plus court. Retour à 1 MHz dès la fin du fichier.
-    // ⚠ POINT OUVERT US-ULA-NG.8 : sur carte le CLOAD reste en « Searching »
-    // (la sim tb_cload instrumentée est en cours) → DÉSACTIVÉ en attendant.
-    wire turbo = 1'b0;   // TODO: rebrancher sur tape_active une fois corrigé
+    // Corrigé 2026-08-12 (cf. tape_injector.v) : la fenêtre inter-octets de la
+    // ROM (traitement + IRQ T1) dépassait les 4 stop bits → l'injecteur émet
+    // 4 stops de plus par octet en turbo. Validé en sim bout-en-bout tb_cload.
+    wire turbo = tape_active;
 
     tape_injector tape (
         .clk         (clk_sys),
