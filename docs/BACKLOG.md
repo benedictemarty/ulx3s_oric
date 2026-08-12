@@ -79,12 +79,41 @@ JSON. Partage le lien ESP32↔FPGA de l'épopée MODEM.
       du fichier sélectionné ESP32 → `tape_injector` (réutilise le contrôle de
       flux crédits, source = UART ESP32). Validation sur carte.
 
-## Épopée DISK — support .dsk (Microdisc) (ultérieure, cf. NETFS_WIFI.md)
-- [ ] US-DISK.1 Émulation contrôleur **Microdisc / FDC WD1793** + ROM de boot,
-      fidèle à `~/Oric1/src/io/microdisc.c` (registres, mapping I/O, /ROMDIS).
-- [ ] US-DISK.2 Streaming/bufferisation des secteurs depuis l'ESP32/WiFi
-      (à la demande ou par piste ; stockage SDRAM/BRAM), protocole secteur.
-- [ ] US-DISK.3 Intégration OSD : sélectionner un .dsk « insère » la disquette.
+## Épopée DISK — support .dsk (Microdisc) — EN COURS (démarrée 2026-08-12)
+Objectif : émuler l'interface Microdisc (FDC WD1793 + EPROM microdis) pour
+booter Sedoric et charger la logithèque disquette (dont `Citadelle.dsk`).
+Références : `~/Oric1/src/io/microdisc.c` (wrapper : `$0310-$0313` = WD1793,
+`$0314` W = contrôle INTENA/ROMDIS/side/drive/EPROM, `$0314`/`$0318` R =
+/INTRQ//DRQ bit 7, actifs bas) et `~/Oric1/src/storage/disk.c` (WD1793
+complet : types I-IV, timings réels, format MFM_DISK). ROM `microdis.rom`
+(8 Ko) dispo dans `~/Oric1/roms`. **Révision 2026-08-12 : la source des
+.dsk est la CARTE SD** (le plan WiFi de 2026-08-02 prédate l'épopée
+US-SDCARD ; `fat32` liste déjà les `.dsk`). Pas de conflit ACIA : le
+Microdisc s'arrête à `$0318`, l'ACIA est à `$031C-$031F` (comme la réf).
+Architecture retenue : **buffer de PISTE en BRAM** (~6,4 Ko, piste MFM
+brute du format MFM_DISK) rechargé depuis la SD à chaque seek (~200 ms,
+comparable à une vraie mécanique 3") ; v1 en LECTURE SEULE.
+- [ ] US-DISK.1 **Cœur WD1793 RTL** fidèle à `disk.c` : registres
+      cmd/track/sector/data, commandes type I (seek/step, h/V/r1r0),
+      type II (read sector : recherche d'ID dans la piste MFM, DRQ par
+      octet), type III (read address), type IV (force interrupt), status
+      par type, timings réels (step 6-30 ms, latence rotation, RNF après
+      5 tours d'index). Testbench : piste MFM synthétique en BRAM,
+      séquences lecture/seek vérifiées contre le comportement de la réf.
+- [ ] US-DISK.2 **Wrapper Microdisc + intégration** : registres `$0310-$0318`
+      (conventions actives-bas exactes), EPROM 8 Ko en BRAM overlay
+      `$E000-$FFFF` via la sémantique /ROMDIS-/MAP existante (au boot :
+      ROMDIS + EPROM actifs comme la réf), IRQ vers le 6502 si INTENA.
+      Boot attendu sur carte : bannière du Microdisc sans disquette.
+- [ ] US-DISK.3 **Pistes depuis la SD** : accès aléatoire dans le fichier
+      .dsk (fat32 : seek par re-suivi de chaîne de clusters + offset
+      piste = f(side, track) de l'en-tête MFM_DISK), chargement du buffer
+      de piste, poignée « disquette insérée » pour le WD1793.
+- [ ] US-DISK.4 **OSD : insérer un .dsk** : BTN4 sur un fichier `.dsk` =
+      insertion + reset → boot Sedoric. Validation carte : Sedoric boote,
+      `Citadelle.dsk` se charge.
+- [ ] US-DISK.5 **Écriture** (v2, ultérieur) : write-back des secteurs vers
+      la SD (commandes type II write), dirty tracking par piste.
 
 ## Épopée ULA-NG — extensions « voie Telestrat » : banques mémoire + vidéo étendue
 > **Frontière avec `~/oric2`** (2026-08-10) : le projet Oric 2 « chimère »
