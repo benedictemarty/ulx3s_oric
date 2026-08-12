@@ -44,7 +44,7 @@ module tb_tape_loader;
         .sd_ready(sd_ready), .sd_busy(sd_busy), .sd_dvalid(sd_dvalid), .sd_data(sd_data),
         .done(fat_done), .error(fat_error), .file_count(file_count), .status(fat_status),
         .q_idx(6'd3), .q_name(q_name), .q_size(q_size), .q_clus(q_clus), .q_isdsk(q_isdsk),
-        .open_start(open_start), .open_idx(open_idx), .fdata_ready(fdata_ready),
+        .open_start(open_start), .open_idx(open_idx), .open_offset(32'd0), .open_abort(1'b0), .fdata_ready(fdata_ready),
         .floading(floading), .feof(feof), .fdata(fdata), .fdata_valid(fdata_valid)
     );
 

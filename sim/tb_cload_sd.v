@@ -63,7 +63,7 @@ module tb_cload_sd;
         .done(fat_done), .error(fat_error), .file_count(file_count), .status(fat_status),
         .q_idx(SEL), .q_name(q_name), .q_size(q_size), .q_clus(q_clus), .q_isdsk(q_isdsk),
         .q2_idx(6'd0), .q2_name(),
-        .open_start(open_start), .open_idx(open_idx), .fdata_ready(fdata_ready),
+        .open_start(open_start), .open_idx(open_idx), .open_offset(32'd0), .open_abort(1'b0), .fdata_ready(fdata_ready),
         .floading(floading), .feof(feof), .fdata(fdata), .fdata_valid(fdata_valid)
     );
 

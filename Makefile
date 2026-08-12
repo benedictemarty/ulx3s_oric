@@ -63,7 +63,7 @@ prog-fujprog: build/$(PROJ).bit
 # ----------------------------------------------------------------------
 # Tests
 # ----------------------------------------------------------------------
-TESTS = test-via test-keyboard test-azerty test-injector test-tape test-acia test-expansion test-ula test-boot test-hdmi test-hdmi-packet test-hdmi-audio test-hdmi-island test-spi-byte test-sd test-fat test-tape-loader test-wd test-microdisc
+TESTS = test-via test-keyboard test-azerty test-injector test-tape test-acia test-expansion test-ula test-boot test-hdmi test-hdmi-packet test-hdmi-audio test-hdmi-island test-spi-byte test-sd test-fat test-tape-loader test-wd test-microdisc test-dsk
 
 test: $(TESTS)
 	@echo "== TOUS LES TESTS SONT PASSES =="
@@ -169,6 +169,14 @@ test-wd: sim/out
 	iverilog -DSIM -g2005 -o sim/out/tb_wd.vvp sim/tb_wd1793.v rtl/wd1793.v
 	vvp sim/out/tb_wd.vvp | tee sim/out/tb_wd.log
 	@grep -q "ALL TESTS PASSED" sim/out/tb_wd.log
+
+test-dsk: sim/out
+	python3 tools/gen_fat_test.py sim/out/fat_test.img
+	iverilog -DSIM -g2005 -o sim/out/tb_dsk.vvp sim/tb_dsk.v \
+	  rtl/dsk_track.v rtl/microdisc.v rtl/wd1793.v rtl/fat32.v \
+	  rtl/sd_spi.v rtl/spi_byte.v sim/sd_card_file.v
+	vvp sim/out/tb_dsk.vvp | tee sim/out/tb_dsk.log
+	@grep -q "ALL TESTS PASSED" sim/out/tb_dsk.log
 
 test-microdisc: sim/out
 	iverilog -DSIM -g2005 -o sim/out/tb_md.vvp sim/tb_microdisc.v \

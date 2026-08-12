@@ -31,7 +31,41 @@ VALID_TAP  = bytes([0x16,0x16,0x16,0x24, 0x00,0x00,0x80,0x00,
                     0x05,0x04, 0x05,0x01, 0x00, 0x00,
                     0x41,0x42,0x43,0x44])
 VALID_CLUS = 12
-last_used  = clus_lba(VALID_CLUS)                       # dernier secteur écrit
+
+# TESTMFM.DSK : image MFM_DISK synthétique (1 face, 3 pistes de 6400 octets,
+# 17 secteurs/piste) pour le banc dsk_track/WD1793. Secteur (t,s) rempli du
+# motif (t*32 + s) ^ offset. Structure fidèle à mfm_extract_track :
+# A1A1A1FE + [track, side, sector, size=1] + CRC + gap + A1A1A1FB + 256 o.
+MFM_TRACKS = 3
+def build_mfm_dsk():
+    out = bytearray(b'MFM_DISK')
+    out += (1).to_bytes(4, 'little')            # sides
+    out += (MFM_TRACKS).to_bytes(4, 'little')   # tracks
+    out += (1).to_bytes(4, 'little')            # geometry
+    out += bytes(256 - len(out))                # en-tête complet = 256 o
+    for t in range(MFM_TRACKS):
+        trk = bytearray()
+        trk += b'\x4e' * 40                     # gap initial
+        for s in range(1, 18):
+            trk += b'\x00' * 12                 # sync
+            trk += b'\xa1\xa1\xa1\xfe'
+            trk += bytes([t, 0, s, 1])          # ID : track, side, sector, size
+            trk += b'\xf7\xf7'                  # CRC (factice)
+            trk += b'\x4e' * 22                 # gap 2
+            trk += b'\x00' * 12                 # sync
+            trk += b'\xa1\xa1\xa1\xfb'
+            trk += bytes([((t*32 + s) ^ i) & 0xFF for i in range(256)])
+            trk += b'\xf7\xf7'                  # CRC (factice)
+            trk += b'\x4e' * 12                 # gap 3
+        assert len(trk) <= 6400, len(trk)
+        trk += b'\x4e' * (6400 - len(trk))
+        out += trk
+    return bytes(out)
+
+MFM_DSK   = build_mfm_dsk()
+MFM_CLUS  = 13                                  # chaîne 13..13+n-1
+MFM_NCLUS = (len(MFM_DSK) + SEC - 1) // SEC
+last_used  = clus_lba(MFM_CLUS + MFM_NCLUS - 1)         # dernier secteur écrit
 total_sec  = last_used + 2
 img = bytearray(total_sec * SEC)
 
@@ -64,6 +98,9 @@ set_fat(2, 0x0FFFFFFF)                                  # root dir (1 cluster)
 set_fat(TEST_CLUS, CLUS_NEXT)                           # chaîne TEST.TAP
 set_fat(CLUS_NEXT, 0x0FFFFFFF)
 set_fat(VALID_CLUS, 0x0FFFFFFF)                         # VALID.TAP (1 cluster)
+for c in range(MFM_CLUS, MFM_CLUS + MFM_NCLUS - 1):     # chaîne TESTMFM.DSK
+    set_fat(c, c + 1)
+set_fat(MFM_CLUS + MFM_NCLUS - 1, 0x0FFFFFFF)
 
 # --- Données de TEST.TAP (motif i & 0xFF) ---
 for i in range(TEST_SIZE):
@@ -75,6 +112,10 @@ for i in range(TEST_SIZE):
 # --- Données de VALID.TAP ---
 v = clus_lba(VALID_CLUS) * SEC
 img[v : v + len(VALID_TAP)] = VALID_TAP
+
+# --- Données de TESTMFM.DSK (clusters consécutifs) ---
+m = clus_lba(MFM_CLUS) * SEC
+img[m : m + len(MFM_DSK)] = MFM_DSK
 
 # --- Répertoire racine (secteur root_dir_lba) ---
 def entry(n83, attr, clus, size):
@@ -93,6 +134,7 @@ ents = [
     entry('README  TXT', 0x20, 6, 100),                # ignoré (TXT)
     entry('TEST    TAP', 0x20, TEST_CLUS, TEST_SIZE),  # contenu réel
     entry('VALID   TAP', 0x20, VALID_CLUS, len(VALID_TAP)),  # .tap valide
+    entry('TESTMFM DSK', 0x20, MFM_CLUS, len(MFM_DSK)),      # .dsk MFM valide
 ]
 d = root_dir_lba * SEC
 for i, e in enumerate(ents):

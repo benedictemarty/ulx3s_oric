@@ -47,7 +47,7 @@ module tb_fat32;
         .sd_ready(sd_ready), .sd_busy(sd_busy), .sd_dvalid(sd_dvalid), .sd_data(sd_data),
         .done(fat_done), .error(fat_error), .file_count(file_count), .status(fat_status),
         .q_idx(q_idx), .q_name(q_name), .q_size(q_size), .q_clus(q_clus), .q_isdsk(q_isdsk),
-        .open_start(open_start), .open_idx(open_idx), .fdata_ready(fdata_ready),
+        .open_start(open_start), .open_idx(open_idx), .open_offset(32'd0), .open_abort(1'b0), .fdata_ready(fdata_ready),
         .floading(floading), .feof(feof), .fdata(fdata), .fdata_valid(fdata_valid)
     );
 
@@ -74,7 +74,7 @@ module tb_fat32;
         wait (fat_done === 1'b1);
         $display("PARSE OK (status=%02x, %0d fichiers)", fat_status, file_count);
         check(!fat_error, "parsing sans erreur");
-        check(file_count === 8'd5, "5 fichiers .tap/.dsk (README.TXT ignoré)");
+        check(file_count === 8'd6, "6 fichiers .tap/.dsk (README.TXT ignoré)");
 
         q_idx = 0; #1; check(q_name === "DEFENDERTAP", "fichier 0 = DEFENDER.TAP");
         q_idx = 2; #1; check(q_name === "ORICCHESDSK" && q_isdsk, "fichier 2 = ORICCHES.DSK");

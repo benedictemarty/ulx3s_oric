@@ -46,6 +46,11 @@ module fat32 #(
     // Lecture de fichier (streaming octet par octet, avec contrôle de flux)
     input             open_start,    // pulse : ouvrir le fichier open_idx
     input      [5:0]  open_idx,
+    input      [31:0] open_offset,   // position de départ dans le fichier
+                                     // (saut de chaîne de clusters — 0 pour
+                                     // un streaming depuis le début)
+    input             open_abort,    // pulse : clore la lecture en cours
+                                     // (accepté en FO_EMIT uniquement)
     input             fdata_ready,   // niveau : le consommateur peut prendre un octet
     output reg        floading,
     output reg        feof,
@@ -80,6 +85,17 @@ module fat32 #(
     reg [31:0] cur_clus, bytes_left, next_clus;
     reg [8:0]  rdpos;
     reg [7:0]  sec_in_clus;
+
+    // Seek (open_offset) : saut de clusters puis positionnement fin
+    reg [31:0] skip_rem;             // octets restant à sauter
+    reg        skipping;             // le suivi de chaîne courant est un saut
+    reg [8:0]  rd_init;              // offset octet dans le 1er secteur lu
+    reg        rd_init_pend;
+    reg        abort_pend;           // open_abort mémorisé (l'impulsion peut
+                                     // tomber pendant une transaction SD —
+                                     // ex. franchissement de cluster pile en
+                                     // fin de stream)
+    wire [31:0] clus_bytes = {15'd0, spc, 9'd0};   // spc × 512
 
     // Entrée de répertoire en cours
     reg [7:0]  ntmp [0:10];
@@ -219,25 +235,52 @@ module fat32 #(
                     done <= 1'b1; feof <= 1'b0;
                     if (open_start) begin
                         cur_clus   <= clus_mem[open_idx];
-                        bytes_left <= size_mem[open_idx];
+                        // au-delà de la fin : EOF immédiat (bytes_left = 0)
+                        bytes_left <= (open_offset < size_mem[open_idx])
+                                      ? size_mem[open_idx] - open_offset : 32'd0;
+                        skip_rem   <= open_offset;
+                        skipping   <= 1'b0;
+                        rd_init_pend <= 1'b0;
+                        abort_pend <= 1'b0;
                         sec_in_clus <= 8'd0;
                         floading <= 1'b1; feof <= 1'b0; fdata_valid <= 1'b0;
                         state <= FO_INIT;
                     end
                 end
 
-                // ---- ouverture : lire le premier secteur ----
-                FO_INIT: state <= FO_RD;
+                // ---- ouverture : sauter les clusters du seek puis lire ----
+                FO_INIT: begin
+                    if (bytes_left == 32'd0) begin
+                        floading <= 1'b0; feof <= 1'b1; state <= FO_EOF;
+                    end else if (skip_rem >= clus_bytes) begin
+                        skipping <= 1'b1;           // sauter ce cluster
+                        state <= FO_FAT;
+                    end else begin
+                        sec_in_clus  <= skip_rem[16:9];   // secteur dans le cluster
+                        rd_init      <= skip_rem[8:0];    // octet dans le secteur
+                        rd_init_pend <= 1'b1;
+                        state <= FO_RD;
+                    end
+                end
 
                 // ---- lire un secteur de données du cluster courant ----
-                FO_RD: if (sd_ready && !sd_busy) begin status <= 8'h91;   // lecture données
+                FO_RD: if (open_abort || abort_pend) begin
+                    abort_pend <= 1'b0; fdata_valid <= 1'b0;
+                    floading <= 1'b0; feof <= 1'b0; state <= S_DONE;
+                end else if (sd_ready && !sd_busy) begin status <= 8'h91;   // lecture données
                     rd_sector <= first_data + (cur_clus - 32'd2) * spc + sec_in_clus;
                     rd_start <= 1'b1; bidx <= 0; state <= FO_CAP;
                 end
-                FO_CAP: if (sd_dvalid) begin status <= 8'h92;   // réception données
+                FO_CAP: begin
+                    if (open_abort) abort_pend <= 1'b1;
+                    if (sd_dvalid) begin status <= 8'h92;   // réception données
                     secbuf[bidx] <= sd_data;
-                    if (bidx == 511) begin rdpos <= 9'd0; state <= FO_EMIT; end
-                    else bidx <= bidx + 10'd1;
+                    if (bidx == 511) begin
+                        rdpos <= rd_init_pend ? rd_init : 9'd0;  // seek fin
+                        rd_init_pend <= 1'b0;
+                        state <= FO_EMIT;
+                    end else bidx <= bidx + 10'd1;
+                    end
                 end
 
                 // ---- débiter les octets vers le consommateur ----
@@ -247,7 +290,12 @@ module fat32 #(
                 // cycles où le consommateur laisse ready haut.
                 FO_EMIT: begin
                     status <= 8'h93;                 // débit (attend crédits)
-                    if (!fdata_valid) begin
+                    if (open_abort || abort_pend) begin  // clôture par le client
+                        abort_pend <= 1'b0;
+                        fdata_valid <= 1'b0;
+                        floading <= 1'b0; feof <= 1'b0;
+                        state <= S_DONE;
+                    end else if (!fdata_valid) begin
                         if (bytes_left == 32'd0) begin
                             floading <= 1'b0; feof <= 1'b1; state <= FO_EOF;
                         end else begin
@@ -268,12 +316,17 @@ module fat32 #(
                 end
 
                 // ---- suivre la chaîne FAT : cluster suivant ----
-                FO_FAT: if (sd_ready && !sd_busy) begin
+                FO_FAT: if (open_abort || abort_pend) begin
+                    abort_pend <= 1'b0; fdata_valid <= 1'b0;
+                    floading <= 1'b0; feof <= 1'b0; state <= S_DONE;
+                end else if (sd_ready && !sd_busy) begin
                     status <= 8'h94;                          // suivi chaîne FAT
                     rd_sector <= fat_lba + (cur_clus >> 7);   // 128 entrées/secteur
                     rd_start <= 1'b1; bidx <= 0; state <= FO_FATC;
                 end
-                FO_FATC: if (sd_dvalid) begin
+                FO_FATC: begin
+                    if (open_abort) abort_pend <= 1'b1;
+                    if (sd_dvalid) begin
                     // entrée FAT de cur_clus à l'offset (cur_clus%128)*4
                     if (bidx[8:0] == {cur_clus[6:0], 2'd0})       next_clus[7:0]   <= sd_data;
                     if (bidx[8:0] == {cur_clus[6:0], 2'd0} + 9'd1) next_clus[15:8]  <= sd_data;
@@ -282,11 +335,18 @@ module fat32 #(
                     if (bidx == 511) begin
                         if ((next_clus & 32'h0FFFFFFF) >= 32'h0FFFFFF8) begin
                             floading <= 1'b0; feof <= 1'b1; state <= FO_EOF;
+                        end else if (skipping) begin
+                            // saut de cluster (seek) : avancer et re-tester
+                            cur_clus <= next_clus & 32'h0FFFFFFF;
+                            skip_rem <= skip_rem - clus_bytes;
+                            skipping <= 1'b0;
+                            state <= FO_INIT;
                         end else begin
                             cur_clus <= next_clus & 32'h0FFFFFFF;
                             sec_in_clus <= 8'd0; state <= FO_RD;
                         end
                     end else bidx <= bidx + 10'd1;
+                    end
                 end
 
                 FO_EOF: begin floading <= 1'b0; feof <= 1'b1; state <= S_DONE; end

@@ -500,6 +500,7 @@ module top_ulx3s (
         .q_idx(sel_idx), .q_name(), .q_size(sel_size), .q_clus(), .q_isdsk(sel_isdsk),
         .q2_idx(osd_name_idx), .q2_name(osd_q2_name),
         .open_start(dump_active ? dump_open_start : ld_open_start),
+        .open_offset(32'd0), .open_abort(1'b0),
         .open_idx(sel_idx),
         .fdata_ready(dump_active ? dump_fdata_ready : ld_fdata_ready),
         .floading(fat_floading), .feof(fat_feof), .fdata(fat_fdata), .fdata_valid(fat_fdata_valid)
