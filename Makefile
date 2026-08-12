@@ -60,7 +60,7 @@ prog-fujprog: build/$(PROJ).bit
 # ----------------------------------------------------------------------
 # Tests
 # ----------------------------------------------------------------------
-TESTS = test-via test-keyboard test-azerty test-injector test-tape test-acia test-expansion test-ula test-boot test-hdmi test-hdmi-packet test-hdmi-audio test-hdmi-island test-spi-byte test-sd test-fat test-tape-loader
+TESTS = test-via test-keyboard test-azerty test-injector test-tape test-acia test-expansion test-ula test-boot test-hdmi test-hdmi-packet test-hdmi-audio test-hdmi-island test-spi-byte test-sd test-fat test-tape-loader test-wd
 
 test: $(TESTS)
 	@echo "== TOUS LES TESTS SONT PASSES =="
@@ -161,7 +161,11 @@ test-tape-loader: sim/out
 	iverilog -DSIM -g2005 -o sim/out/tb_tl.vvp sim/tb_tape_loader.v \
 	  rtl/tape_loader.v rtl/fat32.v rtl/sd_spi.v rtl/spi_byte.v sim/sd_card_file.v
 	vvp sim/out/tb_tl.vvp | tee sim/out/tb_tl.log
-	@grep -q "ALL TESTS PASSED" sim/out/tb_tl.log
+
+test-wd: sim/out
+	iverilog -DSIM -g2005 -o sim/out/tb_wd.vvp sim/tb_wd1793.v rtl/wd1793.v
+	vvp sim/out/tb_wd.vvp | tee sim/out/tb_wd.log
+	@grep -q "ALL TESTS PASSED" sim/out/tb_wd.log
 
 # ----------------------------------------------------------------------
 # ESP32 embarqué (modem WiFi) — compilation / flash

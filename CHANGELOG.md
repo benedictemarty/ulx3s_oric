@@ -21,6 +21,19 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
   nettoyage de la signature à prévoir pour un vrai boot à froid.
 
 ### Ajouté
+- **Cœur FDC WD1793 (US-DISK.1) — validé en simulation** (2026-08-12) :
+  `rtl/wd1793.v`, fidèle à `~/Oric1/src/storage/disk.c` (modèle
+  FDC_TIMING_REAL) : registres command/track/sector/data, type I
+  (restore/seek/step, délais r1r0 6-30 ms + settling V 30 ms), type II
+  (read sector simple/multiple, latence rotationnelle 300 RPM, DRQ par
+  octet différé), type III (read address), type IV (force interrupt),
+  status type I « vivant » (index pulse par tour, TRK0), RNF après
+  5 tours d'index. **v1 lecture seule** (écritures → write protect,
+  comportement disquette protégée). Interface fournisseur de secteurs
+  (piste en BRAM + table d'IDs, à venir en US-DISK.3) avec gel des
+  délais pendant un chargement SD (`trk_loading`). Testbench
+  `tb_wd1793` (timings réduits) : 8 familles de scénarios. Épopée
+  US-DISK démarrée : plan révisé source = carte SD (cf. backlog).
 - **Mode turbo chargement (US-ULA-NG.8) — RÉSOLU, VALIDÉ SUR CARTE**
   (bmarty, 2026-08-12) : pendant un chargement cassette (`tape_active`),
   tout le domaine `cen1` (CPU+VIA+AY) passe de 1 MHz à ~4,17 MHz
