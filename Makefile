@@ -178,6 +178,14 @@ test-dsk: sim/out
 	vvp sim/out/tb_dsk.vvp | tee sim/out/tb_dsk.log
 	@grep -q "ALL TESTS PASSED" sim/out/tb_dsk.log
 
+# Diagnostic (hors suite) : replay du boot Sedoric de référence
+test-sedoric: sim/out
+	python3 tools/gen_sed_test.py sim/out/sed_test.img sim/out/fdc_trace_ref.log
+	iverilog -DSIM -g2005 -o sim/out/tb_sed.vvp sim/tb_sedoric.v \
+	  rtl/dsk_track.v rtl/microdisc.v rtl/wd1793.v rtl/fat32.v \
+	  rtl/sd_spi.v rtl/spi_byte.v sim/sd_card_file.v
+	vvp sim/out/tb_sed.vvp | tee sim/out/tb_sed.log
+
 test-microdisc: sim/out
 	iverilog -DSIM -g2005 -o sim/out/tb_md.vvp sim/tb_microdisc.v \
 	  rtl/microdisc.v rtl/wd1793.v
