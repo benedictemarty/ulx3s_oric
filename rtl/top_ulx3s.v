@@ -60,7 +60,8 @@ module top_ulx3s (
             por <= por - 16'd1;
 
     wire ext_rst_req;
-    wire rst_sys = (por != 0) || btn[1] || ext_rst_req || (bank_rst != 0);
+    wire rst_por = (por != 0);      // power-on seul (survit aux resets machine)
+    wire rst_sys = rst_por || btn[1] || ext_rst_req || (bank_rst != 0);
 
     // ------------------------------------------------------------------
     // Banque ROM sur BTN5 (UP) : chaque appui bascule BASIC 1.1b <-> 1.0
@@ -284,16 +285,16 @@ module top_ulx3s (
         .rom_bank    (rom_bank),
         .turbo       (turbo),
         .md_enable   (sw0_sync[1]),
-        .md_disk_present (1'b0),
-        .md_n_tracks (7'd42),
-        .md_n_spt    (5'd17),
-        .md_req_track(),
-        .md_req_side (),
-        .md_trk_loading (1'b0),
-        .md_sec_id   (),
-        .md_sec_valid (1'b0),
-        .md_sec_addr (),
-        .md_sec_byte (8'h00),
+        .md_disk_present (mdp_present),
+        .md_n_tracks (mdp_ntracks),
+        .md_n_spt    (mdp_nspt),
+        .md_req_track(mdp_reqtrk),
+        .md_req_side (mdp_side),
+        .md_trk_loading (mdp_trk_loading),
+        .md_sec_id   (mdp_secid),
+        .md_sec_valid (mdp_secvalid),
+        .md_sec_addr (mdp_secaddr),
+        .md_sec_byte (mdp_secbyte),
         .kbd_azerty  (layout_azerty),
         .kbd_mods    (mods_s2),
         .kbd_k1      (k1_s2),
@@ -489,6 +490,11 @@ module top_ulx3s (
     // Dump debug UART (BTN2)
     wire        dump_open_start, dump_fdata_ready, dump_active, dump_tx_send;
     wire [7:0]  dump_tx_data;
+    // Disquette (dsk_track) : 3e client du bus fat32
+    wire        d_open_start, d_open_abort, d_fdata_ready;
+    wire [5:0]  d_open_idx;
+    wire [31:0] d_open_offset;
+    wire        d_grant = ~dump_active & ~ld_active;   // priorité dump > tape > dsk
 
     fat32 fat (
         .clk(clk_sys), .rst(rst_sys), .start(fat_start),
@@ -499,10 +505,13 @@ module top_ulx3s (
         .file_count(file_count), .status(fat_status),
         .q_idx(sel_idx), .q_name(), .q_size(sel_size), .q_clus(), .q_isdsk(sel_isdsk),
         .q2_idx(osd_name_idx), .q2_name(osd_q2_name),
-        .open_start(dump_active ? dump_open_start : ld_open_start),
-        .open_offset(32'd0), .open_abort(1'b0),
-        .open_idx(sel_idx),
-        .fdata_ready(dump_active ? dump_fdata_ready : ld_fdata_ready),
+        .open_start(dump_active ? dump_open_start :
+                    ld_active   ? ld_open_start   : d_open_start),
+        .open_offset(d_grant ? d_open_offset : 32'd0),
+        .open_abort(d_grant ? d_open_abort : 1'b0),
+        .open_idx((dump_active | ld_active) ? sel_idx : d_open_idx),
+        .fdata_ready(dump_active ? dump_fdata_ready :
+                     ld_active   ? ld_fdata_ready  : d_fdata_ready),
         .floading(fat_floading), .feof(fat_feof), .fdata(fat_fdata), .fdata_valid(fat_fdata_valid)
     );
 
@@ -524,6 +533,33 @@ module top_ulx3s (
         .fdata_valid(fat_fdata_valid), .fdata(fat_fdata), .feof(fat_feof),
         .tape_rx_data(ld_rx_data), .tape_rx_valid(ld_rx_valid),
         .tape_credit(tap_tx_send), .active(ld_active)
+    );
+
+    // Disquette : BTN4 sur un fichier .dsk = « insérer » (le tape_loader ne
+    // prend que les .tap, cf. gate ci-dessus). L'EPROM Microdisc en attente
+    // (« insert system disc ») réessaie son boot — sinon reset BTN1. SW1 doit
+    // être ON pour que l'interface soit branchée.
+    wire dsk_insert = load_trigger && sel_isdsk;
+    wire dsk_inserted, dsk_bad, mdp_trk_loading, mdp_present, mdp_side, mdp_secvalid;
+    wire [6:0] mdp_ntracks, mdp_reqtrk;
+    wire [4:0] mdp_nspt, mdp_secid;
+    wire [8:0] mdp_secaddr;
+    wire [7:0] mdp_secbyte;
+
+    dsk_track dsk (
+        .clk(clk_sys), .rst(rst_por), .soft_rst(rst_sys),
+        .insert(dsk_insert), .file_idx(sel_idx), .eject(1'b0),
+        .inserted(dsk_inserted), .bad_format(dsk_bad),
+        .bus_grant(d_grant), .fat_done(fat_done),
+        .open_start(d_open_start), .open_idx(d_open_idx),
+        .open_offset(d_open_offset), .open_abort(d_open_abort),
+        .fdata_ready(d_fdata_ready), .fdata_valid(fat_fdata_valid),
+        .fdata(fat_fdata), .feof(fat_feof),
+        .req_track(mdp_reqtrk), .req_side(mdp_side),
+        .trk_loading(mdp_trk_loading), .disk_present(mdp_present),
+        .n_tracks(mdp_ntracks), .n_spt(mdp_nspt),
+        .sec_id(mdp_secid), .sec_valid(mdp_secvalid),
+        .sec_addr(mdp_secaddr), .sec_byte(mdp_secbyte)
     );
 
     // Lancer le parsing une fois la carte initialisée
@@ -550,6 +586,7 @@ module top_ulx3s (
                  fat_error  ? 8'hEE :
                  tape_active ? fat_status :    // etat fat32 : 91/92 lecture, 93 debit, 94/95 FAT
                  !fat_done  ? fat_status :
-                 {tape_active, sel_isdsk, file_count[2:0], sel_idx[2:0]};
+                 {dsk_inserted, sel_isdsk, file_count[2:0], sel_idx[2:0]};
+                 // bit7 = disquette insérée (feedback BTN4 sur un .dsk)
 
 endmodule

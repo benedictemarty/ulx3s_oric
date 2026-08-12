@@ -22,7 +22,10 @@
 
 module dsk_track (
     input             clk,
-    input             rst,
+    input             rst,           // power-on UNIQUEMENT : un reset machine
+                                     // n'éjecte pas la disquette (cf. soft_rst)
+    input             soft_rst,      // reset machine (BTN1/banque) : interrompt
+                                     // un transfert en cours, GARDE l'insertion
 
     // Contrôle insertion (depuis l'OSD)
     input             insert,        // pulse : insérer le fichier file_idx
@@ -119,6 +122,13 @@ module dsk_track (
             state <= D_IDLE; inserted <= 1'b0; disk_present <= 1'b0;
             bad_format <= 1'b0; loaded <= 8'hFF; sec_ok <= 18'd0;
             fdata_ready <= 1'b0; open_offset <= 32'd0;
+        end else if (soft_rst && state != D_IDLE) begin
+            // Reset machine en plein transfert : on abandonne proprement (la
+            // piste sera rechargée à la demande) mais la disquette RESTE
+            // insérée — comme un vrai lecteur.
+            state <= D_IDLE;
+            fdata_ready <= 1'b0;
+            loaded <= 8'hFF;
         end else begin
             case (state)
                 D_IDLE: begin
