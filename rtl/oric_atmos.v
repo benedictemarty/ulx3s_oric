@@ -10,7 +10,8 @@ module oric_atmos #(
     parameter TURBO_DIV = 6,               // clk_sys / TURBO_DIV en mode turbo
                                            // (min 6 : DI verrouillé à t4, cen1 à t5)
     parameter ROM_FILE   = "basic11b.hex",
-    parameter ROM_FILE_B = "basic10.hex"
+    parameter ROM_FILE_B = "basic10.hex",
+    parameter MD_ROM_FILE = "microdis.hex"
 )(
     input         clk,
     input         rst,
@@ -77,6 +78,19 @@ module oric_atmos #(
     input         acia_dcd,
     input         acia_dsr,
 
+    // Microdisc (US-DISK) : interface « branchée » + fournisseur de secteurs
+    input         md_enable,
+    input         md_disk_present,
+    input  [6:0]  md_n_tracks,
+    input  [4:0]  md_n_spt,
+    output [6:0]  md_req_track,
+    output        md_req_side,
+    input         md_trk_loading,
+    output [4:0]  md_sec_id,
+    input         md_sec_valid,
+    output [8:0]  md_sec_addr,
+    input  [7:0]  md_sec_byte,
+
     // Debug
     output        cpu_irq_dbg
 );
@@ -117,6 +131,9 @@ module oric_atmos #(
     reg  [7:0]  cpu_di;
     wire        cpu_we;
     wire        via_irq;
+    wire        md_irq;
+    wire [7:0]  md_dout, md_eprom_dout;
+    wire        md_eprom_sel;
 
     cpu cpu6502 (
         .clk   (clk),
@@ -125,7 +142,7 @@ module oric_atmos #(
         .DI    (cpu_di),
         .DO    (cpu_do),
         .WE    (cpu_we),
-        .IRQ   (via_irq | ext_irq | acia_irq),
+        .IRQ   (via_irq | ext_irq | acia_irq | md_irq),
         .NMI   (1'b0),
         .RDY   (cen1)
     );
@@ -161,10 +178,16 @@ module oric_atmos #(
     wire rom_area = (bus_addr_q[15:14] == 2'b11);
     wire sel_via  = sel_io & (bus_addr_q[7:4] == 4'h0) & ~ext_ioctl;
     wire sel_acia = sel_io & (bus_addr_q[7:2] == 6'b000111) & ~ext_ioctl; // $031C-$031F
-    wire sel_rom  = rom_area & ~ext_romdis;
+    // Microdisc : $0310-$031B (la fenêtre $031C-$031F reste à l'ACIA)
+    wire sel_md   = md_enable & sel_io & (bus_addr_q[7:4] == 4'h1)
+                  & ~sel_acia & ~ext_ioctl;
+    // /ROMDIS effectif : port d'extension OU Microdisc (EPROM de boot)
+    wire md_romdis;
+    wire eff_romdis = ext_romdis | md_romdis;
+    wire sel_rom  = rom_area & ~eff_romdis;
     wire sel_ram  = ~sel_io & ~rom_area;
-    wire rom_as_ram = rom_area & ext_romdis & ~ext_map;   // RAM cachée
-    wire sel_ext  = (sel_io & ~sel_via & ~sel_acia)       // page 3 externe (hors ACIA)
+    wire rom_as_ram = rom_area & eff_romdis & ~ext_map;   // RAM cachée
+    wire sel_ext  = (sel_io & ~sel_via & ~sel_acia & ~sel_md)
                   | (rom_area & ext_romdis & ext_map);    // overlay cartouche
 
     assign exp_addr    = bus_addr_q;
@@ -207,7 +230,9 @@ module oric_atmos #(
         if (tphase == 5'd4) begin
             if (sel_via)        cpu_di <= via_dout;
             else if (sel_acia)  cpu_di <= acia_dout;
+            else if (sel_md)    cpu_di <= md_dout;
             else if (sel_rom)   cpu_di <= rom_dout;
+            else if (md_eprom_sel) cpu_di <= md_eprom_dout; // EPROM Microdisc
             else if (rom_as_ram) cpu_di <= ram_dout;
             else if (sel_ext)   cpu_di <= 8'hFF;   // provisoire, écrasé à t23
             else                cpu_di <= ram_dout;
@@ -269,6 +294,37 @@ module oric_atmos #(
         .tx_busy   (acia_tx_busy),
         .rx_data   (acia_rx_data),
         .rx_valid  (acia_rx_valid)
+    );
+
+    // Interface Microdisc (US-DISK) — paramètres de timing pleins ; en
+    // simulation le testbench instancie microdisc directement avec des
+    // timings réduits.
+    microdisc #(.ROM_FILE(MD_ROM_FILE)) md (
+        .clk        (clk),
+        .cen        (cen1),
+        .rst        (rst),
+        .enable     (md_enable),
+        .a          (bus_addr_q),
+        .io_sel     (sel_md),
+        .we         (bus_we_q),
+        .din        (bus_do_q),
+        .dout       (md_dout),
+        .dout_valid (),
+        .romdis     (md_romdis),
+        .eprom_sel  (md_eprom_sel),
+        .eprom_dout (md_eprom_dout),
+        .rom_a      (bus_addr_q[13:0]),
+        .irq        (md_irq),
+        .disk_present (md_disk_present),
+        .n_tracks   (md_n_tracks),
+        .n_spt      (md_n_spt),
+        .req_track  (md_req_track),
+        .req_side   (md_req_side),
+        .trk_loading(md_trk_loading),
+        .sec_id     (md_sec_id),
+        .sec_valid  (md_sec_valid),
+        .sec_addr   (md_sec_addr),
+        .sec_byte   (md_sec_byte)
     );
 
     assign prn_data     = via_pa_out;     // partagé avec le bus AY (fidèle)

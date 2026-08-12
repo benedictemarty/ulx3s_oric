@@ -21,6 +21,21 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
   nettoyage de la signature à prévoir pour un vrai boot à froid.
 
 ### Ajouté
+- **Interface Microdisc (US-DISK.2) — validée en simulation** (2026-08-12) :
+  `rtl/microdisc.v` fidèle à `~/Oric1/src/io/microdisc.c` — registres
+  `$0310-$0313` (WD1793), `$0314` W = contrôle (b0 INTENA, b1 /ROMDIS,
+  b4 side, b6:5 drive, b7 /EPROM), `$0314`/`$0318` R = /INTRQ//DRQ
+  (bit 7 actif bas, b6:0 = 1), EPROM `microdis.rom` 8 Ko en overlay
+  `$E000-$FFFF` ($C000-$DFFF = RAM overlay, sémantique /ROMDIS combinée
+  avec le port d'extension), IRQ 6502 gouvernée par INTENA. Au boot :
+  ROMDIS + EPROM actifs (la machine démarre sur l'EPROM, comme le vrai
+  matériel). **SW1 (DIP) = interface « branchée »** — à OFF, l'Atmos est
+  strictement inchangé (comme débrancher le Microdisc). Décodage
+  `$0310-$031B` (l'ACIA garde `$031C-$031F`). Testbenches :
+  `tb_microdisc` (registres, flags, EPROM, transparence) et `tb_boot
+  +microdisc=1` — **la machine boote l'EPROM et affiche « insert system
+  disc »** (pas encore de disquette : fournisseur de secteurs en bouchon
+  jusqu'à US-DISK.3, pistes depuis la SD). 19/19 tests.
 - **Cœur FDC WD1793 (US-DISK.1) — validé en simulation** (2026-08-12) :
   `rtl/wd1793.v`, fidèle à `~/Oric1/src/storage/disk.c` (modèle
   FDC_TIMING_REAL) : registres command/track/sector/data, type I

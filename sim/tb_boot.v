@@ -18,8 +18,9 @@ module tb_boot;
     wire [9:0] audio;
     wire irq_dbg;
 
-    oric_atmos #(.DIV(DIV), .ROM_FILE("roms/basic11b.hex"), .ROM_FILE_B("roms/basic10.hex")) dut (
+    oric_atmos #(.DIV(DIV), .ROM_FILE("roms/basic11b.hex"), .ROM_FILE_B("roms/basic10.hex"), .MD_ROM_FILE("roms/microdis.hex")) dut (
         .clk(clk), .rst(rst), .rom_bank(tb_bank), .turbo(tb_turbo),
+        .md_enable(tb_md), .md_disk_present(1'b0), .md_n_tracks(7'd42), .md_n_spt(5'd17), .md_req_track(), .md_req_side(), .md_trk_loading(1'b0), .md_sec_id(), .md_sec_valid(1'b0), .md_sec_addr(), .md_sec_byte(8'h00),
         .kbd_azerty(1'b0), .kbd_mods(8'd0), .kbd_k1(8'd0), .kbd_k2(8'd0), .kbd_k3(8'd0), .kbd_k4(8'd0),
         .inj_active(1'b0), .inj_col(3'd0), .inj_row(3'd0), .inj_shift(1'b0),
         .exp_addr(), .exp_we(), .exp_do(), .exp_io_page(), .exp_tphase(),
@@ -40,6 +41,11 @@ module tb_boot;
     integer bank_arg = 0;
     initial if (!$value$plusargs("bank=%d", bank_arg)) bank_arg = 0;
     wire tb_bank = (bank_arg != 0);
+    // +microdisc=1 : interface Microdisc branchée -> boot sur l'EPROM,
+    // bannière « insert system disc » (pas de disquette dans ce banc)
+    integer md_arg = 0;
+    initial if (!$value$plusargs("microdisc=%d", md_arg)) md_arg = 0;
+    wire tb_md = (md_arg != 0);
     integer cycles = 0;
     integer i, r, c;
     reg found = 0;
@@ -52,8 +58,10 @@ module tb_boot;
         begin
             found = 0;
             for (i = 16'hBB80; i <= 16'hBFDC; i = i + 1)
-                if (dut.ram.mem[i]     == "O" && dut.ram.mem[i + 1] == "R" &&
-                    dut.ram.mem[i + 2] == "I" && dut.ram.mem[i + 3] == "C")
+                if (tb_md ? (dut.ram.mem[i]     == "n" && dut.ram.mem[i + 1] == "s" &&
+                             dut.ram.mem[i + 2] == "e" && dut.ram.mem[i + 3] == "r")
+                          : (dut.ram.mem[i]     == "O" && dut.ram.mem[i + 1] == "R" &&
+                             dut.ram.mem[i + 2] == "I" && dut.ram.mem[i + 3] == "C"))
                     found = 1;
             charset_ok = (dut.ram.mem[16'hB400 + 8*8'h41 + 2] != 8'h00);
         end
@@ -105,7 +113,7 @@ module tb_boot;
         repeat (10_000) @(negedge clk);        // retour 1 MHz
         scan_screen;                            // bannière toujours en place ?
 
-        if (found && charset_ok && turbo_alive)
+        if (found && charset_ok && (turbo_alive || tb_md))  // l'EPROM Microdisc n'arme pas T1
             $display("ALL TESTS PASSED (tb_boot)");
         else
             $display("FAIL: banniere=%0d charset=%0d turbo_alive=%0d apres %0d cycles CPU",

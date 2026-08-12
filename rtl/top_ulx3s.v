@@ -5,6 +5,7 @@
 module top_ulx3s (
     input        clk_25mhz,
     input  [6:0] btn,
+    input  [3:0] sw,      // SW1 = interface Microdisc « branchée »
     input        ftdi_txd,      // UART du PC (US1) : clavier série / .tap
     output       ftdi_rxd,      // UART vers le PC (US1) : crédits cassette
     output       wifi_en,       // active l'ESP32 (modem WiFi)
@@ -271,11 +272,28 @@ module top_ulx3s (
     wire [9:0]  audio_mix;
     wire        irq_dbg;
 
+    // Microdisc : SW1 = branché ; fournisseur de secteurs = bouchon (pas de
+    // disquette tant que US-DISK.3 n'apporte pas les pistes depuis la SD) —
+    // l'EPROM boote et voit un lecteur vide.
+    reg [1:0] sw0_sync = 2'b00;
+    always @(posedge clk_sys) sw0_sync <= {sw0_sync[0], sw[0]};
+
     oric_atmos #(.DIV(25), .ROM_FILE("basic11b.hex")) oric (
         .clk         (clk_sys),
         .rst         (rst_sys),
         .rom_bank    (rom_bank),
         .turbo       (turbo),
+        .md_enable   (sw0_sync[1]),
+        .md_disk_present (1'b0),
+        .md_n_tracks (7'd42),
+        .md_n_spt    (5'd17),
+        .md_req_track(),
+        .md_req_side (),
+        .md_trk_loading (1'b0),
+        .md_sec_id   (),
+        .md_sec_valid (1'b0),
+        .md_sec_addr (),
+        .md_sec_byte (8'h00),
         .kbd_azerty  (layout_azerty),
         .kbd_mods    (mods_s2),
         .kbd_k1      (k1_s2),

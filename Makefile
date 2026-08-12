@@ -13,7 +13,8 @@ RTL = rtl/oric_atmos.v rtl/oric_ula.v rtl/oric_ram.v rtl/oric_rom.v \
       rtl/hdmi_out.v rtl/top_ulx3s.v \
       rtl/uart_rx.v rtl/uart_tx.v rtl/key_injector.v rtl/tape_injector.v \
       rtl/acia6551.v rtl/expansion_port.v rtl/pll_video.v rtl/pll_sys.v \
-      rtl/spi_byte.v rtl/sd_spi.v rtl/fat32.v rtl/tape_loader.v rtl/osd.v rtl/fat_dump.v
+      rtl/spi_byte.v rtl/sd_spi.v rtl/fat32.v rtl/tape_loader.v rtl/osd.v rtl/fat_dump.v \
+      rtl/wd1793.v rtl/microdisc.v
 
 CPU = third_party/verilog-6502/cpu.v third_party/verilog-6502/ALU.v
 
@@ -30,14 +31,16 @@ SRC = $(RTL) $(CPU) $(JT49) $(USB)
 # Sources sans top ni HDMI ni USB ni PLL, pour la simulation
 SIM_CORE = rtl/oric_atmos.v rtl/oric_ula.v rtl/oric_ram.v rtl/oric_rom.v \
            rtl/via6522.v rtl/oric_keyboard.v rtl/framebuffer.v rtl/acia6551.v \
+           rtl/wd1793.v rtl/microdisc.v \
            $(CPU) $(JT49)
 
 all: build/$(PROJ).bit
 
-build/$(PROJ).json: $(SRC) roms/basic11b.hex roms/basic10.hex
+build/$(PROJ).json: $(SRC) roms/basic11b.hex roms/basic10.hex roms/microdis.hex
 	mkdir -p build
 	cp roms/basic11b.hex build/
 	cp roms/basic10.hex build/
+	cp roms/microdis.hex build/
 	cp roms/font8x8.hex build/
 	cp third_party/usb_hid_host/src/usb_hid_host_rom.hex build/
 	cd build && yosys -q -p "read_verilog -I../rtl $(addprefix ../,$(SRC)); synth_ecp5 -noabc9 -top $(TOP) -json $(PROJ).json"
@@ -60,7 +63,7 @@ prog-fujprog: build/$(PROJ).bit
 # ----------------------------------------------------------------------
 # Tests
 # ----------------------------------------------------------------------
-TESTS = test-via test-keyboard test-azerty test-injector test-tape test-acia test-expansion test-ula test-boot test-hdmi test-hdmi-packet test-hdmi-audio test-hdmi-island test-spi-byte test-sd test-fat test-tape-loader test-wd
+TESTS = test-via test-keyboard test-azerty test-injector test-tape test-acia test-expansion test-ula test-boot test-hdmi test-hdmi-packet test-hdmi-audio test-hdmi-island test-spi-byte test-sd test-fat test-tape-loader test-wd test-microdisc
 
 test: $(TESTS)
 	@echo "== TOUS LES TESTS SONT PASSES =="
@@ -166,6 +169,12 @@ test-wd: sim/out
 	iverilog -DSIM -g2005 -o sim/out/tb_wd.vvp sim/tb_wd1793.v rtl/wd1793.v
 	vvp sim/out/tb_wd.vvp | tee sim/out/tb_wd.log
 	@grep -q "ALL TESTS PASSED" sim/out/tb_wd.log
+
+test-microdisc: sim/out
+	iverilog -DSIM -g2005 -o sim/out/tb_md.vvp sim/tb_microdisc.v \
+	  rtl/microdisc.v rtl/wd1793.v
+	vvp sim/out/tb_md.vvp | tee sim/out/tb_md.log
+	@grep -q "ALL TESTS PASSED" sim/out/tb_md.log
 
 # ----------------------------------------------------------------------
 # ESP32 embarqué (modem WiFi) — compilation / flash
