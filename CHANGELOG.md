@@ -5,6 +5,24 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 
 ## [Non publié]
 
+### Ajouté
+- **US-DISK.4 : boot Sedoric VALIDÉ SUR CARTE + OSD ouvert/fermé + reset
+  auto** (bmarty, 2026-08-13, « cela fonctionne » — menu Sedoric au boot) :
+  `rtl/top_ulx3s.v` — (1) l'OSD a un état ouvert/fermé : BTN4 charge/insère
+  ET ferme l'OSD ; fermé, BTN3/BTN4 ne font que le rouvrir. `Citadelle.dsk`
+  validé aussi (choix du menu OK — l'« erreur de syntaxe » venait de la
+  course de piste, les données servies étaient fausses). Motif : l'OSD
+  restait affiché pendant le boot disquette et les appuis « pour fermer »
+  lançaient un chargement cassette qui volait le bus SD (READ FAULT sur le
+  répertoire) et enclenchait le turbo ×4 (touches répétées, curseur rapide).
+  L'OSD ne se rouvre pas sur reset (pas de recouvrement du boot).
+  (2) Insertion d'un .dsk = reset automatique : on attend le front de
+  `dsk_inserted` (la disquette survit au soft reset) puis ~5 ms de reset —
+  la machine reboote sur l'EPROM Microdisc qui trouve la disquette ; plus
+  besoin de BTN1. Lenteur connue : chaque piste refait le seek FAT32 depuis
+  le début du fichier à la vitesse SPI d'init → chantier « SPI haute
+  vitesse » au backlog.
+
 ### Corrigé
 - **Boot Sedoric : gel après la bannière (US-DISK.4) — deux causes racines**
   (bmarty, 2026-08-13, validé en sim `tb_sedboot` : la séquence FDC suit la

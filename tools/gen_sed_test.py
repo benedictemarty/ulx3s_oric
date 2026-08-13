@@ -31,6 +31,15 @@ dsk = bytearray(d)
 
 CLUS0 = 3
 nclus = (len(dsk) + SPC*SEC - 1) // (SPC*SEC)
+# Mode « frag » (argv[3]) : chaîne de clusters volontairement NON contiguë
+# (entrelacement pair/impair) pour reproduire un fichier fragmenté sur une
+# vraie carte — les images contiguës ne testent pas le suivi de chaîne.
+FRAG = len(sys.argv) > 3 and sys.argv[3] == 'frag'
+if FRAG:
+    order = list(range(CLUS0, CLUS0 + nclus, 2)) + \
+            list(range(CLUS0 + 1, CLUS0 + nclus, 2))
+else:
+    order = list(range(CLUS0, CLUS0 + nclus))
 total = clus_lba(CLUS0 + nclus) + SPC
 img = bytearray(total * SEC)
 

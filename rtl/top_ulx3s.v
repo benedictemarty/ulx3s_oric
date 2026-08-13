@@ -61,7 +61,8 @@ module top_ulx3s (
 
     wire ext_rst_req;
     wire rst_por = (por != 0);      // power-on seul (survit aux resets machine)
-    wire rst_sys = rst_por || btn[1] || ext_rst_req || (bank_rst != 0);
+    wire rst_sys = rst_por || btn[1] || ext_rst_req || (bank_rst != 0)
+                 || (dsk_rst != 0);
 
     // ------------------------------------------------------------------
     // Banque ROM sur BTN5 (UP) : chaque appui bascule BASIC 1.1b <-> 1.0
@@ -411,7 +412,7 @@ module top_ulx3s (
         .fb_rdata  (fb_rdata),
         .aud_l     (aud_p2),
         .aud_r     (aud_p2),
-        .osd_enable     (fat_done && !tape_active),
+        .osd_enable     (fat_done && !tape_active && osd_open),
         .osd_file_count (file_count),
         .osd_sel_idx    (sel_idx),
         .osd_name_idx   (osd_name_idx),
@@ -453,6 +454,10 @@ module top_ulx3s (
     reg         b2stab, b3stab, b4stab, b2prev, b3prev, b4prev;
     reg [5:0]   sel_idx;
     reg         load_trigger, dump_trigger;
+    // OSD ouvert/fermé : BTN4 charge ET ferme ; OSD fermé, BTN3/BTN4 ne font
+    // que le rouvrir. Évite les chargements accidentels (une cassette lancée
+    // pendant un boot disquette vole le bus SD et enclenche le turbo).
+    reg         osd_open = 1'b1;
 
     always @(posedge clk_sys) begin
         b2s <= {b2s[0], btn[2]};
@@ -470,12 +475,21 @@ module top_ulx3s (
         b2prev <= b2stab; b3prev <= b3stab; b4prev <= b4stab;
         load_trigger <= 1'b0;
         dump_trigger <= 1'b0;
-        if (rst_sys) sel_idx <= 6'd0;
+        if (rst_sys) sel_idx <= 6'd0;   // osd_open survit : pas de réouverture
+                                        // par-dessus un boot disquette
         else begin
-            if (b3stab && !b3prev)          // front BTN3 : fichier suivant
-                sel_idx <= (sel_idx + 6'd1 >= file_count) ? 6'd0 : sel_idx + 6'd1;
-            if (b4stab && !b4prev)          // front BTN4 : charger (cassette)
-                load_trigger <= 1'b1;
+            if (b3stab && !b3prev) begin    // front BTN3 : ouvrir / fichier suivant
+                if (!osd_open) osd_open <= 1'b1;
+                else sel_idx <= (sel_idx + 6'd1 >= file_count) ? 6'd0
+                                                               : sel_idx + 6'd1;
+            end
+            if (b4stab && !b4prev) begin    // front BTN4 : ouvrir / charger
+                if (!osd_open) osd_open <= 1'b1;
+                else begin
+                    load_trigger <= 1'b1;
+                    osd_open <= 1'b0;       // fermer : plus d'appui avalé
+                end
+            end
             if (b2stab && !b2prev)          // front BTN2 : dump debug vers UART
                 dump_trigger <= 1'b1;
         end
@@ -540,6 +554,22 @@ module top_ulx3s (
     // (« insert system disc ») réessaie son boot — sinon reset BTN1. SW1 doit
     // être ON pour que l'interface soit branchée.
     wire dsk_insert = load_trigger && sel_isdsk;
+
+    // Insertion .dsk = reset automatique (US-DISK.4) : on attend que
+    // l'insertion soit enregistrée (front montant de dsk_inserted — la
+    // disquette survit au soft reset) puis on pulse ~5 ms de reset ; la
+    // machine reboote sur l'EPROM Microdisc qui trouve la disquette.
+    reg [16:0] dsk_rst = 17'd0;
+    reg        dsk_rst_wait = 1'b0, dsk_ins_prev = 1'b0;
+    always @(posedge clk_sys) begin
+        dsk_ins_prev <= dsk_inserted;
+        if (dsk_insert) dsk_rst_wait <= 1'b1;
+        else if (dsk_rst_wait && dsk_inserted && !dsk_ins_prev) begin
+            dsk_rst_wait <= 1'b0;
+            dsk_rst <= 17'd125_000;
+        end else if (dsk_rst != 0)
+            dsk_rst <= dsk_rst - 17'd1;
+    end
     wire dsk_inserted, dsk_bad, mdp_trk_loading, mdp_present, mdp_side, mdp_secvalid;
     wire [6:0] mdp_ntracks, mdp_reqtrk;
     wire [4:0] mdp_nspt, mdp_secid;

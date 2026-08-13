@@ -110,12 +110,21 @@ comparable à une vraie mécanique 3") ; v1 en LECTURE SEULE.
       fichier .dsk (fat32 : seek par re-suivi de chaîne de clusters +
       offset piste = f(side, track) de l'en-tête MFM_DISK), chargement du
       buffer de piste, poignée « disquette insérée » pour le WD1793.
-- [ ] US-DISK.4 **OSD : insérer un .dsk** : BTN4 sur un fichier `.dsk` =
-      insertion + reset → boot Sedoric. Fait : insertion BTN4, LED7,
-      survie au reset ; **gel du boot Sedoric résolu en sim le 2026-08-13**
-      (init RAM motif Oricutron + course seek/rechargement de piste, cf.
-      CHANGELOG). Reste : validation carte (Sedoric boote jusqu'au menu,
-      `Citadelle.dsk` se charge).
+- [x] US-DISK.4 **OSD : insérer un .dsk** (2026-08-13, VALIDÉ SUR CARTE :
+      menu Sedoric au boot) : BTN4 sur un `.dsk` = insertion + reset auto
+      (attente `dsk_inserted` puis ~5 ms) → boot EPROM → Sedoric. Gel du
+      boot résolu (init RAM motif Oricutron + course seek/rechargement,
+      cf. CHANGELOG). OSD ouvert/fermé : BTN4 ferme, appui suivant rouvre
+      (fini les chargements cassette accidentels pendant un boot disque).
+      `Citadelle.dsk` validé sur carte (choix du menu OK — l'« erreur de
+      syntaxe » venait de la course de piste). Reste ouvert : lenteur des
+      chargements de piste (cf. US-SD-SPEED).
+- [ ] US-SD-SPEED **SPI SD haute vitesse + seek FAT32 incrémental** : la SD
+      reste à la vitesse d'init et chaque rechargement de piste re-suit la
+      chaîne de clusters depuis le début du fichier (piste 60 ≈ 90 sauts
+      FAT) → boot Sedoric long. Passer le SPI à 12,5 MHz après init et/ou
+      mémoriser (cluster, offset) du dernier accès pour un seek avant
+      incrémental en O(1).
 - [ ] US-DISK.5 **Écriture** (v2, ultérieur) : write-back des secteurs vers
       la SD (commandes type II write), dirty tracking par piste.
 
