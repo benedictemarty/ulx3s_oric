@@ -327,8 +327,8 @@ module top_ulx3s (
         .acia_tx_busy (acia_tx_busy),
         .acia_rx_data (acia_rx_data),
         .acia_rx_valid(acia_rx_valid),
-        .acia_dcd     (1'b0),          // v1 : porteuse/DSR pilotés par l'ESP32 en phase 2
-        .acia_dsr     (1'b0),
+        .acia_dcd     (1'b1),          // modem interne toujours présent (réf.
+        .acia_dsr     (1'b1),          // acia6551.c : dcd=dsr=true à l'init)
         .fb_we       (fb_we),
         .fb_addr     (fb_waddr),
         .fb_data     (fb_wdata),

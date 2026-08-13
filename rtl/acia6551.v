@@ -43,6 +43,17 @@ module acia6551 (
     reg       tx_start;
     reg       irq_ack;
 
+    // FIFO de réception 4 Ko (BRAM) — équivalent du `--serial-buffer 4096`
+    // de l'émulateur de référence : le modem répond à 115200 (86 µs/octet)
+    // alors qu'une boucle BASIC lit un octet toutes les ~2-5 ms ; sans
+    // tampon, tout déborde. Le registre RDR reste l'interface 6551 : il est
+    // rechargé depuis la FIFO dès qu'il est libre (show-ahead à clk).
+    reg [7:0]  fifo [0:4095];
+    reg [11:0] wptr, rptr;
+    reg [12:0] count;
+    reg [7:0]  fifo_q;
+    reg        pop_pend;               // fifo_q valide au cycle suivant
+
     // Sources d'interruption
     wire rx_irq = rdrf & ~command[1];                 // RDRF & !IRD
     wire tx_irq = tdre & (command[3:2] == 2'b01);     // TDRE & TIC=01
@@ -61,6 +72,9 @@ module acia6551 (
         endcase
     end
 
+    wire do_push = rx_valid && (count != 13'd4096);
+    wire do_pop  = !rdrf && !pop_pend && (count != 13'd0);
+
     always @(posedge clk) begin
         tx_send <= 1'b0;
 
@@ -68,12 +82,26 @@ module acia6551 (
             rdrf <= 1'b0; tdre <= 1'b1; ovrn <= 1'b0;
             command <= 8'h00; control <= 8'h00;
             tx_start <= 1'b0; irq_ack <= 1'b0;
+            wptr <= 12'd0; rptr <= 12'd0; count <= 13'd0; pop_pend <= 1'b0;
         end else begin
-            // ---- Réception série (pont) ----
-            if (rx_valid) begin
-                if (rdrf) ovrn <= 1'b1;         // débordement : octet perdu
-                else begin rdr <= rx_data; rdrf <= 1'b1; end
+            // ---- Réception série (pont) : FIFO 4 Ko ----
+            if (rx_valid && count == 13'd4096)
+                ovrn <= 1'b1;                   // FIFO pleine : octet perdu
+            if (do_push) begin
+                fifo[wptr] <= rx_data;
+                wptr <= wptr + 12'd1;
             end
+            // show-ahead : recharge RDR dès qu'il est libre
+            if (do_pop) begin
+                fifo_q <= fifo[rptr];
+                rptr <= rptr + 12'd1;
+                pop_pend <= 1'b1;
+            end else if (pop_pend) begin
+                rdr <= fifo_q;
+                rdrf <= 1'b1;
+                pop_pend <= 1'b0;
+            end
+            count <= count + {12'd0, do_push} - {12'd0, do_pop};
 
             // ---- Émission série (pont) ----
             if (tx_start && !tx_busy) begin
@@ -95,6 +123,8 @@ module acia6551 (
                         2'd1: begin                 // reset programmé
                                   rdrf <= 1'b0; tdre <= 1'b1; ovrn <= 1'b0;
                                   tx_start <= 1'b0; irq_ack <= 1'b0;
+                                  rptr <= wptr; count <= 13'd0;  // purge FIFO
+                                  pop_pend <= 1'b0;
                               end
                         2'd2: command <= din;
                         2'd3: control <= din;

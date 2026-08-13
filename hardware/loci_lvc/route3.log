@@ -1,0 +1,1280 @@
+2026-08-13 16:15:50.502 INFO   Freerouting v2.1.0 (build-date: 2025-04-12)
+2026-08-13 16:15:50.549 WARN   No default constructor found for field: currentLocale
+2026-08-13 16:15:50.550 INFO   Settings were loaded from freerouting.json
+2026-08-13 16:15:50.552 WARN   Couldn't get screen resolution. If you are running in a headless environment, disable the GUI by setting gui.enabled to false.
+2026-08-13 16:15:52.174 INFO   New version available: v2.3.0
+2026-08-13 16:15:52.543 INFO   [73E9B7\368236] Job '73E9B7\368236' started at 2026-08-13T14:15:52.543086273Z
+2026-08-13 16:15:55.629 INFO   [73E9B7\368236] Auto-router pass #1 on board '0a858642f4f7c3d48e653d4a17e6555f' was completed in 2,97 seconds with the score of 721,73 (61 unrouted), using 5,73 CPU seconds and 2408 MB memory.
+2026-08-13 16:15:56.640 INFO   [73E9B7\368236] Auto-router pass #2 on board 'e5175b8760b3d89860f42a44bdbffc2c' was completed in 0,98 seconds with the score of 736,18 (59 unrouted), using 9,58 CPU seconds and 3309 MB memory.
+2026-08-13 16:15:57.428 INFO   [73E9B7\368236] Auto-router pass #3 on board 'a0212fd503b6ce71956ac778ded0718e' was completed in 0,77 seconds with the score of 736,18 (59 unrouted), using 9,58 CPU seconds and 3309 MB memory.
+2026-08-13 16:16:19.405 INFO   [73E9B7\368236] Auto-router pass #4 on board 'a0212fd503b6ce71956ac778ded0718e' was completed in 21,97 seconds with the score of 893,80 (34 unrouted), using 341,77 CPU seconds and 22421 MB memory.
+2026-08-13 16:16:20.607 INFO   [73E9B7\368236] Auto-router pass #5 on board '7757875e911df40ecfe969b2b26359d9' was completed in 1,19 seconds with the score of 902,39 (31 unrouted), using 395,47 CPU seconds and 24288 MB memory.
+2026-08-13 16:16:21.461 INFO   [73E9B7\368236] Auto-router pass #6 on board '02cb969050291bc424d8ffbd4dd736f2' was completed in 0,84 seconds with the score of 906,44 (30 unrouted), using 395,47 CPU seconds and 24288 MB memory.
+2026-08-13 16:16:22.210 INFO   [73E9B7\368236] Auto-router pass #7 on board '43d47b737621da79286581e911868e3a' was completed in 0,73 seconds with the score of 906,44 (30 unrouted), using 423,79 CPU seconds and 25190 MB memory.
+2026-08-13 16:16:36.295 INFO   [73E9B7\368236] Auto-router pass #8 on board '43d47b737621da79286581e911868e3a' was completed in 14,08 seconds with the score of 933,56 (22 unrouted), using 922,67 CPU seconds and 36988 MB memory.
+2026-08-13 16:16:36.969 INFO   [73E9B7\368236] Auto-router pass #9 on board 'a9a3abedfee9c047a379ef26fa42ebf3' was completed in 0,66 seconds with the score of 935,73 (21 unrouted), using 965,60 CPU seconds and 37931 MB memory.
+2026-08-13 16:16:37.617 INFO   [73E9B7\368236] Auto-router pass #10 on board 'd912bf9ab8d2ce3275f487bab39d647e' was completed in 0,63 seconds with the score of 935,73 (21 unrouted), using 1009,52 CPU seconds and 38843 MB memory.
+2026-08-13 16:16:38.247 INFO   [73E9B7\368236] Auto-router pass #11 on board 'd912bf9ab8d2ce3275f487bab39d647e' was completed in 0,62 seconds with the score of 935,73 (21 unrouted), using 1009,52 CPU seconds and 38843 MB memory.
+2026-08-13 16:16:39.026 INFO   [73E9B7\368236] Restoring an earlier board that has the score of 935,73 (21 unrouted).
+2026-08-13 16:16:39.027 INFO   [73E9B7\368236] Auto-router pass #12 on board 'd912bf9ab8d2ce3275f487bab39d647e' was completed in 0,77 seconds with the score of 935,73 (21 unrouted), using 1054,43 CPU seconds and 39741 MB memory.
+2026-08-13 16:16:41.444 INFO   [73E9B7\368236] Auto-router pass #13 on board 'd912bf9ab8d2ce3275f487bab39d647e' was completed in 2,41 seconds with the score of 934,49 (22 unrouted), using 1147,17 CPU seconds and 41740 MB memory.
+2026-08-13 16:16:42.092 INFO   [73E9B7\368236] Auto-router pass #14 on board '3fae549ed0c5f274c636bc3670d95ef6' was completed in 0,63 seconds with the score of 934,49 (22 unrouted), using 1195,00 CPU seconds and 42727 MB memory.
+2026-08-13 16:16:42.711 INFO   [73E9B7\368236] Auto-router pass #15 on board '3fae549ed0c5f274c636bc3670d95ef6' was completed in 0,61 seconds with the score of 934,49 (22 unrouted), using 1243,80 CPU seconds and 43707 MB memory.
+2026-08-13 16:16:42.735 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:16:42.736 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:16:42.736 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:16:42.742 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:16:42.743 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:16:42.840 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:16:42.840 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:16:42.843 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:16:42.843 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:16:42.847 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:16:42.847 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:16:42.847 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:16:42.850 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:16:42.850 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:16:42.850 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:16:42.850 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:16:42.850 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:16:42.850 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:16:42.949 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:16:42.949 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:16:42.950 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:16:42.951 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:16:42.951 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:16:42.951 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:16:42.951 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:16:42.953 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:16:42.955 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:16:42.958 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:16:42.958 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:16:42.958 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:16:42.958 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:16:42.959 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:16:42.959 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:16:42.959 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:16:42.959 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:16:42.959 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:16:43.021 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:16:43.066 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:16:43.066 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:16:44.841 INFO   [73E9B7\368236] Restoring an earlier board that has the score of 935,73 (21 unrouted).
+2026-08-13 16:16:44.841 INFO   [73E9B7\368236] Auto-router pass #16 on board '3fae549ed0c5f274c636bc3670d95ef6' was completed in 2,12 seconds with the score of 934,49 (22 unrouted), using 1344,34 CPU seconds and 45459 MB memory.
+2026-08-13 16:16:55.007 INFO   [73E9B7\368236] Auto-router pass #17 on board 'd912bf9ab8d2ce3275f487bab39d647e' was completed in 10,16 seconds with the score of 948,80 (18 unrouted), using 1905,62 CPU seconds and 55281 MB memory.
+2026-08-13 16:17:05.058 INFO   [73E9B7\368236] Auto-router pass #18 on board '113ba4aa447c420180d439307080cf4a' was completed in 10,03 seconds with the score of 954,46 (16 unrouted), using 2564,61 CPU seconds and 65138 MB memory.
+2026-08-13 16:17:12.409 INFO   [73E9B7\368236] Auto-router pass #19 on board '11b2d371dfbd9188d73b08cb9137ed4d' was completed in 7,33 seconds with the score of 960,51 (13 unrouted), using 3084,19 CPU seconds and 71810 MB memory.
+2026-08-13 16:17:27.608 INFO   [73E9B7\368236] Auto-router pass #20 on board 'a8103442bd6f13372e0eae5cb8a72d72' was completed in 15,18 seconds with the score of 964,62 (11 unrouted), using 4451,45 CPU seconds and 88003 MB memory.
+2026-08-13 16:17:32.475 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:17:32.476 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:17:32.476 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:17:32.476 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:17:32.476 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:17:32.476 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:17:32.480 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:17:32.480 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:17:32.480 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:17:32.480 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:17:32.483 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:17:32.483 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:17:32.667 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:17:32.667 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:17:32.667 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:17:32.667 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:17:32.667 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:17:32.667 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:17:32.668 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:17:32.668 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:17:32.668 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:17:32.668 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:17:32.675 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:17:32.675 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:17:32.680 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:17:32.680 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:17:32.680 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:17:32.680 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:17:32.680 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:17:32.680 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:17:32.680 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:17:32.680 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:17:32.680 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:17:32.680 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:17:32.680 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:17:32.680 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:17:32.680 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:17:32.680 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:17:32.686 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: Index 7 out of bounds for length 7
+	at app.freerouting.autoroute.MazeShoveTraceAlgo.check_shove_trace_line(MazeShoveTraceAlgo.java:123) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.shove_trace_room(MazeSearchAlgo.java:1214) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.expand_to_room_doors(MazeSearchAlgo.java:443) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.occupy_next_element(MazeSearchAlgo.java:286) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.find_connection(MazeSearchAlgo.java:206) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.AutorouteEngine.autoroute_connection(AutorouteEngine.java:155) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.autoroute_item(BatchAutorouter.java:610) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.autoroute_pass(BatchAutorouter.java:332) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.runBatchLoop(BatchAutorouter.java:447) [freerouting.jar:unspecified]
+	at app.freerouting.management.RoutingJobSchedulerActionThread.thread_action(RoutingJobSchedulerActionThread.java:131) [freerouting.jar:unspecified]
+	at app.freerouting.core.StoppableThread.run(StoppableThread.java:26) [freerouting.jar:unspecified]
+2026-08-13 16:17:32.686 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: Index 7 out of bounds for length 7
+	at app.freerouting.autoroute.MazeShoveTraceAlgo.check_shove_trace_line(MazeShoveTraceAlgo.java:123) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.shove_trace_room(MazeSearchAlgo.java:1214) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.expand_to_room_doors(MazeSearchAlgo.java:443) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.occupy_next_element(MazeSearchAlgo.java:286) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.find_connection(MazeSearchAlgo.java:206) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.AutorouteEngine.autoroute_connection(AutorouteEngine.java:155) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.autoroute_item(BatchAutorouter.java:610) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.autoroute_pass(BatchAutorouter.java:332) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.runBatchLoop(BatchAutorouter.java:447) [freerouting.jar:unspecified]
+	at app.freerouting.management.RoutingJobSchedulerActionThread.thread_action(RoutingJobSchedulerActionThread.java:131) [freerouting.jar:unspecified]
+	at app.freerouting.core.StoppableThread.run(StoppableThread.java:26) [freerouting.jar:unspecified]
+2026-08-13 16:17:32.736 INFO   [73E9B7\368236] Auto-router pass #21 on board '2479892361b79054efb99d88ec3860c4' was completed in 5,11 seconds with the score of 965,81 (10 unrouted), using 4929,98 CPU seconds and 92513 MB memory.
+2026-08-13 16:17:32.849 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:17:32.849 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:17:32.849 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:17:33.188 INFO   [73E9B7\368236] Auto-router pass #22 on board 'b747527a4c39ad84b412d934b6dad992' was completed in 0,43 seconds with the score of 965,81 (10 unrouted), using 4929,98 CPU seconds and 92513 MB memory.
+2026-08-13 16:17:33.566 INFO   [73E9B7\368236] Auto-router pass #23 on board 'b747527a4c39ad84b412d934b6dad992' was completed in 0,37 seconds with the score of 965,81 (10 unrouted), using 4929,98 CPU seconds and 92513 MB memory.
+2026-08-13 16:17:33.615 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:17:33.617 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:17:33.622 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:17:33.622 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:17:33.623 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:17:33.679 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:17:33.774 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:17:33.777 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:17:33.780 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:17:33.782 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:17:33.782 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:17:33.809 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:17:33.816 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:17:33.834 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:17:33.834 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:17:33.872 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:17:33.872 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:17:33.880 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:17:33.880 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:17:33.881 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:17:33.883 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:17:33.883 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:17:33.883 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:17:33.885 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:17:33.885 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:17:33.885 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:17:33.887 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:17:33.887 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:17:33.887 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:17:33.887 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:17:33.931 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:17:49.354 INFO   [73E9B7\368236] Restoring an earlier board that has the score of 965,81 (10 unrouted).
+2026-08-13 16:17:49.354 INFO   [73E9B7\368236] Auto-router pass #24 on board 'b747527a4c39ad84b412d934b6dad992' was completed in 15,78 seconds with the score of 963,01 (12 unrouted), using 6624,49 CPU seconds and 107615 MB memory.
+2026-08-13 16:17:57.995 INFO   [73E9B7\368236] Auto-router pass #25 on board 'b747527a4c39ad84b412d934b6dad992' was completed in 8,63 seconds with the score of 967,02 (10 unrouted), using 7687,20 CPU seconds and 115541 MB memory.
+2026-08-13 16:18:00.466 INFO   [73E9B7\368236] Auto-router pass #26 on board '407a7f1cc9d5c94684a7921b14998e49' was completed in 2,44 seconds with the score of 966,60 (10 unrouted), using 7934,12 CPU seconds and 117305 MB memory.
+2026-08-13 16:18:00.742 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:18:00.742 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:18:00.940 INFO   [73E9B7\368236] Auto-router pass #27 on board '3eaba6d6e80c48d44f0444c7d444c05c' was completed in 0,45 seconds with the score of 966,60 (10 unrouted), using 8059,04 CPU seconds and 118188 MB memory.
+2026-08-13 16:18:01.015 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:01.016 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:01.016 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:01.017 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:01.017 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:01.017 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:01.018 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:01.018 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:01.018 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:01.019 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:01.023 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:01.034 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:01.034 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:01.053 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:01.054 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:01.054 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:01.054 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:01.054 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:01.054 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:01.054 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:01.054 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:01.054 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:01.054 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:01.054 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:01.054 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:01.060 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:01.061 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:01.061 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:01.061 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:01.061 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:01.061 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:01.062 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:01.062 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:01.062 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:01.062 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:01.062 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:01.064 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:01.064 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:01.064 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:01.068 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:01.068 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:01.135 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:01.147 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:01.151 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:01.151 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:01.156 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:01.240 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:13.099 INFO   [73E9B7\368236] Restoring an earlier board that has the score of 967,02 (10 unrouted).
+2026-08-13 16:18:13.100 INFO   [73E9B7\368236] Auto-router pass #28 on board '3eaba6d6e80c48d44f0444c7d444c05c' was completed in 12,15 seconds with the score of 964,66 (11 unrouted), using 9633,69 CPU seconds and 129698 MB memory.
+2026-08-13 16:18:17.401 INFO   [73E9B7\368236] Auto-router pass #29 on board '407a7f1cc9d5c94684a7921b14998e49' was completed in 4,29 seconds with the score of 964,60 (12 unrouted), using 10189,64 CPU seconds and 133545 MB memory.
+2026-08-13 16:18:25.746 INFO   [73E9B7\368236] Auto-router pass #30 on board 'db1cec820d6cc8a7106eff7759501bcf' was completed in 8,32 seconds with the score of 965,46 (11 unrouted), using 11497,78 CPU seconds and 141421 MB memory.
+2026-08-13 16:18:31.848 INFO   [73E9B7\368236] Auto-router pass #31 on board '6c406ed0857b37709d1f88ed4a8a175a' was completed in 6,08 seconds with the score of 967,39 (9 unrouted), using 12413,84 CPU seconds and 146863 MB memory.
+2026-08-13 16:18:48.347 INFO   [73E9B7\368236] Restoring an earlier board that has the score of 967,39 (9 unrouted).
+2026-08-13 16:18:48.348 INFO   [73E9B7\368236] Auto-router pass #32 on board 'd8c6a4738e7c5fdc2bcce851f2fb0ecf' was completed in 16,48 seconds with the score of 961,61 (12 unrouted), using 15027,73 CPU seconds and 162119 MB memory.
+2026-08-13 16:18:54.320 INFO   [73E9B7\368236] Auto-router pass #33 on board 'd8c6a4738e7c5fdc2bcce851f2fb0ecf' was completed in 5,96 seconds with the score of 965,46 (10 unrouted), using 16071,81 CPU seconds and 167729 MB memory.
+2026-08-13 16:18:58.731 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:18:58.731 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:18:58.731 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:18:58.731 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:18:58.732 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: Index 15 out of bounds for length 15
+	at app.freerouting.autoroute.MazeShoveTraceAlgo.check_shove_trace_line(MazeShoveTraceAlgo.java:123) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.shove_trace_room(MazeSearchAlgo.java:1214) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.expand_to_room_doors(MazeSearchAlgo.java:443) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.occupy_next_element(MazeSearchAlgo.java:286) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.find_connection(MazeSearchAlgo.java:206) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.AutorouteEngine.autoroute_connection(AutorouteEngine.java:155) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.autoroute_item(BatchAutorouter.java:610) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.autoroute_pass(BatchAutorouter.java:332) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.runBatchLoop(BatchAutorouter.java:447) [freerouting.jar:unspecified]
+	at app.freerouting.management.RoutingJobSchedulerActionThread.thread_action(RoutingJobSchedulerActionThread.java:131) [freerouting.jar:unspecified]
+	at app.freerouting.core.StoppableThread.run(StoppableThread.java:26) [freerouting.jar:unspecified]
+2026-08-13 16:18:58.732 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: Index 15 out of bounds for length 15
+	at app.freerouting.autoroute.MazeShoveTraceAlgo.check_shove_trace_line(MazeShoveTraceAlgo.java:123) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.shove_trace_room(MazeSearchAlgo.java:1214) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.expand_to_room_doors(MazeSearchAlgo.java:443) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.occupy_next_element(MazeSearchAlgo.java:286) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.find_connection(MazeSearchAlgo.java:206) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.AutorouteEngine.autoroute_connection(AutorouteEngine.java:155) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.autoroute_item(BatchAutorouter.java:610) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.autoroute_pass(BatchAutorouter.java:332) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.runBatchLoop(BatchAutorouter.java:447) [freerouting.jar:unspecified]
+	at app.freerouting.management.RoutingJobSchedulerActionThread.thread_action(RoutingJobSchedulerActionThread.java:131) [freerouting.jar:unspecified]
+	at app.freerouting.core.StoppableThread.run(StoppableThread.java:26) [freerouting.jar:unspecified]
+2026-08-13 16:18:58.963 INFO   [73E9B7\368236] Auto-router pass #34 on board 'f602b6c8ec01e1346a7fc1a1d2f8bbd6' was completed in 4,62 seconds with the score of 965,69 (10 unrouted), using 16968,36 CPU seconds and 172142 MB memory.
+2026-08-13 16:18:59.033 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:18:59.033 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:18:59.052 WARN   Polyline.corner_approx: p_no must be less than arr.length - 1
+2026-08-13 16:18:59.052 WARN   Polyline.corner_approx: p_no must be less than arr.length - 1
+2026-08-13 16:18:59.053 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: Index 15 out of bounds for length 15
+	at app.freerouting.autoroute.MazeShoveTraceAlgo.check_shove_trace_line(MazeShoveTraceAlgo.java:123) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.shove_trace_room(MazeSearchAlgo.java:1214) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.expand_to_room_doors(MazeSearchAlgo.java:443) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.occupy_next_element(MazeSearchAlgo.java:286) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.find_connection(MazeSearchAlgo.java:206) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.AutorouteEngine.autoroute_connection(AutorouteEngine.java:155) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.autoroute_item(BatchAutorouter.java:610) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.autoroute_pass(BatchAutorouter.java:332) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.runBatchLoop(BatchAutorouter.java:447) [freerouting.jar:unspecified]
+	at app.freerouting.management.RoutingJobSchedulerActionThread.thread_action(RoutingJobSchedulerActionThread.java:131) [freerouting.jar:unspecified]
+	at app.freerouting.core.StoppableThread.run(StoppableThread.java:26) [freerouting.jar:unspecified]
+2026-08-13 16:18:59.053 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: Index 15 out of bounds for length 15
+	at app.freerouting.autoroute.MazeShoveTraceAlgo.check_shove_trace_line(MazeShoveTraceAlgo.java:123) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.shove_trace_room(MazeSearchAlgo.java:1214) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.expand_to_room_doors(MazeSearchAlgo.java:443) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.occupy_next_element(MazeSearchAlgo.java:286) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.find_connection(MazeSearchAlgo.java:206) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.AutorouteEngine.autoroute_connection(AutorouteEngine.java:155) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.autoroute_item(BatchAutorouter.java:610) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.autoroute_pass(BatchAutorouter.java:332) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.runBatchLoop(BatchAutorouter.java:447) [freerouting.jar:unspecified]
+	at app.freerouting.management.RoutingJobSchedulerActionThread.thread_action(RoutingJobSchedulerActionThread.java:131) [freerouting.jar:unspecified]
+	at app.freerouting.core.StoppableThread.run(StoppableThread.java:26) [freerouting.jar:unspecified]
+2026-08-13 16:18:59.074 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:59.465 INFO   [73E9B7\368236] Auto-router pass #35 on board '3bce743d4f8e4c0529894efcfd039d39' was completed in 0,48 seconds with the score of 965,69 (10 unrouted), using 16968,36 CPU seconds and 172142 MB memory.
+2026-08-13 16:18:59.500 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:59.501 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:59.538 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:59.546 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:59.553 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:59.553 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:59.557 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:59.557 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:59.698 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:59.702 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:59.706 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:59.706 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:59.706 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:59.706 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:59.708 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:59.714 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:59.714 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:59.769 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:59.769 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:59.774 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:59.793 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:59.793 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:59.793 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:59.810 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:59.810 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:59.811 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:59.811 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:18:59.811 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:19:12.596 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:19:12.596 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:19:12.599 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:19:12.599 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:19:13.762 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:19:13.762 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:19:13.762 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:19:13.762 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:19:14.349 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: null
+2026-08-13 16:19:14.349 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: null
+2026-08-13 16:19:14.408 INFO   [73E9B7\368236] Restoring an earlier board that has the score of 967,39 (9 unrouted).
+2026-08-13 16:19:14.408 INFO   [73E9B7\368236] Auto-router pass #36 on board '3bce743d4f8e4c0529894efcfd039d39' was completed in 14,93 seconds with the score of 967,03 (9 unrouted), using 19802,71 CPU seconds and 186538 MB memory.
+2026-08-13 16:19:19.436 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:19:19.436 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:19:19.446 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:19:19.446 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:19:19.447 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:19:19.447 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:19:19.449 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:19:19.450 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:19:20.052 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:19:20.052 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:19:20.054 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:19:20.054 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:19:20.054 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:19:20.054 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:19:20.057 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:19:20.057 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:19:20.140 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:19:20.140 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:19:20.166 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:19:20.166 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:19:20.166 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:19:20.166 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:19:20.166 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:19:20.166 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:19:20.523 INFO   [73E9B7\368236] Auto-router pass #37 on board 'd8c6a4738e7c5fdc2bcce851f2fb0ecf' was completed in 6,11 seconds with the score of 963,24 (12 unrouted), using 20997,35 CPU seconds and 192059 MB memory.
+2026-08-13 16:19:21.172 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:19:21.172 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:19:21.173 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:19:21.173 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:19:21.712 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:19:21.712 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:19:21.881 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:19:21.881 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:19:21.910 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:19:21.910 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:19:21.913 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:19:21.913 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:19:21.915 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: null
+2026-08-13 16:19:21.915 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: null
+2026-08-13 16:19:22.633 INFO   [73E9B7\368236] Auto-router pass #38 on board '39e04f6ca17ee17f9258a564eefb84e9' was completed in 2,09 seconds with the score of 960,41 (14 unrouted), using 21607,69 CPU seconds and 194888 MB memory.
+2026-08-13 16:19:23.213 INFO   [73E9B7\368236] Auto-router pass #39 on board 'ab02efcca09e0ad7af91494d6892e0e3' was completed in 0,56 seconds with the score of 960,41 (14 unrouted), using 21607,69 CPU seconds and 194888 MB memory.
+2026-08-13 16:19:46.249 INFO   [73E9B7\368236] Restoring an earlier board that has the score of 967,39 (9 unrouted).
+2026-08-13 16:19:46.249 INFO   [73E9B7\368236] Auto-router pass #40 on board 'ab02efcca09e0ad7af91494d6892e0e3' was completed in 23,02 seconds with the score of 965,99 (10 unrouted), using 26577,08 CPU seconds and 217628 MB memory.
+2026-08-13 16:19:52.618 INFO   [73E9B7\368236] Auto-router pass #41 on board 'd8c6a4738e7c5fdc2bcce851f2fb0ecf' was completed in 6,36 seconds with the score of 963,84 (11 unrouted), using 27958,08 CPU seconds and 223323 MB memory.
+2026-08-13 16:20:00.623 INFO   [73E9B7\368236] Auto-router pass #42 on board 'd10d01feb58cd72a8ea028d07b940c7d' was completed in 7,98 seconds with the score of 952,99 (18 unrouted), using 29854,13 CPU seconds and 230924 MB memory.
+2026-08-13 16:20:09.150 INFO   [73E9B7\368236] Auto-router pass #43 on board '113edd83f747a9aa32758d0c6a79b22a' was completed in 8,51 seconds with the score of 965,71 (10 unrouted), using 32061,88 CPU seconds and 239449 MB memory.
+2026-08-13 16:20:24.491 INFO   [73E9B7\368236] Restoring an earlier board that has the score of 967,39 (9 unrouted).
+2026-08-13 16:20:24.491 INFO   [73E9B7\368236] Auto-router pass #44 on board '646ff9bc434ae36b53cda399f153d4cb' was completed in 15,31 seconds with the score of 962,47 (12 unrouted), using 35917,15 CPU seconds and 254012 MB memory.
+2026-08-13 16:20:29.711 INFO   [73E9B7\368236] Auto-router pass #45 on board 'd8c6a4738e7c5fdc2bcce851f2fb0ecf' was completed in 5,21 seconds with the score of 967,48 (9 unrouted), using 37520,81 CPU seconds and 259536 MB memory.
+2026-08-13 16:20:29.774 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:29.774 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:29.774 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:29.774 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:29.774 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:29.774 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:29.775 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:29.775 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:29.775 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:29.775 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:29.776 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:29.776 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:29.776 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:29.776 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:29.776 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:29.776 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:29.776 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.115 INFO   [73E9B7\368236] Auto-router pass #46 on board '2f6ae35d2c27ef1e0098ddf11fe4917e' was completed in 0,38 seconds with the score of 967,48 (9 unrouted), using 37520,81 CPU seconds and 259536 MB memory.
+2026-08-13 16:20:30.473 INFO   [73E9B7\368236] Auto-router pass #47 on board '2f6ae35d2c27ef1e0098ddf11fe4917e' was completed in 0,35 seconds with the score of 967,48 (9 unrouted), using 37520,81 CPU seconds and 259536 MB memory.
+2026-08-13 16:20:30.506 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.506 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.506 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.506 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.506 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.507 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.507 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.507 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.508 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.508 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.508 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.512 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.512 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.512 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.514 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.514 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.515 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.515 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.515 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.515 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.515 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.515 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.516 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.516 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.516 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.516 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.516 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.516 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.517 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.517 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.517 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.517 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.517 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.517 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.517 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.517 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.519 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.521 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.521 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.522 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.522 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.522 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.522 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.522 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.523 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.523 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.524 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.524 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.524 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.524 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.525 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.526 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.526 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.526 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.527 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.527 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.530 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.532 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.535 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.535 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.541 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.541 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.541 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.550 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.550 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.555 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.555 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.555 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.555 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.565 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.571 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.572 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.572 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.574 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.575 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.577 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.577 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.577 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.578 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.578 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.578 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.578 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.578 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.578 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.581 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.581 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.581 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.581 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.583 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.583 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.584 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.585 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.587 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.587 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.587 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.590 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.591 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.592 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.593 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.609 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.610 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.610 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.610 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.613 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.613 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.615 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.615 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.617 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.619 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.619 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.619 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.621 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.623 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.623 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.626 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.688 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.690 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.690 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.690 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.704 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.705 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.721 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.722 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.722 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.753 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.771 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.772 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.772 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.775 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.775 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.776 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.776 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.776 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.777 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.778 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.784 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:30.968 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.026 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.027 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.077 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.080 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.081 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.081 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.081 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.082 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.082 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.083 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.083 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.083 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.083 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.083 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.116 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.116 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.116 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.116 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.116 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.116 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.119 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.119 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.166 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.166 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.166 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.166 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.166 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.166 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.166 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.204 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.204 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.204 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.204 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.204 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.204 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.204 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.205 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.205 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.214 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.214 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.214 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.214 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.214 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.214 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.215 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.215 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.215 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.215 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.215 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.216 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.216 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.216 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.216 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.217 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.217 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.219 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.220 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.220 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.221 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.221 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.221 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.221 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.232 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.232 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.232 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.256 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.257 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.257 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.257 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.257 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.257 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.257 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.257 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.278 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.278 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.278 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.284 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.284 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.284 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.285 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.356 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.363 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.369 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.370 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.370 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.370 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.371 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.371 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.371 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.371 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.371 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.372 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.384 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.384 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.388 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.388 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.407 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.407 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.407 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.407 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.407 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.407 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.407 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.408 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.432 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.452 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.452 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.471 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.471 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.471 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.471 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.479 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.479 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.479 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.479 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.479 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.480 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.481 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.481 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.482 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.484 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.493 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.493 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.493 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.493 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.514 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.533 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.567 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.690 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.697 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.697 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.704 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.733 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.733 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.733 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.755 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.755 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.755 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.756 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.756 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.756 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.756 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.757 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.759 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.759 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.759 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.759 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.768 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.771 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.846 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.917 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.917 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.917 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.926 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.926 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:31.934 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:32.007 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:44.998 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:20:44.998 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:20:45.023 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:20:45.023 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:20:45.034 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:20:45.035 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:20:45.037 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:20:45.037 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:20:45.067 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:20:45.067 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:20:45.068 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:20:45.068 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:20:45.527 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:20:45.527 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:20:45.741 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:20:45.741 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:20:45.825 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:20:45.825 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:20:45.825 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:20:45.825 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:20:45.896 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:20:45.896 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:20:45.918 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:20:45.918 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:20:52.364 INFO   [73E9B7\368236] Restoring an earlier board that has the score of 967,48 (9 unrouted).
+2026-08-13 16:20:52.365 INFO   [73E9B7\368236] Auto-router pass #48 on board '2f6ae35d2c27ef1e0098ddf11fe4917e' was completed in 21,88 seconds with the score of 963,88 (12 unrouted), using 43699,35 CPU seconds and 279786 MB memory.
+2026-08-13 16:20:58.312 INFO   [73E9B7\368236] Auto-router pass #49 on board '2f6ae35d2c27ef1e0098ddf11fe4917e' was completed in 5,94 seconds with the score of 967,69 (9 unrouted), using 45465,75 CPU seconds and 285320 MB memory.
+2026-08-13 16:20:58.724 INFO   [73E9B7\368236] Auto-router pass #50 on board '31e83ab2664c466f8a7fb39084662887' was completed in 0,39 seconds with the score of 967,69 (9 unrouted), using 45763,54 CPU seconds and 286249 MB memory.
+2026-08-13 16:20:59.108 INFO   [73E9B7\368236] Auto-router pass #51 on board '31e83ab2664c466f8a7fb39084662887' was completed in 0,38 seconds with the score of 967,69 (9 unrouted), using 45763,54 CPU seconds and 286249 MB memory.
+2026-08-13 16:20:59.167 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.167 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.168 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.168 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.186 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.191 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.191 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.214 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.215 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.215 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.219 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.219 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.219 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.220 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.220 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.221 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.221 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.224 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.227 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.247 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.250 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.260 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.260 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.276 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.277 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.277 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.277 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.278 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.278 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.278 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.292 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.300 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.300 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.300 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.300 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.300 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.300 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.300 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.312 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.312 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.322 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.322 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.322 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.322 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.322 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.322 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.325 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.329 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.338 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.370 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.370 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.370 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.371 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.371 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.371 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.402 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.402 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.407 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.407 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.610 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.838 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.838 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.838 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.838 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.950 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.951 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.951 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.967 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:20:59.967 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:00.332 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:08.775 INFO   [73E9B7\368236] Auto-router pass #52 on board '31e83ab2664c466f8a7fb39084662887' was completed in 9,66 seconds with the score of 969,72 (8 unrouted), using 48794,77 CPU seconds and 295444 MB memory.
+2026-08-13 16:21:09.120 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.120 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.120 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.120 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.120 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.120 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.120 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.120 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.120 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.121 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.121 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.121 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.121 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.122 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.123 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.123 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.123 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.123 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.123 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.123 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.123 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.123 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.123 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.123 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.123 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.123 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.123 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.123 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.123 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.123 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.124 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.124 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.124 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.124 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.124 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.124 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.124 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.124 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.125 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.125 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.126 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.126 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.126 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.126 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.126 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.126 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.126 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.128 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.129 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.129 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.129 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.129 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.131 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.131 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.131 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.131 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.131 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.131 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.131 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.131 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.131 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.132 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.132 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.132 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.132 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.132 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.132 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.132 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.132 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.135 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.135 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.135 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.135 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.135 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.136 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.136 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.136 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.136 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.136 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.136 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.136 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.136 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.136 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:09.163 INFO   [73E9B7\368236] Auto-router pass #53 on board 'cf517c2bcf90a398c679c52e62d7232e' was completed in 0,36 seconds with the score of 969,72 (8 unrouted), using 48794,77 CPU seconds and 295444 MB memory.
+2026-08-13 16:21:09.517 INFO   [73E9B7\368236] Auto-router pass #54 on board 'cf517c2bcf90a398c679c52e62d7232e' was completed in 0,34 seconds with the score of 969,72 (8 unrouted), using 48794,77 CPU seconds and 295444 MB memory.
+2026-08-13 16:21:09.865 INFO   [73E9B7\368236] Auto-router pass #55 on board 'cf517c2bcf90a398c679c52e62d7232e' was completed in 0,34 seconds with the score of 969,72 (8 unrouted), using 49103,24 CPU seconds and 296330 MB memory.
+2026-08-13 16:21:10.276 INFO   [73E9B7\368236] Restoring an earlier board that has the score of 969,72 (8 unrouted).
+2026-08-13 16:21:10.277 INFO   [73E9B7\368236] Auto-router pass #56 on board 'cf517c2bcf90a398c679c52e62d7232e' was completed in 0,40 seconds with the score of 969,72 (8 unrouted), using 49103,24 CPU seconds and 296330 MB memory.
+2026-08-13 16:21:16.230 INFO   [73E9B7\368236] Auto-router pass #57 on board 'cf517c2bcf90a398c679c52e62d7232e' was completed in 5,94 seconds with the score of 968,31 (9 unrouted), using 50974,54 CPU seconds and 301864 MB memory.
+2026-08-13 16:21:24.155 INFO   [73E9B7\368236] Auto-router pass #58 on board '4125276590dcd2b81bf7fe0337abd2cd' was completed in 7,90 seconds with the score of 967,93 (9 unrouted), using 53524,25 CPU seconds and 309027 MB memory.
+2026-08-13 16:21:31.586 INFO   [73E9B7\368236] Auto-router pass #59 on board '9bff2236250ddd65ec2345bce93ca68f' was completed in 7,41 seconds with the score of 971,56 (6 unrouted), using 55806,62 CPU seconds and 315369 MB memory.
+2026-08-13 16:21:31.662 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:31.662 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:31.666 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:31.666 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:31.673 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:31.674 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:31.675 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:31.683 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:31.683 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:31.683 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:31.685 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:31.685 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:31.687 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:31.687 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:31.687 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:31.687 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:31.700 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:31.716 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:31.718 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:31.718 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:31.718 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:31.718 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:31.718 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:31.718 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:31.718 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:31.719 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:31.719 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:31.719 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:31.825 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:31.849 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:31.880 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:31.881 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:31.915 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:31.915 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:31.984 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:31.984 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:32.140 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:32.140 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:32.140 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:32.140 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:32.141 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:32.141 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:32.141 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:32.141 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:32.488 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:32.489 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:32.489 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:32.489 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:32.492 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:32.506 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:32.507 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:32.507 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:32.507 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:32.507 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:32.519 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:32.547 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:32.547 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:32.589 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:32.590 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:32.634 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:32.651 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:32.651 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:32.651 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:32.656 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:32.656 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:32.894 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:32.894 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:32.894 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:32.895 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:32.895 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:32.895 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:32.931 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:32.931 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:32.931 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:32.931 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:32.931 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:32.958 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:32.958 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:33.045 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:33.068 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:33.068 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:33.217 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:33.274 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:21:40.223 INFO   [73E9B7\368236] Auto-router pass #60 on board '45b3499e061e6a7c3c3b110ceee760e9' was completed in 8,61 seconds with the score of 972,03 (6 unrouted), using 58811,14 CPU seconds and 324557 MB memory.
+2026-08-13 16:21:40.376 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.376 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.376 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.376 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.397 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.397 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.397 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.402 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.402 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.440 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.441 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.441 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.441 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.544 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:21:40.544 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:21:40.544 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:21:40.544 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:21:40.563 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:21:40.564 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:21:40.564 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:21:40.564 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:21:40.598 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.611 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.611 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.611 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.611 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.612 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.612 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.612 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.612 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.613 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.613 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.614 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:21:40.614 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:21:40.614 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.614 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.618 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:21:40.618 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 16:21:40.627 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.627 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.627 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.627 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.627 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.627 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.629 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.629 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.629 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.629 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.629 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.629 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.629 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.629 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.629 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.629 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.629 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.629 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.629 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.629 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.629 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.629 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.629 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.632 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.632 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.632 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.633 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.633 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.633 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.633 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.633 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.633 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.633 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:40.682 INFO   [73E9B7\368236] Auto-router pass #61 on board 'c03ff90c348aceb141981bf78b72cf21' was completed in 0,43 seconds with the score of 971,98 (6 unrouted), using 59149,86 CPU seconds and 325465 MB memory.
+2026-08-13 16:21:40.954 INFO   [73E9B7\368236] Auto-router pass #62 on board '217b8cab482fe2faed33bd8e4e3c488c' was completed in 0,25 seconds with the score of 971,98 (6 unrouted), using 59149,86 CPU seconds and 325465 MB memory.
+2026-08-13 16:21:41.206 INFO   [73E9B7\368236] Auto-router pass #63 on board '217b8cab482fe2faed33bd8e4e3c488c' was completed in 0,24 seconds with the score of 971,98 (6 unrouted), using 59149,86 CPU seconds and 325465 MB memory.
+2026-08-13 16:21:52.145 INFO   [73E9B7\368236] Auto-router pass #64 on board '217b8cab482fe2faed33bd8e4e3c488c' was completed in 10,93 seconds with the score of 972,37 (6 unrouted), using 62939,79 CPU seconds and 336013 MB memory.
+2026-08-13 16:21:52.268 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:52.268 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:52.268 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:52.331 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:52.331 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:52.331 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:52.331 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:52.331 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:52.331 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:52.331 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:52.331 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:52.331 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:52.331 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:52.331 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:52.331 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-13 16:21:52.332 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: null
+2026-08-13 16:21:52.332 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: null
+2026-08-13 16:21:52.469 INFO   [73E9B7\368236] Auto-router pass #65 on board 'a4dcc36aaed5e65037ed2a6fa0e7f849' was completed in 0,30 seconds with the score of 972,37 (6 unrouted), using 62939,79 CPU seconds and 336013 MB memory.
+2026-08-13 16:21:52.726 INFO   [73E9B7\368236] Auto-router pass #66 on board 'a4dcc36aaed5e65037ed2a6fa0e7f849' was completed in 0,25 seconds with the score of 972,37 (6 unrouted), using 63290,15 CPU seconds and 336929 MB memory.
+2026-08-13 16:21:52.982 INFO   [73E9B7\368236] Auto-router pass #67 on board 'a4dcc36aaed5e65037ed2a6fa0e7f849' was completed in 0,25 seconds with the score of 972,37 (6 unrouted), using 63290,15 CPU seconds and 336929 MB memory.
+2026-08-13 16:22:03.783 INFO   [73E9B7\368236] Restoring an earlier board that has the score of 972,37 (6 unrouted).
+2026-08-13 16:22:03.783 INFO   [73E9B7\368236] Auto-router pass #68 on board 'a4dcc36aaed5e65037ed2a6fa0e7f849' was completed in 10,79 seconds with the score of 970,62 (7 unrouted), using 67208,27 CPU seconds and 347504 MB memory.
+2026-08-13 16:22:08.611 INFO   [73E9B7\368236] Auto-router pass #69 on board 'a4dcc36aaed5e65037ed2a6fa0e7f849' was completed in 4,82 seconds with the score of 972,61 (6 unrouted), using 68662,16 CPU seconds and 351456 MB memory.
+2026-08-13 16:22:13.833 INFO   [73E9B7\368236] Auto-router pass #70 on board '502005e09c988079d09b32e4c49adbb5' was completed in 5,20 seconds with the score of 969,29 (8 unrouted), using 70872,12 CPU seconds and 357078 MB memory.
+2026-08-13 16:22:18.541 INFO   [73E9B7\368236] Auto-router pass #71 on board '94114aae3b7c0e1059602936147abf4a' was completed in 4,68 seconds with the score of 972,55 (6 unrouted), using 72364,92 CPU seconds and 360860 MB memory.
+2026-08-13 16:22:26.764 INFO   [73E9B7\368236] Restoring an earlier board that has the score of 972,61 (6 unrouted).
+2026-08-13 16:22:26.764 INFO   [73E9B7\368236] Auto-router pass #72 on board '53c6cbef9c636ccac1869a6d34f14324' was completed in 8,20 seconds with the score of 969,39 (8 unrouted), using 75780,21 CPU seconds and 369580 MB memory.
+2026-08-13 16:22:31.616 INFO   [73E9B7\368236] Auto-router pass #73 on board '502005e09c988079d09b32e4c49adbb5' was completed in 4,84 seconds with the score of 970,41 (7 unrouted), using 77323,30 CPU seconds and 373204 MB memory.
+2026-08-13 16:22:35.691 INFO   [73E9B7\368236] Auto-router pass #74 on board '15bcb8acdada3b55cfafd3a0f8209651' was completed in 4,05 seconds with the score of 975,70 (3 unrouted), using 78881,98 CPU seconds and 376757 MB memory.
+2026-08-13 16:22:40.021 INFO   [73E9B7\368236] Auto-router pass #75 on board 'bc50a1fb3d931e2c974985ddc11d986b' was completed in 4,30 seconds with the score of 971,84 (6 unrouted), using 80852,28 CPU seconds and 381089 MB memory.
+2026-08-13 16:22:54.857 INFO   [73E9B7\368236] Restoring an earlier board that has the score of 975,70 (3 unrouted).
+2026-08-13 16:22:54.857 INFO   [73E9B7\368236] Auto-router pass #76 on board '6b9bcfbde32c37cfc4229e1184719a24' was completed in 14,81 seconds with the score of 972,05 (6 unrouted), using 86908,90 CPU seconds and 395572 MB memory.
+2026-08-13 16:22:57.448 INFO   [73E9B7\368236] Auto-router pass #77 on board 'bc50a1fb3d931e2c974985ddc11d986b' was completed in 2,58 seconds with the score of 967,68 (9 unrouted), using 87732,87 CPU seconds and 397563 MB memory.
+2026-08-13 16:23:02.771 INFO   [73E9B7\368236] Auto-router pass #78 on board '8f27cda84625afd491247094f6bd5287' was completed in 5,30 seconds with the score of 975,32 (3 unrouted), using 90228,20 CPU seconds and 403180 MB memory.
+2026-08-13 16:23:05.648 INFO   [73E9B7\368236] Auto-router pass #79 on board '962d8f8e6736864ed9c20d56aa1cff07' was completed in 2,85 seconds with the score of 970,32 (7 unrouted), using 91067,76 CPU seconds and 405039 MB memory.
+2026-08-13 16:23:25.608 INFO   [73E9B7\368236] Restoring an earlier board that has the score of 975,70 (3 unrouted).
+2026-08-13 16:23:25.609 INFO   [73E9B7\368236] Auto-router pass #80 on board '57c7000cafa92494fc49efe33f7949e6' was completed in 19,93 seconds with the score of 966,40 (10 unrouted), using 99677,14 CPU seconds and 424479 MB memory.
+2026-08-13 16:23:28.250 INFO   [73E9B7\368236] Auto-router pass #81 on board 'bc50a1fb3d931e2c974985ddc11d986b' was completed in 2,63 seconds with the score of 968,06 (9 unrouted), using 101002,01 CPU seconds and 427460 MB memory.
+2026-08-13 16:23:32.874 INFO   [73E9B7\368236] Auto-router pass #82 on board '7b9988857c4c768a2e6403372a07c3de' was completed in 4,60 seconds with the score of 972,27 (6 unrouted), using 103229,62 CPU seconds and 431910 MB memory.
+2026-08-13 16:23:35.866 INFO   [73E9B7\368236] Auto-router pass #83 on board 'b41e007fa7dc5fe2b5564620f1700bed' was completed in 2,97 seconds with the score of 973,77 (5 unrouted), using 104577,94 CPU seconds and 434676 MB memory.
+2026-08-13 16:23:41.657 INFO   [73E9B7\368236] Restoring an earlier board that has the score of 975,70 (3 unrouted).
+2026-08-13 16:23:41.657 INFO   [73E9B7\368236] Auto-router pass #84 on board 'cd905bb72437b8ba0c3c17e305795724' was completed in 5,76 seconds with the score of 975,31 (4 unrouted), using 106844,55 CPU seconds and 439436 MB memory.
+2026-08-13 16:23:44.519 INFO   [73E9B7\368236] Auto-router pass #85 on board 'bc50a1fb3d931e2c974985ddc11d986b' was completed in 2,85 seconds with the score of 970,69 (7 unrouted), using 108216,21 CPU seconds and 442173 MB memory.
+2026-08-13 16:23:48.148 INFO   [73E9B7\368236] Auto-router pass #86 on board '114ba4222bb061a6d6e49cbf6e277502' was completed in 3,60 seconds with the score of 973,13 (5 unrouted), using 110058,73 CPU seconds and 445606 MB memory.
+2026-08-13 16:23:51.478 INFO   [73E9B7\368236] Auto-router pass #87 on board 'b9b468b466e66302bb79c57f3d166d4c' was completed in 3,30 seconds with the score of 969,88 (7 unrouted), using 111450,87 CPU seconds and 448234 MB memory.
+2026-08-13 16:24:01.097 INFO   [73E9B7\368236] Restoring an earlier board that has the score of 975,70 (3 unrouted).
+2026-08-13 16:24:01.097 INFO   [73E9B7\368236] Auto-router pass #88 on board 'dd499064db13c88a7b4b2fb5e4621fe9' was completed in 9,60 seconds with the score of 973,06 (5 unrouted), using 116154,55 CPU seconds and 457370 MB memory.
+2026-08-13 16:24:04.150 INFO   [73E9B7\368236] Auto-router pass #89 on board 'bc50a1fb3d931e2c974985ddc11d986b' was completed in 3,04 seconds with the score of 975,47 (3 unrouted), using 117584,69 CPU seconds and 460007 MB memory.
+2026-08-13 16:24:06.239 INFO   [73E9B7\368236] Auto-router pass #90 on board '8aebbbd23080cc549e111fe5b46bed1c' was completed in 2,06 seconds with the score of 976,37 (3 unrouted), using 118542,98 CPU seconds and 461753 MB memory.
+2026-08-13 16:24:09.483 INFO   [73E9B7\368236] Auto-router pass #91 on board 'f7c06803ba01c2758c293c55a8873488' was completed in 3,22 seconds with the score of 976,18 (3 unrouted), using 119987,75 CPU seconds and 464494 MB memory.
+2026-08-13 16:24:12.995 INFO   [73E9B7\368236] Restoring an earlier board that has the score of 976,37 (3 unrouted).
+2026-08-13 16:24:12.995 INFO   [73E9B7\368236] Auto-router pass #92 on board '95f19c9b8c2fc91276aab5e74d986220' was completed in 3,49 seconds with the score of 973,85 (5 unrouted), using 121927,79 CPU seconds and 468417 MB memory.
+2026-08-13 16:24:15.069 INFO   [73E9B7\368236] Auto-router pass #93 on board 'f7c06803ba01c2758c293c55a8873488' was completed in 2,06 seconds with the score of 976,06 (3 unrouted), using 122903,67 CPU seconds and 470183 MB memory.
+2026-08-13 16:24:16.379 INFO   [73E9B7\368236] Auto-router pass #94 on board '139cb80ab006f577b9e78c01c394496c' was completed in 1,28 seconds with the score of 974,71 (4 unrouted), using 123393,07 CPU seconds and 471053 MB memory.
+2026-08-13 16:24:18.163 INFO   [73E9B7\368236] Auto-router pass #95 on board 'c02999d91846a192375d6b5dbe5a8740' was completed in 1,76 seconds with the score of 975,37 (3 unrouted), using 124374,80 CPU seconds and 472764 MB memory.
+2026-08-13 16:24:24.886 INFO   [73E9B7\368236] Auto-router pass #96 on board 'b552149423f0b0e919587de3ff6cf3d4' was completed in 6,70 seconds with the score of 976,80 (2 unrouted), using 127841,44 CPU seconds and 478523 MB memory.
+2026-08-13 16:24:28.760 INFO   [73E9B7\368236] Auto-router pass #97 on board 'd24b76a5755d146e75ca987d05a529bd' was completed in 3,84 seconds with the score of 976,86 (2 unrouted), using 129843,70 CPU seconds and 481630 MB memory.
+2026-08-13 16:24:30.612 INFO   [73E9B7\368236] Auto-router pass #98 on board '57646ad78d0c85b19b913e900f40246b' was completed in 1,82 seconds with the score of 978,10 (1 unrouted), using 130346,69 CPU seconds and 482386 MB memory.
+2026-08-13 16:24:31.381 INFO   [73E9B7\368236] Auto-router pass #99 on board 'deacb16df375b9f7a02cc8072365c202' was completed in 0,74 seconds with the score of 976,90 (2 unrouted), using 130850,66 CPU seconds and 483149 MB memory.
+2026-08-13 16:24:38.152 INFO   [73E9B7\368236] Restoring an earlier board that has the score of 978,10 (1 unrouted).
+2026-08-13 16:24:38.153 INFO   [73E9B7\368236] Auto-router pass #100 on board '01146027d7d797b623e6802dc13e9284' was completed in 6,74 seconds with the score of 977,09 (2 unrouted), using 134405,70 CPU seconds and 489586 MB memory.
+2026-08-13 16:24:39.346 INFO   [73E9B7\368236] Auto-router pass #101 on board 'deacb16df375b9f7a02cc8072365c202' was completed in 1,18 seconds with the score of 976,92 (2 unrouted), using 134917,44 CPU seconds and 490421 MB memory.
+2026-08-13 16:24:41.404 INFO   [73E9B7\368236] Auto-router pass #102 on board 'dcd58899b650d9ed182249b14cc77b54' was completed in 2,03 seconds with the score of 978,22 (1 unrouted), using 135943,81 CPU seconds and 492116 MB memory.
+2026-08-13 16:24:41.610 INFO   [73E9B7\368236] Auto-router pass #103 on board 'bee03722d233d182c0718d81bc15a609' was completed in 0,18 seconds with the score of 978,41 (1 unrouted), using 135943,81 CPU seconds and 492116 MB memory.
+2026-08-13 16:24:45.309 INFO   [73E9B7\368236] Restoring an earlier board that has the score of 978,41 (1 unrouted).
+2026-08-13 16:24:45.310 INFO   [73E9B7\368236] Auto-router pass #104 on board '9f7669066fae6d2593afef3a61cb0091' was completed in 3,67 seconds with the score of 977,02 (2 unrouted), using 138008,19 CPU seconds and 495800 MB memory.
+2026-08-13 16:24:46.314 INFO   [73E9B7\368236] Auto-router pass #105 on board '9f7669066fae6d2593afef3a61cb0091' was completed in 0,99 seconds with the score of 975,71 (3 unrouted), using 138526,70 CPU seconds and 496672 MB memory.
+2026-08-13 16:24:51.170 INFO   [73E9B7\368236] Auto-router pass #106 on board 'aa551a50b99758bf5aec363629fd6274' was completed in 4,83 seconds with the score of 975,97 (3 unrouted), using 141133,80 CPU seconds and 501165 MB memory.
+2026-08-13 16:24:54.277 INFO   [73E9B7\368236] Auto-router pass #107 on board '988c8ee59f29706b63dbed2ce19f7ed9' was completed in 3,08 seconds with the score of 977,42 (2 unrouted), using 142709,78 CPU seconds and 503813 MB memory.
+2026-08-13 16:24:58.736 INFO   [73E9B7\368236] Restoring an earlier board that has the score of 978,41 (1 unrouted).
+2026-08-13 16:24:58.736 INFO   [73E9B7\368236] Auto-router pass #108 on board '32385e43757b944cf91e2ddb4dfd2ff2' was completed in 4,43 seconds with the score of 978,17 (1 unrouted), using 145355,91 CPU seconds and 508133 MB memory.
+2026-08-13 16:24:59.701 INFO   [73E9B7\368236] Auto-router pass #109 on board '9f7669066fae6d2593afef3a61cb0091' was completed in 0,95 seconds with the score of 975,71 (3 unrouted), using 145355,91 CPU seconds and 508133 MB memory.
+2026-08-13 16:25:04.078 INFO   [73E9B7\368236] Auto-router pass #110 on board 'ba7ac5abc2fb0a8f7eda1be57de42f3d' was completed in 4,35 seconds with the score of 976,90 (2 unrouted), using 148026,34 CPU seconds and 512423 MB memory.
+2026-08-13 16:25:06.186 INFO   [73E9B7\368236] Auto-router pass #111 on board '4cfb3d855602666b25db5c92d50be559' was completed in 2,08 seconds with the score of 973,38 (5 unrouted), using 149101,38 CPU seconds and 514193 MB memory.
+2026-08-13 16:25:19.167 INFO   [73E9B7\368236] Restoring an earlier board that has the score of 978,41 (1 unrouted).
+2026-08-13 16:25:19.167 INFO   [73E9B7\368236] Auto-router pass #112 on board 'cfad76400a649dfa01bb185bbe8c6e5f' was completed in 12,96 seconds with the score of 974,09 (5 unrouted), using 156184,00 CPU seconds and 526185 MB memory.
+2026-08-13 16:25:20.265 INFO   [73E9B7\368236] Auto-router pass #113 on board '9f7669066fae6d2593afef3a61cb0091' was completed in 1,08 seconds with the score of 975,71 (3 unrouted), using 156735,62 CPU seconds and 526963 MB memory.
+2026-08-13 16:25:22.940 INFO   [73E9B7\368236] Auto-router pass #114 on board '05ce078a18bf038e1d64002ffed8ae07' was completed in 2,64 seconds with the score of 975,96 (3 unrouted), using 158396,38 CPU seconds and 529515 MB memory.
+2026-08-13 16:25:26.167 INFO   [73E9B7\368236] Auto-router pass #115 on board '61bdf7a2d60988cf3d043e3a66842338' was completed in 3,20 seconds with the score of 969,88 (8 unrouted), using 160065,89 CPU seconds and 532337 MB memory.
+2026-08-13 16:25:41.787 INFO   [73E9B7\368236] Restoring an earlier board that has the score of 978,41 (1 unrouted).
+2026-08-13 16:25:41.787 INFO   [73E9B7\368236] Auto-router pass #116 on board 'e39adde9f960a93595db4e0f11b78d0a' was completed in 15,59 seconds with the score of 971,58 (7 unrouted), using 169117,75 CPU seconds and 547166 MB memory.
+2026-08-13 16:25:42.865 INFO   [73E9B7\368236] Auto-router pass #117 on board '9f7669066fae6d2593afef3a61cb0091' was completed in 1,06 seconds with the score of 978,18 (1 unrouted), using 169691,75 CPU seconds and 547896 MB memory.
+2026-08-13 16:25:45.281 INFO   [73E9B7\368236] Auto-router pass #118 on board 'b76abd9292bc5a50fa0e4d649ba0a60e' was completed in 2,38 seconds with the score of 974,70 (4 unrouted), using 170842,66 CPU seconds and 549339 MB memory.
+2026-08-13 16:25:47.639 INFO   [73E9B7\368236] Auto-router pass #119 on board 'df955e8c86ee5ed2c6a1ff9c0282d628' was completed in 2,33 seconds with the score of 977,17 (2 unrouted), using 171997,45 CPU seconds and 551107 MB memory.
+2026-08-13 16:25:48.802 INFO   [73E9B7\368236] Restoring an earlier board that has the score of 978,22 (1 unrouted).
+2026-08-13 16:25:48.802 INFO   [73E9B7\368236] Auto-router pass #120 on board 'c0757970f17476645dad4b7725f07ca4' was completed in 1,14 seconds with the score of 978,22 (1 unrouted), using 173156,19 CPU seconds and 553050 MB memory.
+2026-08-13 16:25:49.023 INFO   [73E9B7\368236] Auto-router pass #121 on board 'bee03722d233d182c0718d81bc15a609' was completed in 0,21 seconds with the score of 978,32 (1 unrouted), using 173156,19 CPU seconds and 553050 MB memory.
+2026-08-13 16:25:49.826 INFO   [73E9B7\368236] Auto-router pass #122 on board 'dc7b511486a1cd8b8abc102ac92e6d1a' was completed in 0,78 seconds with the score of 978,19 (1 unrouted), using 173737,02 CPU seconds and 554016 MB memory.
+2026-08-13 16:25:51.325 INFO   [73E9B7\368236] Auto-router pass #123 on board '31f5c968071300b7e6522b7e3f533080' was completed in 1,48 seconds with the score of 978,14 (1 unrouted), using 174318,81 CPU seconds and 554973 MB memory.
+2026-08-13 16:25:55.404 INFO   [73E9B7\368236] Restoring an earlier board that has the score of 978,32 (1 unrouted).
+2026-08-13 16:25:55.404 INFO   [73E9B7\368236] Auto-router pass #124 on board 'a233c960bfa8e69f4f67b806ff1fc7e6' was completed in 4,05 seconds with the score of 978,23 (1 unrouted), using 176655,72 CPU seconds and 558311 MB memory.
+2026-08-13 16:25:56.395 INFO   [73E9B7\368236] Auto-router pass #125 on board 'dc7b511486a1cd8b8abc102ac92e6d1a' was completed in 0,98 seconds with the score of 976,90 (2 unrouted), using 177242,34 CPU seconds and 559261 MB memory.
+2026-08-13 16:25:58.512 INFO   [73E9B7\368236] Auto-router pass #126 on board '7b9885bb4584b6b2478b0b451c59e1f6' was completed in 2,09 seconds with the score of 974,16 (4 unrouted), using 178418,45 CPU seconds and 560982 MB memory.
+2026-08-13 16:26:00.992 INFO   [73E9B7\368236] Auto-router pass #127 on board 'b2bf9a63f98d3522c3edd60c3c286dc1' was completed in 2,45 seconds with the score of 976,37 (2 unrouted), using 180189,86 CPU seconds and 563564 MB memory.
+2026-08-13 16:26:03.941 INFO   [73E9B7\368236] Restoring an earlier board that has the score of 978,32 (1 unrouted).
+2026-08-13 16:26:03.941 INFO   [73E9B7\368236] Auto-router pass #128 on board 'c27d8f6db376f3a81945516844a8cd23' was completed in 2,92 seconds with the score of 976,75 (2 unrouted), using 181970,02 CPU seconds and 566344 MB memory.
+2026-08-13 16:26:04.892 INFO   [73E9B7\368236] Auto-router pass #129 on board 'dc7b511486a1cd8b8abc102ac92e6d1a' was completed in 0,94 seconds with the score of 976,90 (2 unrouted), using 182565,34 CPU seconds and 567242 MB memory.
+2026-08-13 16:26:06.447 INFO   [73E9B7\368236] Auto-router pass #130 on board '7b9885bb4584b6b2478b0b451c59e1f6' was completed in 1,54 seconds with the score of 978,18 (1 unrouted), using 183161,62 CPU seconds and 568086 MB memory.
+2026-08-13 16:26:07.863 INFO   [73E9B7\368236] Auto-router pass #131 on board '79309773f561afb33d76e57e7c589125' was completed in 1,39 seconds with the score of 973,69 (5 unrouted), using 184357,12 CPU seconds and 569921 MB memory.
+2026-08-13 16:26:16.866 INFO   [73E9B7\368236] Restoring an earlier board that has the score of 978,32 (1 unrouted).
+2026-08-13 16:26:16.866 INFO   [73E9B7\368236] Auto-router pass #132 on board 'f1c0947d348047f05cb7a5ad3e236c0c' was completed in 8,98 seconds with the score of 974,80 (4 unrouted), using 189785,06 CPU seconds and 578321 MB memory.
+2026-08-13 16:26:17.838 INFO   [73E9B7\368236] Auto-router pass #133 on board 'dc7b511486a1cd8b8abc102ac92e6d1a' was completed in 0,96 seconds with the score of 976,90 (2 unrouted), using 190393,00 CPU seconds and 579211 MB memory.
+2026-08-13 16:26:19.246 INFO   [73E9B7\368236] Auto-router pass #134 on board 'f512722a664788db35a9b8472dcfb593' was completed in 1,38 seconds with the score of 974,30 (4 unrouted), using 191001,91 CPU seconds and 580122 MB memory.
+2026-08-13 16:26:23.129 INFO   [73E9B7\368236] Auto-router pass #135 on board 'ee8d63be176825f29acbb43821dc81d3' was completed in 3,86 seconds with the score of 976,76 (2 unrouted), using 193447,27 CPU seconds and 583507 MB memory.
+2026-08-13 16:26:24.945 INFO   [73E9B7\368236] Restoring an earlier board that has the score of 978,32 (1 unrouted).
+2026-08-13 16:26:24.945 INFO   [73E9B7\368236] Auto-router pass #136 on board '96dc88dfae9985fff007e05c703004f7' was completed in 1,79 seconds with the score of 977,53 (1 unrouted), using 194675,80 CPU seconds and 585315 MB memory.
+2026-08-13 16:26:25.794 INFO   [73E9B7\368236] Auto-router pass #137 on board 'dc7b511486a1cd8b8abc102ac92e6d1a' was completed in 0,84 seconds with the score of 978,20 (1 unrouted), using 195291,50 CPU seconds and 586194 MB memory.
+2026-08-13 16:26:26.687 INFO   [73E9B7\368236] Auto-router pass #138 on board '6429b57316621496187550da1b70504f' was completed in 0,87 seconds with the score of 978,12 (1 unrouted), using 195291,50 CPU seconds and 586194 MB memory.
+2026-08-13 16:26:27.844 INFO   [73E9B7\368236] Auto-router pass #139 on board '07a5820c0b814a9fa5b80c5d430de497' was completed in 1,13 seconds with the score of 977,17 (2 unrouted), using 196525,84 CPU seconds and 587903 MB memory.
+2026-08-13 16:26:31.709 INFO   [73E9B7\368236] Restoring an earlier board that has the score of 978,22 (1 unrouted).
+2026-08-13 16:26:31.709 INFO   [73E9B7\368236] Auto-router pass #140 on board '8150ba1eb3d71be1d66a51a12f374fed' was completed in 3,84 seconds with the score of 977,17 (2 unrouted), using 198384,61 CPU seconds and 590591 MB memory.
+2026-08-13 16:26:31.944 INFO   [73E9B7\368236] Auto-router pass #141 on board 'bee03722d233d182c0718d81bc15a609' was completed in 0,23 seconds with the score of 978,32 (1 unrouted), using 199006,12 CPU seconds and 591473 MB memory.
+2026-08-13 16:26:33.649 INFO   [73E9B7\368236] Auto-router pass #142 on board 'dc7b511486a1cd8b8abc102ac92e6d1a' was completed in 1,69 seconds with the score of 978,28 (1 unrouted), using 199628,61 CPU seconds and 592342 MB memory.
+2026-08-13 16:26:35.535 INFO   [73E9B7\368236] Auto-router pass #143 on board '8497ac1fb53462a1a42798f5da8ca97e' was completed in 1,86 seconds with the score of 977,21 (2 unrouted), using 200876,47 CPU seconds and 593923 MB memory.
+2026-08-13 16:26:40.067 INFO   [73E9B7\368236] Restoring an earlier board that has the score of 978,28 (1 unrouted).
+2026-08-13 16:26:40.067 INFO   [73E9B7\368236] Auto-router pass #144 on board '871db5b384178a4e1bcfa5f16d68e784' was completed in 4,50 seconds with the score of 978,26 (1 unrouted), using 204013,14 CPU seconds and 598494 MB memory.
+2026-08-13 16:26:40.891 INFO   [73E9B7\368236] Auto-router pass #145 on board '8497ac1fb53462a1a42798f5da8ca97e' was completed in 0,81 seconds with the score of 978,35 (1 unrouted), using 204643,38 CPU seconds and 599360 MB memory.
+2026-08-13 16:26:41.662 INFO   [73E9B7\368236] Auto-router pass #146 on board '768ccf93c4958a786aff0165893a7044' was completed in 0,74 seconds with the score of 978,41 (1 unrouted), using 204643,38 CPU seconds and 599360 MB memory.
+2026-08-13 16:26:42.458 INFO   [73E9B7\368236] Auto-router pass #147 on board '9f3e13eb6cb46cfacb1b169b4e81fbff' was completed in 0,76 seconds with the score of 978,27 (1 unrouted), using 205274,58 CPU seconds and 600233 MB memory.
+2026-08-13 16:26:45.486 INFO   [73E9B7\368236] Restoring an earlier board that has the score of 978,41 (1 unrouted).
+2026-08-13 16:26:45.486 INFO   [73E9B7\368236] Auto-router pass #148 on board 'c0dcfd08521fc9a7376e072936ba5a90' was completed in 3,00 seconds with the score of 977,02 (2 unrouted), using 207173,95 CPU seconds and 602881 MB memory.
+2026-08-13 16:26:46.718 INFO   [73E9B7\368236] Auto-router pass #149 on board '9f3e13eb6cb46cfacb1b169b4e81fbff' was completed in 1,22 seconds with the score of 976,99 (2 unrouted), using 207809,00 CPU seconds and 603786 MB memory.
+2026-08-13 16:26:47.843 INFO   [73E9B7\368236] Auto-router pass #150 on board '00a47c1bf877c3b06aa193d120d25236' was completed in 1,10 seconds with the score of 977,25 (2 unrouted), using 209082,00 CPU seconds and 605567 MB memory.
+2026-08-13 16:26:49.471 INFO   [73E9B7\368236] Auto-router pass #151 on board '9d25fe843fe2c0f6c7a9128b30b81f7b' was completed in 1,60 seconds with the score of 976,02 (3 unrouted), using 209719,95 CPU seconds and 606399 MB memory.
+2026-08-13 16:26:51.872 INFO   [73E9B7\368236] Auto-router pass #152 on board '03135592f089c229bb08218ff1f20282' was completed in 2,37 seconds with the score of 978,65 (1 unrouted), using 211639,67 CPU seconds and 609129 MB memory.
+2026-08-13 16:26:52.534 INFO   [73E9B7\368236] Auto-router pass #153 on board 'dd3cd6b915d8c5efbe124292be8bf877' was completed in 0,63 seconds with the score of 978,71 (1 unrouted), using 211639,67 CPU seconds and 609129 MB memory.
+2026-08-13 16:26:53.454 INFO   [73E9B7\368236] Auto-router pass #154 on board 'cf48ca4ebd28dc006891c72daf4f42c6' was completed in 0,89 seconds with the score of 977,62 (2 unrouted), using 212281,53 CPU seconds and 609957 MB memory.
+2026-08-13 16:26:55.679 INFO   [73E9B7\368236] Auto-router pass #155 on board 'dcf3c24103c0d6e1015c1dc427ae91e2' was completed in 2,20 seconds with the score of 978,42 (1 unrouted), using 213568,16 CPU seconds and 611622 MB memory.
+2026-08-13 16:26:57.390 INFO   [73E9B7\368236] Restoring an earlier board that has the score of 978,71 (1 unrouted).
+2026-08-13 16:26:57.390 INFO   [73E9B7\368236] Auto-router pass #156 on board '4b30936dd370b800ea6d67e963c8827f' was completed in 1,68 seconds with the score of 978,44 (1 unrouted), using 214858,69 CPU seconds and 613364 MB memory.
+2026-08-13 16:26:57.910 INFO   [73E9B7\368236] Auto-router pass #157 on board 'cf48ca4ebd28dc006891c72daf4f42c6' was completed in 0,51 seconds with the score of 979,68, using 215505,39 CPU seconds and 614229 MB memory.
+2026-08-13 16:26:57.951 INFO   [73E9B7\368236] Auto-router pass #158 on board 'b261b61ad8f09b9d57b033642a4528e2' was completed in 0,01 seconds with the score of 979,68, using 215505,39 CPU seconds and 614229 MB memory.
+{
+  "host": "KiCad's Pcbnew,9.0.3+dfsg-1",
+  "unit": "mm",
+  "board": {
+    "bounding_box": {
+      "x": 1064.0,
+      "y": 1.0,
+      "width": -1.0,
+      "height": -501.0
+    },
+    "size": {
+      "x": 0.0,
+      "y": 0.0,
+      "width": 1065.0,
+      "height": 502.0
+    }
+  },
+  "layers": {
+    "total_count": 2,
+    "signal_count": 2
+  },
+  "items": {
+    "total_count": 1301,
+    "trace_count": 448,
+    "via_count": 288,
+    "conduction_area_count": 2,
+    "drill_item_count": 232,
+    "pin_count": 0,
+    "component_count": 330,
+    "other_count": 1
+  },
+  "components": {
+    "total_count": 25
+  },
+  "pads": {
+    "total_count": 232
+  },
+  "nets": {
+    "total_count": 69,
+    "class_count": 3
+  },
+  "connections": {
+    "maximum_count": 886,
+    "incomplete_count": 0
+  },
+  "traces": {
+    "total_count": 448,
+    "total_segment_count": 1554,
+    "total_length": 46551.348,
+    "total_weighted_length": 1.5447805E8,
+    "average_length": 103.909256,
+    "total_vertical_length": 7588.247,
+    "total_horizontal_length": 17082.695,
+    "total_angled_length": 14031.32
+  },
+  "bends": {
+    "total_count": 1106,
+    "90_degree_count": 6,
+    "45_degree_count": 1100,
+    "other_angle_count": 0
+  },
+  "vias": {
+    "total_count": 288,
+    "through_hole_count": 288,
+    "blind_count": 0,
+    "buried_count": 0
+  },
+  "clearance_violations": {
+    "total_count": 0
+  }
+}
+16:26:58: Debug: Adding duplicate image handler for 'PNG file'
+16:26:58: Debug: Adding duplicate image handler for 'JPEG file'
+16:26:58: Debug: Adding duplicate image handler for 'TIFF file'
+16:26:58: Debug: Adding duplicate image handler for 'GIF file'
+16:26:58: Debug: Adding duplicate image handler for 'PNM file'
+16:26:58: Debug: Adding duplicate image handler for 'PCX file'
+16:26:58: Debug: Adding duplicate image handler for 'IFF file'
+16:26:58: Debug: Adding duplicate image handler for 'Windows icon file'
+16:26:58: Debug: Adding duplicate image handler for 'Windows cursor file'
+16:26:58: Debug: Adding duplicate image handler for 'Windows animated cursor file'
+16:26:58: Debug: Adding duplicate image handler for 'TGA file'
+16:26:58: Debug: Adding duplicate image handler for 'XPM file'
+16:26:59: Debug: Adding duplicate image handler for 'PNG file'
+16:26:59: Debug: Adding duplicate image handler for 'JPEG file'
+16:26:59: Debug: Adding duplicate image handler for 'TIFF file'
+16:26:59: Debug: Adding duplicate image handler for 'GIF file'
+16:26:59: Debug: Adding duplicate image handler for 'PNM file'
+16:26:59: Debug: Adding duplicate image handler for 'PCX file'
+16:26:59: Debug: Adding duplicate image handler for 'IFF file'
+16:26:59: Debug: Adding duplicate image handler for 'Windows icon file'
+16:26:59: Debug: Adding duplicate image handler for 'Windows cursor file'
+16:26:59: Debug: Adding duplicate image handler for 'Windows animated cursor file'
+16:26:59: Debug: Adding duplicate image handler for 'TGA file'
+16:26:59: Debug: Adding duplicate image handler for 'XPM file'
+freerouting : java -Djava.awt.headless=true -jar ../phaseA/freerouting.jar -de loci_lvc_fr.dsn -do loci_lvc.ses -mp 5
+liaisons non routées restantes : 43

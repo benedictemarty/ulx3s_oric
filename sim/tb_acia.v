@@ -82,15 +82,36 @@ module tb_acia;
         bus_read(2'd0); check(rd == 8'h55, "RX : data = 0x55");
         bus_read(2'd1); check(rd[3] == 1'b0, "RX : RDRF efface apres lecture");
 
-        // Overrun : deux octets sans lecture -> OVRN
+        // FIFO : deux octets sans lecture -> PAS d'overrun, ordre conservé
         rx_push(8'h11); rx_push(8'h22);
-        bus_read(2'd1); check(rd[2] == 1'b1, "OVRN=1 sur debordement");
-        bus_read(2'd0); check(rd == 8'h11, "data = premier octet (0x11)");
-        bus_read(2'd1); check(rd[2] == 1'b0, "OVRN efface apres lecture data");
+        bus_read(2'd1); check(rd[2] == 1'b0, "FIFO : pas d'OVRN a 2 octets");
+        bus_read(2'd0); check(rd == 8'h11, "FIFO : 1er octet (0x11)");
+        repeat (4) @(negedge clk);
+        bus_read(2'd0); check(rd == 8'h22, "FIFO : 2e octet (0x22)");
+
+        // Rafale « réponse modem » : 64 octets dos a dos (115200 vs BASIC
+        // lent) puis lecture tranquille — aucun perdu, ordre conservé
+        begin : burst
+            integer k;
+            reg ok;
+            ok = 1;
+            for (k = 0; k < 64; k = k + 1) rx_push(8'h20 + k[7:0]);
+            for (k = 0; k < 64; k = k + 1) begin
+                bus_read(2'd1);
+                if (rd[3] !== 1'b1) ok = 0;
+                bus_read(2'd0);
+                if (rd !== (8'h20 + k[7:0])) ok = 0;
+                repeat (8) @(negedge clk);   // lecteur lent
+            end
+            check(ok, "rafale 64 octets : ordre et completude");
+            bus_read(2'd1);
+            check(rd[3] == 1'b0, "rafale : FIFO vide a la fin");
+        end
 
         // IRQ RX : command IRD=0 (RX IRQ actif)
         bus_write(2'd2, 8'h00);
         rx_push(8'h7E);
+        repeat (3) @(negedge clk);   // latence show-ahead FIFO -> RDR
         check(irq == 1'b1, "IRQ actif sur RDRF");
         bus_read(2'd1);
         check(rd[7] == 1'b1, "STATUS bit7 (IRQ) lu a 1");
