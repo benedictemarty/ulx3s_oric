@@ -16,12 +16,15 @@ module oric_ram (
 
     reg [7:0] mem [0:65535];
 
-    // La BRAM ECP5 démarre à zéro ; on reproduit cet état en simulation
-    // (sinon les X de la RAM indéfinie corrompent l'état du 6502 simulé).
+    // Motif d'init Oricutron (rampattern=0) : par page de 256 octets,
+    // 128 x $00 puis 128 x $FF. Indispensable au boot Sedoric : le code
+    // $B932 fait un checksum de $C980-$FFFF ; une RAM toute à zéro est
+    // prise pour un boot à chaud -> mini-loader 4 secteurs -> gel sur
+    // vecteur $D0A5 vide. (Même init en simulation et en synthèse.)
     integer i;
     initial
         for (i = 0; i < 65536; i = i + 1)
-            mem[i] = 8'h00;
+            mem[i] = i[7] ? 8'hFF : 8'h00;
 
     // Lecture/écriture exclusives (mode NO_CHANGE) : évite la duplication
     // du bloc en BSRAM Gowin (le mapper refuse le read-during-write).

@@ -15,7 +15,7 @@ PART_LBA = 64
 RESERVED = 32
 NFAT = 2
 FATSZ = 8
-TRACKS = 62                       # le boot va jusqu'à la piste 60
+TRACKS = 80                       # image complète : 2 faces x 80 pistes
 
 fat_lba = PART_LBA + RESERVED
 root_lba = fat_lba + NFAT * FATSZ
@@ -25,10 +25,9 @@ def clus_lba(c): return first_data + (c - 2) * SPC
 
 src = os.path.expanduser('~/Oric1/disks/sedoric3.dsk')
 d = open(src, 'rb').read()
-dsk = bytearray(d[:256])
-dsk[8:12] = (1).to_bytes(4, 'little')       # 1 face (le boot n'utilise que la 0)
-dsk[12:16] = (TRACKS).to_bytes(4, 'little')
-dsk += d[256:256 + TRACKS*6400]
+# Image complète, en-tête intact : le boot Sedoric lit aussi la face 1
+# (piste affichée $80|n dans les messages d'erreur).
+dsk = bytearray(d)
 
 CLUS0 = 3
 nclus = (len(dsk) + SPC*SEC - 1) // (SPC*SEC)

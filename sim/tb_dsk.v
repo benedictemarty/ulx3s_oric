@@ -267,6 +267,26 @@ module tb_dsk;
             $display("citreal piste %0d OK", t);
         end
 
+        // ------------------------------------------------------------------
+        // Scénario 3 : course seek/rechargement (bug boot Sedoric). Un seek
+        // qui arrive PENDANT un rechargement de piste ne doit pas étiqueter
+        // le buffer avec la nouvelle cible : on enchaîne deux seeks sans
+        // attendre, la piste servie doit être celle du second.
+        // ------------------------------------------------------------------
+        tb_fidx = 6'd5;                          // TESTMFM.DSK (3 pistes)
+        @(negedge clk); insert = 1; @(negedge clk); insert = 0;
+        wait (inserted === 1'b1);
+        wait (trk_loading === 1'b1);
+        wait (trk_loading === 1'b0);             // piste 0 chargée
+        bus_op(1, 16'h0313, 8'd1);               // seek piste 1 ...
+        bus_op(1, 16'h0310, 8'h18);
+        bus_op(1, 16'h0313, 8'd2);               // ... aussitôt seek piste 2
+        bus_op(1, 16'h0310, 8'h18);              // (rechargement 1 en cours)
+        wait_intrq; bus_read(16'h0310);
+        check(req_track == 7'd2, "course: piste 2");
+        read_sector(8'd2, 8'd9);                 // contenu de la piste 2 attendu
+        $display("course seek/rechargement OK");
+
         if (errors == 0) $display("ALL TESTS PASSED (tb_dsk)");
         else             $display("%0d ERREUR(S)", errors);
         $finish;

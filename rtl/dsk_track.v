@@ -72,6 +72,10 @@ module dsk_track (
     // Piste chargée (255 = aucune)
     reg [7:0]  loaded;               // {side, track}
     wire [7:0] wanted = {req_side, req_track};
+    // Cible capturée au DÉBUT du chargement : si la demande change en cours
+    // de route (seek pendant un rechargement), loaded <= load_tgt garde le
+    // mismatch avec wanted et la bonne piste est rechargée aussitôt.
+    reg [7:0]  load_tgt;
 
     // Buffer de piste (6400 octets, BRAM) + table des secteurs
     reg [7:0]  tbuf [0:TRK_BYTES-1];
@@ -153,6 +157,7 @@ module dsk_track (
                                + (req_side ? {25'd0, geo_tracks} : 32'd0))
                               * TRK_BYTES;
                         open_start <= 1'b1;
+                        load_tgt <= wanted;
                         wpos <= 13'd0; sec_ok <= 18'd0;
                         state <= D_TOPEN;
                     end
@@ -189,7 +194,7 @@ module dsk_track (
                     end
                     if (feof) begin                  // fichier court : piste vide
                         fdata_ready <= 1'b0;
-                        loaded <= wanted;            // évite de boucler
+                        loaded <= load_tgt;          // évite de boucler
                         state <= D_DONE;
                     end
                 end
@@ -197,7 +202,7 @@ module dsk_track (
                 // ---- Scan : marques A1 A1 A1 FE (réf. mfm_extract_track) ----
                 D_SCAN: begin
                     if (rd_addr >= TRK_BYTES - 1) begin
-                        loaded <= wanted;
+                        loaded <= load_tgt;
                         state <= D_DONE;
                     end else begin
                         shreg <= {shreg[23:0], tbuf_q};

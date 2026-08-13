@@ -5,6 +5,31 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 
 ## [Non publié]
 
+### Corrigé
+- **Boot Sedoric : gel après la bannière (US-DISK.4) — deux causes racines**
+  (bmarty, 2026-08-13, validé en sim `tb_sedboot` : la séquence FDC suit la
+  référence sans divergence, plus de tempête d'IRQ ni de READ FAULT) :
+  1. `rtl/oric_ram.v` : la BRAM démarrait toute à zéro ; or le boot Sedoric
+     (`$B932`) checksomme la RAM haute `$C980-$FFFF` — tout-zéro est pris
+     pour un boot à chaud → **mini-loader 4 secteurs** au lieu des 60 de
+     SYSTEM.DOS → vecteur IRQ posé sur `$D0A5` vide → tempête BRK. La RAM
+     est maintenant initialisée au motif Oricutron (rampattern=0) : par page
+     de 256 octets, 128×`$00` puis 128×`$FF` (même init sim et synthèse).
+  2. `rtl/dsk_track.v` : course seek/rechargement — un seek arrivant PENDANT
+     un rechargement de piste (cas réel : le noyau écrit ctl side=1 puis
+     seek 4 cycles plus tard) étiquetait le buffer avec la NOUVELLE cible
+     (`loaded <= wanted` échantillonné en fin de scan) → piste 20 face 1
+     servie comme « piste 13 face 1 », secteurs pleins d'espaces `$20` →
+     « TRACK:20 SECTOR:20 READ FAULT ». La cible est maintenant capturée au
+     début du chargement (`load_tgt`) : si la demande change en cours de
+     route, le mismatch persiste et la bonne piste est rechargée aussitôt.
+  Bancs : `sim/tb_side1.v` (diagnostic ciblé face 1, hors suite) ;
+  `sim/tb_dsk.v` scénario 3 = non-régression de la course (deux seeks
+  enchaînés sans attendre, la piste servie doit être celle du second).
+  `tools/gen_sed_test.py` : SEDBOOT.DSK n'est plus tronqué à 62 pistes
+  face 0 — le boot lit aussi la **face 1** (piste `$80|n` dans les messages
+  d'erreur Sedoric), l'image embarque les 2 faces × 80 pistes.
+
 ### Ajouté
 - **Deux banques ROM (US-ULA-NG.1, première tranche) — VALIDÉ SUR CARTE**
   (bmarty, 2026-08-11, **Citadel chargé jusqu'au « Choix des couleurs »**) :

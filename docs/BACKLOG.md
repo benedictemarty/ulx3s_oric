@@ -105,13 +105,17 @@ comparable à une vraie mécanique 3") ; v1 en LECTURE SEULE.
       `$E000-$FFFF`, /ROMDIS combiné, IRQ si INTENA, **SW1 (DIP) =
       interface branchée** (OFF = Atmos intact). Sur carte : SW1 ON →
       « insert system disc », SW1 OFF → Atmos normal.
-- [ ] US-DISK.3 **Pistes depuis la SD** : accès aléatoire dans le fichier
-      .dsk (fat32 : seek par re-suivi de chaîne de clusters + offset
-      piste = f(side, track) de l'en-tête MFM_DISK), chargement du buffer
-      de piste, poignée « disquette insérée » pour le WD1793.
+- [x] US-DISK.3 **Pistes depuis la SD** (2026-08-12, validé en sim :
+      22 pistes réelles Citadelle au byte près) : accès aléatoire dans le
+      fichier .dsk (fat32 : seek par re-suivi de chaîne de clusters +
+      offset piste = f(side, track) de l'en-tête MFM_DISK), chargement du
+      buffer de piste, poignée « disquette insérée » pour le WD1793.
 - [ ] US-DISK.4 **OSD : insérer un .dsk** : BTN4 sur un fichier `.dsk` =
-      insertion + reset → boot Sedoric. Validation carte : Sedoric boote,
-      `Citadelle.dsk` se charge.
+      insertion + reset → boot Sedoric. Fait : insertion BTN4, LED7,
+      survie au reset ; **gel du boot Sedoric résolu en sim le 2026-08-13**
+      (init RAM motif Oricutron + course seek/rechargement de piste, cf.
+      CHANGELOG). Reste : validation carte (Sedoric boote jusqu'au menu,
+      `Citadelle.dsk` se charge).
 - [ ] US-DISK.5 **Écriture** (v2, ultérieur) : write-back des secteurs vers
       la SD (commandes type II write), dirty tracking par piste.
 

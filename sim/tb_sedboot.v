@@ -97,13 +97,102 @@ module tb_sedboot;
         .frame_tick(), .audio(), .cpu_irq_dbg()
     );
 
-    // ---- Trace des écritures $031x du CPU (format du trace de référence) ----
-    integer wr_cnt = 0;
-    always @(posedge clk)
+    // ---- Golden : secteurs plats attendus (extraction de référence) ----
+    reg [7:0] sgold [0:62*17*256-1];
+    initial $readmemh("sim/out/sed_golden.hex", sgold);
+    reg [7:0] cur_sec = 0;
+    integer   mism = 0;
+
+    // ---- Trace des écritures $031x + drains $0313 + détecteur de gel ----
+    integer wr_cnt = 0, rd313 = 0;
+    reg [31:0] quiet = 0;
+    reg [15:0] rb_pc [0:255];
+    reg [7:0]  rb_di [0:255];
+    reg        rb_we [0:255];
+    reg [7:0]  rb_head = 0;
+    reg        rb_dumped = 0;
+    integer    rb_i;
+    integer    wrd_cnt = 0;
+    reg        sta_watch = 0;
+    integer    sta_cnt = 0;
+    integer    wre_cnt = 0, wr27_cnt = 0;
+    always @(posedge clk) begin
         if (dut.cen1 && dut.sel_md && dut.bus_we_q && wr_cnt < 1500) begin
+            if (rd313 != 0) begin
+                $display("[RTL]   (drain %0d octets)", rd313);
+                rd313 = 0;
+            end
+            if (dut.bus_addr_q[3:0] == 4'h2) cur_sec = dut.bus_do_q;
             $display("[RTL] write $%04x = %02x", dut.bus_addr_q, dut.bus_do_q);
             wr_cnt = wr_cnt + 1;
+            quiet <= 0;
+        end else if (dut.cen1 && dut.sel_md) begin
+            quiet <= 0;
+            if (!dut.bus_we_q && dut.bus_addr_q[3:0] == 4'h3) begin
+                if (dut.md_dout !== sgold[(req_track*17 + (cur_sec-1))*256 + rd313]
+                    && mism < 20) begin
+                    $display("[DATA] t%0d s%0d octet %0d : CPU=%02x golden=%02x",
+                             req_track, cur_sec, rd313, dut.md_dout,
+                             sgold[(req_track*17 + (cur_sec-1))*256 + rd313]);
+                    mism = mism + 1;
+                end
+                rd313 = rd313 + 1;
+            end
+        end else if (dut.cen1)
+            quiet <= quiet + 1;
+        // Destination des stores pendant les drains (STA qui suit LDA $0313)
+        if (dut.cen1) begin
+            if (dut.sel_md && !dut.bus_we_q && dut.bus_addr_q[3:0] == 4'h3)
+                sta_watch <= 1'b1;
+            else if (sta_watch && dut.bus_we_q) begin
+                if (rd313 == 1)          // 1er octet du drain : destination
+                    $display("[STA] sec %0d (piste %0d) -> %04x",
+                             cur_sec, req_track, dut.bus_addr_q);
+                sta_watch <= 1'b0;
+            end
         end
+        // Origine du vecteur, du code fantôme $EExx et des slots $027x
+        if (dut.cen1 && dut.bus_we_q) begin
+            if (dut.bus_addr_q >= 16'hFFFE)
+                $display("[WRV] W %04x = %02x", dut.bus_addr_q, dut.bus_do_q);
+            else if (dut.bus_addr_q[15:8] == 8'hEE && wre_cnt < 30) begin
+                $display("[WRE] W %04x = %02x", dut.bus_addr_q, dut.bus_do_q);
+                wre_cnt = wre_cnt + 1;
+            end
+            else if (dut.bus_addr_q[15:4] == 12'h027 && wr27_cnt < 20) begin
+                $display("[WR2] W %04x = %02x", dut.bus_addr_q, dut.bus_do_q);
+                wr27_cnt = wr27_cnt + 1;
+            end
+        end
+        // Écritures vers $D000-$D1FF : atterrissent-elles en RAM ?
+        if (dut.cen1 && dut.bus_we_q && dut.bus_addr_q[15:9] == 7'b1101_000
+            && wrd_cnt < 30) begin
+            $display("[WRD] W %04x=%02x romdis=%b eprom=%b landed=%b",
+                     dut.bus_addr_q, dut.bus_do_q, dut.md_romdis,
+                     dut.md_eprom_sel, dut.sel_ram | dut.rom_as_ram);
+            wrd_cnt = wrd_cnt + 1;
+        end
+        // Enregistreur de vol : 256 derniers cycles bus, dumpés au gel
+        if (dut.cen1) begin
+            rb_pc[rb_head] <= dut.cpu_ab;
+            rb_di[rb_head] <= dut.cpu_di;
+            rb_we[rb_head] <= dut.cpu_we;
+            rb_head <= rb_head + 8'd1;
+        end
+        if (dut.cen1 && quiet[19] && quiet[7:0] == 0 && quiet < 32'hC0000)
+            $display("[IRQ] PC~%04x via=%b acia=%b md=%b ifr=%02x ier=%02x t1=%04x",
+                     dut.cpu_ab, dut.via_irq, dut.acia_irq, dut.md_irq,
+                     dut.via.ifr, dut.via.ier, dut.via.t1c);
+        if (dut.cen1 && quiet == 32'd300 && !rb_dumped && wr_cnt > 200) begin
+            rb_dumped = 1;
+            $display("[VOL] 256 derniers cycles avant gel :");
+            for (rb_i = 0; rb_i < 256; rb_i = rb_i + 1)
+                $display("[VOL] %04x %s %02x",
+                         rb_pc[(rb_head + rb_i) & 8'hFF],
+                         rb_we[(rb_head + rb_i) & 8'hFF] ? "W" : "R",
+                         rb_di[(rb_head + rb_i) & 8'hFF]);
+        end
+    end
 
     // ---- Écran ----
     integer sd_r, sd_c, sd_n = 0;
@@ -139,11 +228,21 @@ module tb_sedboot;
         $display("disquette prete (%0d pistes) — lancement du CPU", n_tracks);
         @(negedge clk); cpu_rst = 0;
 
-        // 8 s Oric max, dump écran toutes les ~500 ms Oric
-        for (i = 0; i < 16; i = i + 1) begin
+        // 16 s Oric max, dump écran toutes les ~500 ms Oric
+        for (i = 0; i < 32; i = i + 1) begin
             repeat (12_500_000) @(negedge clk);
             dump_screen;
         end
+        // Autopsie mémoire : vecteur IRQ, handler, hooks
+        $display("[MEM] vecteur IRQ ($FFFE) = %02x%02x",
+                 dut.ram.mem[16'hFFFF], dut.ram.mem[16'hFFFE]);
+        for (i = 0; i < 4; i = i + 1)
+            $display("[MEM] D0%02x : %02x %02x %02x %02x %02x %02x %02x %02x",
+                     8'h90 + i*8,
+                     dut.ram.mem[16'hD090+i*8], dut.ram.mem[16'hD091+i*8],
+                     dut.ram.mem[16'hD092+i*8], dut.ram.mem[16'hD093+i*8],
+                     dut.ram.mem[16'hD094+i*8], dut.ram.mem[16'hD095+i*8],
+                     dut.ram.mem[16'hD096+i*8], dut.ram.mem[16'hD097+i*8]);
         $display("FIN (voir traces [RTL] vs fdc_trace_ref.log)");
         $finish;
     end
