@@ -223,6 +223,19 @@ qui l'exploitera.
       loader), démo « l'Oric parle » validée sur carte.
 
 ## Sprint 3 — « Confort »
+- [ ] US3.0 **Validation LOCI sur le port d'extension** (demandée 2026-08-13) :
+      le bus 34 points est câblé et actif (`rtl/expansion_port.v`,
+      `docs/PORT_EXTENSION.md`, gp/gn J1-J2, pull-ups OK, /IOCTRL inhibe
+      VIA/ACIA/Microdisc interne). Config visée : cartouche **LOCI** +
+      **Pico W sur le port USB externe de la LOCI** (transparent pour le
+      FPGA — seul le bus d'extension nous concerne). Matériel à réunir :
+      3× TXS0108E (24 canaux 3,3 V↔5 V), alim 5 V externe pour la
+      cartouche (JAMAIS le 5 V du FPGA), masse commune, Dupont < 20 cm
+      avec GND intercalés. Consigne : **SW1 OFF** (Microdisc interne
+      débranché — la LOCI sert son propre DOS via /ROMDIS+/MAP, éviter
+      tout double décodage $0310-$0318). Premier test : boot BASIC normal
+      cartouche branchée mais inactive, puis menu LOCI (ADJ_SCAN si
+      instable).
 - [ ] US3.1 OSD de sélection de fichiers .tap → couvert par US-NETFS.2 (OSD
       incrusté FPGA) ; la source de fichiers devient le serveur WiFi.
 - [ ] US3.2 Mode 60 Hz optionnel / meilleure synchro vidéo (triple buffer)
