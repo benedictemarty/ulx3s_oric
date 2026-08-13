@@ -6,6 +6,16 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 ## [Non publié]
 
 ### Ajouté
+- **Note à l'équipe — liaison physique vers la LOCI + berceau PCBA**
+  (bmarty, 2026-08-13) : `docs/NOTE_EQUIPE_LIAISON_LOCI.md`. Revue croisée avec
+  l'étude indépendante `~/NetMaze/ulx3s2Loci/` : **validation mutuelle** du
+  brochage 34 points (reconstruit du schéma réel LOCI 1.3), du choix 74LVC
+  (TXS0108E proscrit) et du piège `/OE=/IO` (ROM menu `$C000–$FFFF`). Apport d'un
+  **berceau PCBA** (l'ULX3S s'enfiche, entraxe J1/J2 = **88,90 mm** relevé du
+  `.kicad_pcb`, 2× 74LVC4245A). **2 points signalés** : `gp/gn[16]` (XCVR_DIR//OE)
+  tombent dans la zone ADC « évitée » (N16/M17 = AIN5/AIN4) ; commentaire
+  « TXS0108E » obsolète dans l'en-tête de `rtl/expansion_port.v`. Mapping du berceau
+  à aligner sur `top_ulx3s.v` (référence).
 - **Modem WiFi Hayes sur l'ESP32 interne — INSTALLÉ ET FONCTIONNEL**
   (bmarty, 2026-08-13) : `firmware/esp32_modem/main.py` (MicroPython,
   jeu de commandes COMPATIBLE PicoWiFiModemUSB de ~/picowifi : AT$SSID=,

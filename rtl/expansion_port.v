@@ -7,7 +7,9 @@
 //   phases 0..11  : adresse/RW stables, PHI2 bas
 //   phases 12..24 : PHI2 haut, données d'écriture pilotées
 //   phase 22      : échantillonnage des données lues (cartouche -> CPU)
-// À 1 MHz, les marges sont énormes pour un câblage Dupont + TXS0108E.
+// À 1 MHz, les marges sont énormes, même en câblage volant. Adaptation de
+// niveau : famille 74LVC(C)245 à DIR//OE UNIQUEMENT — le TXS0108E est
+// PROSCRIT sur ce bus (auto-sens, contention, cf. PORT_EXTENSION.md).
 
 module expansion_port (
     input         clk,
