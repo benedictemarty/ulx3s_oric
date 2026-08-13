@@ -96,7 +96,11 @@ def dial(arg):
     port = 23
     if ":" in host:
         host, p = host.rsplit(":", 1)
-        port = int(p)
+        try:
+            port = int(p)
+        except ValueError:
+            crlf("ERROR")
+            return
     if not wifi_connect():
         crlf("NO CARRIER")
         return
@@ -143,9 +147,84 @@ def atget(url):
         crlf("ERROR " + repr(e))
 
 
+def atdiskrd(url):
+    # Protocole loci-webdisk (cf. ~/loci-webdisk, at_basic.h httpDiskRead) :
+    # renvoie UNIQUEMENT le corps HTTP, cadré "\r\n+DISK:<len>\r\n" + octets
+    # bruts + "OK". Le range est dans la query (?offset=&len=), pas d'en-tête
+    # Range. Piloté par firmware (FPGA/LOCI), pas tapé à la main.
+    if not wifi_connect():
+        crlf("ERROR")
+        return
+    try:
+        proto, rest = url.split("://", 1)
+        host = rest.split("/", 1)[0]
+        path = "/" + rest.split("/", 1)[1] if "/" in rest else "/"
+        port = 443 if proto == "https" else 80
+        if ":" in host:
+            host, p = host.rsplit(":", 1)
+            port = int(p)
+        s = socket.socket()
+        s.connect(socket.getaddrinfo(host, port)[0][-1])
+        if proto == "https":
+            import ussl
+            s = ussl.wrap_socket(s, server_hostname=host)
+            rd = s.read
+            wr = s.write
+        else:
+            rd = lambda n: s.recv(n)
+            wr = lambda d: s.send(d)
+        wr(("GET %s HTTP/1.0\r\nHost: %s\r\nConnection: close\r\n\r\n"
+            % (path, host)).encode())
+        # statut + en-têtes octet par octet jusqu'à la ligne vide
+        line = b""
+        status = 0
+        clen = -1
+        nl = 0
+        while True:
+            c = rd(1)
+            if not c:
+                break
+            if c == b"\n":
+                t = line.strip()
+                if status == 0 and t[:5] == b"HTTP/":
+                    status = int(t.split(b" ")[1])
+                elif t.lower().startswith(b"content-length:"):
+                    clen = int(t.split(b":")[1])
+                if t == b"":
+                    nl = 1
+                line = b""
+                if nl:
+                    break
+            else:
+                line += c
+        if status != 200 or clen < 0:
+            s.close()
+            crlf("ERROR")
+            return
+        # sortie BINAIRE : sys.stdout.buffer si présent (sinon latin-1 —
+        # dégradé, les octets >127 partiraient en UTF-8)
+        out = getattr(sys.stdout, "buffer", None)
+        sys.stdout.write("\r\n+DISK:%d\r\n" % clen)
+        left = clen
+        while left > 0:
+            data = rd(min(256, left))
+            if not data:
+                break
+            if out:
+                out.write(data)
+            else:
+                sys.stdout.write(data.decode("latin-1"))
+            left -= len(data)
+        s.close()
+        crlf("OK" if left == 0 else "ERROR")
+    except Exception:
+        crlf("ERROR")
+
+
 HELP = (
     "AT ATI AT? ATE0/1 AT$SSID= AT$PASS= ATC0/1/? AT&W AT&F",
     "ATDT host[:port]  +++  ATO  ATH  ATGET http://...  ATZ",
+    "AT$SCAN  ATDISKRD http(s)://... (+DISK:<len> framing)",
 )
 
 
@@ -186,6 +265,17 @@ def do_cmd(line):
     elif u == "AT$PASS?":
         crlf("*" * len(password))
         crlf("OK")
+    elif u == "AT$SCAN":
+        # format wificonf.bas : "<n> <ssid><TAB><O|S>" par ligne puis OK
+        try:
+            nets = wlan.scan()
+            for i, n in enumerate(nets):
+                nom = n[0].decode("utf-8", "replace")
+                sec = "O" if n[4] == 0 else "S"
+                crlf("%d %s\t%s" % (i, nom, sec))
+            crlf("OK")
+        except Exception:
+            crlf("ERROR")
     elif u == "ATC?":
         crlf("1" if wlan.isconnected() else "0")
         crlf("OK")
@@ -206,6 +296,8 @@ def do_cmd(line):
         ssid = ""
         password = ""
         crlf("OK")
+    elif u.startswith("ATDISKRD"):
+        atdiskrd(line[8:].strip())
     elif u.startswith("ATDT") or u.startswith("ATDP"):
         dial(line[4:])
     elif u.startswith("ATD"):
@@ -286,4 +378,11 @@ def run():
         time.sleep_ms(2)
 
 
-run()
+while True:
+    try:
+        run()
+    except KeyboardInterrupt:
+        raise                    # Ctrl-C : rendre la main au REPL
+    except Exception as e:
+        crlf("ERROR " + repr(e))
+        time.sleep_ms(200)

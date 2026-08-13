@@ -155,8 +155,8 @@ def build_component_table():
         idx += 1
         c("C%d" % idx, (UX + 5.2, uy - 1.3), 90, "100nF", "+5V", "GND")
         idx += 1
-    c("C11", (16, 5), 90, "10uF", "+5V", "GND", "C_0805_2012Metric")
-    c("C12", (30, 42), 90, "10uF", "+3V3", "GND", "C_0805_2012Metric")
+    c("C11", (24, 10), 90, "10uF", "+5V", "GND", "C_0805_2012Metric")
+    c("C12", (30, 38), 90, "10uF", "+3V3", "GND", "C_0805_2012Metric")
 
     return comps
 

@@ -8216,3 +8216,301 @@ java.lang.NullPointerException: null
 2026-08-13 16:08:01.820 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
 2026-08-13 16:08:03.791 INFO   [0B550D\DCEEB2] Auto-router pass #938 on board 'f681a0b73688f018782bf61825957cb8' was completed in 2,42 seconds with the score of 975,65 (3 unrouted), using 3841452,00 CPU seconds and 2297555 MB memory.
 2026-08-13 16:08:06.275 INFO   [0B550D\DCEEB2] Auto-router pass #939 on board 'e1a3479af3ce3c3db539e1916d6b2486' was completed in 2,45 seconds with the score of 972,75 (5 unrouted), using 3846920,00 CPU seconds and 2299052 MB memory.
+2026-08-13 16:08:17.362 INFO   [0B550D\DCEEB2] Restoring an earlier board that has the score of 977,26 (2 unrouted).
+2026-08-13 16:08:17.362 INFO   [0B550D\DCEEB2] Auto-router pass #940 on board '6bd9b6c95fc412cb050c6ccb648c5017' was completed in 11,06 seconds with the score of 974,37 (4 unrouted), using 3877063,25 CPU seconds and 2306858 MB memory.
+2026-08-13 16:08:19.268 INFO   [0B550D\DCEEB2] Auto-router pass #941 on board '10d4d4ae74e4257bec7bf6bee215f69b' was completed in 1,90 seconds with the score of 975,92 (3 unrouted), using 3882556,75 CPU seconds and 2308278 MB memory.
+2026-08-13 16:08:19.354 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:08:19.354 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:08:19.354 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:08:19.390 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:08:19.390 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:08:19.390 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:08:19.390 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:08:19.391 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:08:19.408 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:08:21.667 INFO   [0B550D\DCEEB2] Auto-router pass #942 on board '9fe32acd09f6cf82d9cf360cb49a6083' was completed in 2,39 seconds with the score of 973,22 (5 unrouted), using 3890803,75 CPU seconds and 2310641 MB memory.
+2026-08-13 16:08:21.927 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:08:21.927 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:08:21.927 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:08:21.927 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:08:21.927 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:08:21.927 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:08:21.936 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:08:21.936 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:08:21.936 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:08:21.938 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:08:21.938 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:08:21.941 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:08:21.941 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:08:21.959 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:08:21.959 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.NullPointerException: null
+2026-08-13 16:08:21.959 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.NullPointerException: null
+2026-08-13 16:08:22.074 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:08:22.074 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.NullPointerException: null
+2026-08-13 16:08:22.074 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.NullPointerException: null
+2026-08-13 16:08:22.403 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:08:22.403 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.NullPointerException: null
+2026-08-13 16:08:22.403 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.NullPointerException: null
+2026-08-13 16:08:22.781 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:08:22.781 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.NullPointerException: null
+2026-08-13 16:08:22.781 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.NullPointerException: null
+2026-08-13 16:08:22.847 INFO   [0B550D\DCEEB2] Auto-router pass #943 on board '845be819cb5a981381b58c8b0052086e' was completed in 1,15 seconds with the score of 973,22 (5 unrouted), using 3893554,75 CPU seconds and 2311397 MB memory.
+2026-08-13 16:08:23.763 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:08:23.763 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.NullPointerException: null
+2026-08-13 16:08:23.763 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.NullPointerException: null
+2026-08-13 16:08:24.105 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:08:24.106 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:08:24.106 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:08:24.106 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:08:24.106 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:08:24.114 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:08:24.139 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:08:24.483 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:08:24.484 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.NullPointerException: null
+2026-08-13 16:08:24.484 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.NullPointerException: null
+2026-08-13 16:08:24.648 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:08:24.648 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.NullPointerException: null
+2026-08-13 16:08:24.648 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.NullPointerException: null
+2026-08-13 16:08:28.481 INFO   [0B550D\DCEEB2] Restoring an earlier board that has the score of 977,24 (2 unrouted).
+2026-08-13 16:08:28.481 INFO   [0B550D\DCEEB2] Auto-router pass #944 on board '845be819cb5a981381b58c8b0052086e' was completed in 5,62 seconds with the score of 971,83 (6 unrouted), using 3910081,25 CPU seconds and 2315845 MB memory.
+2026-08-13 16:08:30.321 INFO   [0B550D\DCEEB2] Auto-router pass #945 on board 'f0473a2ae2033f5687de1350e5d31be4' was completed in 1,83 seconds with the score of 977,24 (2 unrouted), using 3912839,00 CPU seconds and 2316550 MB memory.
+2026-08-13 16:08:31.152 INFO   [0B550D\DCEEB2] Auto-router pass #946 on board '2b2edad976caddc3b4c7643bb9cd11f2' was completed in 0,80 seconds with the score of 977,27 (2 unrouted), using 3915597,75 CPU seconds and 2317500 MB memory.
+2026-08-13 16:08:32.047 INFO   [0B550D\DCEEB2] Auto-router pass #947 on board '809a7b724f9649ec0af0ee34c009db6e' was completed in 0,86 seconds with the score of 977,25 (2 unrouted), using 3918357,50 CPU seconds and 2318265 MB memory.
+2026-08-13 16:08:36.551 INFO   [0B550D\DCEEB2] Restoring an earlier board that has the score of 977,27 (2 unrouted).
+2026-08-13 16:08:36.551 INFO   [0B550D\DCEEB2] Auto-router pass #948 on board '8273f33052bb46a79ba2938bad6800ce' was completed in 4,47 seconds with the score of 977,22 (2 unrouted), using 3932170,50 CPU seconds and 2321693 MB memory.
+2026-08-13 16:08:38.511 INFO   [0B550D\DCEEB2] Auto-router pass #949 on board '809a7b724f9649ec0af0ee34c009db6e' was completed in 1,95 seconds with the score of 977,25 (2 unrouted), using 3937702,50 CPU seconds and 2323256 MB memory.
+2026-08-13 16:08:38.941 INFO   [0B550D\DCEEB2] Auto-router pass #950 on board '5f6972c25c5e933a2eb95b673e46dc68' was completed in 0,40 seconds with the score of 977,12 (2 unrouted), using 3937702,50 CPU seconds and 2323256 MB memory.
+2026-08-13 16:08:39.408 INFO   [0B550D\DCEEB2] Auto-router pass #951 on board '03b49813dad543605471e44d2cfffae1' was completed in 0,44 seconds with the score of 977,12 (2 unrouted), using 3937702,50 CPU seconds and 2323256 MB memory.
+2026-08-13 16:08:42.652 INFO   [0B550D\DCEEB2] Restoring an earlier board that has the score of 977,27 (2 unrouted).
+2026-08-13 16:08:42.652 INFO   [0B550D\DCEEB2] Auto-router pass #952 on board '8456c2e574985dc198312ecc6982dce9' was completed in 3,22 seconds with the score of 977,14 (2 unrouted), using 3948777,75 CPU seconds and 2326412 MB memory.
+2026-08-13 16:08:44.509 INFO   [0B550D\DCEEB2] Auto-router pass #953 on board '809a7b724f9649ec0af0ee34c009db6e' was completed in 1,85 seconds with the score of 977,25 (2 unrouted), using 3954321,25 CPU seconds and 2328160 MB memory.
+2026-08-13 16:08:45.144 INFO   [0B550D\DCEEB2] Auto-router pass #954 on board '1cc320770c98b2743690ed9162e6c3a1' was completed in 0,60 seconds with the score of 977,25 (2 unrouted), using 3954321,25 CPU seconds and 2328160 MB memory.
+2026-08-13 16:08:45.965 INFO   [0B550D\DCEEB2] Auto-router pass #955 on board '99f7e2feb59f3392b4ac382651cb88ed' was completed in 0,80 seconds with the score of 977,23 (2 unrouted), using 3957094,50 CPU seconds and 2329118 MB memory.
+2026-08-13 16:08:50.478 INFO   [0B550D\DCEEB2] Restoring an earlier board that has the score of 977,27 (2 unrouted).
+2026-08-13 16:08:50.478 INFO   [0B550D\DCEEB2] Auto-router pass #956 on board '5756902f856338bc943c322fe65a86f3' was completed in 4,48 seconds with the score of 977,21 (2 unrouted), using 3970974,75 CPU seconds and 2332578 MB memory.
+2026-08-13 16:08:52.446 INFO   [0B550D\DCEEB2] Auto-router pass #957 on board '809a7b724f9649ec0af0ee34c009db6e' was completed in 1,96 seconds with the score of 977,25 (2 unrouted), using 3976533,75 CPU seconds and 2334261 MB memory.
+2026-08-13 16:08:52.912 INFO   [0B550D\DCEEB2] Auto-router pass #958 on board '36afad46c4264fa932d66b0f48bc9622' was completed in 0,44 seconds with the score of 977,14 (2 unrouted), using 3976533,75 CPU seconds and 2334261 MB memory.
+2026-08-13 16:08:53.351 INFO   [0B550D\DCEEB2] Auto-router pass #959 on board '4dc201dc325342777d3f27a90b315d89' was completed in 0,41 seconds with the score of 977,15 (2 unrouted), using 3976533,75 CPU seconds and 2334261 MB memory.
+2026-08-13 16:08:56.656 INFO   [0B550D\DCEEB2] Restoring an earlier board that has the score of 977,27 (2 unrouted).
+2026-08-13 16:08:56.656 INFO   [0B550D\DCEEB2] Auto-router pass #960 on board 'eae529dfb7313065f7a08c795845834f' was completed in 3,28 seconds with the score of 977,17 (2 unrouted), using 3987663,25 CPU seconds and 2337390 MB memory.
+2026-08-13 16:08:58.106 INFO   [0B550D\DCEEB2] Auto-router pass #961 on board '809a7b724f9649ec0af0ee34c009db6e' was completed in 1,44 seconds with the score of 977,13 (2 unrouted), using 3990448,00 CPU seconds and 2338155 MB memory.
+2026-08-13 16:08:58.773 INFO   [0B550D\DCEEB2] Auto-router pass #962 on board '83de23a85cfdb63d1acda77301475d7b' was completed in 0,64 seconds with the score of 976,00 (3 unrouted), using 3993233,75 CPU seconds and 2339013 MB memory.
+2026-08-13 16:09:02.647 INFO   [0B550D\DCEEB2] Auto-router pass #963 on board 'bab4cb5e1b7df823750694bcb9d5e8a8' was completed in 3,85 seconds with the score of 975,75 (3 unrouted), using 4004386,75 CPU seconds and 2342194 MB memory.
+2026-08-13 16:09:07.501 INFO   [0B550D\DCEEB2] Restoring an earlier board that has the score of 977,25 (2 unrouted).
+2026-08-13 16:09:07.502 INFO   [0B550D\DCEEB2] Auto-router pass #964 on board '869b1f8bc25e6d32029a971e9235dc09' was completed in 4,83 seconds with the score of 976,86 (2 unrouted), using 4018349,50 CPU seconds and 2345872 MB memory.
+2026-08-13 16:09:09.049 INFO   [0B550D\DCEEB2] Auto-router pass #965 on board '99f7e2feb59f3392b4ac382651cb88ed' was completed in 1,54 seconds with the score of 977,12 (2 unrouted), using 4021145,00 CPU seconds and 2346609 MB memory.
+2026-08-13 16:09:09.183 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:09:09.183 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:09:09.309 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:09:09.310 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:09:09.311 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:09:09.322 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:09:09.468 INFO   [0B550D\DCEEB2] Auto-router pass #966 on board '94ca00ed297d23d9c625b7f6149e983e' was completed in 0,39 seconds with the score of 976,00 (3 unrouted), using 4023941,50 CPU seconds and 2347466 MB memory.
+2026-08-13 16:09:11.585 INFO   [0B550D\DCEEB2] Auto-router pass #967 on board '407031c540a447e61f896d6c28953341' was completed in 2,09 seconds with the score of 974,88 (4 unrouted), using 4029537,50 CPU seconds and 2348963 MB memory.
+2026-08-13 16:09:20.767 INFO   [0B550D\DCEEB2] Restoring an earlier board that has the score of 977,25 (2 unrouted).
+2026-08-13 16:09:20.767 INFO   [0B550D\DCEEB2] Auto-router pass #968 on board 'c0f2447877ed623e5b90511e5625b0aa' was completed in 9,15 seconds with the score of 975,65 (3 unrouted), using 4054767,00 CPU seconds and 2355851 MB memory.
+2026-08-13 16:09:22.730 INFO   [0B550D\DCEEB2] Auto-router pass #969 on board '99f7e2feb59f3392b4ac382651cb88ed' was completed in 1,95 seconds with the score of 977,23 (2 unrouted), using 4060384,00 CPU seconds and 2357484 MB memory.
+2026-08-13 16:09:23.983 INFO   [0B550D\DCEEB2] Auto-router pass #970 on board '8946a44d7d657ae554d8a9ecbafd7f0f' was completed in 1,23 seconds with the score of 977,15 (2 unrouted), using 4063194,00 CPU seconds and 2358263 MB memory.
+2026-08-13 16:09:25.274 INFO   [0B550D\DCEEB2] Auto-router pass #971 on board 'b86a3321d52fbfbce97eaf29805014cf' was completed in 1,26 seconds with the score of 975,72 (3 unrouted), using 4066005,00 CPU seconds and 2358997 MB memory.
+2026-08-13 16:09:32.273 INFO   [0B550D\DCEEB2] Restoring an earlier board that has the score of 977,25 (2 unrouted).
+2026-08-13 16:09:32.273 INFO   [0B550D\DCEEB2] Auto-router pass #972 on board '32b6d651af34cdf387a852f0d277e70a' was completed in 6,97 seconds with the score of 975,54 (3 unrouted), using 4085709,50 CPU seconds and 2363984 MB memory.
+2026-08-13 16:09:34.375 INFO   [0B550D\DCEEB2] Auto-router pass #973 on board '99f7e2feb59f3392b4ac382651cb88ed' was completed in 2,09 seconds with the score of 977,23 (2 unrouted), using 4091348,00 CPU seconds and 2365426 MB memory.
+2026-08-13 16:09:35.573 INFO   [0B550D\DCEEB2] Auto-router pass #974 on board '8946a44d7d657ae554d8a9ecbafd7f0f' was completed in 1,19 seconds with the score of 977,15 (2 unrouted), using 4096990,50 CPU seconds and 2366976 MB memory.
+2026-08-13 16:09:36.184 INFO   [0B550D\DCEEB2] Auto-router pass #975 on board 'b86a3321d52fbfbce97eaf29805014cf' was completed in 0,60 seconds with the score of 976,06 (3 unrouted), using 4096990,50 CPU seconds and 2366976 MB memory.
+2026-08-13 16:09:46.870 INFO   [0B550D\DCEEB2] Restoring an earlier board that has the score of 977,25 (2 unrouted).
+2026-08-13 16:09:46.871 INFO   [0B550D\DCEEB2] Auto-router pass #976 on board 'f3fe00a9f4821903c0f94fd94d3add13' was completed in 10,66 seconds with the score of 973,33 (5 unrouted), using 4128093,00 CPU seconds and 2375298 MB memory.
+2026-08-13 16:09:48.790 INFO   [0B550D\DCEEB2] Auto-router pass #977 on board '99f7e2feb59f3392b4ac382651cb88ed' was completed in 1,90 seconds with the score of 977,23 (2 unrouted), using 4133760,50 CPU seconds and 2376856 MB memory.
+2026-08-13 16:09:49.962 INFO   [0B550D\DCEEB2] Auto-router pass #978 on board '1ebf9bb1ed4eac2537a257b6a370e215' was completed in 1,14 seconds with the score of 977,15 (2 unrouted), using 4136595,75 CPU seconds and 2377707 MB memory.
+2026-08-13 16:09:50.689 INFO   [0B550D\DCEEB2] Auto-router pass #979 on board 'd4f8d2c4f56e0af68f067b5c35ae40f9' was completed in 0,69 seconds with the score of 976,03 (3 unrouted), using 4139432,00 CPU seconds and 2378433 MB memory.
+2026-08-13 16:10:00.785 INFO   [0B550D\DCEEB2] Restoring an earlier board that has the score of 977,25 (2 unrouted).
+2026-08-13 16:10:00.785 INFO   [0B550D\DCEEB2] Auto-router pass #980 on board '5af5dd1e3f1b8a48e5c62c08c0d5c69d' was completed in 10,07 seconds with the score of 974,74 (4 unrouted), using 4167848,25 CPU seconds and 2385656 MB memory.
+2026-08-13 16:10:02.576 INFO   [0B550D\DCEEB2] Auto-router pass #981 on board '8273f33052bb46a79ba2938bad6800ce' was completed in 1,78 seconds with the score of 977,14 (2 unrouted), using 4173543,25 CPU seconds and 2387072 MB memory.
+2026-08-13 16:10:02.714 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:10:02.714 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:10:02.714 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:10:02.895 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:10:02.897 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:10:02.897 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:10:02.897 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:10:02.897 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:10:02.897 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:10:02.900 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:10:02.900 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:10:02.900 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:10:02.900 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:10:02.900 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:10:02.900 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:10:02.901 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:10:03.629 INFO   [0B550D\DCEEB2] Auto-router pass #982 on board 'c7a65ba27980435ccd0a4f4de8200a07' was completed in 1,02 seconds with the score of 975,65 (3 unrouted), using 4176392,25 CPU seconds and 2387827 MB memory.
+2026-08-13 16:10:06.009 INFO   [0B550D\DCEEB2] Auto-router pass #983 on board '823cbe13edb797ca2152676cad886480' was completed in 2,35 seconds with the score of 976,81 (2 unrouted), using 4182093,00 CPU seconds and 2389222 MB memory.
+2026-08-13 16:10:10.758 INFO   [0B550D\DCEEB2] Restoring an earlier board that has the score of 977,25 (2 unrouted).
+2026-08-13 16:10:10.758 INFO   [0B550D\DCEEB2] Auto-router pass #984 on board '2021ea9dc56700fb43f47a6e5273d395' was completed in 4,72 seconds with the score of 978,17 (1 unrouted), using 4196361,50 CPU seconds and 2392793 MB memory.
+2026-08-13 16:10:12.542 INFO   [0B550D\DCEEB2] Auto-router pass #985 on board '8273f33052bb46a79ba2938bad6800ce' was completed in 1,77 seconds with the score of 977,14 (2 unrouted), using 4202075,50 CPU seconds and 2394190 MB memory.
+2026-08-13 16:10:12.619 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:10:12.619 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:10:12.619 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:10:12.623 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:10:12.625 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:10:12.625 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:10:12.626 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:10:13.376 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: null
+2026-08-13 16:10:13.376 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: null
+2026-08-13 16:10:13.434 INFO   [0B550D\DCEEB2] Auto-router pass #986 on board 'c7a65ba27980435ccd0a4f4de8200a07' was completed in 0,88 seconds with the score of 977,14 (2 unrouted), using 4202075,50 CPU seconds and 2394190 MB memory.
+2026-08-13 16:10:13.573 INFO   [0B550D\DCEEB2] Auto-router pass #987 on board 'c7a65ba27980435ccd0a4f4de8200a07' was completed in 0,13 seconds with the score of 977,14 (2 unrouted), using 4204934,00 CPU seconds and 2394989 MB memory.
+2026-08-13 16:10:14.099 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:10:14.099 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:10:14.099 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:10:14.546 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:10:14.549 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:10:14.550 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:10:14.550 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:10:14.553 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:10:19.371 INFO   [0B550D\DCEEB2] Restoring an earlier board that has the score of 977,25 (2 unrouted).
+2026-08-13 16:10:19.371 INFO   [0B550D\DCEEB2] Auto-router pass #988 on board 'c7a65ba27980435ccd0a4f4de8200a07' was completed in 5,78 seconds with the score of 974,11 (4 unrouted), using 4219241,50 CPU seconds and 2398508 MB memory.
+2026-08-13 16:10:20.954 INFO   [0B550D\DCEEB2] Auto-router pass #989 on board '8273f33052bb46a79ba2938bad6800ce' was completed in 1,57 seconds with the score of 977,19 (2 unrouted), using 4224971,50 CPU seconds and 2400012 MB memory.
+2026-08-13 16:10:21.674 INFO   [0B550D\DCEEB2] Auto-router pass #990 on board '8d97ce4d867611b33a8888b361a5c356' was completed in 0,69 seconds with the score of 976,06 (3 unrouted), using 4227838,00 CPU seconds and 2400776 MB memory.
+2026-08-13 16:10:24.767 INFO   [0B550D\DCEEB2] Auto-router pass #991 on board '355dc31917f3d6f495efcb24b48bd24b' was completed in 3,07 seconds with the score of 973,64 (5 unrouted), using 4236442,50 CPU seconds and 2403089 MB memory.
+2026-08-13 16:10:33.519 INFO   [0B550D\DCEEB2] Restoring an earlier board that has the score of 977,25 (2 unrouted).
+2026-08-13 16:10:33.519 INFO   [0B550D\DCEEB2] Auto-router pass #992 on board '8cb186533a129c5d9df05637a4adcee1' was completed in 8,73 seconds with the score of 973,57 (5 unrouted), using 4262308,50 CPU seconds and 2409506 MB memory.
+2026-08-13 16:10:35.180 INFO   [0B550D\DCEEB2] Auto-router pass #993 on board '8273f33052bb46a79ba2938bad6800ce' was completed in 1,65 seconds with the score of 977,14 (2 unrouted), using 4265187,50 CPU seconds and 2410211 MB memory.
+2026-08-13 16:10:35.312 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:10:35.312 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:10:35.312 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:10:35.497 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:10:35.498 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:10:35.498 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:10:35.499 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:10:35.499 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:10:35.499 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:10:35.501 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:10:35.501 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:10:35.501 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:10:35.501 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:10:35.501 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:10:35.501 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:10:35.503 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:10:36.267 INFO   [0B550D\DCEEB2] Auto-router pass #994 on board 'c7a65ba27980435ccd0a4f4de8200a07' was completed in 1,08 seconds with the score of 975,65 (3 unrouted), using 4268067,50 CPU seconds and 2411047 MB memory.
+2026-08-13 16:10:38.729 INFO   [0B550D\DCEEB2] Auto-router pass #995 on board '0258b3ccef1b770b8cd013c1146e8329' was completed in 2,43 seconds with the score of 977,22 (2 unrouted), using 4276713,50 CPU seconds and 2413074 MB memory.
+2026-08-13 16:10:38.950 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 16:10:38.950 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.NullPointerException: null
+2026-08-13 16:10:38.950 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.NullPointerException: null
+2026-08-13 16:10:42.208 INFO   [0B550D\DCEEB2] Restoring an earlier board that has the score of 977,25 (2 unrouted).
+2026-08-13 16:10:42.209 INFO   [0B550D\DCEEB2] Auto-router pass #996 on board '18d704063700f3a2a804cba6761ec1ce' was completed in 3,45 seconds with the score of 977,15 (2 unrouted), using 4285368,50 CPU seconds and 2415255 MB memory.
+2026-08-13 16:10:44.153 INFO   [0B550D\DCEEB2] Auto-router pass #997 on board '5f6972c25c5e933a2eb95b673e46dc68' was completed in 1,93 seconds with the score of 977,25 (2 unrouted), using 4291143,00 CPU seconds and 2416717 MB memory.
+2026-08-13 16:10:45.024 INFO   [0B550D\DCEEB2] Auto-router pass #998 on board '1e8ab09b79151ad39bd4f52d19f6202e' was completed in 0,84 seconds with the score of 977,23 (2 unrouted), using 4294031,50 CPU seconds and 2417610 MB memory.
+2026-08-13 16:10:45.874 INFO   [0B550D\DCEEB2] Auto-router pass #999 on board '92ef695c9b22156f6872081f0d17d601' was completed in 0,82 seconds with the score of 977,24 (2 unrouted), using 4296921,00 CPU seconds and 2418370 MB memory.
+{
+  "host": "KiCad's Pcbnew,9.0.3+dfsg-1",
+  "unit": "mm",
+  "board": {
+    "bounding_box": {
+      "x": 1064.0,
+      "y": 1.0,
+      "width": -1.0,
+      "height": -501.0
+    },
+    "size": {
+      "x": 0.0,
+      "y": 0.0,
+      "width": 1065.0,
+      "height": 502.0
+    }
+  },
+  "layers": {
+    "total_count": 2,
+    "signal_count": 2
+  },
+  "items": {
+    "total_count": 1203,
+    "trace_count": 395,
+    "via_count": 243,
+    "conduction_area_count": 2,
+    "drill_item_count": 232,
+    "pin_count": 0,
+    "component_count": 330,
+    "other_count": 1
+  },
+  "components": {
+    "total_count": 25
+  },
+  "pads": {
+    "total_count": 232
+  },
+  "nets": {
+    "total_count": 69,
+    "class_count": 3
+  },
+  "connections": {
+    "maximum_count": 788,
+    "incomplete_count": 2
+  },
+  "traces": {
+    "total_count": 395,
+    "total_segment_count": 1304,
+    "total_length": 42506.94,
+    "total_weighted_length": 1.4176003E8,
+    "average_length": 107.61251,
+    "total_vertical_length": 8004.986,
+    "total_horizontal_length": 14470.463,
+    "total_angled_length": 13305.981
+  },
+  "bends": {
+    "total_count": 909,
+    "90_degree_count": 13,
+    "45_degree_count": 896,
+    "other_angle_count": 0
+  },
+  "vias": {
+    "total_count": 243,
+    "through_hole_count": 243,
+    "blind_count": 0,
+    "buried_count": 0
+  },
+  "clearance_violations": {
+    "total_count": 0
+  }
+}
+16:10:46: Debug: Adding duplicate image handler for 'PNG file'
+16:10:46: Debug: Adding duplicate image handler for 'JPEG file'
+16:10:46: Debug: Adding duplicate image handler for 'TIFF file'
+16:10:46: Debug: Adding duplicate image handler for 'GIF file'
+16:10:46: Debug: Adding duplicate image handler for 'PNM file'
+16:10:46: Debug: Adding duplicate image handler for 'PCX file'
+16:10:46: Debug: Adding duplicate image handler for 'IFF file'
+16:10:46: Debug: Adding duplicate image handler for 'Windows icon file'
+16:10:46: Debug: Adding duplicate image handler for 'Windows cursor file'
+16:10:46: Debug: Adding duplicate image handler for 'Windows animated cursor file'
+16:10:46: Debug: Adding duplicate image handler for 'TGA file'
+16:10:46: Debug: Adding duplicate image handler for 'XPM file'
+16:10:47: Debug: Adding duplicate image handler for 'PNG file'
+16:10:47: Debug: Adding duplicate image handler for 'JPEG file'
+16:10:47: Debug: Adding duplicate image handler for 'TIFF file'
+16:10:47: Debug: Adding duplicate image handler for 'GIF file'
+16:10:47: Debug: Adding duplicate image handler for 'PNM file'
+16:10:47: Debug: Adding duplicate image handler for 'PCX file'
+16:10:47: Debug: Adding duplicate image handler for 'IFF file'
+16:10:47: Debug: Adding duplicate image handler for 'Windows icon file'
+16:10:47: Debug: Adding duplicate image handler for 'Windows cursor file'
+16:10:47: Debug: Adding duplicate image handler for 'Windows animated cursor file'
+16:10:47: Debug: Adding duplicate image handler for 'TGA file'
+16:10:47: Debug: Adding duplicate image handler for 'XPM file'
+freerouting : java -Djava.awt.headless=true -jar ../phaseA/freerouting.jar -de loci_lvc_fr.dsn -do loci_lvc.ses -mp 5
+liaisons non routées restantes : 46
