@@ -6,6 +6,17 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 ## [Non publié]
 
 ### Ajouté
+- **ESP32 interne : REPL MicroPython découvert fonctionnel** (bmarty,
+  2026-08-13) : le firmware d'usine MicroPython 1.14 répond sur l'UART
+  (115200, passthru officiel), `network.WLAN` opérationnel, flash 4 Mo,
+  `boot.py` = stub par défaut. Le blocage « ESP32 non flashable » (GPIO0,
+  2026-08-02) ne condamne que le remplacement du firmware par esptool —
+  l'injection de code par le REPL (paste mode → `main.py` persistant)
+  contourne tout : le modem WiFi (US-MODEM.2) redevient réalisable sans
+  matériel externe, en MicroPython. Sondé par script série (tests :
+  version, listdir, WLAN, boot.py lu avant toute modification).
+
+### Ajouté
 - **US-SD-SPEED : SPI rapide après init + seek FAT32 incrémental** (bmarty,
   2026-08-13, **VALIDÉ SUR CARTE** — boot Sedoric rapide, Citadelle OK,
   cassette/Atmos sans régression ; gravé en flash SPI avec l'OSD

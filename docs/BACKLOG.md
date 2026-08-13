@@ -43,12 +43,14 @@ dans l'ESP32 ; 6551 mappé `$031C-$031F` (standard Oric, fidèle à
       wifi_rxd (K3) / wifi_txd (K4), `wifi_en`, testbench `tb_acia`. RTL fait,
       testé (tb_acia), synthèse OK. Reste : brancher DCD réel en phase 2.
 - [~] US-MODEM.2 **Phase 2 — Firmware ESP32** : SCAFFOLD + outillage faits
-      (2026-08-02, `firmware/esp32_modem/`, `tools/esp32/`). ⚠️ **BLOCAGE
-      MATÉRIEL** : l'ESP32 INTERNE de la carte v3.0.8 n'est PAS flashable par le
-      FPGA (GPIO0 non tenable bas → jamais en mode download ; gestion ajoutée
-      seulement en v3.1.7/R56). Épuisé : passthru officiel, esptool 5.3.1/4.5.1,
-      no_reset, re-plug, bitstream `download_esp32.v`, BTN0 maintenu. → **NE PAS
-      retenter l'interne.**
+      (2026-08-02, `firmware/esp32_modem/`, `tools/esp32/`). ⚠️ Flash esptool
+      de l'ESP32 interne IMPOSSIBLE (v3.0.8, GPIO0 non tenable — épuisé le
+      2026-08-02, ne pas retenter). **DÉBLOQUÉ le 2026-08-13 par une autre
+      voie : le firmware d'usine MicroPython 1.14 est vivant** (REPL UART
+      115200 via le passthru, `network.WLAN` OK, flash 4 Mo, boot.py stub).
+      Nouveau plan : écrire le modem Hayes en **MicroPython**, l'injecter
+      par le REPL (paste mode) et le persister en `main.py` — zéro
+      matériel externe, le Pico W (US-MODEM.2b) devient le plan B.
 - [ ] US-MODEM.2b **Modem WiFi externe** (issue retenue) : repointer le pont
       UART du 6551 de `wifi_rxd/txd` vers 2 broches `gp[]` accessibles + doc
       câblage (TX/RX/GND). Cible décidée 2026-08-02 : **Pico W** (branché sur
