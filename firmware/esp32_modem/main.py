@@ -1,0 +1,289 @@
+# Modem Hayes WiFi pour l'ESP32 interne de l'ULX3S (MicroPython 1.14).
+# Tourne sur l'UART0 (= pont FPGA wifi_rxd/txd = 6551 de l'Oric, 115200).
+# Installé via le REPL (tools/esp32/install_main.py) — PAS de flash esptool.
+#
+# Jeu de commandes : sous-ensemble COMPATIBLE PicoWiFiModemUSB (~/picowifi,
+# lignée mecparts/RetroWiFiModem) pour que l'Oric parle la même langue au
+# modem interne et au Pico W de la LOCI :
+#   AT            OK
+#   AT?           aide
+#   ATI           état (SSID, IP, RSSI)
+#   ATE0/ATE1/ATE?  écho commande
+#   AT$SSID=nom   / AT$SSID?     réseau WiFi
+#   AT$PASS=mdp   / AT$PASS?     mot de passe (affiché masqué)
+#   ATC1 / ATC0 / ATC?           connexion WiFi on/off/état
+#   AT&W          sauve SSID/PASS (wifi.txt, rejoint au boot)
+#   AT&F          efface la config
+#   ATDT host[:port]             appel TCP (port 23 défaut) -> CONNECT
+#   +++ (garde 1 s)              retour mode commande
+#   ATO           retour en ligne     ATH  raccroche -> NO CARRIER
+#   ATGET http://hote[/page]     GET simple, affiche la page, raccroche
+#   ATZ           reset du modem (machine.reset)
+# Ctrl-C au REPL : interrompt le modem et rend la main à MicroPython.
+
+import sys
+import time
+import select
+import socket
+import network
+import machine
+
+VERSION = "ULX3S-ORIC ESP32 MODEM 0.2 (MicroPython, cmds PicoWiFiModem)"
+
+wlan = network.WLAN(network.STA_IF)
+wlan.active(True)
+
+poller = select.poll()
+poller.register(sys.stdin, select.POLLIN)
+
+echo = True
+sock = None
+online = False
+ssid = ""
+password = ""
+
+
+def crlf(s=""):
+    sys.stdout.write(s + "\r\n")
+
+
+def load_cfg():
+    global ssid, password
+    try:
+        f = open("wifi.txt")
+        ssid = f.readline().strip()
+        password = f.readline().strip()
+        f.close()
+    except OSError:
+        pass
+
+
+def save_cfg():
+    f = open("wifi.txt", "w")
+    f.write(ssid + "\n" + password + "\n")
+    f.close()
+
+
+def wifi_connect():
+    if not ssid:
+        return False
+    if wlan.isconnected():
+        return True
+    wlan.connect(ssid, password)
+    for _ in range(120):            # ~12 s
+        if wlan.isconnected():
+            return True
+        time.sleep_ms(100)
+    return False
+
+
+def hangup(report=True):
+    global sock, online
+    if sock:
+        try:
+            sock.close()
+        except Exception:
+            pass
+    sock = None
+    online = False
+    if report:
+        crlf("NO CARRIER")
+
+
+def dial(arg):
+    global sock, online
+    host = arg.strip()
+    port = 23
+    if ":" in host:
+        host, p = host.rsplit(":", 1)
+        port = int(p)
+    if not wifi_connect():
+        crlf("NO CARRIER")
+        return
+    try:
+        s = socket.socket()
+        s.connect(socket.getaddrinfo(host, port)[0][-1])
+        s.setblocking(False)
+        sock = s
+        online = True
+        crlf("CONNECT")
+    except Exception:
+        crlf("NO CARRIER")
+
+
+def atget(url):
+    if not wifi_connect():
+        crlf("NO CARRIER")
+        return
+    try:
+        proto, rest = url.split("://", 1)
+        host = rest.split("/", 1)[0]
+        path = "/" + rest.split("/", 1)[1] if "/" in rest else "/"
+        port = 443 if proto == "https" else 80
+        if ":" in host:
+            host, p = host.rsplit(":", 1)
+            port = int(p)
+        s = socket.socket()
+        s.connect(socket.getaddrinfo(host, port)[0][-1])
+        if proto == "https":
+            import ussl
+            s = ussl.wrap_socket(s, server_hostname=host)
+        req = ("GET %s HTTP/1.0\r\nHost: %s\r\nConnection: close\r\n\r\n"
+               % (path, host))
+        s.write(req.encode()) if proto == "https" else s.send(req.encode())
+        while True:
+            data = s.read(256) if proto == "https" else s.recv(256)
+            if not data:
+                break
+            sys.stdout.write(data.decode("latin-1"))
+        s.close()
+        crlf()
+        crlf("OK")
+    except Exception as e:
+        crlf("ERROR " + repr(e))
+
+
+HELP = (
+    "AT ATI AT? ATE0/1 AT$SSID= AT$PASS= ATC0/1/? AT&W AT&F",
+    "ATDT host[:port]  +++  ATO  ATH  ATGET http://...  ATZ",
+)
+
+
+def do_cmd(line):
+    global echo, online, ssid, password
+    u = line.upper()
+    if u == "AT":
+        crlf("OK")
+    elif u == "AT?":
+        for h in HELP:
+            crlf(h)
+        crlf("OK")
+    elif u == "ATI":
+        crlf(VERSION)
+        if wlan.isconnected():
+            crlf("WIFI CONNECTED " + str(wlan.config("ssid")))
+            crlf("IP " + wlan.ifconfig()[0]
+                 + " RSSI " + str(wlan.status("rssi")))
+        else:
+            crlf("WIFI NOT CONNECTED"
+                 + (" (SSID " + ssid + ")" if ssid else ""))
+        crlf("OK")
+    elif u in ("ATE0", "ATE1", "ATE?"):
+        if u == "ATE?":
+            crlf("1" if echo else "0")
+        else:
+            echo = (u == "ATE1")
+        crlf("OK")
+    elif u.startswith("AT$SSID="):
+        ssid = line[8:]
+        crlf("OK")
+    elif u == "AT$SSID?":
+        crlf(ssid)
+        crlf("OK")
+    elif u.startswith("AT$PASS="):
+        password = line[8:]
+        crlf("OK")
+    elif u == "AT$PASS?":
+        crlf("*" * len(password))
+        crlf("OK")
+    elif u == "ATC?":
+        crlf("1" if wlan.isconnected() else "0")
+        crlf("OK")
+    elif u == "ATC1":
+        crlf("OK" if wifi_connect() else "ERROR")
+    elif u == "ATC0":
+        wlan.disconnect()
+        crlf("OK")
+    elif u == "AT&W":
+        save_cfg()
+        crlf("OK")
+    elif u == "AT&F":
+        try:
+            import os
+            os.remove("wifi.txt")
+        except OSError:
+            pass
+        ssid = ""
+        password = ""
+        crlf("OK")
+    elif u.startswith("ATDT") or u.startswith("ATDP"):
+        dial(line[4:])
+    elif u.startswith("ATD"):
+        dial(line[3:])
+    elif u == "ATO":
+        if sock:
+            online = True
+        else:
+            crlf("NO CARRIER")
+    elif u == "ATH":
+        hangup()
+    elif u.startswith("ATGET"):
+        atget(line[5:].strip())
+    elif u == "ATZ":
+        crlf("OK")
+        time.sleep_ms(100)
+        machine.reset()
+    elif u == "":
+        pass
+    else:
+        crlf("ERROR")
+
+
+def run():
+    global online
+    load_cfg()
+    if ssid:
+        wifi_connect()
+    crlf()
+    crlf(VERSION + " READY")
+    buf = ""
+    plus = 0
+    last_rx = time.ticks_ms()
+    while True:
+        if poller.poll(0):
+            ch = sys.stdin.read(1)
+            if online:
+                if ch == "+" and (plus > 0 or
+                        time.ticks_diff(time.ticks_ms(), last_rx) > 1000):
+                    plus += 1
+                    if plus == 3:
+                        online = False
+                        plus = 0
+                        crlf()
+                        crlf("OK")
+                else:
+                    try:
+                        if plus:
+                            sock.send(b"+" * plus)
+                        plus = 0
+                        sock.send(ch.encode("latin-1"))
+                    except Exception:
+                        hangup()
+                last_rx = time.ticks_ms()
+            else:
+                if echo:
+                    sys.stdout.write(ch)
+                if ch in ("\r", "\n"):
+                    if echo and ch == "\r":
+                        sys.stdout.write("\n")
+                    do_cmd(buf.strip())
+                    buf = ""
+                elif ch in ("\x08", "\x7f"):
+                    buf = buf[:-1]
+                else:
+                    buf += ch
+        if sock and online:
+            try:
+                data = sock.recv(256)
+                if data == b"":
+                    hangup()
+                elif data:
+                    sys.stdout.write(data.decode("latin-1"))
+            except OSError:
+                pass                # EAGAIN
+            except Exception:
+                hangup()
+        time.sleep_ms(2)
+
+
+run()

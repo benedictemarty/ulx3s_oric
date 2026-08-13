@@ -4497,3 +4497,812 @@ java.lang.NullPointerException: Cannot read field "item" because "p_other" is nu
 2026-08-13 15:50:41.328 INFO   [0B550D\DCEEB2] Auto-router pass #640 on board '88dbcf16ab8a30cbf9355b6928b1687c' was completed in 8,50 seconds with the score of 970,01 (7 unrouted), using 1522450,88 CPU seconds and 1505968 MB memory.
 2026-08-13 15:50:44.107 INFO   [0B550D\DCEEB2] Auto-router pass #641 on board 'f04ba090951a725ef94d1b63d70803a3' was completed in 2,77 seconds with the score of 974,80 (4 unrouted), using 1527612,38 CPU seconds and 1508522 MB memory.
 2026-08-13 15:50:46.939 INFO   [0B550D\DCEEB2] Auto-router pass #642 on board '717adf8650521529e0260e677fbe20bb' was completed in 2,81 seconds with the score of 969,95 (8 unrouted), using 1531058,12 CPU seconds and 1510061 MB memory.
+2026-08-13 15:50:50.317 INFO   [0B550D\DCEEB2] Auto-router pass #643 on board '311ef86a3b7491c9de86d18c2fcb4079' was completed in 3,35 seconds with the score of 969,09 (8 unrouted), using 1537961,62 CPU seconds and 1513165 MB memory.
+2026-08-13 15:51:07.310 INFO   [0B550D\DCEEB2] Restoring an earlier board that has the score of 977,23 (2 unrouted).
+2026-08-13 15:51:07.310 INFO   [0B550D\DCEEB2] Auto-router pass #644 on board '0e7ff2444b16f0d1bfc3674a8be406fc' was completed in 16,96 seconds with the score of 970,91 (6 unrouted), using 1567475,38 CPU seconds and 1525574 MB memory.
+2026-08-13 15:51:09.718 INFO   [0B550D\DCEEB2] Auto-router pass #645 on board 'f04ba090951a725ef94d1b63d70803a3' was completed in 2,40 seconds with the score of 973,16 (5 unrouted), using 1570966,12 CPU seconds and 1527176 MB memory.
+2026-08-13 15:51:09.747 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.747 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.747 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.748 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.749 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.749 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.750 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.750 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.750 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.750 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.750 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.750 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.750 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.751 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.751 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.751 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.751 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.751 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.751 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.751 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.753 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.753 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.753 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.753 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.753 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.753 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.753 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.753 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.755 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.755 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.755 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.755 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.755 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.755 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.755 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.755 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.755 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.755 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.755 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.755 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.755 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.755 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.755 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.755 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.755 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.756 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.756 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.756 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.756 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.756 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.756 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.756 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.756 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.756 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.756 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.756 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.756 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.756 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.768 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.768 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.770 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.771 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.771 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.772 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.776 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.776 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.776 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.776 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.776 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.776 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.776 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.776 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.776 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.776 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.776 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.776 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.776 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.778 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.778 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.778 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.778 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.778 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.778 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.779 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.779 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.785 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.785 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.785 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.785 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.785 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.786 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.786 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.786 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.787 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.787 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.789 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.789 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.789 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.792 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.793 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.798 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.798 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.798 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.798 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.807 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.807 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.831 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.831 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.833 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.840 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.840 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.840 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.840 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.840 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.840 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.840 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.840 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.840 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.840 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.841 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.844 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.844 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.844 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.848 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.860 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.942 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.942 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.942 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.942 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.943 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.943 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.943 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.943 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.943 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:09.943 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:13.161 INFO   [0B550D\DCEEB2] Auto-router pass #646 on board '91454d378b21d31e0d17c8b0d888a606' was completed in 3,43 seconds with the score of 974,48 (4 unrouted), using 1577959,38 CPU seconds and 1530445 MB memory.
+2026-08-13 15:51:14.609 INFO   [0B550D\DCEEB2] Auto-router pass #647 on board '266f6f4fb0ec1f5a95aff22a6822a1f1' was completed in 1,43 seconds with the score of 976,08 (3 unrouted), using 1579710,12 CPU seconds and 1531291 MB memory.
+2026-08-13 15:51:21.358 INFO   [0B550D\DCEEB2] Restoring an earlier board that has the score of 977,20 (2 unrouted).
+2026-08-13 15:51:21.358 INFO   [0B550D\DCEEB2] Auto-router pass #648 on board 'd0636af71105bf79860209ae006059be' was completed in 6,72 seconds with the score of 975,96 (3 unrouted), using 1591992,88 CPU seconds and 1536659 MB memory.
+2026-08-13 15:51:22.992 INFO   [0B550D\DCEEB2] Auto-router pass #649 on board '72272847ad7e2ec3e9cdc14173b22018' was completed in 1,62 seconds with the score of 975,91 (3 unrouted), using 1593751,38 CPU seconds and 1537493 MB memory.
+2026-08-13 15:51:23.068 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:23.068 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:23.068 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:23.068 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:23.069 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:23.069 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:23.069 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:23.069 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:23.069 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:23.069 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:23.069 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:23.069 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:23.069 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:23.069 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:23.069 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:23.069 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:23.069 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:23.069 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:23.069 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:23.069 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:23.069 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:23.069 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:23.070 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:23.077 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:23.077 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:23.078 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:23.078 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:23.078 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:23.078 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:23.078 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:23.078 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:23.081 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:23.081 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:23.081 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:23.081 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:23.081 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:23.081 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:23.081 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:25.303 INFO   [0B550D\DCEEB2] Auto-router pass #650 on board '39593c2bffafffbb2075b5d8a3ac4253' was completed in 2,28 seconds with the score of 975,94 (3 unrouted), using 1599032,88 CPU seconds and 1539898 MB memory.
+2026-08-13 15:51:27.085 INFO   [0B550D\DCEEB2] Auto-router pass #651 on board '7693e6b932bf4fe1d028923e323b32d2' was completed in 1,76 seconds with the score of 973,54 (5 unrouted), using 1600795,25 CPU seconds and 1540673 MB memory.
+2026-08-13 15:51:36.817 INFO   [0B550D\DCEEB2] Restoring an earlier board that has the score of 977,20 (2 unrouted).
+2026-08-13 15:51:36.817 INFO   [0B550D\DCEEB2] Auto-router pass #652 on board '7c174d9eb40682b4196d9bbf8f66ad95' was completed in 9,71 seconds with the score of 974,77 (4 unrouted), using 1618473,12 CPU seconds and 1548585 MB memory.
+2026-08-13 15:51:38.459 INFO   [0B550D\DCEEB2] Auto-router pass #653 on board '72272847ad7e2ec3e9cdc14173b22018' was completed in 1,63 seconds with the score of 975,91 (3 unrouted), using 1622020,38 CPU seconds and 1550210 MB memory.
+2026-08-13 15:51:39.480 INFO   [0B550D\DCEEB2] Auto-router pass #654 on board '997ac386fd87dc7ae74893e1de3a01e2' was completed in 0,99 seconds with the score of 975,86 (3 unrouted), using 1623795,50 CPU seconds and 1551080 MB memory.
+2026-08-13 15:51:41.663 INFO   [0B550D\DCEEB2] Auto-router pass #655 on board 'd65f8703bd62f914d4e4003f379c83cc' was completed in 2,16 seconds with the score of 975,71 (3 unrouted), using 1627348,50 CPU seconds and 1552735 MB memory.
+2026-08-13 15:51:47.022 INFO   [0B550D\DCEEB2] Restoring an earlier board that has the score of 977,20 (2 unrouted).
+2026-08-13 15:51:47.022 INFO   [0B550D\DCEEB2] Auto-router pass #656 on board 'dcdddd643ff539b9de721d91d0ac94ab' was completed in 5,33 seconds with the score of 975,68 (3 unrouted), using 1636248,12 CPU seconds and 1556774 MB memory.
+2026-08-13 15:51:48.725 INFO   [0B550D\DCEEB2] Auto-router pass #657 on board '72272847ad7e2ec3e9cdc14173b22018' was completed in 1,69 seconds with the score of 975,91 (3 unrouted), using 1639814,88 CPU seconds and 1558346 MB memory.
+2026-08-13 15:51:48.776 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:48.776 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:48.776 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:48.776 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:48.776 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:48.776 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:48.776 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:48.777 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:48.777 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:48.777 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:48.777 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:48.777 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:48.777 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:48.777 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:48.777 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:48.777 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:48.777 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:48.781 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:48.782 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:48.782 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:48.782 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:48.782 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:48.782 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:48.782 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:48.784 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:48.784 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:48.784 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:48.784 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:48.784 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:48.784 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:48.784 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:48.785 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:48.785 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:49.556 INFO   [0B550D\DCEEB2] Auto-router pass #658 on board '39593c2bffafffbb2075b5d8a3ac4253' was completed in 0,82 seconds with the score of 977,00 (2 unrouted), using 1641599,62 CPU seconds and 1559192 MB memory.
+2026-08-13 15:51:49.703 INFO   [0B550D\DCEEB2] Auto-router pass #659 on board '89a6677d8e149d02bef33d82fd982eae' was completed in 0,11 seconds with the score of 976,98 (2 unrouted), using 1641599,62 CPU seconds and 1559192 MB memory.
+2026-08-13 15:51:55.042 INFO   [0B550D\DCEEB2] Restoring an earlier board that has the score of 977,20 (2 unrouted).
+2026-08-13 15:51:55.042 INFO   [0B550D\DCEEB2] Auto-router pass #660 on board 'efe12feace7712dfb6c755ffcce24f02' was completed in 5,31 seconds with the score of 973,19 (5 unrouted), using 1650538,00 CPU seconds and 1563039 MB memory.
+2026-08-13 15:51:56.784 INFO   [0B550D\DCEEB2] Auto-router pass #661 on board '72272847ad7e2ec3e9cdc14173b22018' was completed in 1,73 seconds with the score of 975,91 (3 unrouted), using 1654120,12 CPU seconds and 1564478 MB memory.
+2026-08-13 15:51:56.886 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:56.886 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:56.886 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:56.887 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:56.887 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:56.887 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:56.887 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:56.887 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:56.887 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:56.887 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:56.887 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:56.887 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:56.887 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:51:58.564 INFO   [0B550D\DCEEB2] Auto-router pass #662 on board '39593c2bffafffbb2075b5d8a3ac4253' was completed in 1,77 seconds with the score of 973,18 (5 unrouted), using 1657706,12 CPU seconds and 1566070 MB memory.
+2026-08-13 15:52:03.587 INFO   [0B550D\DCEEB2] Auto-router pass #663 on board 'fee386c7de71d84ff4d0de3640e86f28' was completed in 5,00 seconds with the score of 971,68 (6 unrouted), using 1666688,12 CPU seconds and 1569958 MB memory.
+2026-08-13 15:52:19.349 INFO   [0B550D\DCEEB2] Restoring an earlier board that has the score of 977,20 (2 unrouted).
+2026-08-13 15:52:19.349 INFO   [0B550D\DCEEB2] Auto-router pass #664 on board '36a9947503a032c86dd1655c8652a370' was completed in 15,74 seconds with the score of 968,95 (8 unrouted), using 1695594,50 CPU seconds and 1582095 MB memory.
+2026-08-13 15:52:21.077 INFO   [0B550D\DCEEB2] Auto-router pass #665 on board '704b796e848311ec1698e6c696768854' was completed in 1,72 seconds with the score of 977,12 (2 unrouted), using 1697409,50 CPU seconds and 1582871 MB memory.
+2026-08-13 15:52:21.728 INFO   [0B550D\DCEEB2] Auto-router pass #666 on board '0506db762a0bc5ed59266ae883022c55' was completed in 0,62 seconds with the score of 975,95 (3 unrouted), using 1699225,38 CPU seconds and 1583649 MB memory.
+2026-08-13 15:52:23.631 INFO   [0B550D\DCEEB2] Auto-router pass #667 on board '28314867bd6eb722c0ed63f730dce992' was completed in 1,86 seconds with the score of 973,31 (5 unrouted), using 1702860,00 CPU seconds and 1585209 MB memory.
+2026-08-13 15:52:33.760 INFO   [0B550D\DCEEB2] Restoring an earlier board that has the score of 977,20 (2 unrouted).
+2026-08-13 15:52:33.760 INFO   [0B550D\DCEEB2] Auto-router pass #668 on board '7a0443d64e75934e8fa5b09ab838f715' was completed in 10,10 seconds with the score of 974,54 (4 unrouted), using 1721091,50 CPU seconds and 1592513 MB memory.
+2026-08-13 15:52:35.550 INFO   [0B550D\DCEEB2] Auto-router pass #669 on board '704b796e848311ec1698e6c696768854' was completed in 1,78 seconds with the score of 977,12 (2 unrouted), using 1724749,50 CPU seconds and 1593949 MB memory.
+2026-08-13 15:52:36.207 INFO   [0B550D\DCEEB2] Auto-router pass #670 on board '0506db762a0bc5ed59266ae883022c55' was completed in 0,65 seconds with the score of 975,95 (3 unrouted), using 1726579,88 CPU seconds and 1594835 MB memory.
+2026-08-13 15:52:37.551 INFO   [0B550D\DCEEB2] Auto-router pass #671 on board '28314867bd6eb722c0ed63f730dce992' was completed in 1,33 seconds with the score of 972,92 (5 unrouted), using 1728411,25 CPU seconds and 1595593 MB memory.
+2026-08-13 15:52:38.189 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:52:38.189 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:52:38.190 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:52:38.191 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:52:38.191 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:52:38.191 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:52:38.192 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:52:38.205 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:52:38.205 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:52:38.205 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:52:38.207 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:52:38.207 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:52:38.217 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:52:38.217 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:52:38.268 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:52:38.268 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:52:38.269 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:52:38.270 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:52:38.270 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.NullPointerException: null
+2026-08-13 15:52:38.270 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.NullPointerException: null
+2026-08-13 15:52:38.480 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:52:38.481 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:52:40.145 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: null
+2026-08-13 15:52:40.145 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: null
+2026-08-13 15:52:44.676 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: null
+2026-08-13 15:52:44.676 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: null
+2026-08-13 15:52:44.835 INFO   [0B550D\DCEEB2] Restoring an earlier board that has the score of 977,20 (2 unrouted).
+2026-08-13 15:52:44.835 INFO   [0B550D\DCEEB2] Auto-router pass #672 on board '2eab2041beb3242e4f1e06b1e9847396' was completed in 7,26 seconds with the score of 974,16 (4 unrouted), using 1741258,12 CPU seconds and 1600904 MB memory.
+2026-08-13 15:52:46.502 INFO   [0B550D\DCEEB2] Auto-router pass #673 on board '704b796e848311ec1698e6c696768854' was completed in 1,66 seconds with the score of 977,14 (2 unrouted), using 1744937,38 CPU seconds and 1602436 MB memory.
+2026-08-13 15:52:48.499 INFO   [0B550D\DCEEB2] Auto-router pass #674 on board '8ed79293d08ffc45de8d6cb42330d34d' was completed in 1,97 seconds with the score of 973,01 (5 unrouted), using 1748620,50 CPU seconds and 1604036 MB memory.
+2026-08-13 15:52:51.485 INFO   [0B550D\DCEEB2] Auto-router pass #675 on board '7950b637bd096a28718f2591489001d0' was completed in 2,96 seconds with the score of 970,48 (7 unrouted), using 1754152,50 CPU seconds and 1606410 MB memory.
+2026-08-13 15:53:03.979 INFO   [0B550D\DCEEB2] Restoring an earlier board that has the score of 977,20 (2 unrouted).
+2026-08-13 15:53:03.980 INFO   [0B550D\DCEEB2] Auto-router pass #676 on board '7aad803d409f0f3972f1de5afb0766b0' was completed in 12,47 seconds with the score of 971,89 (6 unrouted), using 1776368,00 CPU seconds and 1614970 MB memory.
+2026-08-13 15:53:05.545 INFO   [0B550D\DCEEB2] Auto-router pass #677 on board '704b796e848311ec1698e6c696768854' was completed in 1,55 seconds with the score of 977,12 (2 unrouted), using 1780084,25 CPU seconds and 1616420 MB memory.
+2026-08-13 15:53:06.193 INFO   [0B550D\DCEEB2] Auto-router pass #678 on board 'd6abee0381df67597127f7b1f7a75724' was completed in 0,62 seconds with the score of 974,21 (4 unrouted), using 1781943,88 CPU seconds and 1617353 MB memory.
+2026-08-13 15:53:09.691 INFO   [0B550D\DCEEB2] Auto-router pass #679 on board '2979018fd38b3cf073213f9fd736f8ac' was completed in 3,47 seconds with the score of 968,54 (8 unrouted), using 1787528,38 CPU seconds and 1619695 MB memory.
+2026-08-13 15:53:23.112 INFO   [0B550D\DCEEB2] Restoring an earlier board that has the score of 977,19 (2 unrouted).
+2026-08-13 15:53:23.112 INFO   [0B550D\DCEEB2] Auto-router pass #680 on board '677ac6d3fc857e6ba7bdc6316d3c3ed7' was completed in 13,40 seconds with the score of 972,19 (5 unrouted), using 1811829,00 CPU seconds and 1629006 MB memory.
+2026-08-13 15:53:26.196 INFO   [0B550D\DCEEB2] Auto-router pass #681 on board '7ec091aa14bd45bf316d12376bec23a0' was completed in 3,07 seconds with the score of 977,07 (2 unrouted), using 1819338,50 CPU seconds and 1631267 MB memory.
+2026-08-13 15:53:26.308 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.309 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.331 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.331 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.331 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.331 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.339 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.339 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.339 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.339 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.339 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.339 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.339 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.339 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.339 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.347 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.347 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.347 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.347 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.349 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.372 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.372 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.372 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.374 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.374 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.374 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.374 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.374 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.374 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.408 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.408 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.408 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.408 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.409 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.409 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.409 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.420 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.420 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.420 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.420 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.420 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.420 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.420 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.426 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.445 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.451 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.451 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.451 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.451 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.452 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.452 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.452 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.452 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.457 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.457 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.457 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.468 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.468 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.468 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.504 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.504 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.504 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.562 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.562 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.590 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.590 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.590 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.590 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.608 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.608 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.608 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.646 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.646 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.646 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.646 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.646 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.646 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:26.646 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:53:27.222 INFO   [0B550D\DCEEB2] Auto-router pass #682 on board 'd492786076e29a7563319d34517cfc26' was completed in 0,98 seconds with the score of 977,07 (2 unrouted), using 1821218,25 CPU seconds and 1632004 MB memory.
+2026-08-13 15:53:27.669 INFO   [0B550D\DCEEB2] Auto-router pass #683 on board 'af6e875c316dc4d8b77339670afe9c50' was completed in 0,41 seconds with the score of 977,09 (2 unrouted), using 1821218,25 CPU seconds and 1632004 MB memory.
+2026-08-13 15:53:33.436 INFO   [0B550D\DCEEB2] Restoring an earlier board that has the score of 977,19 (2 unrouted).
+2026-08-13 15:53:33.437 INFO   [0B550D\DCEEB2] Auto-router pass #684 on board 'fb76f6a62b16664051f504a80d634576' was completed in 5,74 seconds with the score of 977,11 (2 unrouted), using 1832516,88 CPU seconds and 1636002 MB memory.
+2026-08-13 15:53:35.679 INFO   [0B550D\DCEEB2] Auto-router pass #685 on board '7ec091aa14bd45bf316d12376bec23a0' was completed in 2,23 seconds with the score of 977,46 (2 unrouted), using 1836290,62 CPU seconds and 1637128 MB memory.
+2026-08-13 15:53:36.415 INFO   [0B550D\DCEEB2] Auto-router pass #686 on board 'acf6da4da24d8ccfb3aefdc385532b9e' was completed in 0,69 seconds with the score of 977,22 (2 unrouted), using 1838178,88 CPU seconds and 1637875 MB memory.
+2026-08-13 15:53:36.949 INFO   [0B550D\DCEEB2] Auto-router pass #687 on board 'c9bad5b263ae286da90bcefa964f84d0' was completed in 0,50 seconds with the score of 973,21 (5 unrouted), using 1838178,88 CPU seconds and 1637875 MB memory.
+2026-08-13 15:53:46.724 INFO   [0B550D\DCEEB2] Restoring an earlier board that has the score of 977,46 (2 unrouted).
+2026-08-13 15:53:46.724 INFO   [0B550D\DCEEB2] Auto-router pass #688 on board 'a380d326fda19466f13ade0cda54d5a2' was completed in 9,75 seconds with the score of 972,90 (5 unrouted), using 1857115,00 CPU seconds and 1645048 MB memory.
+2026-08-13 15:53:50.296 INFO   [0B550D\DCEEB2] Auto-router pass #689 on board 'acf6da4da24d8ccfb3aefdc385532b9e' was completed in 3,56 seconds with the score of 976,19 (3 unrouted), using 1864716,38 CPU seconds and 1647520 MB memory.
+2026-08-13 15:53:51.731 INFO   [0B550D\DCEEB2] Auto-router pass #690 on board 'cf52ec87beb61d9373b54c992043bed2' was completed in 1,41 seconds with the score of 975,76 (3 unrouted), using 1866619,12 CPU seconds and 1648288 MB memory.
+2026-08-13 15:53:53.950 INFO   [0B550D\DCEEB2] Auto-router pass #691 on board '902dd532f7334ad5c1c0e40a089e49dc' was completed in 2,19 seconds with the score of 974,51 (4 unrouted), using 1870427,50 CPU seconds and 1649612 MB memory.
+2026-08-13 15:54:05.437 INFO   [0B550D\DCEEB2] Restoring an earlier board that has the score of 977,46 (2 unrouted).
+2026-08-13 15:54:05.437 INFO   [0B550D\DCEEB2] Auto-router pass #692 on board '264700394931fe93cc7dd8a0da2ae4bf' was completed in 11,46 seconds with the score of 971,77 (6 unrouted), using 1893358,75 CPU seconds and 1657548 MB memory.
+2026-08-13 15:54:08.261 INFO   [0B550D\DCEEB2] Auto-router pass #693 on board 'acf6da4da24d8ccfb3aefdc385532b9e' was completed in 2,81 seconds with the score of 976,19 (3 unrouted), using 1899113,25 CPU seconds and 1659858 MB memory.
+2026-08-13 15:54:09.971 INFO   [0B550D\DCEEB2] Auto-router pass #694 on board 'cf52ec87beb61d9373b54c992043bed2' was completed in 1,70 seconds with the score of 974,33 (4 unrouted), using 1901033,38 CPU seconds and 1660652 MB memory.
+2026-08-13 15:54:13.591 INFO   [0B550D\DCEEB2] Auto-router pass #695 on board '1185220dcd97818de733fb0ec2d4b3d7' was completed in 3,59 seconds with the score of 973,16 (5 unrouted), using 1908723,62 CPU seconds and 1663631 MB memory.
+2026-08-13 15:54:25.133 INFO   [0B550D\DCEEB2] Restoring an earlier board that has the score of 977,46 (2 unrouted).
+2026-08-13 15:54:25.133 INFO   [0B550D\DCEEB2] Auto-router pass #696 on board '5afa444fc0f1c23047c67d7d89e9ff78' was completed in 11,52 seconds with the score of 974,53 (4 unrouted), using 1929951,88 CPU seconds and 1671168 MB memory.
+2026-08-13 15:54:26.937 INFO   [0B550D\DCEEB2] Auto-router pass #697 on board 'acf6da4da24d8ccfb3aefdc385532b9e' was completed in 1,79 seconds with the score of 977,54 (2 unrouted), using 1933824,12 CPU seconds and 1672592 MB memory.
+2026-08-13 15:54:27.605 INFO   [0B550D\DCEEB2] Auto-router pass #698 on board 'd8d746b286148ac68bfdfd4aa1b2c0cb' was completed in 0,64 seconds with the score of 977,13 (2 unrouted), using 1935761,75 CPU seconds and 1673397 MB memory.
+2026-08-13 15:54:28.149 INFO   [0B550D\DCEEB2] Auto-router pass #699 on board '806d6e9732296e34a0e86b8fc7cb52b1' was completed in 0,52 seconds with the score of 975,81 (3 unrouted), using 1935761,75 CPU seconds and 1673397 MB memory.
+2026-08-13 15:54:32.389 INFO   [0B550D\DCEEB2] Restoring an earlier board that has the score of 977,54 (2 unrouted).
+2026-08-13 15:54:32.389 INFO   [0B550D\DCEEB2] Auto-router pass #700 on board 'd74c55d2df0e7100227989d00c2aacc8' was completed in 4,22 seconds with the score of 975,61 (3 unrouted), using 1945464,12 CPU seconds and 1677412 MB memory.
+2026-08-13 15:54:33.912 INFO   [0B550D\DCEEB2] Auto-router pass #701 on board 'd8d746b286148ac68bfdfd4aa1b2c0cb' was completed in 1,51 seconds with the score of 977,19 (2 unrouted), using 1947407,50 CPU seconds and 1678179 MB memory.
+2026-08-13 15:54:34.006 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.006 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.006 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.006 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.006 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.006 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.006 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.006 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.006 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.006 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.006 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.006 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.007 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.007 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.008 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.010 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.010 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.010 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.010 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.010 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.010 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.010 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.010 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.105 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.140 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.140 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.140 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.151 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.151 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.151 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.151 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.152 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.152 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.152 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.153 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.153 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.153 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.153 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.154 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.154 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.154 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.163 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.215 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.215 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.215 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.218 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.218 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.218 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.218 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.218 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.218 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.218 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.218 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.218 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.219 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.219 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.219 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.219 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.219 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.219 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.220 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.220 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.220 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.220 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.220 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.220 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.220 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.220 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.220 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.220 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.220 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.220 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.223 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.223 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.223 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.237 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.237 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.657 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.671 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.673 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.673 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.690 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.710 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.824 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:34.824 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:35.144 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:35.158 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:35.158 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:35.158 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:35.253 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: null
+2026-08-13 15:54:35.253 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: null
+2026-08-13 15:54:35.328 INFO   [0B550D\DCEEB2] Auto-router pass #702 on board 'd5a320aa07d4e2a624edbbeea95e48d1' was completed in 1,39 seconds with the score of 977,19 (2 unrouted), using 1951297,12 CPU seconds and 1679865 MB memory.
+2026-08-13 15:54:35.497 INFO   [0B550D\DCEEB2] Auto-router pass #703 on board 'd5a320aa07d4e2a624edbbeea95e48d1' was completed in 0,16 seconds with the score of 977,19 (2 unrouted), using 1951297,12 CPU seconds and 1679865 MB memory.
+2026-08-13 15:54:35.582 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:36.163 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:36.163 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:36.164 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:36.266 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:36.267 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:36.267 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:36.268 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:36.268 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:36.274 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:36.275 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:36.275 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:36.275 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:36.281 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:36.281 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:36.281 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:36.281 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:36.281 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:36.281 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:36.311 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:36.368 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:36.368 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:36.368 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:36.368 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:36.368 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:36.368 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:36.388 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:36.388 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:36.389 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:36.390 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:36.390 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:36.394 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:36.394 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:36.394 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:36.395 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:36.395 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:36.406 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:36.481 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:36.494 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:36.494 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:36.494 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:36.497 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:36.497 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:36.506 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:36.521 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:36.522 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:36.522 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:36.522 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:36.602 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:36.613 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:36.613 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:36.614 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:36.615 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:37.301 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:37.503 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:37.504 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:37.504 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:37.698 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:37.698 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:37.699 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:37.915 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:37.916 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:37.916 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:37.916 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:37.917 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:37.917 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:37.917 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:37.917 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:37.917 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:37.917 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:37.917 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:37.917 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:37.923 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:37.935 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:37.935 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:37.935 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:37.935 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:37.935 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:37.936 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:38.248 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:38.403 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:38.403 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:38.403 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:38.403 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:38.410 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:38.415 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:38.415 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:38.416 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:38.416 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:38.447 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:38.610 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:38.610 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:38.613 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:38.613 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:38.618 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:38.618 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:38.618 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:38.618 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:38.618 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:38.618 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:38.619 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:38.619 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:38.621 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:38.621 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:38.621 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:38.621 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:38.622 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:38.622 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:38.622 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:38.623 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:38.623 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:38.623 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:38.623 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:38.623 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:38.623 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:38.623 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:38.623 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:38.623 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:38.624 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:38.624 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:38.624 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:38.652 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:38.680 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:38.680 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:39.669 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:39.669 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:39.694 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:39.701 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:39.702 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:39.702 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:39.702 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:39.711 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:39.711 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:39.911 INFO   [0B550D\DCEEB2] Restoring an earlier board that has the score of 977,54 (2 unrouted).
+2026-08-13 15:54:39.912 INFO   [0B550D\DCEEB2] Auto-router pass #704 on board 'd5a320aa07d4e2a624edbbeea95e48d1' was completed in 4,40 seconds with the score of 977,16 (2 unrouted), using 1959087,88 CPU seconds and 1682751 MB memory.
+2026-08-13 15:54:41.581 INFO   [0B550D\DCEEB2] Auto-router pass #705 on board 'd8d746b286148ac68bfdfd4aa1b2c0cb' was completed in 1,66 seconds with the score of 977,63 (2 unrouted), using 1962988,88 CPU seconds and 1684025 MB memory.
+2026-08-13 15:54:42.998 INFO   [0B550D\DCEEB2] Auto-router pass #706 on board '2392ab46872532fd15c96e294ff2e199' was completed in 1,39 seconds with the score of 974,34 (4 unrouted), using 1964940,88 CPU seconds and 1684799 MB memory.
+2026-08-13 15:54:44.535 INFO   [0B550D\DCEEB2] Auto-router pass #707 on board '39b992da3e80d655462b992091ef5c06' was completed in 1,51 seconds with the score of 974,23 (4 unrouted), using 1968847,62 CPU seconds and 1686409 MB memory.
+2026-08-13 15:54:52.651 INFO   [0B550D\DCEEB2] Restoring an earlier board that has the score of 977,63 (2 unrouted).
+2026-08-13 15:54:52.652 INFO   [0B550D\DCEEB2] Auto-router pass #708 on board '40fef6543f0196723fee14fd17b7514c' was completed in 8,09 seconds with the score of 972,30 (5 unrouted), using 1984513,62 CPU seconds and 1692069 MB memory.
+2026-08-13 15:54:55.136 INFO   [0B550D\DCEEB2] Auto-router pass #709 on board '2392ab46872532fd15c96e294ff2e199' was completed in 2,47 seconds with the score of 974,34 (4 unrouted), using 1988439,88 CPU seconds and 1693588 MB memory.
+2026-08-13 15:54:55.254 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:55.254 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:55.255 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:55.255 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:55.255 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:55.255 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:55.255 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:55.255 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:55.257 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:55.257 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:55.257 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:55.257 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:55.257 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:55.272 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:55.272 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:55.272 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:55.272 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:55.273 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:55.282 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:55.282 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:55.282 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:55.282 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:55.282 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:55.282 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:55.282 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:55.282 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:55.289 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:55.290 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:55.290 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:55.290 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:55.290 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:55.290 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:55.290 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:55.290 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:55.290 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:55.290 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:55.290 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:55.290 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:55.291 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:55.291 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:55.300 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:55.300 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:55.303 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:55.303 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:55.321 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:55.321 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:55.321 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:55.321 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:55.321 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:55.321 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:55.321 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:55.321 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:55.353 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:54:56.020 INFO   [0B550D\DCEEB2] Auto-router pass #710 on board '980827aab885fe2dc22bbf43da9fddc5' was completed in 0,86 seconds with the score of 975,55 (3 unrouted), using 1990404,38 CPU seconds and 1694402 MB memory.
+2026-08-13 15:54:58.279 INFO   [0B550D\DCEEB2] Auto-router pass #711 on board '78575a67216a8b12c180a52e973158d6' was completed in 2,23 seconds with the score of 973,73 (4 unrouted), using 1996303,88 CPU seconds and 1696618 MB memory.
+2026-08-13 15:55:09.904 INFO   [0B550D\DCEEB2] Restoring an earlier board that has the score of 977,63 (2 unrouted).
+2026-08-13 15:55:09.904 INFO   [0B550D\DCEEB2] Auto-router pass #712 on board '4b618e2174d25238f2b9dbe6bee9fd59' was completed in 11,60 seconds with the score of 975,02 (3 unrouted), using 2018009,88 CPU seconds and 1704328 MB memory.
+2026-08-13 15:55:11.677 INFO   [0B550D\DCEEB2] Auto-router pass #713 on board '2392ab46872532fd15c96e294ff2e199' was completed in 1,76 seconds with the score of 977,29 (2 unrouted), using 2021969,12 CPU seconds and 1705826 MB memory.
+2026-08-13 15:55:12.262 INFO   [0B550D\DCEEB2] Auto-router pass #714 on board '74194f0791a7b615d5f2351136eb5760' was completed in 0,56 seconds with the score of 974,41 (4 unrouted), using 2023950,12 CPU seconds and 1706658 MB memory.
+2026-08-13 15:55:15.211 INFO   [0B550D\DCEEB2] Auto-router pass #715 on board 'd9ebfed69d599ead4fbadfba0db560d8' was completed in 2,92 seconds with the score of 974,81 (4 unrouted), using 2029899,12 CPU seconds and 1708839 MB memory.
+2026-08-13 15:55:24.759 INFO   [0B550D\DCEEB2] Restoring an earlier board that has the score of 977,63 (2 unrouted).
+2026-08-13 15:55:24.760 INFO   [0B550D\DCEEB2] Auto-router pass #716 on board 'a03bb4ec14761c8c75812e891c7f3e74' was completed in 9,52 seconds with the score of 972,83 (5 unrouted), using 2047798,50 CPU seconds and 1715380 MB memory.
+2026-08-13 15:55:26.572 INFO   [0B550D\DCEEB2] Auto-router pass #717 on board '2392ab46872532fd15c96e294ff2e199' was completed in 1,80 seconds with the score of 977,29 (2 unrouted), using 2051786,88 CPU seconds and 1716890 MB memory.
+2026-08-13 15:55:27.118 INFO   [0B550D\DCEEB2] Auto-router pass #718 on board '74194f0791a7b615d5f2351136eb5760' was completed in 0,54 seconds with the score of 974,41 (4 unrouted), using 2051786,88 CPU seconds and 1716890 MB memory.
+2026-08-13 15:55:30.085 INFO   [0B550D\DCEEB2] Auto-router pass #719 on board 'd9ebfed69d599ead4fbadfba0db560d8' was completed in 2,96 seconds with the score of 975,94 (3 unrouted), using 2057776,75 CPU seconds and 1719210 MB memory.
+2026-08-13 15:55:38.849 INFO   [0B550D\DCEEB2] Restoring an earlier board that has the score of 977,63 (2 unrouted).
+2026-08-13 15:55:38.849 INFO   [0B550D\DCEEB2] Auto-router pass #720 on board '0ddaf79396d6e0befa1edfd8321fb518' was completed in 8,74 seconds with the score of 972,01 (6 unrouted), using 2075798,75 CPU seconds and 1726055 MB memory.
+2026-08-13 15:55:40.676 INFO   [0B550D\DCEEB2] Auto-router pass #721 on board '2392ab46872532fd15c96e294ff2e199' was completed in 1,82 seconds with the score of 977,16 (2 unrouted), using 2079814,38 CPU seconds and 1727635 MB memory.
+2026-08-13 15:55:40.817 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.819 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.819 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.819 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.819 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.829 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.829 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.829 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.829 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.829 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.829 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.831 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.832 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.832 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.836 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.836 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.836 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.836 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.836 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.836 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.836 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.836 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.836 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.836 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.836 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.836 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.837 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.837 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.837 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.839 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.839 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.839 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.839 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.839 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.839 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.849 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.849 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.859 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.859 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.859 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.859 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.860 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.860 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.861 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.861 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.861 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.861 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.861 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.861 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.861 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.861 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.862 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.862 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.862 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.862 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.862 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.862 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.862 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.863 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.863 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.863 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.864 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.864 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.864 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.864 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.864 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.864 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.873 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.874 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.874 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.874 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.874 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.875 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.875 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.875 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.884 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.884 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.899 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.899 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.906 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.906 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.906 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.906 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.908 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:40.908 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:41.249 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-13 15:55:41.255 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 15:55:41.255 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 15:55:41.255 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 15:55:41.255 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-13 15:55:41.453 INFO   [0B550D\DCEEB2] Auto-router pass #722 on board 'c33ec31f059f861573cdea420edf25d6' was completed in 0,75 seconds with the score of 977,23 (2 unrouted), using 2081823,62 CPU seconds and 1728517 MB memory.
+2026-08-13 15:55:42.895 INFO   [0B550D\DCEEB2] Auto-router pass #723 on board 'cd498ee4047e3d4a89a04187995a78db' was completed in 1,42 seconds with the score of 974,94 (4 unrouted), using 2083833,88 CPU seconds and 1729368 MB memory.
+2026-08-13 15:55:49.658 INFO   [0B550D\DCEEB2] Restoring an earlier board that has the score of 977,54 (2 unrouted).
+2026-08-13 15:55:49.658 INFO   [0B550D\DCEEB2] Auto-router pass #724 on board 'dd10b5d9f1a0ea50a990be18b9e93b6c' was completed in 6,74 seconds with the score of 974,43 (4 unrouted), using 2097932,75 CPU seconds and 1735357 MB memory.
+2026-08-13 15:55:51.261 INFO   [0B550D\DCEEB2] Auto-router pass #725 on board 'd8d746b286148ac68bfdfd4aa1b2c0cb' was completed in 1,59 seconds with the score of 977,13 (2 unrouted), using 2101969,75 CPU seconds and 1737261 MB memory.
+2026-08-13 15:55:51.692 INFO   [0B550D\DCEEB2] Auto-router pass #726 on board '7338e204630f187c9ec4db401ba2b858' was completed in 0,41 seconds with the score of 973,06 (5 unrouted), using 2101969,75 CPU seconds and 1737261 MB memory.
+2026-08-13 15:55:54.699 INFO   [0B550D\DCEEB2] Auto-router pass #727 on board 'e376bba86c35cf7d5597d6f0169cce5b' was completed in 2,98 seconds with the score of 971,77 (6 unrouted), using 2108032,75 CPU seconds and 1739834 MB memory.
+2026-08-13 15:56:08.653 INFO   [0B550D\DCEEB2] Restoring an earlier board that has the score of 977,54 (2 unrouted).
+2026-08-13 15:56:08.653 INFO   [0B550D\DCEEB2] Auto-router pass #728 on board 'a820aef187dbab062dae7021ace65a53' was completed in 13,92 seconds with the score of 971,02 (6 unrouted), using 2136442,75 CPU seconds and 1750747 MB memory.
+2026-08-13 15:56:10.441 INFO   [0B550D\DCEEB2] Auto-router pass #729 on board 'd8d746b286148ac68bfdfd4aa1b2c0cb' was completed in 1,78 seconds with the score of 977,47 (2 unrouted), using 2140517,00 CPU seconds and 1752477 MB memory.
+2026-08-13 15:56:11.351 INFO   [0B550D\DCEEB2] Auto-router pass #730 on board '48b29b5f500fa018c2787dc49772ea8e' was completed in 0,89 seconds with the score of 974,55 (4 unrouted), using 2142555,50 CPU seconds and 1753572 MB memory.
+2026-08-13 15:56:13.334 INFO   [0B550D\DCEEB2] Auto-router pass #731 on board '802c95b0e1d351648d7546529fabc88c' was completed in 1,96 seconds with the score of 968,07 (8 unrouted), using 2146635,50 CPU seconds and 1755437 MB memory.

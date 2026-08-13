@@ -6,6 +6,17 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 ## [Non publié]
 
 ### Ajouté
+- **Modem WiFi Hayes sur l'ESP32 interne — INSTALLÉ ET FONCTIONNEL**
+  (bmarty, 2026-08-13) : `firmware/esp32_modem/main.py` (MicroPython,
+  jeu de commandes COMPATIBLE PicoWiFiModemUSB de ~/picowifi : AT$SSID=,
+  AT$PASS=, ATC1, AT&W, ATDT host[:port], +++/ATO/ATH, ATGET http(s),
+  ATI, ATZ), installé par le raw-REPL (`tools/esp32/install_main.py`,
+  aucun flash esptool), persistant (main.py + wifi.txt dans la flash de
+  l'ESP32). Testé via le passthru : AT→OK, ATI→bannière, AT?→aide.
+  Reste : config WiFi réelle (AT$SSID/AT$PASS/ATC1/AT&W) et terminal
+  côté Oric via le 6551 $031C (US-MODEM.3).
+
+### Ajouté
 - **ESP32 interne : REPL MicroPython découvert fonctionnel** (bmarty,
   2026-08-13) : le firmware d'usine MicroPython 1.14 répond sur l'UART
   (115200, passthru officiel), `network.WLAN` opérationnel, flash 4 Mo,

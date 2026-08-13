@@ -48,9 +48,11 @@ dans l'ESP32 ; 6551 mappé `$031C-$031F` (standard Oric, fidèle à
       2026-08-02, ne pas retenter). **DÉBLOQUÉ le 2026-08-13 par une autre
       voie : le firmware d'usine MicroPython 1.14 est vivant** (REPL UART
       115200 via le passthru, `network.WLAN` OK, flash 4 Mo, boot.py stub).
-      Nouveau plan : écrire le modem Hayes en **MicroPython**, l'injecter
-      par le REPL (paste mode) et le persister en `main.py` — zéro
-      matériel externe, le Pico W (US-MODEM.2b) devient le plan B.
+      **FAIT le 2026-08-13** : `firmware/esp32_modem/main.py` (MicroPython,
+      commandes compatibles ~/picowifi PicoWiFiModemUSB) installé par
+      raw-REPL (`tools/esp32/install_main.py`) et persistant. AT/ATI/AT?
+      validés via passthru. Reste : ATC1 sur le vrai WiFi, ATDT vers un
+      BBS, et le terminal Oric (US-MODEM.3). Pico W (2b) = plan B.
 - [ ] US-MODEM.2b **Modem WiFi externe** (issue retenue) : repointer le pont
       UART du 6551 de `wifi_rxd/txd` vers 2 broches `gp[]` accessibles + doc
       câblage (TX/RX/GND). Cible décidée 2026-08-02 : **Pico W** (branché sur
