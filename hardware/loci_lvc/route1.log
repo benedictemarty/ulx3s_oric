@@ -1,0 +1,14 @@
+Erreur : LinkageError lors du chargement de la classe principale app.freerouting.Freerouting
+	java.lang.UnsupportedClassVersionError: app/freerouting/Freerouting has been compiled by a more recent version of the Java Runtime (class file version 69.0), this version of the Java Runtime only recognizes class file versions up to 65.0
+freerouting : java -Djava.awt.headless=true -jar ../phaseA/freerouting-2.2.4.jar -de loci_lvc_fr.dsn -do loci_lvc.ses -mp 5
+Traceback (most recent call last):
+  File "/home/bmarty/ulx3s_oric/hardware/loci_lvc/route.py", line 72, in <module>
+    run_freerouting()
+    ~~~~~~~~~~~~~~~^^
+  File "/home/bmarty/ulx3s_oric/hardware/loci_lvc/route.py", line 46, in run_freerouting
+    subprocess.run(cmd, check=True, timeout=3600)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['java', '-Djava.awt.headless=true', '-jar', '../phaseA/freerouting-2.2.4.jar', '-de', 'loci_lvc_fr.dsn', '-do', 'loci_lvc.ses', '-mp', '5']' returned non-zero exit status 1.

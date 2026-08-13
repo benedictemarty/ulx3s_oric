@@ -7,7 +7,9 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 
 ### Ajouté
 - **US-SD-SPEED : SPI rapide après init + seek FAT32 incrémental** (bmarty,
-  2026-08-13) : (1) `spi_byte.v`/`sd_spi.v` — l'init SD reste à ~390 kHz
+  2026-08-13, **VALIDÉ SUR CARTE** — boot Sedoric rapide, Citadelle OK,
+  cassette/Atmos sans régression ; gravé en flash SPI avec l'OSD
+  ouvert/fermé, le reset auto et les broches XCVR) : (1) `spi_byte.v`/`sd_spi.v` — l'init SD reste à ~390 kHz
   (norme), puis tous les transferts passent à `HALF_FAST` (6,25 MHz à
   25 MHz, ×16 — la FSM SPI exige une demi-période ≥ 2 cycles : mosi doit
   précéder le front montant de sck) dès `ready` ; la vitesse est figée au lancement de chaque

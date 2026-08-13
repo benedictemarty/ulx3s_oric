@@ -30,16 +30,22 @@ DIR haut = A→B (A = côté 3,3 V FPGA, B = côté 5 V LOCI).
 | U2 | A1..A8 = A8..A15 → A5V8..A5V15 | figé HAUT (A→B) | GND |
 | U3 | A1..A8 = D0..D7 ↔ D5V0..D5V7 | **XCVR_DIR** (pull-down 10 k) | **/XCVR_OE** (pull-up 10 k → isolé par défaut) |
 | U4 | A1..A3 = RW, PHI2, IO_n → RW5, PHI2_5, IO5_n (A4..A8 NC, entrées A à GND) | figé HAUT (A→B) | GND |
-| U5 | B1..B4 = IRQ5_n, ROMDIS5_n, MAP5_n, IOCTL5_n → IRQ_n, ROMDIS_n, MAP_n, IOCTL_n (B5..B8 NC, entrées B à GND côté 5 V via 10 k) | figé BAS (B→A) | GND |
+| U5 | B1..B4 = IRQ5_n, ROMDIS5_n, MAP5_n, IOCTL5_n → IRQ_n, ROMDIS_n, MAP_n, IOCTL_n (B5..B8 = entrées, liées à GND en direct) | figé BAS (B→A) | GND |
 
 Sécurité par défaut (FPGA absent/non configuré) : U3 isolé (/OE tiré haut)
 et en écoute (DIR tiré bas) ; les entrées de canaux inutilisés ne flottent
 jamais (liées à la masse du côté émetteur).
 
-⚠️ **Brochage SN74LVCC3245APW À VÉRIFIER sur le datasheet TI (SCDS010)
-avant génération** — ne pas recopier le brochage du TXS ni supposer celui
-du '245 DIP. Points à confirmer : positions VCCA/VCCB/DIR//OE, sens A/B,
-et la contrainte VCCA ≤ VCCB.
+## SN74LVCC3245A — brochage VÉRIFIÉ (TI SCAS585R, mai 2026)
+
+⚠️ Boîtier PW = **TSSOP-24** (7,8×6,4 mm, pas 0,65 mm) — PAS 20 broches.
+1=VCCA, 2=DIR, 3..10=A1..A8, 11/12/13=GND, 14..21=B8..B1 (ordre inversé),
+22=/OE (actif bas), 23=NC, 24=VCCB.
+- VCCA 2,3-3,6 V (côté FPGA), VCCB 3-5,5 V (côté LOCI).
+- **DIR et /OE référencés à VCCA** → pilotage direct 3,3 V par le FPGA.
+- DIR haut = A→B ; VCC isolation : si un des deux VCC < 100 mV, tout passe
+  en haute impédance (sécurité au débranchement).
+- Empreinte KiCad : `Package_SO:TSSOP-24_4.4x7.8mm_P0.65mm`.
 
 ## /RESET (bidirectionnel drain ouvert)
 
@@ -70,7 +76,7 @@ Correspondance côté ULX3S = table de `docs/PORT_EXTENSION.md`
 
 | Réf | Composant | Empreinte |
 |---|---|---|
-| U1..U5 | SN74LVCC3245APW | TSSOP-20_4.4x6.5mm_P0.65mm |
+| U1..U5 | SN74LVCC3245APW | TSSOP-24_4.4x7.8mm_P0.65mm |
 | Q1 | BSS138 | SOT-23 |
 | J_EXP | Peigne 34 doigts (script phaseA) | custom |
 | J_ULX | Header mâle 2×20 | PinHeader_2x20_P2.54mm_Vertical |
@@ -78,6 +84,5 @@ Correspondance côté ULX3S = table de `docs/PORT_EXTENSION.md`
 | R1,R2 | 10 k (pull-ups /RESET 3V3 et 5V) | R_0603 |
 | R3 | 10 k (pull-up /XCVR_OE → 3V3) | R_0603 |
 | R4 | 10 k (pull-down XCVR_DIR) | R_0603 |
-| R5..R8 | 10 k (entrées B inutilisées U5 → GND) | R_0603 |
 | C1..C10 | 100 nF | C_0603 |
 | C11,C12 | 10 µF | C_0805 |

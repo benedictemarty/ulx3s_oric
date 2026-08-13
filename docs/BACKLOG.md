@@ -120,11 +120,12 @@ comparable à une vraie mécanique 3") ; v1 en LECTURE SEULE.
       syntaxe » venait de la course de piste). Reste ouvert : lenteur des
       chargements de piste (cf. US-SD-SPEED).
 - [x] US-SD-SPEED **SPI SD haute vitesse + seek FAT32 incrémental**
-      (2026-08-13) : SPI à 6,25 MHz après init (×16) et seek avant en O(1)
-      depuis le cluster courant (`cur_base` dans fat32). Le boot Sedoric
-      re-suivait la chaîne depuis le début du fichier à chaque piste
-      (piste 60 ≈ 90 sauts FAT à 390 kHz). Validé suite + tb_side1 ;
-      à confirmer sur carte.
+      (2026-08-13, VALIDÉ SUR CARTE — « ok cela fonctionne », gravé SPI) :
+      SPI à 6,25 MHz après init (×16) et seek avant en O(1) depuis le
+      cluster courant (`cur_base` dans fat32). Le boot Sedoric re-suivait
+      la chaîne depuis le début du fichier à chaque piste (piste 60 ≈ 90
+      sauts FAT à 390 kHz). Boot Sedoric rapide, Citadelle OK, cassette
+      et Atmos pur sans régression.
 - [ ] US-DISK.5 **Écriture** (v2, ultérieur) : write-back des secteurs vers
       la SD (commandes type II write), dirty tracking par piste.
 
