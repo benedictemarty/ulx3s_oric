@@ -32,10 +32,45 @@ Sémantique mémoire $C000-$FFFF (wiki Defence Force) :
 - /ROMDIS **et** /MAP actifs → le périphérique externe fournit les données.
 - /IOCTRL actif → le décodage interne de la VIA ($0300-$030F) est inhibé.
 
+## Adaptation de niveau 3,3 V ↔ 5 V : 74LVC245, PAS de TXS0108E
+
+**Le TXS0108E est à proscrire sur ce bus** (révision 2026-08-13). C'est un
+translateur auto-sens (pass-gates + one-shot + pull-ups ~40 kΩ) conçu pour
+des lignes open-drain lentes (I²C) : pas de contrôle de direction (risque
+de contention avec le 74LVC4245A push-pull de la LOCI → glitches), one-shot
+sensible à la capacité des fils volants (oscillations, faux niveaux),
+drive faible. OK pour I²C/SPI lents, inadapté à un bus parallèle push-pull.
+
+**Plan retenu : famille 74LVC à DIR//OE.** L'impératif est la FAMILLE :
+du **74LVC** (entrées 5 V-tolérantes quand alimenté en 3,3 V — c'est ce qui
+protège l'ECP5).
+- ✅ `74LVC245` alimenté en **3,3 V** (DIP-20, breadboard) — le plan.
+- ✅ `74LVCC3245A`/`74LVC4245A` (dual-supply 5 V/3,3 V) — encore plus
+  propre, mais SMD (moins commode en fils volants).
+- ❌ `74HC`/`74VHC`/`74AHC` 245 : NON 5 V-tolérants en 3,3 V → destruction
+  possible du FPGA.
+- ⚠️ `74AHCT245` (alim 5 V, entrées TTL) : uniquement pour le sens montant
+  3,3 V→5 V (adresses/contrôles) ; jamais pour lire la LOCI (il sortirait
+  du 5 V vers le FPGA).
+
+Affectation (3× DIP-20 + 1 pour les entrées) :
+- **Données D0-D7** : 1× 74LVC245 (3,3 V), `DIR = R/W`. **Attention /OE :**
+  `/OE = /IO` ne suffit PAS — la LOCI sert sa ROM menu via /ROMDIS+/MAP en
+  `$C000-$FFFF`, ces lectures MÉMOIRE passent aussi par D0-D7. Deux
+  options : `/OE` à la masse (toujours validé, sûr : le FPGA ne pilote D
+  qu'en écriture Φ2 haut, la LOCI ne pilote que sélectionnée en lecture),
+  ou dériver `/OE` d'une combinaison incluant /MAP (broche FPGA dédiée
+  possible sur demande).
+- **Adresses A0-A15 + Φ2, R/W, /I/O** : 2-3× 74LVC245 en sortie fixe
+  (DIR figé, /OE à la masse) ou 74AHCT245.
+- **Entrées /IRQ, /ROMDIS, /MAP, /IOCTRL** : 1× 74LVC245 (3,3 V) DIR figé
+  vers le FPGA.
+- **/RESET (bidir drain ouvert)** : PAS par un transceiver — 1 MOSFET-N
+  (BSS138) + pull-ups des deux côtés, comme un niveau I²C classique.
+
 ## Correspondance GPIO ULX3S → signal Oric (câblage Dupont)
 
-Tous les signaux passent par les modules TXS0108E (3,3 V côté FPGA,
-5 V côté cartouche). `gp[n]`/`gn[n]` : en-têtes J1/J2 de l'ULX3S.
+`gp[n]`/`gn[n]` : en-têtes J1/J2 de l'ULX3S.
 
 Les GPIO gp/gn[11..17] sont volontairement évitées (partagées avec l'ESP32
 et l'ADC de l'ULX3S).
@@ -57,7 +92,7 @@ et l'ADC de l'ULX3S).
 | GND    | GND     | 34 | masse commune ULX3S + alim 5 V + cartouche |
 
 ⚠️ **Ne jamais relier le +5 V de la cartouche à une broche du FPGA.** Masse
-commune obligatoire entre ULX3S, modules TXS et alimentation 5 V.
+commune obligatoire entre ULX3S, buffers LVC et alimentation 5 V.
 
 ## Chronologie du bus (1 cycle CPU = 1 µs = 25 phases de clk_sys)
 
@@ -70,7 +105,7 @@ D (écr.)________██████████████████    pilot
 D (lec.)              ↑ échantillon phase 22
 ```
 
-Marges énormes à 1 MHz : compatible câblage Dupont + TXS0108E.
+Marges énormes à 1 MHz : compatible câblage Dupont + 74LVC245.
 La LOCI ajuste elle-même sa fenêtre d'échantillonnage (ADJ_SCAN du menu).
 
 Câblage Dupont anti-diaphonie : fils courts (< 20 cm), et intercaler des
