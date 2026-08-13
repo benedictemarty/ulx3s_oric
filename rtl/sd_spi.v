@@ -8,12 +8,13 @@
 // octets (data/data_valid) -> 2 octets CRC ignorés.
 //
 // `status` code l'étape / l'erreur (pour diagnostic par LED). `ready` = init OK.
-// Vitesse SPI unique (~400 kHz via HALF) : suffisant pour l'init et un premier
-// test de lecture ; accélération possible ensuite.
+// Vitesse : init à ~390 kHz (HALF, norme SD), puis HALF_FAST (6,25 MHz)
+// pour tous les transferts dès que `ready` est haut (US-SD-SPEED).
 
 module sd_spi #(
-    parameter CLK_HZ = 25000000,
-    parameter HALF   = 32          // demi-période sck (25 MHz/64 ≈ 390 kHz)
+    parameter CLK_HZ    = 25000000,
+    parameter HALF      = 32,      // demi-période sck init (25 MHz/64 ≈ 390 kHz)
+    parameter HALF_FAST = 2        // après init : 25 MHz/4 = 6,25 MHz
 ) (
     input             clk,
     input             rst,
@@ -40,8 +41,11 @@ module sd_spi #(
     wire [7:0] spi_rx;
     wire       spi_done, spi_busy;
 
-    spi_byte #(.HALF(HALF)) engine (
-        .clk(clk), .rst(rst), .start(spi_start), .tx(spi_tx), .rx(spi_rx),
+    // Init à vitesse normalisée (<=400 kHz), puis tout à HALF_FAST dès que
+    // la carte est prête (US-SD-SPEED).
+    spi_byte #(.HALF(HALF), .HALF_FAST(HALF_FAST)) engine (
+        .clk(clk), .rst(rst), .fast(ready),
+        .start(spi_start), .tx(spi_tx), .rx(spi_rx),
         .busy(spi_busy), .done(spi_done), .sck(sck), .mosi(mosi), .miso(miso)
     );
 

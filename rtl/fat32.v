@@ -89,6 +89,13 @@ module fat32 #(
     // Seek (open_offset) : saut de clusters puis positionnement fin
     reg [31:0] skip_rem;             // octets restant à sauter
     reg        skipping;             // le suivi de chaîne courant est un saut
+    // Seek incrémental (US-SD-SPEED) : cur_base = offset fichier du début du
+    // cluster courant. Une réouverture du même fichier à un offset en aval
+    // repart de cur_clus au lieu de re-suivre la chaîne depuis le début
+    // (chargement de pistes .dsk successives en O(1)).
+    reg [31:0] cur_base;
+    reg [5:0]  cache_idx;
+    reg        cache_valid;
     reg [8:0]  rd_init;              // offset octet dans le 1er secteur lu
     reg        rd_init_pend;
     reg        abort_pend;           // open_abort mémorisé (l'impulsion peut
@@ -123,11 +130,12 @@ module fat32 #(
             fdata_valid <= 1'b0;
             state <= S_IDLE; done <= 0; error <= 0; file_count <= 0;
             status <= 8'h00; rd_sector <= 0; bidx <= 0; dirsec <= 0; stop_dir <= 0;
-            floading <= 0; feof <= 0;
+            floading <= 0; feof <= 0; cache_valid <= 1'b0;
         end else begin
             case (state)
                 S_IDLE: if (start) begin
                     done <= 0; error <= 0; file_count <= 0; stop_dir <= 0;
+                    cache_valid <= 1'b0;    // re-listing : cluster caché caduc
                     status <= 8'h10; state <= S_RD0_R;
                 end
 
@@ -234,11 +242,21 @@ module fat32 #(
                 S_DONE: begin
                     done <= 1'b1; feof <= 1'b0;
                     if (open_start) begin
-                        cur_clus   <= clus_mem[open_idx];
                         // au-delà de la fin : EOF immédiat (bytes_left = 0)
                         bytes_left <= (open_offset < size_mem[open_idx])
                                       ? size_mem[open_idx] - open_offset : 32'd0;
-                        skip_rem   <= open_offset;
+                        if (cache_valid && open_idx == cache_idx &&
+                            open_offset >= cur_base) begin
+                            // même fichier, offset en aval : repartir du
+                            // cluster courant (seek incrémental)
+                            skip_rem <= open_offset - cur_base;
+                        end else begin
+                            cur_clus <= clus_mem[open_idx];
+                            cur_base <= 32'd0;
+                            skip_rem <= open_offset;
+                        end
+                        cache_idx   <= open_idx;
+                        cache_valid <= 1'b1;
                         skipping   <= 1'b0;
                         rd_init_pend <= 1'b0;
                         abort_pend <= 1'b0;
@@ -338,11 +356,13 @@ module fat32 #(
                         end else if (skipping) begin
                             // saut de cluster (seek) : avancer et re-tester
                             cur_clus <= next_clus & 32'h0FFFFFFF;
+                            cur_base <= cur_base + clus_bytes;
                             skip_rem <= skip_rem - clus_bytes;
                             skipping <= 1'b0;
                             state <= FO_INIT;
                         end else begin
                             cur_clus <= next_clus & 32'h0FFFFFFF;
+                            cur_base <= cur_base + clus_bytes;
                             sec_in_clus <= 8'd0; state <= FO_RD;
                         end
                     end else bidx <= bidx + 10'd1;

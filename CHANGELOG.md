@@ -6,6 +6,19 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 ## [Non publié]
 
 ### Ajouté
+- **US-SD-SPEED : SPI rapide après init + seek FAT32 incrémental** (bmarty,
+  2026-08-13) : (1) `spi_byte.v`/`sd_spi.v` — l'init SD reste à ~390 kHz
+  (norme), puis tous les transferts passent à `HALF_FAST` (6,25 MHz à
+  25 MHz, ×16 — la FSM SPI exige une demi-période ≥ 2 cycles : mosi doit
+  précéder le front montant de sck) dès `ready` ; la vitesse est figée au lancement de chaque
+  octet (pas de glitch). (2) `fat32.v` — `cur_base` suit l'offset fichier
+  du début du cluster courant ; une réouverture du même fichier à un offset
+  en aval repart du cluster courant au lieu de re-suivre la chaîne depuis
+  le début (chargements de pistes .dsk successives en O(1) ; un seek en
+  amont re-parcourt — rare et désormais rapide). Cache invalidé au
+  re-listing. Validation : suite complète + `tb_side1` byte-exact.
+
+### Ajouté
 - **US-DISK.4 : boot Sedoric VALIDÉ SUR CARTE + OSD ouvert/fermé + reset
   auto** (bmarty, 2026-08-13, « cela fonctionne » — menu Sedoric au boot) :
   `rtl/top_ulx3s.v` — (1) l'OSD a un état ouvert/fermé : BTN4 charge/insère

@@ -10,13 +10,16 @@ module tb_spi_byte;
 
     reg        rst = 1;
     reg        start = 0;
+    reg        fast = 0;
     reg  [7:0] tx = 0;
     wire [7:0] rx;
     wire       busy, done, sck, mosi;
     wire       miso = mosi;          // loopback
 
-    spi_byte #(.HALF(2)) dut (
-        .clk(clk), .rst(rst), .start(start), .tx(tx), .rx(rx),
+    // HALF_FAST minimum = 2 : mosi doit être présenté un cycle avant le
+    // front montant de sck (à 1, présentation et échantillon se confondent).
+    spi_byte #(.HALF(4), .HALF_FAST(2)) dut (
+        .clk(clk), .rst(rst), .fast(fast), .start(start), .tx(tx), .rx(rx),
         .busy(busy), .done(done), .sck(sck), .mosi(mosi), .miso(miso)
     );
 
@@ -43,6 +46,14 @@ module tb_spi_byte;
         xfer(8'h3C);
         xfer(8'h81);
         xfer(8'h7E);
+        // Vitesse rapide (post-init) : mêmes octets, demi-période HALF_FAST
+        fast = 1;
+        xfer(8'hA5);
+        xfer(8'h5A);
+        xfer(8'hFF);
+        // Retour lent : la vitesse est figée au lancement de l'octet
+        fast = 0;
+        xfer(8'h3C);
         if (errors == 0)
             $display("ALL TESTS PASSED (tb_spi_byte)");
         else

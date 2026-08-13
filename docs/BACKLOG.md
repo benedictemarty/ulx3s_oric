@@ -119,12 +119,12 @@ comparable à une vraie mécanique 3") ; v1 en LECTURE SEULE.
       `Citadelle.dsk` validé sur carte (choix du menu OK — l'« erreur de
       syntaxe » venait de la course de piste). Reste ouvert : lenteur des
       chargements de piste (cf. US-SD-SPEED).
-- [ ] US-SD-SPEED **SPI SD haute vitesse + seek FAT32 incrémental** : la SD
-      reste à la vitesse d'init et chaque rechargement de piste re-suit la
-      chaîne de clusters depuis le début du fichier (piste 60 ≈ 90 sauts
-      FAT) → boot Sedoric long. Passer le SPI à 12,5 MHz après init et/ou
-      mémoriser (cluster, offset) du dernier accès pour un seek avant
-      incrémental en O(1).
+- [x] US-SD-SPEED **SPI SD haute vitesse + seek FAT32 incrémental**
+      (2026-08-13) : SPI à 6,25 MHz après init (×16) et seek avant en O(1)
+      depuis le cluster courant (`cur_base` dans fat32). Le boot Sedoric
+      re-suivait la chaîne depuis le début du fichier à chaque piste
+      (piste 60 ≈ 90 sauts FAT à 390 kHz). Validé suite + tb_side1 ;
+      à confirmer sur carte.
 - [ ] US-DISK.5 **Écriture** (v2, ultérieur) : write-back des secteurs vers
       la SD (commandes type II write), dirty tracking par piste.
 
