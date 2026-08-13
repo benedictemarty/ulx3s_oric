@@ -371,7 +371,11 @@ module top_ulx3s (
         .pin_irq_n    (gn[19]),
         .pin_romdis_n (gn[20]),
         .pin_map_n    (gn[21]),
-        .pin_ioctl_n  (gn[22])
+        .pin_ioctl_n  (gn[22]),
+        // Pilotage du transceiver de données 74LVCC3245A (gp/gn[16] :
+        // partagées avec des entrées ADC inutilisées, haute impédance)
+        .pin_xcvr_dir (gp[16]),
+        .pin_xcvr_oe_n(gn[16])
     );
 
     // ------------------------------------------------------------------

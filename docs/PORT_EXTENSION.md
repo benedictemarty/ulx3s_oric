@@ -59,8 +59,10 @@ Affectation (3× DIP-20 + 1 pour les entrées) :
   `$C000-$FFFF`, ces lectures MÉMOIRE passent aussi par D0-D7. Deux
   options : `/OE` à la masse (toujours validé, sûr : le FPGA ne pilote D
   qu'en écriture Φ2 haut, la LOCI ne pilote que sélectionnée en lecture),
-  ou dériver `/OE` d'une combinaison incluant /MAP (broche FPGA dédiée
-  possible sur demande).
+  ou — plan retenu — les broches FPGA dédiées **XCVR_DIR (gp[16])** et
+  **/XCVR_OE (gn[16])** : DIR = écriture CPU (polarité 74LVCC3245A,
+  haut = A→B), /OE passant pendant Φ2 haut seulement. Aucune logique
+  externe, tous les cycles visibles de la cartouche (fidèle au vrai bus).
 - **Adresses A0-A15 + Φ2, R/W, /I/O** : 2-3× 74LVC245 en sortie fixe
   (DIR figé, /OE à la masse) ou 74AHCT245.
 - **Entrées /IRQ, /ROMDIS, /MAP, /IOCTRL** : 1× 74LVC245 (3,3 V) DIR figé
@@ -88,6 +90,8 @@ et l'ADC de l'ULX3S).
 | gn[20] | /ROMDIS | 2  | entrée (pull-up) |
 | gn[21] | /MAP    | 1  | entrée (pull-up) |
 | gn[22] | /IOCTRL | 6  | entrée (pull-up) |
+| gp[16] | XCVR_DIR | — (transceiver données) | sortie : 1 = FPGA→cartouche |
+| gn[16] | /XCVR_OE | — (transceiver données) | sortie : passant si Φ2 haut |
 | —      | +5V     | 33 | depuis l'alim 5 V externe (PAS du FPGA !) |
 | GND    | GND     | 34 | masse commune ULX3S + alim 5 V + cartouche |
 

@@ -18,6 +18,7 @@ module tb_expansion;
     wire [15:0] pin_a;
     wire [7:0]  pin_d;
     wire pin_rw, pin_phi2, pin_io_n, pin_rst_n;
+    wire pin_xcvr_dir, pin_xcvr_oe_n;
 
     // Cartouche comportementale
     reg cart_irq_n = 1, cart_romdis_n = 1, cart_map_n = 1, cart_ioctl_n = 1;
@@ -49,8 +50,20 @@ module tb_expansion;
         .pin_a(pin_a), .pin_d(pin_d), .pin_rw(pin_rw), .pin_phi2(pin_phi2),
         .pin_io_n(pin_io_n), .pin_rst_n(pin_rst_n),
         .pin_irq_n(cart_irq_n), .pin_romdis_n(cart_romdis_n),
-        .pin_map_n(cart_map_n), .pin_ioctl_n(cart_ioctl_n)
+        .pin_map_n(cart_map_n), .pin_ioctl_n(cart_ioctl_n),
+        .pin_xcvr_dir(pin_xcvr_dir), .pin_xcvr_oe_n(pin_xcvr_oe_n)
     );
+
+    // Transceiver de données : /OE passant uniquement pendant Φ2 haut,
+    // DIR = sens écriture (invariants surveillés en continu)
+    always @(posedge clk) if (!rst) begin
+        if (pin_xcvr_oe_n !== ~pin_phi2) begin
+            $display("FAIL: /XCVR_OE doit suivre ~PHI2"); errors = errors + 1;
+        end
+        if (pin_xcvr_dir !== ~pin_rw) begin
+            $display("FAIL: XCVR_DIR doit suivre l'écriture (~R/W)"); errors = errors + 1;
+        end
+    end
 
     always #20 clk = ~clk;   // 25 MHz
     always @(posedge clk)

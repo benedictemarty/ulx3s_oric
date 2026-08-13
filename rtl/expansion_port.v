@@ -28,7 +28,7 @@ module expansion_port (
     output           ext_ioctl,   // actif haut : inhibe la VIA interne
     output           ext_rst_req, // la cartouche tire /RESET (bouton LOCI)
 
-    // Broches physiques (à travers les TXS0108E)
+    // Broches physiques (à travers les 74LVC(C)245, cf. PORT_EXTENSION.md)
     output [15:0] pin_a,
     inout  [7:0]  pin_d,
     output        pin_rw,
@@ -38,7 +38,14 @@ module expansion_port (
     input         pin_irq_n,
     input         pin_romdis_n,
     input         pin_map_n,
-    input         pin_ioctl_n
+    input         pin_ioctl_n,
+    // Pilotage du transceiver de DONNÉES (74LVCC3245A : DIR haut = A→B) :
+    // DIR = écriture CPU (stable tout le cycle), /OE actif pendant Φ2 haut
+    // seulement — le bus n'est passant que quand les données sont
+    // signifiantes, tous cycles confondus (la LOCI voit tout le bus, dont
+    // ses lectures ROM via /ROMDIS+/MAP).
+    output        pin_xcvr_dir,
+    output        pin_xcvr_oe_n
 );
 
     wire phi2 = (tphase >= 5'd12);
@@ -47,6 +54,8 @@ module expansion_port (
     assign pin_rw   = ~bus_we;
     assign pin_phi2 = phi2;
     assign pin_io_n = ~sel_io_page;
+    assign pin_xcvr_dir  = bus_we;    // 1 = FPGA→cartouche (écriture)
+    assign pin_xcvr_oe_n = ~phi2;     // passant pendant Φ2 haut
 
     // /RESET : drain ouvert — le FPGA le tire bas pendant son propre reset,
     // la cartouche peut aussi le tirer (bouton reset LOCI)
