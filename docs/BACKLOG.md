@@ -236,11 +236,15 @@ qui l'exploitera.
       embases mâles). Reste : (1) récupérer la table gp/gn ↔ broches J1/J2
       depuis le KiCad emard/ulx3s (pas en local), (2) gen_pcb berceau
       (réutiliser la table U1..U5 de loci_lvc, remplacer peigne par IDC),
-      (3) routage — REPARTIR de freerouting seul, plus de place sans le
-      peigne. La variante B (loci_lvc, carte peigne) est GELÉE : outillage
-      commité (7d4b66b) mais routage non abouti — le finisseur A* produit
-      des courts (escaliers entrelacés) et freerouting plafonne à ~10
-      signaux ; à reprendre avec visualisation si on veut cette variante.
+      (3) routage. AVANCÉ 2026-08-14 (hardware/berceau, b293439) :
+      généré (JB1/JB2 par positions exactes du relevé emard/ulx3s — piège
+      pairs/impairs éliminé par construction), TOUS les signaux routés par
+      freerouting, plans F.Cu=GND / B.Cu=3V3|5V, vias d'alim posés.
+      RESTE (~30 min de KiCad interactif, cf. hardware/berceau/README.md) :
+      ~15 liaisons d'alim (îlots de plan isolés), 3 courts, sérigraphie,
+      puis REVUE MÉCANIQUE (sens d'enfichage, hauteurs, détrompeur) avant
+      gerbers/PCBA. La variante B (loci_lvc, carte peigne) reste gelée
+      (7d4b66b).
 - [ ] US3.0 **Validation LOCI sur le port d'extension** (demandée 2026-08-13) :
       le bus 34 points est câblé et actif (`rtl/expansion_port.v`,
       `docs/PORT_EXTENSION.md`, gp/gn J1-J2, pull-ups OK, /IOCTRL inhibe
