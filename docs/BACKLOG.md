@@ -228,6 +228,19 @@ qui l'exploitera.
       loader), démo « l'Oric parle » validée sur carte.
 
 ## Sprint 3 — « Confort »
+- [ ] US3.0b **Berceau PCBA « LOCI-Bridge » — routage** (pivot 2026-08-14) :
+      la carte à fabriquer est le BERCEAU (l'ULX3S s'enfiche, LOCI par nappe
+      IDC 34, schéma = SPEC_NETLIST loci_lvc, 5× LVCC3245A + BSS138).
+      Fait : spec convergée avec l'étude ~/NetMaze/ulx3s2Loci (cotes J1/J2
+      relevées : 2×20 pas 2,54, entraxe 88,90 mm, piège pairs/impairs des
+      embases mâles). Reste : (1) récupérer la table gp/gn ↔ broches J1/J2
+      depuis le KiCad emard/ulx3s (pas en local), (2) gen_pcb berceau
+      (réutiliser la table U1..U5 de loci_lvc, remplacer peigne par IDC),
+      (3) routage — REPARTIR de freerouting seul, plus de place sans le
+      peigne. La variante B (loci_lvc, carte peigne) est GELÉE : outillage
+      commité (7d4b66b) mais routage non abouti — le finisseur A* produit
+      des courts (escaliers entrelacés) et freerouting plafonne à ~10
+      signaux ; à reprendre avec visualisation si on veut cette variante.
 - [ ] US3.0 **Validation LOCI sur le port d'extension** (demandée 2026-08-13) :
       le bus 34 points est câblé et actif (`rtl/expansion_port.v`,
       `docs/PORT_EXTENSION.md`, gp/gn J1-J2, pull-ups OK, /IOCTRL inhibe

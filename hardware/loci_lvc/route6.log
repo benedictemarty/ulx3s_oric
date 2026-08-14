@@ -1,0 +1,759 @@
+2026-08-14 15:36:59.088 INFO   Freerouting v2.1.0 (build-date: 2025-04-12)
+2026-08-14 15:36:59.193 WARN   No default constructor found for field: currentLocale
+2026-08-14 15:36:59.194 INFO   Settings were loaded from freerouting.json
+2026-08-14 15:36:59.198 WARN   Couldn't get screen resolution. If you are running in a headless environment, disable the GUI by setting gui.enabled to false.
+2026-08-14 15:37:01.451 INFO   [863134\800F06] Job '863134\800F06' started at 2026-08-14T13:37:01.451414873Z
+2026-08-14 15:37:02.886 INFO   New version available: v2.3.0
+2026-08-14 15:37:08.546 INFO   [863134\800F06] Auto-router pass #1 on board 'ce128093877cb3fbf5b46071e605b4c4' was completed in 6,93 seconds with the score of 760,64 (57 unrouted), using 26,83 CPU seconds and 4394 MB memory.
+2026-08-14 15:37:17.235 INFO   [863134\800F06] Auto-router pass #2 on board '05689879222c4139eb8e09bfc03e95fa' was completed in 8,64 seconds with the score of 844,41 (44 unrouted), using 116,16 CPU seconds and 9794 MB memory.
+2026-08-14 15:37:21.729 INFO   [863134\800F06] Auto-router pass #3 on board '0bd507672e96c4e61299e9aecc950fa6' was completed in 4,47 seconds with the score of 847,59 (44 unrouted), using 203,83 CPU seconds and 13119 MB memory.
+2026-08-14 15:37:48.661 INFO   [863134\800F06] Auto-router pass #4 on board '86d96efc341e32a387febd4e79e2efdf' was completed in 26,91 seconds with the score of 904,62 (31 unrouted), using 1098,12 CPU seconds and 31327 MB memory.
+2026-08-14 15:37:50.535 INFO   [863134\800F06] Auto-router pass #5 on board 'b871752d44826aa0bb25e615621e2091' was completed in 1,85 seconds with the score of 907,26 (30 unrouted), using 1192,71 CPU seconds and 32744 MB memory.
+2026-08-14 15:37:51.734 INFO   [863134\800F06] Auto-router pass #6 on board 'b4d1e2bdc63a9f1306f11a45d5ec4993' was completed in 1,18 seconds with the score of 907,26 (30 unrouted), using 1241,47 CPU seconds and 33391 MB memory.
+2026-08-14 15:37:52.904 INFO   [863134\800F06] Auto-router pass #7 on board 'b4d1e2bdc63a9f1306f11a45d5ec4993' was completed in 1,16 seconds with the score of 907,26 (30 unrouted), using 1291,21 CPU seconds and 34046 MB memory.
+2026-08-14 15:38:07.938 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:07.938 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:07.956 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:07.957 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:08.090 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:08.090 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:14.052 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:14.052 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:23.726 INFO   [863134\800F06] Auto-router pass #8 on board 'b4d1e2bdc63a9f1306f11a45d5ec4993' was completed in 30,82 seconds with the score of 925,75 (25 unrouted), using 3313,51 CPU seconds and 56434 MB memory.
+2026-08-14 15:38:25.084 INFO   [863134\800F06] Auto-router pass #9 on board 'dac98ab19f29b1c92bc0c93c56b24b2a' was completed in 1,34 seconds with the score of 928,38 (24 unrouted), using 3394,20 CPU seconds and 57124 MB memory.
+2026-08-14 15:38:26.183 INFO   [863134\800F06] Auto-router pass #10 on board '6a0a21aa686aa46ac6bacf9f9481c769' was completed in 1,08 seconds with the score of 928,38 (24 unrouted), using 3475,86 CPU seconds and 57763 MB memory.
+2026-08-14 15:38:27.265 INFO   [863134\800F06] Auto-router pass #11 on board '6a0a21aa686aa46ac6bacf9f9481c769' was completed in 1,07 seconds with the score of 928,38 (24 unrouted), using 3558,50 CPU seconds and 58402 MB memory.
+2026-08-14 15:38:29.275 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: Index 4 out of bounds for length 4
+	at app.freerouting.autoroute.MazeShoveTraceAlgo.check_shove_trace_line(MazeShoveTraceAlgo.java:123) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.shove_trace_room(MazeSearchAlgo.java:1214) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.expand_to_room_doors(MazeSearchAlgo.java:443) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.occupy_next_element(MazeSearchAlgo.java:286) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.find_connection(MazeSearchAlgo.java:206) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.AutorouteEngine.autoroute_connection(AutorouteEngine.java:155) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.autoroute_item(BatchAutorouter.java:610) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.autoroute_pass(BatchAutorouter.java:332) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.runBatchLoop(BatchAutorouter.java:447) [freerouting.jar:unspecified]
+	at app.freerouting.management.RoutingJobSchedulerActionThread.thread_action(RoutingJobSchedulerActionThread.java:131) [freerouting.jar:unspecified]
+	at app.freerouting.core.StoppableThread.run(StoppableThread.java:26) [freerouting.jar:unspecified]
+2026-08-14 15:38:29.275 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: Index 4 out of bounds for length 4
+	at app.freerouting.autoroute.MazeShoveTraceAlgo.check_shove_trace_line(MazeShoveTraceAlgo.java:123) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.shove_trace_room(MazeSearchAlgo.java:1214) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.expand_to_room_doors(MazeSearchAlgo.java:443) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.occupy_next_element(MazeSearchAlgo.java:286) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.find_connection(MazeSearchAlgo.java:206) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.AutorouteEngine.autoroute_connection(AutorouteEngine.java:155) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.autoroute_item(BatchAutorouter.java:610) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.autoroute_pass(BatchAutorouter.java:332) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.runBatchLoop(BatchAutorouter.java:447) [freerouting.jar:unspecified]
+	at app.freerouting.management.RoutingJobSchedulerActionThread.thread_action(RoutingJobSchedulerActionThread.java:131) [freerouting.jar:unspecified]
+	at app.freerouting.core.StoppableThread.run(StoppableThread.java:26) [freerouting.jar:unspecified]
+2026-08-14 15:38:29.504 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: Index 4 out of bounds for length 4
+	at app.freerouting.autoroute.MazeShoveTraceAlgo.check_shove_trace_line(MazeShoveTraceAlgo.java:123) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.shove_trace_room(MazeSearchAlgo.java:1214) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.expand_to_room_doors(MazeSearchAlgo.java:443) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.occupy_next_element(MazeSearchAlgo.java:286) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.find_connection(MazeSearchAlgo.java:206) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.AutorouteEngine.autoroute_connection(AutorouteEngine.java:155) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.autoroute_item(BatchAutorouter.java:610) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.autoroute_pass(BatchAutorouter.java:332) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.runBatchLoop(BatchAutorouter.java:447) [freerouting.jar:unspecified]
+	at app.freerouting.management.RoutingJobSchedulerActionThread.thread_action(RoutingJobSchedulerActionThread.java:131) [freerouting.jar:unspecified]
+	at app.freerouting.core.StoppableThread.run(StoppableThread.java:26) [freerouting.jar:unspecified]
+2026-08-14 15:38:29.504 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: Index 4 out of bounds for length 4
+	at app.freerouting.autoroute.MazeShoveTraceAlgo.check_shove_trace_line(MazeShoveTraceAlgo.java:123) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.shove_trace_room(MazeSearchAlgo.java:1214) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.expand_to_room_doors(MazeSearchAlgo.java:443) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.occupy_next_element(MazeSearchAlgo.java:286) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.find_connection(MazeSearchAlgo.java:206) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.AutorouteEngine.autoroute_connection(AutorouteEngine.java:155) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.autoroute_item(BatchAutorouter.java:610) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.autoroute_pass(BatchAutorouter.java:332) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.runBatchLoop(BatchAutorouter.java:447) [freerouting.jar:unspecified]
+	at app.freerouting.management.RoutingJobSchedulerActionThread.thread_action(RoutingJobSchedulerActionThread.java:131) [freerouting.jar:unspecified]
+	at app.freerouting.core.StoppableThread.run(StoppableThread.java:26) [freerouting.jar:unspecified]
+2026-08-14 15:38:30.410 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: null
+2026-08-14 15:38:30.410 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: null
+2026-08-14 15:38:30.846 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: null
+2026-08-14 15:38:30.846 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: null
+2026-08-14 15:38:30.968 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: null
+2026-08-14 15:38:30.968 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: null
+2026-08-14 15:38:31.052 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: null
+2026-08-14 15:38:31.052 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: null
+2026-08-14 15:38:31.465 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.465 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.469 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.469 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.469 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.469 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.746 WARN   Polyline.corner_approx: p_no must be less than arr.length - 1
+2026-08-14 15:38:31.746 WARN   Polyline.corner_approx: p_no must be less than arr.length - 1
+2026-08-14 15:38:31.747 WARN   Polyline.corner_approx: p_no must be less than arr.length - 1
+2026-08-14 15:38:31.747 WARN   Polyline.corner_approx: p_no must be less than arr.length - 1
+2026-08-14 15:38:31.750 WARN   Polyline.corner_approx: p_no must be less than arr.length - 1
+2026-08-14 15:38:31.750 WARN   Polyline.corner_approx: p_no must be less than arr.length - 1
+2026-08-14 15:38:31.760 WARN   Polyline.corner_approx: p_no must be less than arr.length - 1
+2026-08-14 15:38:31.760 WARN   Polyline.corner_approx: p_no must be less than arr.length - 1
+2026-08-14 15:38:31.802 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.803 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.803 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.803 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.804 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.804 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.811 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.811 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.815 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.815 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.816 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.816 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.823 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.824 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.824 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.824 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.824 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.824 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.825 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.825 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.828 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.828 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.829 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.829 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.829 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.829 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.829 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.829 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.832 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.832 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.833 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.833 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.834 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.835 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.835 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.835 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.835 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.835 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.835 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.835 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.836 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.836 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.836 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.836 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.838 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.839 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.839 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.839 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.839 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.839 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.839 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.839 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.842 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.842 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.845 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.845 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:38:31.845 WARN   Polyline.corner_approx: p_no must be less than arr.length - 1
+2026-08-14 15:38:31.846 WARN   Polyline.corner_approx: p_no must be less than arr.length - 1
+2026-08-14 15:38:32.285 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: null
+2026-08-14 15:38:32.285 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: null
+2026-08-14 15:38:32.530 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: null
+2026-08-14 15:38:32.530 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: null
+2026-08-14 15:38:33.289 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: null
+2026-08-14 15:38:33.289 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: null
+2026-08-14 15:38:33.413 INFO   [863134\800F06] Restoring an earlier board that has the score of 928,38 (24 unrouted).
+2026-08-14 15:38:33.413 INFO   [863134\800F06] Auto-router pass #12 on board '6a0a21aa686aa46ac6bacf9f9481c769' was completed in 6,14 seconds with the score of 893,05 (38 unrouted), using 4074,84 CPU seconds and 62969 MB memory.
+2026-08-14 15:38:46.046 INFO   [863134\800F06] Auto-router pass #13 on board '6a0a21aa686aa46ac6bacf9f9481c769' was completed in 12,62 seconds with the score of 953,39 (14 unrouted), using 5314,03 CPU seconds and 72758 MB memory.
+2026-08-14 15:38:55.661 INFO   [863134\800F06] Auto-router pass #14 on board '6b9c27d479257b36a9641a76dd29591c' was completed in 9,59 seconds with the score of 952,01 (15 unrouted), using 6379,47 CPU seconds and 80246 MB memory.
+2026-08-14 15:38:55.919 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:38:55.919 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:38:55.919 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:38:55.919 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:38:56.304 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: Index 10 out of bounds for length 10
+	at app.freerouting.autoroute.MazeShoveTraceAlgo.check_shove_trace_line(MazeShoveTraceAlgo.java:123) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.shove_trace_room(MazeSearchAlgo.java:1214) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.expand_to_room_doors(MazeSearchAlgo.java:443) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.occupy_next_element(MazeSearchAlgo.java:286) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.find_connection(MazeSearchAlgo.java:206) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.AutorouteEngine.autoroute_connection(AutorouteEngine.java:155) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.autoroute_item(BatchAutorouter.java:610) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.autoroute_pass(BatchAutorouter.java:332) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.runBatchLoop(BatchAutorouter.java:447) [freerouting.jar:unspecified]
+	at app.freerouting.management.RoutingJobSchedulerActionThread.thread_action(RoutingJobSchedulerActionThread.java:131) [freerouting.jar:unspecified]
+	at app.freerouting.core.StoppableThread.run(StoppableThread.java:26) [freerouting.jar:unspecified]
+2026-08-14 15:38:56.304 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: Index 10 out of bounds for length 10
+	at app.freerouting.autoroute.MazeShoveTraceAlgo.check_shove_trace_line(MazeShoveTraceAlgo.java:123) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.shove_trace_room(MazeSearchAlgo.java:1214) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.expand_to_room_doors(MazeSearchAlgo.java:443) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.occupy_next_element(MazeSearchAlgo.java:286) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.MazeSearchAlgo.find_connection(MazeSearchAlgo.java:206) ~[freerouting.jar:unspecified]
+	at app.freerouting.autoroute.AutorouteEngine.autoroute_connection(AutorouteEngine.java:155) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.autoroute_item(BatchAutorouter.java:610) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.autoroute_pass(BatchAutorouter.java:332) [freerouting.jar:unspecified]
+	at app.freerouting.autoroute.BatchAutorouter.runBatchLoop(BatchAutorouter.java:447) [freerouting.jar:unspecified]
+	at app.freerouting.management.RoutingJobSchedulerActionThread.thread_action(RoutingJobSchedulerActionThread.java:131) [freerouting.jar:unspecified]
+	at app.freerouting.core.StoppableThread.run(StoppableThread.java:26) [freerouting.jar:unspecified]
+2026-08-14 15:38:56.541 INFO   [863134\800F06] Auto-router pass #15 on board '16addb34403d79fae262e0d3bc4fef9d' was completed in 0,85 seconds with the score of 956,17 (13 unrouted), using 6491,38 CPU seconds and 80954 MB memory.
+2026-08-14 15:39:14.698 INFO   [863134\800F06] Auto-router pass #16 on board '608adcf61254c0728edd91ec7f384421' was completed in 18,13 seconds with the score of 961,58 (10 unrouted), using 8672,20 CPU seconds and 95347 MB memory.
+2026-08-14 15:39:14.819 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.819 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.819 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.820 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.820 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.820 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.821 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.822 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.822 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.822 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.822 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.822 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.822 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.823 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.823 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.823 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.823 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.823 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.823 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.831 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.831 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.831 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.832 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.832 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.832 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.834 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.834 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.834 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.834 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.834 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.834 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.834 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.834 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.834 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.835 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.835 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.835 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.835 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.835 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.835 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.835 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.835 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.835 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.835 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.835 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.836 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.836 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.836 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.836 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.837 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.837 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.837 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.837 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.837 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.837 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.837 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.837 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.837 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.837 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.837 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.837 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.838 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.838 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.838 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.838 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.838 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.838 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.838 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.838 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.843 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.843 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.843 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.844 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.844 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.847 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.848 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.848 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.848 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.848 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.849 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.849 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.849 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.849 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.849 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.849 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.849 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.849 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.849 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.852 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.852 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.852 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.854 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.859 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.859 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.860 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.861 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.861 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.861 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.861 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.861 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.861 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.861 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.864 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.864 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.864 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.872 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.872 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.874 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.874 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.874 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.874 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.875 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.875 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.875 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.875 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.875 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.875 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.875 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.875 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.875 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.875 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.875 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.875 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.876 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.876 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.876 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.876 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.876 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.876 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.876 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.876 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.877 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.877 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.877 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.877 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.877 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.877 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.877 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.877 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.877 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.877 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.877 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.877 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.877 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.878 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.878 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.878 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.878 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.878 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.878 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.878 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.878 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.878 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.878 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.882 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.882 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.882 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.882 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.882 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.882 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.882 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.883 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.883 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.883 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.883 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.883 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.884 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.884 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.884 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.884 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.884 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.884 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.885 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.888 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.888 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.888 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.889 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.889 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.889 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.889 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.889 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.890 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.890 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.890 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.890 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.890 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.891 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.892 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.892 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.892 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.892 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.893 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.893 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.893 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.894 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.894 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.894 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.894 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.895 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.895 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.895 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.896 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.896 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.896 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.899 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.901 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.901 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.901 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.901 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.901 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.901 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.901 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.901 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.901 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.902 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.902 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.902 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.902 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.905 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.908 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.908 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.908 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.908 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.908 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.909 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.916 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.916 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.916 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.916 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.917 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.917 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.917 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.917 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.917 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.917 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.917 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.923 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.925 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.925 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.925 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:14.942 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: null
+2026-08-14 15:39:14.942 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: null
+2026-08-14 15:39:15.343 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:15.343 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:15.343 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:15.343 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:15.343 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:15.343 WARN   ShapeSearchTree45Degree.complete_shape: cannot convert room shape Simplex to IntOctagon
+2026-08-14 15:39:15.419 INFO   [863134\800F06] Auto-router pass #17 on board '39a218e2b00f027076323622e86e33ee' was completed in 0,69 seconds with the score of 959,94 (11 unrouted), using 8672,20 CPU seconds and 95347 MB memory.
+2026-08-14 15:39:15.977 INFO   [863134\800F06] Auto-router pass #18 on board 'a3d7a89893d5065a3420650fc39dc1bd' was completed in 0,53 seconds with the score of 959,94 (11 unrouted), using 8802,62 CPU seconds and 95991 MB memory.
+2026-08-14 15:39:16.505 INFO   [863134\800F06] Auto-router pass #19 on board 'a3d7a89893d5065a3420650fc39dc1bd' was completed in 0,52 seconds with the score of 959,94 (11 unrouted), using 8802,62 CPU seconds and 95991 MB memory.
+2026-08-14 15:39:32.025 INFO   [863134\800F06] Restoring an earlier board that has the score of 961,58 (10 unrouted).
+2026-08-14 15:39:32.025 INFO   [863134\800F06] Auto-router pass #20 on board 'a3d7a89893d5065a3420650fc39dc1bd' was completed in 15,51 seconds with the score of 956,58 (13 unrouted), using 11021,27 CPU seconds and 108792 MB memory.
+2026-08-14 15:39:42.227 INFO   [863134\800F06] Auto-router pass #21 on board '39a218e2b00f027076323622e86e33ee' was completed in 10,19 seconds with the score of 965,29 (8 unrouted), using 12534,15 CPU seconds and 116397 MB memory.
+2026-08-14 15:39:48.406 INFO   [863134\800F06] Auto-router pass #22 on board 'e4e79056f012cf5b8b9a77641f3f060d' was completed in 6,15 seconds with the score of 961,13 (10 unrouted), using 13488,61 CPU seconds and 120730 MB memory.
+2026-08-14 15:39:55.668 INFO   [863134\800F06] Auto-router pass #23 on board '6ea0fc2996b2fa86aa9b8f12a7c93420' was completed in 7,24 seconds with the score of 961,78 (10 unrouted), using 14815,73 CPU seconds and 126663 MB memory.
+2026-08-14 15:40:03.491 INFO   [863134\800F06] Auto-router pass #24 on board '2f66f5ddc870fdfd2bf5029068494c30' was completed in 7,80 seconds with the score of 966,96 (7 unrouted), using 16028,03 CPU seconds and 132234 MB memory.
+2026-08-14 15:40:03.551 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.552 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.552 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.552 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.552 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.552 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.554 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.554 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.554 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.554 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.555 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.555 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.555 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.555 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.555 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.555 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.555 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.555 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.555 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.555 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.555 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.555 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.556 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.556 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.567 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.567 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.567 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.567 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.567 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.567 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.567 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.568 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.568 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.568 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.601 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.601 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.601 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.617 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.618 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.618 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.618 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.618 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.618 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.618 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.618 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.618 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.618 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.619 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.619 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.619 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.619 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.619 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.622 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.622 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.623 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.623 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.623 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.623 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.624 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.624 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.635 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.635 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.635 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.635 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.635 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.636 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.637 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.637 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.637 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.637 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.666 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.666 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.666 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.669 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.669 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.669 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.669 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.669 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.669 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.669 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.687 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.687 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.715 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.715 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.715 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.715 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.715 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.715 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.715 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.715 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.715 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.715 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.715 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.715 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:03.715 WARN   ItemAutorouteInfo.get_expansion_room: p_index out of range
+2026-08-14 15:40:07.094 INFO   [863134\800F06] Auto-router pass #25 on board 'ba75bc78568f100fd3136cc6cd1a3958' was completed in 3,57 seconds with the score of 967,38 (7 unrouted), using 16742,03 CPU seconds and 135125 MB memory.
+2026-08-14 15:40:07.501 INFO   [863134\800F06] Auto-router pass #26 on board '8e230367fdcc423792cbb7b3934a7cc5' was completed in 0,38 seconds with the score of 967,38 (7 unrouted), using 16742,03 CPU seconds and 135125 MB memory.
+2026-08-14 15:40:07.892 INFO   [863134\800F06] Auto-router pass #27 on board '8e230367fdcc423792cbb7b3934a7cc5' was completed in 0,38 seconds with the score of 967,38 (7 unrouted), using 16922,94 CPU seconds and 135789 MB memory.
+2026-08-14 15:40:08.322 INFO   [863134\800F06] Restoring an earlier board that has the score of 967,38 (7 unrouted).
+2026-08-14 15:40:08.323 INFO   [863134\800F06] Auto-router pass #28 on board '8e230367fdcc423792cbb7b3934a7cc5' was completed in 0,42 seconds with the score of 967,38 (7 unrouted), using 16922,94 CPU seconds and 135789 MB memory.
+2026-08-14 15:40:15.406 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:40:15.406 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:40:15.406 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:40:15.406 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:40:15.561 INFO   [863134\800F06] Auto-router pass #29 on board '8e230367fdcc423792cbb7b3934a7cc5' was completed in 7,22 seconds with the score of 965,21 (8 unrouted), using 18404,94 CPU seconds and 141814 MB memory.
+2026-08-14 15:40:21.955 INFO   [863134\800F06] Auto-router pass #30 on board '0d373c9155a2893d1ed104ee5f2fca26' was completed in 6,37 seconds with the score of 962,85 (10 unrouted), using 19556,66 CPU seconds and 146276 MB memory.
+2026-08-14 15:40:26.174 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: null
+2026-08-14 15:40:26.174 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: null
+2026-08-14 15:40:27.213 INFO   [863134\800F06] Auto-router pass #31 on board '7209c4f873a5dfd666873ba22ae8d1de' was completed in 5,22 seconds with the score of 969,26 (6 unrouted), using 20542,75 CPU seconds and 149869 MB memory.
+2026-08-14 15:40:40.002 INFO   [863134\800F06] Auto-router pass #32 on board '29515a9851835d13c4127eb1842afb90' was completed in 12,76 seconds with the score of 973,36 (3 unrouted), using 23219,21 CPU seconds and 160104 MB memory.
+2026-08-14 15:40:40.163 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:40:40.163 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:40:40.164 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:40:40.164 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:40:40.167 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:40:40.168 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:40:40.174 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:40:40.174 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:40:40.194 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:40:40.194 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:40:40.216 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:40:40.216 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:40:40.258 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: null
+2026-08-14 15:40:40.258 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: null
+2026-08-14 15:40:40.393 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:40:40.393 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:40:40.394 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:40:40.394 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:40:40.394 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:40:40.394 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:40:40.397 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:40:40.397 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:40:40.411 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:40:40.411 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:40:40.621 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: null
+2026-08-14 15:40:40.621 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: null
+2026-08-14 15:40:40.697 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:40:40.697 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:40:40.697 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:40:40.697 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:40:40.697 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:40:40.698 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:40:40.740 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: null
+2026-08-14 15:40:40.740 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: null
+2026-08-14 15:40:40.794 INFO   [863134\800F06] Auto-router pass #33 on board '68fd471a19db4777e52d721ae5a17ab3' was completed in 0,76 seconds with the score of 967,31 (7 unrouted), using 23431,91 CPU seconds and 160899 MB memory.
+2026-08-14 15:40:41.157 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:40:41.157 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:40:41.161 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:40:41.161 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:40:41.162 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:40:41.162 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:40:41.163 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:40:41.163 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:40:41.193 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:40:41.193 WARN   MazeShoveTraceAlgo.check_shove_trace_line: trace_corner_no to big
+2026-08-14 15:40:41.195 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: null
+2026-08-14 15:40:41.195 ERROR  AutorouteEngine.autoroute_connection: Exception in maze_search_algo.find_connection
+java.lang.ArrayIndexOutOfBoundsException: null
+2026-08-14 15:40:41.303 INFO   [863134\800F06] Auto-router pass #34 on board '9960b82684146736a85dc1d5b3d03cd5' was completed in 0,48 seconds with the score of 970,36 (5 unrouted), using 23431,91 CPU seconds and 160899 MB memory.
+2026-08-14 15:40:41.604 INFO   [863134\800F06] Auto-router pass #35 on board 'a72ef70ae2d99672a999d5c18b83da6b' was completed in 0,27 seconds with the score of 970,36 (5 unrouted), using 23645,58 CPU seconds and 161609 MB memory.
+2026-08-14 15:40:47.889 INFO   [863134\800F06] Restoring an earlier board that has the score of 973,36 (3 unrouted).
+2026-08-14 15:40:47.889 INFO   [863134\800F06] Auto-router pass #36 on board 'a72ef70ae2d99672a999d5c18b83da6b' was completed in 6,27 seconds with the score of 969,30 (6 unrouted), using 24948,03 CPU seconds and 166420 MB memory.
+2026-08-14 15:40:49.868 INFO   [863134\800F06] Auto-router pass #37 on board '68fd471a19db4777e52d721ae5a17ab3' was completed in 1,97 seconds with the score of 974,97 (2 unrouted), using 25389,97 CPU seconds and 167943 MB memory.
+2026-08-14 15:40:52.524 INFO   [863134\800F06] Auto-router pass #38 on board '30c0b3206ae6aa10c09e0c9995f8f44e' was completed in 2,62 seconds with the score of 975,36 (2 unrouted), using 25835,80 CPU seconds and 169401 MB memory.
+2026-08-14 15:40:54.239 INFO   [863134\800F06] Auto-router pass #39 on board 'b417d6989ae3728cc896415c183f5cf3' was completed in 1,69 seconds with the score of 972,38 (4 unrouted), using 26285,52 CPU seconds and 171034 MB memory.
+2026-08-14 15:40:59.941 INFO   [863134\800F06] Auto-router pass #40 on board '8725cb879d62b22c87e67519aca0280e' was completed in 5,67 seconds with the score of 975,46 (2 unrouted), using 27658,13 CPU seconds and 175880 MB memory.
+2026-08-14 15:41:00.524 INFO   [863134\800F06] Auto-router pass #41 on board '6611debad753650a3d92aa255baa7f77' was completed in 0,55 seconds with the score of 975,61 (2 unrouted), using 27658,13 CPU seconds and 175880 MB memory.
+2026-08-14 15:41:03.292 INFO   [863134\800F06] Auto-router pass #42 on board 'b204f86adaaa437c0e80a3c89fbdab34' was completed in 2,74 seconds with the score of 973,15 (4 unrouted), using 28357,66 CPU seconds and 178093 MB memory.
+2026-08-14 15:41:07.605 INFO   [863134\800F06] Auto-router pass #43 on board '32b48c9de1d1624c40b150fbe88cdac8' was completed in 4,28 seconds with the score of 969,85 (6 unrouted), using 29543,06 CPU seconds and 181766 MB memory.
+2026-08-14 15:41:16.803 INFO   [863134\800F06] Restoring an earlier board that has the score of 975,61 (2 unrouted).
+2026-08-14 15:41:16.803 INFO   [863134\800F06] Auto-router pass #44 on board '578fd024b73e22a48acbd9c250f90977' was completed in 9,17 seconds with the score of 969,18 (6 unrouted), using 31738,38 CPU seconds and 189116 MB memory.
+2026-08-14 15:41:19.997 INFO   [863134\800F06] Auto-router pass #45 on board 'b204f86adaaa437c0e80a3c89fbdab34' was completed in 3,18 seconds with the score of 973,78 (4 unrouted), using 32487,69 CPU seconds and 191394 MB memory.
+2026-08-14 15:41:21.751 INFO   [863134\800F06] Auto-router pass #46 on board '3490d5463d855969c69a978c0cb0b65c' was completed in 1,72 seconds with the score of 973,78 (4 unrouted), using 32992,11 CPU seconds and 192945 MB memory.
+2026-08-14 15:41:25.092 INFO   [863134\800F06] Auto-router pass #47 on board '62980fe2c861959ac5bf8101899ad873' was completed in 3,31 seconds with the score of 971,05 (6 unrouted), using 33756,05 CPU seconds and 195131 MB memory.
+2026-08-14 15:41:31.870 INFO   [863134\800F06] Restoring an earlier board that has the score of 975,61 (2 unrouted).
+2026-08-14 15:41:31.870 INFO   [863134\800F06] Auto-router pass #48 on board 'c6ca5989bd49765b6e0bc11065122536' was completed in 6,74 seconds with the score of 973,50 (4 unrouted), using 35572,77 CPU seconds and 200649 MB memory.
+2026-08-14 15:41:34.837 INFO   [863134\800F06] Auto-router pass #49 on board 'b204f86adaaa437c0e80a3c89fbdab34' was completed in 2,95 seconds with the score of 975,01 (3 unrouted), using 36365,95 CPU seconds and 202894 MB memory.
+2026-08-14 15:41:37.187 INFO   [863134\800F06] Auto-router pass #50 on board 'da02ed18a6ef46e813a1e5560af53dc9' was completed in 2,32 seconds with the score of 976,45 (2 unrouted), using 36899,59 CPU seconds and 204396 MB memory.
+2026-08-14 15:41:39.271 INFO   [863134\800F06] Auto-router pass #51 on board '475b8bd414eaa8e587ab20fe0c42532b' was completed in 2,05 seconds with the score of 978,69, using 37437,14 CPU seconds and 206164 MB memory.
+2026-08-14 15:41:39.342 INFO   [863134\800F06] Restoring an earlier board that has the score of 978,69.
+2026-08-14 15:41:39.343 INFO   [863134\800F06] Auto-router pass #52 on board '8b9ee9749e83eab0fe8342e5591693b8' was completed in 0,04 seconds with the score of 978,69, using 37437,14 CPU seconds and 206164 MB memory.
+{
+  "host": "KiCad's Pcbnew,9.0.3+dfsg-1",
+  "unit": "mm",
+  "board": {
+    "bounding_box": {
+      "x": 1164.0,
+      "y": 1.0,
+      "width": -1.0,
+      "height": -501.0
+    },
+    "size": {
+      "x": 0.0,
+      "y": 0.0,
+      "width": 1165.0,
+      "height": 502.0
+    }
+  },
+  "layers": {
+    "total_count": 2,
+    "signal_count": 2
+  },
+  "items": {
+    "total_count": 1232,
+    "trace_count": 429,
+    "via_count": 238,
+    "conduction_area_count": 2,
+    "drill_item_count": 232,
+    "pin_count": 0,
+    "component_count": 330,
+    "other_count": 1
+  },
+  "components": {
+    "total_count": 25
+  },
+  "pads": {
+    "total_count": 232
+  },
+  "nets": {
+    "total_count": 69,
+    "class_count": 3
+  },
+  "connections": {
+    "maximum_count": 817,
+    "incomplete_count": 0
+  },
+  "traces": {
+    "total_count": 429,
+    "total_segment_count": 1494,
+    "total_length": 47079.676,
+    "total_weighted_length": 1.5600328E8,
+    "average_length": 109.742836,
+    "total_vertical_length": 8123.192,
+    "total_horizontal_length": 23778.016,
+    "total_angled_length": 12924.657
+  },
+  "bends": {
+    "total_count": 1065,
+    "90_degree_count": 10,
+    "45_degree_count": 1055,
+    "other_angle_count": 0
+  },
+  "vias": {
+    "total_count": 238,
+    "through_hole_count": 238,
+    "blind_count": 0,
+    "buried_count": 0
+  },
+  "clearance_violations": {
+    "total_count": 0
+  }
+}
+15:41:40: Debug: Adding duplicate image handler for 'PNG file'
+15:41:40: Debug: Adding duplicate image handler for 'JPEG file'
+15:41:40: Debug: Adding duplicate image handler for 'TIFF file'
+15:41:40: Debug: Adding duplicate image handler for 'GIF file'
+15:41:40: Debug: Adding duplicate image handler for 'PNM file'
+15:41:40: Debug: Adding duplicate image handler for 'PCX file'
+15:41:40: Debug: Adding duplicate image handler for 'IFF file'
+15:41:40: Debug: Adding duplicate image handler for 'Windows icon file'
+15:41:40: Debug: Adding duplicate image handler for 'Windows cursor file'
+15:41:40: Debug: Adding duplicate image handler for 'Windows animated cursor file'
+15:41:40: Debug: Adding duplicate image handler for 'TGA file'
+15:41:40: Debug: Adding duplicate image handler for 'XPM file'
+15:41:41: Debug: Adding duplicate image handler for 'PNG file'
+15:41:41: Debug: Adding duplicate image handler for 'JPEG file'
+15:41:41: Debug: Adding duplicate image handler for 'TIFF file'
+15:41:41: Debug: Adding duplicate image handler for 'GIF file'
+15:41:41: Debug: Adding duplicate image handler for 'PNM file'
+15:41:41: Debug: Adding duplicate image handler for 'PCX file'
+15:41:41: Debug: Adding duplicate image handler for 'IFF file'
+15:41:41: Debug: Adding duplicate image handler for 'Windows icon file'
+15:41:41: Debug: Adding duplicate image handler for 'Windows cursor file'
+15:41:41: Debug: Adding duplicate image handler for 'Windows animated cursor file'
+15:41:41: Debug: Adding duplicate image handler for 'TGA file'
+15:41:41: Debug: Adding duplicate image handler for 'XPM file'
+freerouting : java -Djava.awt.headless=true -jar ../phaseA/freerouting.jar -de loci_lvc_fr.dsn -do loci_lvc.ses -mp 5
+liaisons non routées restantes : 44
