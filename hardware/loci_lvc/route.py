@@ -5,7 +5,7 @@ route.py — routage de loci_lvc.kicad_pcb (pipeline hérité de phaseA).
 
 1. export Specctra DSN (pcbnew) ;
 2. patch DSN : doigts du peigne réduits à leurs 2 mm intérieurs pour le
-   routeur + bord droit virtuel à 106,3 mm (partie réelle des doigts
+   routeur + bord droit virtuel à 116,3 mm (partie réelle des doigts
    interdite aux pistes/vias) + alim 0,4 mm (accès pads TSSOP) ;
 3. freerouting headless ;
 4. import du .ses, re-remplissage zones, sauvegarde ;
@@ -33,8 +33,8 @@ def export_dsn():
     s = s.replace("(shape (rect F.Cu -3000 -800 3000 800))",
                   "(shape (rect F.Cu -3000 -800 -1000 800))")
     s = s.replace(
-        "(path pcb 0  110000 -50000  0 -50000  0 0  110000 0  110000 -50000)",
-        "(path pcb 0  106300 -50000  0 -50000  0 0  106300 0  106300 -50000)")
+        "(path pcb 0  120000 -50000  0 -50000  0 0  120000 0  120000 -50000)",
+        "(path pcb 0  116300 -50000  0 -50000  0 0  116300 0  116300 -50000)")
     s = s.replace("(width 500)", "(width 400)")
     open(DSN_FR, "w").write(s)
 

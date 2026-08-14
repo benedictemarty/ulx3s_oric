@@ -5,7 +5,7 @@ gen_pcb.py — Carte adaptateur LOCI (rév. LVC) : génération complète du PCB
 (loci_lvc.kicad_pcb) depuis SPEC_NETLIST.md.
 
 Reproductible : python3 gen_pcb.py [sortie.kicad_pcb]
-- contour 110 x 50 mm
+- contour 120 x 50 mm
 - 5x SN74LVCC3245APW (TSSOP-24, brochage vérifié TI SCAS585R)
 - peigne J_EXP 34 doigts hérité de phaseA (pas 2,54, doigts 1,6 x 6 mm,
   F.Cu = pairs / B.Cu = impairs, masque ouvert, bord droit)
@@ -86,7 +86,7 @@ def build_component_table():
                           value=value, nets=netmap))
 
     FP24 = "TSSOP-24_4.4x7.8mm_P0.65mm"
-    UX = 80.0
+    UX = 88.0
     UYS = [6.5, 16.0, 25.5, 35.0, 44.0]
 
     # U1/U2 adresses (A->B figé), U3 données (piloté), U4 sorties de
@@ -234,8 +234,8 @@ def build(out_path):
         board.Add(ni)
         nets[name] = ni
 
-    # --- contour 110 x 50 ------------------------------------------------
-    W, H = 110.0, 50.0
+    # --- contour 120 x 50 ------------------------------------------------
+    W, H = 120.0, 50.0
     corners = [(0, 0), (W, 0), (W, H), (0, H)]
     for i in range(4):
         seg = pcbnew.PCB_SHAPE(board)
