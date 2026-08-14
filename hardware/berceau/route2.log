@@ -1,0 +1,117 @@
+2026-08-14 17:02:56.613 INFO   Freerouting v2.1.0 (build-date: 2025-04-12)
+2026-08-14 17:02:56.734 WARN   No default constructor found for field: currentLocale
+2026-08-14 17:02:56.736 INFO   Settings were loaded from freerouting.json
+2026-08-14 17:02:56.746 WARN   Couldn't get screen resolution. If you are running in a headless environment, disable the GUI by setting gui.enabled to false.
+2026-08-14 17:02:59.138 INFO   [1FC109\E19455] Job '1FC109\E19455' started at 2026-08-14T15:02:59.137893042Z
+2026-08-14 17:03:07.330 INFO   [1FC109\E19455] Auto-router pass #1 on board 'faf8c54a0ce4be406bfcb18cba25099e' was completed in 8,03 seconds with the score of 843,97 (45 unrouted), using 33,59 CPU seconds and 4676 MB memory.
+2026-08-14 17:03:09.841 INFO   New version available: v2.3.0
+2026-08-14 17:03:13.924 INFO   [1FC109\E19455] Auto-router pass #2 on board '76c9f74ad6fb53285aa676b78072928c' was completed in 6,57 seconds with the score of 878,81 (36 unrouted), using 99,43 CPU seconds and 8602 MB memory.
+2026-08-14 17:03:21.351 INFO   [1FC109\E19455] Auto-router pass #3 on board 'c8e0ca6a1c4e0fbb4b584c3c14aa05ca' was completed in 7,40 seconds with the score of 919,74 (23 unrouted), using 241,80 CPU seconds and 13992 MB memory.
+2026-08-14 17:03:38.286 INFO   [1FC109\E19455] Auto-router pass #4 on board '8a5eacf2d0da900935538427b4de5f30' was completed in 16,91 seconds with the score of 935,10 (18 unrouted), using 750,97 CPU seconds and 27052 MB memory.
+2026-08-14 17:03:43.437 INFO   [1FC109\E19455] Auto-router pass #5 on board '0ef27bebf14cf51de921269fcc14fb42' was completed in 5,13 seconds with the score of 941,59 (15 unrouted), using 954,26 CPU seconds and 30558 MB memory.
+2026-08-14 17:03:48.352 INFO   [1FC109\E19455] Auto-router pass #6 on board '059344a3c754e164d6cecd2bf599c5cf' was completed in 4,89 seconds with the score of 948,94 (12 unrouted), using 1181,97 CPU seconds and 34066 MB memory.
+2026-08-14 17:03:52.908 INFO   [1FC109\E19455] Auto-router pass #7 on board '727c2202faf56336bd80dbd1a275a143' was completed in 4,53 seconds with the score of 959,78 (7 unrouted), using 1381,68 CPU seconds and 36870 MB memory.
+2026-08-14 17:04:02.374 INFO   [1FC109\E19455] Auto-router pass #8 on board '92ad7112046c1f2fa3eb880eaea522dc' was completed in 9,44 seconds with the score of 964,98 (4 unrouted), using 1949,11 CPU seconds and 44357 MB memory.
+2026-08-14 17:04:03.843 INFO   [1FC109\E19455] Auto-router pass #9 on board 'e8f8329337ff940e4498380185836295' was completed in 1,44 seconds with the score of 968,98 (2 unrouted), using 2011,19 CPU seconds and 45076 MB memory.
+2026-08-14 17:04:05.563 INFO   [1FC109\E19455] Auto-router pass #10 on board '4d1029a3eba492a3cf91bf5f26dea6a6' was completed in 1,69 seconds with the score of 967,08 (3 unrouted), using 2138,24 CPU seconds and 46427 MB memory.
+2026-08-14 17:04:06.388 INFO   [1FC109\E19455] Auto-router pass #11 on board '4da1de442ab862b49456b0c76df44403' was completed in 0,80 seconds with the score of 968,77 (2 unrouted), using 2203,21 CPU seconds and 47143 MB memory.
+2026-08-14 17:04:09.274 INFO   [1FC109\E19455] Auto-router pass #12 on board 'f1218f1568870c0ffa6411cb5646597b' was completed in 2,86 seconds with the score of 969,57 (2 unrouted), using 2403,95 CPU seconds and 49337 MB memory.
+2026-08-14 17:04:09.908 INFO   [1FC109\E19455] Auto-router pass #13 on board 'b7009579dcf7e73965c00d7530563d9a' was completed in 0,61 seconds with the score of 972,78, using 2403,95 CPU seconds and 49337 MB memory.
+2026-08-14 17:04:09.948 INFO   [1FC109\E19455] Auto-router pass #14 on board '3b4a2e2c48febf44f0ba3bcd9948baad' was completed in 0,01 seconds with the score of 972,78, using 2403,95 CPU seconds and 49337 MB memory.
+{
+  "host": "KiCad's Pcbnew,9.0.3+dfsg-1",
+  "unit": "mm",
+  "board": {
+    "bounding_box": {
+      "x": 1501.0,
+      "y": 1.0,
+      "width": -1.0,
+      "height": -581.0
+    },
+    "size": {
+      "x": 0.0,
+      "y": 0.0,
+      "width": 1502.0,
+      "height": 582.0
+    }
+  },
+  "layers": {
+    "total_count": 2,
+    "signal_count": 2
+  },
+  "items": {
+    "total_count": 955,
+    "trace_count": 234,
+    "via_count": 132,
+    "conduction_area_count": 3,
+    "drill_item_count": 272,
+    "pin_count": 0,
+    "component_count": 313,
+    "other_count": 1
+  },
+  "components": {
+    "total_count": 26
+  },
+  "pads": {
+    "total_count": 272
+  },
+  "nets": {
+    "total_count": 69,
+    "class_count": 3
+  },
+  "connections": {
+    "maximum_count": 533,
+    "incomplete_count": 0
+  },
+  "traces": {
+    "total_count": 234,
+    "total_segment_count": 874,
+    "total_length": 45041.4,
+    "total_weighted_length": 1.461023E8,
+    "average_length": 192.4846,
+    "total_vertical_length": 5584.341,
+    "total_horizontal_length": 24791.332,
+    "total_angled_length": 10527.612
+  },
+  "bends": {
+    "total_count": 640,
+    "90_degree_count": 5,
+    "45_degree_count": 635,
+    "other_angle_count": 0
+  },
+  "vias": {
+    "total_count": 132,
+    "through_hole_count": 132,
+    "blind_count": 0,
+    "buried_count": 0
+  },
+  "clearance_violations": {
+    "total_count": 0
+  }
+}
+17:04:10: Debug: Adding duplicate image handler for 'PNG file'
+17:04:10: Debug: Adding duplicate image handler for 'JPEG file'
+17:04:10: Debug: Adding duplicate image handler for 'TIFF file'
+17:04:10: Debug: Adding duplicate image handler for 'GIF file'
+17:04:10: Debug: Adding duplicate image handler for 'PNM file'
+17:04:10: Debug: Adding duplicate image handler for 'PCX file'
+17:04:10: Debug: Adding duplicate image handler for 'IFF file'
+17:04:10: Debug: Adding duplicate image handler for 'Windows icon file'
+17:04:10: Debug: Adding duplicate image handler for 'Windows cursor file'
+17:04:10: Debug: Adding duplicate image handler for 'Windows animated cursor file'
+17:04:10: Debug: Adding duplicate image handler for 'TGA file'
+17:04:10: Debug: Adding duplicate image handler for 'XPM file'
+17:04:11: Debug: Adding duplicate image handler for 'PNG file'
+17:04:11: Debug: Adding duplicate image handler for 'JPEG file'
+17:04:11: Debug: Adding duplicate image handler for 'TIFF file'
+17:04:11: Debug: Adding duplicate image handler for 'GIF file'
+17:04:11: Debug: Adding duplicate image handler for 'PNM file'
+17:04:11: Debug: Adding duplicate image handler for 'PCX file'
+17:04:11: Debug: Adding duplicate image handler for 'IFF file'
+17:04:11: Debug: Adding duplicate image handler for 'Windows icon file'
+17:04:11: Debug: Adding duplicate image handler for 'Windows cursor file'
+17:04:11: Debug: Adding duplicate image handler for 'Windows animated cursor file'
+17:04:11: Debug: Adding duplicate image handler for 'TGA file'
+17:04:11: Debug: Adding duplicate image handler for 'XPM file'
+freerouting : java -Djava.awt.headless=true -jar ../phaseA/freerouting.jar -de berceau_fr.dsn -do berceau.ses -mp 5
+liaisons non routées restantes : 38
