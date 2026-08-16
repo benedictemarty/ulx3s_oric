@@ -130,13 +130,28 @@ def reader(ser, console):
             console.latest = frame_to_png(frame, console.zoom)
 
 
+
+def find_port(pref):
+    """Choisit le port : préférence explicite, sinon 1er /dev/ttyUSB* présent
+    (la carte peut passer de ttyUSB0 à ttyUSB1 au rebranchement)."""
+    import glob
+    import os
+    if pref and pref != "auto" and os.path.exists(pref):
+        return pref
+    cands = sorted(glob.glob("/dev/ttyUSB*"))
+    if cands:
+        return cands[0]
+    return pref or "/dev/ttyUSB0"
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("-p", "--port", default="/dev/ttyUSB0")
+    ap.add_argument("-p", "--port", default="auto",
+                    help="auto = 1er /dev/ttyUSB*")
     ap.add_argument("-b", "--baud", type=int, default=1_000_000)
     ap.add_argument("-z", "--zoom", type=int, default=3)
     a = ap.parse_args()
-    ser = serial.Serial(a.port, a.baud, timeout=0.2)
+    ser = serial.Serial(find_port(a.port), a.baud, timeout=0.2)
     console = Console(ser, a.zoom)
     t = threading.Thread(target=reader, args=(ser, console), daemon=True)
     t.start()
