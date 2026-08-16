@@ -396,10 +396,15 @@ def do_cmd(line):
         crlf("OK")
     elif u.startswith("ATDISKRD"):
         atdiskrd(line[8:].strip())
-    elif u.startswith("ATDT") or u.startswith("ATDP"):
-        dial(line[4:])
     elif u.startswith("ATD"):
-        dial(line[3:])
+        # ATD<hôte>. Le modificateur Hayes tone/pulse (T/P) juste après ATD
+        # n'est retiré QUE s'il précède un '#' (dial TLS de TERMBBS : ATDT#) ;
+        # sinon c'est le début de l'hôte (ex. 'pavi', 'telehack' — le 'p'/'t'
+        # NE doit PAS être pris pour ATDP/ATDT, sinon hôte tronqué -> NO CARRIER).
+        rest = line[3:]
+        if len(rest) >= 2 and rest[0] in "TtPp" and rest[1] == "#":
+            rest = rest[1:]           # retire le T/P, garde le # (TLS)
+        dial(rest)
     elif u == "ATO":
         if sock:
             online = True
