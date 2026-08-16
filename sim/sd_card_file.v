@@ -22,8 +22,14 @@ module sd_card_file #(
     reg [7:0]  secbuf  [0:511];
     integer    rn, rp, i, fd, dummy;
     reg [7:0]  b;
+    // Écriture (CMD24) : capture du bloc entrant
+    reg        writing;          // en réception de bloc
+    reg [1:0]  wph;              // 0=attente token, 1=données, 2=CRC
+    reg [9:0]  wcnt;
+    reg [31:0] waddr;
 
-    initial begin nbit=0; tx=8'hFF; cmd_active=0; rn=0; rp=0; miso=1; end
+    initial begin nbit=0; tx=8'hFF; cmd_active=0; rn=0; rp=0; miso=1;
+                  writing=0; wph=0; wcnt=0; end
 
     always @(negedge cs_n) begin
         nbit <= 0; tx <= 8'hFF; cmd_active <= 0; rn <= 0; rp <= 0;
@@ -34,7 +40,27 @@ module sd_card_file #(
         rx <= {rx[6:0], mosi};
         if (nbit == 7) begin
             nbit <= 0;
-            if (!cmd_active) begin
+            if (writing) begin
+                if (wph == 2'd0) begin
+                    if (b == 8'hFE) begin wph <= 2'd1; wcnt <= 10'd0; end
+                end else if (wph == 2'd1) begin
+                    secbuf[wcnt] = b;
+                    if (wcnt == 10'd511) wph <= 2'd2;
+                    else wcnt <= wcnt + 10'd1;
+                end else begin                    // 2 octets CRC puis on écrit
+                    if (wcnt == 10'd511) wcnt <= 10'd512;  // 1er CRC
+                    else begin
+                        // 2e CRC reçu -> écrire le bloc dans l'image (in place)
+                        fd = $fopen(IMG, "r+b");
+                        dummy = $fseek(fd, waddr*512, 0);
+                        for (i=0;i<512;i=i+1) $fwrite(fd, "%c", secbuf[i]);
+                        $fclose(fd);
+                        writing <= 0; rp <= 0;
+                        resp[0]=8'h05; resp[1]=8'h00; resp[2]=8'h00; resp[3]=8'hFF;
+                        rn <= 4;                  // data-accepted + busy + libre
+                    end
+                end
+            end else if (!cmd_active) begin
                 if (b[7:6] == 2'b01) begin cmd_active <= 1; c0 <= b; ci <= 1; carg <= 0; end
             end else if (ci == 5) begin
                 cmd_active <= 0; rp <= 0;
@@ -52,6 +78,10 @@ module sd_card_file #(
                         $fclose(fd);
                         for (i=0;i<512;i=i+1) resp[2+i] = secbuf[i];
                         resp[514]=0; resp[515]=0; rn<=516;
+                    end
+                    8'h58: begin                                   // CMD24 : écrire un bloc
+                        resp[0]=8'h00; rn<=1;                      // R1 OK
+                        writing <= 1; wph <= 2'd0; waddr <= carg;
                     end
                     default: begin resp[0]=8'h00; rn<=1; end
                 endcase

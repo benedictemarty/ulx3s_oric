@@ -523,7 +523,8 @@ module top_ulx3s (
     // pas ça sans coupure d'alim) -> fat_done retombe à 0 -> OSD désactivé.
     sd_spi #(.CLK_HZ(25_000_000), .HALF(32)) sdc (
         .clk(clk_sys), .rst(rst_por),
-        .start_read(fat_rd_start), .sector(fat_rd_sector),
+        .start_read(fat_rd_start),
+        .start_write(1'b0), .wr_data(8'd0), .sector(fat_rd_sector),
         .ready(sd_ready), .busy(sd_busy), .error(sd_error),
         .data(sd_data), .data_valid(sd_dvalid), .status(sd_status),
         .sck(sd_clk), .mosi(sd_cmd), .miso(sd_d[0]), .cs_n(sd_d[3])

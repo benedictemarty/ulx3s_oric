@@ -19,7 +19,10 @@ module sd_spi #(
     input             clk,
     input             rst,
     input             start_read,  // pulse : lire le secteur `sector`
+    input             start_write, // pulse : écrire le secteur `sector`
     input      [31:0] sector,      // adresse logique de bloc (LBA)
+    input      [7:0]  wr_data,     // octet à écrire = source_buffer[wr_idx]
+    output reg [8:0]  wr_idx,      // index de l'octet demandé (0..511)
     output reg        ready,       // carte initialisée
     output reg        busy,
     output reg        error,
@@ -66,7 +69,12 @@ module sd_spi #(
         S_CMD17  = 8'd26, S_CMD17D = 8'd27, S_TOKEN  = 8'd28, S_TOKENC = 8'd29,
         S_DATA   = 8'd30, S_DATAC  = 8'd31, S_CRC    = 8'd32, S_END    = 8'd33,
         S_ERROR  = 8'd34,
-        S_SC0    = 8'd35, S_POST   = 8'd36, S_POST2  = 8'd37;
+        S_SC0    = 8'd35, S_POST   = 8'd36, S_POST2  = 8'd37,
+        // ---- écriture de bloc (CMD24) ----
+        S_CMD24  = 8'd38, S_CMD24D = 8'd39, S_WPRE   = 8'd40, S_WPREC  = 8'd41,
+        S_WTOK   = 8'd42, S_WDAT   = 8'd43, S_WDATC  = 8'd44,
+        S_WCRC   = 8'd45, S_WCRCC  = 8'd46, S_WRSP   = 8'd47, S_WRSPC  = 8'd48,
+        S_WBSY   = 8'd49, S_WBSYC  = 8'd50;
 
     reg [7:0]  state, ret;
     reg [7:0]  rxb;
@@ -189,6 +197,10 @@ module sd_spi #(
                         busy <= 1'b1; ready <= 1'b1; cs_n <= 1'b0;
                         addr <= ccs ? sector : (sector << 9);  // bloc ou octet
                         state <= S_CMD17;
+                    end else if (start_write) begin
+                        busy <= 1'b1; ready <= 1'b1; cs_n <= 1'b0;
+                        addr <= ccs ? sector : (sector << 9);
+                        state <= S_CMD24;
                     end
                 end
 
@@ -225,6 +237,39 @@ module sd_spi #(
                 // 8 cycles d'horloge cs haut : la carte finalise avant la commande suivante
                 S_POST:  begin spi_tx <= 8'hFF; ret <= S_POST2; state <= S_XFER; end
                 S_POST2: begin busy <= 1'b0; status <= 8'h82; state <= S_READY; end
+
+                // ---- CMD24 : WRITE_SINGLE_BLOCK ----
+                S_CMD24: begin status <= 8'h91;
+                    cmdreg <= 8'h58; argreg <= addr; crcreg <= 8'hFF;
+                    after_r1 <= S_CMD24D; state <= S_SC; end
+                S_CMD24D: if (r1 == 8'h00) state <= S_WPRE; else state <= S_ERROR;
+
+                // 1 octet d'attente avant le token de données
+                S_WPRE:  begin spi_tx <= 8'hFF; ret <= S_WPREC; state <= S_XFER; end
+                S_WPREC: begin wr_idx <= 9'd0; state <= S_WTOK; end
+
+                // token de début de bloc 0xFE puis 512 octets
+                S_WTOK:  begin spi_tx <= 8'hFE; ret <= S_WDAT; state <= S_XFER; end
+                S_WDAT:  begin spi_tx <= wr_data; ret <= S_WDATC; state <= S_XFER; end
+                S_WDATC: if (wr_idx == 9'd511) begin auxn <= 3'd0; state <= S_WCRC; end
+                         else begin wr_idx <= wr_idx + 9'd1; state <= S_WDAT; end
+
+                // 2 octets CRC bidons (CRC désactivé en mode SPI)
+                S_WCRC:  begin spi_tx <= 8'hFF; ret <= S_WCRCC; state <= S_XFER; end
+                S_WCRCC: if (auxn == 3'd1) state <= S_WRSP;
+                         else begin auxn <= auxn + 3'd1; state <= S_WCRC; end
+
+                // réponse de données : xxx0 0101 = accepté
+                S_WRSP:  begin spi_tx <= 8'hFF; ret <= S_WRSPC; state <= S_XFER; end
+                S_WRSPC: if ((rxb & 8'h1F) == 8'h05) begin retry <= 16'd0; state <= S_WBSY; end
+                         else state <= S_ERROR;
+
+                // la carte tire MISO bas tant qu'elle écrit (busy)
+                S_WBSY:  begin spi_tx <= 8'hFF; ret <= S_WBSYC; state <= S_XFER; end
+                S_WBSYC: if (rxb != 8'h00) begin cs_n <= 1'b1; status <= 8'h92;
+                             state <= S_POST;       // fini -> désélection + dummy
+                         end else if (retry == 16'd60000) state <= S_ERROR;
+                         else begin retry <= retry + 16'd1; state <= S_WBSY; end
 
                 // ---- erreur ----
                 S_ERROR: begin

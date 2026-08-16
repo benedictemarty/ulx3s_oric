@@ -16,7 +16,8 @@ module tb_sd_spi;
     wire       sck, mosi, miso, cs_n;
 
     sd_spi #(.HALF(2)) dut (
-        .clk(clk), .rst(rst), .start_read(start_read), .sector(sector),
+        .clk(clk), .rst(rst), .start_read(start_read),
+        .start_write(1'b0), .wr_data(8'd0), .sector(sector),
         .ready(ready), .busy(busy), .error(error),
         .data(data), .data_valid(data_valid), .status(status),
         .sck(sck), .mosi(mosi), .miso(miso), .cs_n(cs_n)

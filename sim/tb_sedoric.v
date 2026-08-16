@@ -23,7 +23,8 @@ module tb_sedoric;
     wire        sck, mosi, miso, cs_n;
 
     sd_spi #(.HALF(2)) sd (
-        .clk(clk), .rst(rst), .start_read(rd_start), .sector(rd_sector),
+        .clk(clk), .rst(rst), .start_read(rd_start),
+        .start_write(1'b0), .wr_data(8'd0), .sector(rd_sector),
         .ready(sd_ready), .busy(sd_busy), .error(sd_error),
         .data(sd_data), .data_valid(sd_dvalid), .status(sd_status),
         .sck(sck), .mosi(mosi), .miso(miso), .cs_n(cs_n)
