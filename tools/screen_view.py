@@ -81,9 +81,13 @@ def fit_scale(user_scale):
 
 
 def render(px, scale, out):
-    lines = ["\033[H"]                      # curseur en haut à gauche
+    # Positionnement ABSOLU par ligne (\033[row;1H) : immunisé contre le mode
+    # raw où \n ne fait pas de retour chariot (sinon cisaillement diagonal).
+    out_rows = []
+    r = 1
     for cy in range(0, H - 2 * scale + 1, 2 * scale):
-        row = []
+        row = ["\033[%d;1H" % r]
+        r += 1
         prev = None
         for cx in range(0, W, scale):
             tv = px[cy * W + cx] & 7
@@ -94,8 +98,9 @@ def render(px, scale, out):
                 row.append("\033[38;2;%d;%d;%d;48;2;%d;%d;%dm" % (tr, tg, tb, br, bg, bb))
                 prev = (tv, bv)
             row.append("▀")
-        lines.append("".join(row) + "\033[0m\033[K")   # efface fin de ligne
-    out.write("\n".join(lines))
+        row.append("\033[0m\033[K")         # efface fin de ligne
+        out_rows.append("".join(row))
+    out.write("".join(out_rows))
     out.flush()
 
 
