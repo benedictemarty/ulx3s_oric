@@ -6,6 +6,21 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 ## [Non publié]
 
 ### Ajouté
+- **US-MBANK.2 — 2ᵉ VIA `$0320` pilotant la banque `$C000` (voie Telestrat)**
+  (bmarty, 2026-08-17, **sim validée**) : `rtl/oric_atmos.v` — un `via6522` est
+  réinstancié à **`$0320-$032F`** (`sel_via2`, décodage `$03xx` mis à jour :
+  retiré de `sel_ext`, ajouté au multiplexeur `cpu_di`). Le **port A** de ce VIA
+  (bits de sortie `PA0-2 & DDRA`) devient le **registre de banque** :
+  `bank_sel = (via2_bank != 0) ? via2_bank : {2'b0, rom_bank}` — un logiciel
+  Telestrat sélectionne la banque `$C000` en écrivant le port A, avec **repli sur
+  le BTN5** (BASIC 1.1b↔1.0) validé sur carte quand aucune banque n'est
+  sélectionnée (au reset DDRA=0 → repli → **boot inchangé**). IRQ du 2ᵉ VIA **non
+  câblée** (banking seul ; IER=0 au reset → pas d'IRQ parasite). Nouveau
+  `sim/tb_bank_sel.v` + cible `test-bank-sel` : vérifie écriture DDRA/ORA →
+  banques 1..7, masquage PA0-2, et repli BTN5. **Zéro régression prouvée** :
+  `test-bank-sel` ET `test-boot` (boot BASIC complet) **PASSED**. Suite :
+  numérotation Telestrat fidèle (bank0=RAM overlay, bank7=TELEMON) + ROM réelles
+  (US-MBANK.3).
 - **US-MBANK.1 — `bank_window.v` : fenêtre multibank $C000 (voie Telestrat)**
   (bmarty, 2026-08-17, **sim validée**) : `rtl/bank_window.v` + `sim/tb_bank_window.v`
   + cible `test-bank`. Généralise `oric_rom.v` (2 banques figées) vers **8 banques

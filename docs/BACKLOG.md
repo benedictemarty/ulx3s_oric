@@ -226,7 +226,13 @@ Clean-room d'après la spec, pas de reprise du code GPL BigMist.
       **non déplacés** dans le module (déjà servis par `oric_ram`+`rom_as_ram`) —
       écart assumé vs conception §2 pour zéro régression ; `bank_is_ram` les
       branchera en US-MBANK.4. `oric_rom.v` conservé (inutilisé) pour rollback.
-- [ ] US-MBANK.2 2ᵉ VIA `$0320`, `PA0-2 → bank_sel`, décodage `oric_atmos.v`.
+- [x] US-MBANK.2 **2ᵉ VIA `$0320` → `bank_sel`** (2026-08-17, sim OK) :
+      `via6522` réinstancié à `$0320-$032F` (`sel_via2`, retiré de `sel_ext`,
+      ajouté au mux `cpu_di`) ; `bank_sel = (PA0-2 & DDRA) != 0 ? PA0-2 :
+      {2'b0,rom_bank}` → le logiciel Telestrat pilote la banque par le port A,
+      repli sur le BTN5 validé carte au reset (DDRA=0). IRQ du VIA-2 non câblée
+      (banking seul). `test-bank-sel` (écriture DDRA/ORA → banque 1..7, masquage,
+      repli) et **`test-boot` (zéro régression) PASSED**.
 - [ ] US-MBANK.3 Banques réelles TELEMON (bank 7) + boot Telestrat optionnel.
 - [ ] US-MBANK.4 Banques RAM (overlay + RAM haute) ; décision BRAM vs SDRAM.
 - [ ] US-MBANK.5 Validation carte : booter TELEMON/ORIX, `!DIR` STRATSED.

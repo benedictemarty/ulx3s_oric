@@ -179,6 +179,9 @@ module oric_atmos #(
     wire rom_area = (bus_addr_q[15:14] == 2'b11);
     wire sel_via  = sel_io & (bus_addr_q[7:4] == 4'h0) & ~ext_ioctl;
     wire sel_acia = sel_io & (bus_addr_q[7:2] == 6'b000111) & ~ext_ioctl; // $031C-$031F
+    // 2e VIA « voie Telestrat » ($0320-$032F) : son port A pilote la banque
+    // $C000 (US-MBANK.2). Occupe une fenêtre jusqu'ici exportée au bus d'ext.
+    wire sel_via2 = sel_io & (bus_addr_q[7:4] == 4'h2) & ~ext_ioctl;
     // Microdisc : $0310-$031B (la fenêtre $031C-$031F reste à l'ACIA)
     wire sel_md   = md_enable & sel_io & (bus_addr_q[7:4] == 4'h1)
                   & ~sel_acia & ~ext_ioctl;
@@ -188,7 +191,7 @@ module oric_atmos #(
     wire sel_rom  = rom_area & ~eff_romdis;
     wire sel_ram  = ~sel_io & ~rom_area;
     wire rom_as_ram = rom_area & eff_romdis & ~ext_map;   // RAM cachée
-    wire sel_ext  = (sel_io & ~sel_via & ~sel_acia & ~sel_md)
+    wire sel_ext  = (sel_io & ~sel_via & ~sel_via2 & ~sel_acia & ~sel_md)
                   | (rom_area & ext_romdis & ext_map);    // overlay cartouche
 
     assign exp_addr    = bus_addr_q;
@@ -202,6 +205,15 @@ module oric_atmos #(
     // ------------------------------------------------------------------
     wire [7:0]  ram_dout, rom_dout, via_dout, acia_dout;
     wire        acia_irq;
+
+    // Sélecteur de banque $C000 (US-MBANK.2). Le port A du 2e VIA (bits de
+    // SORTIE seulement, masqués par DDRA) prime dès qu'un logiciel sélectionne
+    // une banque != 0 ; sinon on garde le chemin BTN5 (rom_bank : BASIC
+    // 1.1b<->1.0) validé sur carte. Au reset, VIA-2 DDRA=0 -> via2_bank=0 ->
+    // repli sur rom_bank : boot strictement inchangé (zéro régression).
+    wire [7:0]  via2_dout, via2_pa_out, via2_ddra;
+    wire [2:0]  via2_bank = via2_pa_out[2:0] & via2_ddra[2:0];
+    wire [2:0]  bank_sel_w = (via2_bank != 3'd0) ? via2_bank : {2'b0, rom_bank};
     wire [15:0] vram_addr;
     wire [7:0]  vram_dout;
 
@@ -222,7 +234,7 @@ module oric_atmos #(
     wire bank_is_ram_unused;
     bank_window #(.ROM_FILE_A(ROM_FILE), .ROM_FILE_B(ROM_FILE_B)) rom (
         .clk         (clk),
-        .bank_sel    ({2'b00, rom_bank}),
+        .bank_sel    (bank_sel_w),
         .addr        (bus_addr_q[13:0]),
         .dout        (rom_dout),
         .bank_is_ram (bank_is_ram_unused)
@@ -236,6 +248,7 @@ module oric_atmos #(
     always @(posedge clk) begin
         if (tphase == 5'd4) begin
             if (sel_via)        cpu_di <= via_dout;
+            else if (sel_via2)  cpu_di <= via2_dout;
             else if (sel_acia)  cpu_di <= acia_dout;
             else if (sel_md)    cpu_di <= md_dout;
             else if (sel_rom)   cpu_di <= rom_dout;
@@ -281,6 +294,32 @@ module oric_atmos #(
         .ca2_out (via_ca2),
         .cb1_in  (tape_in),               // entrée cassette
         .cb2_out (via_cb2)
+    );
+
+    // 2e VIA 6522 « voie Telestrat » ($0320-$032F). Port A = registre de banque
+    // $C000 (PA0-2, cf. bank_sel_w). Joysticks/MIDI/MINITEL non émulés (ports au
+    // repos = $FF). IRQ NON câblée pour l'instant (banking seul ; VIA-2 reset :
+    // IER=0, donc aucune IRQ parasite). US-MBANK.2.
+    via6522 via2 (
+        .clk     (clk),
+        .cen     (cen1),
+        .rst     (rst),
+        .addr    (bus_addr_q[3:0]),
+        .cs      (sel_via2),
+        .we      (bus_we_q),
+        .din     (bus_do_q),
+        .dout    (via2_dout),
+        .irq     (),
+        .pa_in   (8'hFF),
+        .pa_out  (via2_pa_out),
+        .ddra_o  (via2_ddra),
+        .pb_in   (8'hFF),
+        .pb_out  (),
+        .ddrb_o  (),
+        .ca1_in  (1'b1),
+        .ca2_out (),
+        .cb1_in  (1'b1),
+        .cb2_out ()
     );
 
     // 6551 ACIA ($031C-$031F) : registres côté CPU, pont série côté ESP32

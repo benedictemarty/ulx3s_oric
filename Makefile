@@ -63,7 +63,7 @@ prog-fujprog: build/$(PROJ).bit
 # ----------------------------------------------------------------------
 # Tests
 # ----------------------------------------------------------------------
-TESTS = test-via test-keyboard test-azerty test-injector test-tape test-acia test-expansion test-ula test-boot test-hdmi test-hdmi-packet test-hdmi-audio test-hdmi-island test-spi-byte test-sd test-fat test-tape-loader test-wd test-microdisc test-dsk test-sw1reset test-sd-write test-fat-write test-bank
+TESTS = test-via test-keyboard test-azerty test-injector test-tape test-acia test-expansion test-ula test-boot test-hdmi test-hdmi-packet test-hdmi-audio test-hdmi-island test-spi-byte test-sd test-fat test-tape-loader test-wd test-microdisc test-dsk test-sw1reset test-sd-write test-fat-write test-bank test-bank-sel
 
 test: $(TESTS)
 	@echo "== TOUS LES TESTS SONT PASSES =="
@@ -128,6 +128,11 @@ test-bank: sim/out
 	iverilog -DSIM -g2005 -o sim/out/tb_bank.vvp sim/tb_bank_window.v rtl/bank_window.v
 	vvp sim/out/tb_bank.vvp | tee sim/out/tb_bank.log
 	@grep -q "ALL TESTS PASSED" sim/out/tb_bank.log
+
+test-bank-sel: sim/out
+	iverilog -DSIM -g2005 -o sim/out/tb_bsel.vvp sim/tb_bank_sel.v rtl/via6522.v
+	vvp sim/out/tb_bsel.vvp | tee sim/out/tb_bsel.log
+	@grep -q "ALL TESTS PASSED" sim/out/tb_bsel.log
 
 test-ula: sim/out
 	iverilog -DSIM -g2005 -o sim/out/tb_ula.vvp sim/tb_ula.v rtl/oric_ula.v rtl/oric_ram.v
