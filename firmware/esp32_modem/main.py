@@ -40,8 +40,14 @@ net_poll = select.poll()          # surveille la socket réseau (lisible ?)
 echo = True
 sock = None
 online = False
+is_tls = False        # socket courante enveloppée TLS (ussl) ?
 ssid = ""
 password = ""
+
+
+def sock_write(d):
+    # SSL utilise write(), TCP brut utilise send()
+    return sock.write(d) if is_tls else sock.send(d)
 
 # Telnet : on répond aux négociations IAC (refus de toutes les options) et on
 # les retire de l'affichage -> terminal propre. ATNET0 = mode brut (IAC passés
@@ -91,7 +97,7 @@ def telnet_filter(data):
             _tn_st = 0 if b == 0xF0 else 3   # IAC SE = fin
     if resp and sock:
         try:
-            sock.send(resp)
+            sock_write(resp)
         except Exception:
             pass
     return bytes(out)
@@ -144,7 +150,7 @@ def wifi_connect():
 
 
 def hangup(report=True):
-    global sock, online
+    global sock, online, is_tls
     if sock:
         try:
             net_poll.unregister(sock)
@@ -156,14 +162,19 @@ def hangup(report=True):
             pass
     sock = None
     online = False
+    is_tls = False
     if report:
         crlf("NO CARRIER")
 
 
 def dial(arg):
-    global sock, online
+    global sock, online, is_tls
     host = arg.strip()
-    port = 23
+    tls = False
+    if host.startswith("#"):          # ATDT#host = dial sécurisé TLS (picowifi)
+        tls = True
+        host = host[1:].strip()
+    port = 443 if tls else 23
     if ":" in host:
         host, p = host.rsplit(":", 1)
         try:
@@ -177,9 +188,19 @@ def dial(arg):
     try:
         s = socket.socket()
         s.connect(socket.getaddrinfo(host, port)[0][-1])
-        s.setblocking(False)
-        net_poll.register(s, select.POLLIN)
+        if tls:
+            # handshake TLS en bloquant, PUIS passage non-bloquant. Les sockets
+            # SSL n'acceptent pas select.poll de façon fiable sur MicroPython :
+            # la boucle online lit en non-bloquant à chaque tour (read()->None
+            # si rien).
+            import ussl
+            s = ussl.wrap_socket(s, server_hostname=host)
+            s.setblocking(False)
+        else:
+            s.setblocking(False)
+            net_poll.register(s, select.POLLIN)
         sock = s
+        is_tls = tls
         online = True
         telnet_reset()
         crlf("CONNECT")
@@ -431,9 +452,10 @@ def run():
                 else:
                     try:
                         if plus:
-                            sock.send(b"+" * plus)
+                            sock_write(b"+" * plus)
                         plus = 0
-                        sock.send(ch.encode("latin-1"))
+                        o = ord(ch)
+                        sock_write(bytes([o]) if o < 256 else ch.encode())
                     except Exception:
                         hangup()
                 last_rx = time.ticks_ms()
@@ -449,20 +471,35 @@ def run():
                     buf = buf[:-1]
                 else:
                     buf += ch
-        # Ne lire QUE si la socket est réellement lisible (POLLIN) : sinon un
-        # recv() non-bloquant renvoie b"" « pas de données » sur MicroPython,
-        # à tort pris pour une fermeture -> NO CARRIER juste après CONNECT.
-        if sock and online and net_poll.poll(0):
-            try:
-                data = sock.recv(256)
-                if not data:                 # POLLIN + vide = vraie fermeture
+        # Réception réseau. TCP brut : ne lire que si POLLIN (sinon recv() non-
+        # bloquant renvoie b"" 'pas de données' -> faux NO CARRIER). TLS : les
+        # sockets SSL ne pollent pas de façon fiable -> on lit en non-bloquant
+        # à chaque tour, read() renvoie None si rien.
+        if sock and online:
+            if is_tls:
+                try:
+                    data = sock.read(256)
+                except OSError:
+                    data = None          # EAGAIN
+                except Exception:
+                    hangup(); data = None
+                if data is None:
+                    pass
+                elif not data:
                     hangup()
                 else:
                     wbytes(telnet_filter(data))
-            except OSError:
-                pass                # EAGAIN transitoire
-            except Exception:
-                hangup()
+            elif net_poll.poll(0):
+                try:
+                    data = sock.recv(256)
+                    if not data:             # POLLIN + vide = vraie fermeture
+                        hangup()
+                    else:
+                        wbytes(telnet_filter(data))
+                except OSError:
+                    pass                # EAGAIN transitoire
+                except Exception:
+                    hangup()
         time.sleep_ms(2)
 
 
