@@ -169,7 +169,13 @@ module top_ulx3s (
     wire       inj_active, inj_shift;
     wire [2:0] inj_col, inj_row;
 
-    uart_rx #(.CLK_HZ(25_000_000), .BAUD(115_200)) uart (
+    // Console déportée : clavier PC + écran (framebuffer) sur le MÊME port
+    // FTDI. Baud relevé à 1 Mbaud (25 MHz/25 exact) — un plein framebuffer
+    // (26880 o) part en ~270 ms (~3-4 img/s), le texte est fluide. Les
+    // outils PC (screen_view.py, send_tap.py, dump_sd.py) utilisent ce baud.
+    localparam FTDI_BAUD = 1_000_000;
+
+    uart_rx #(.CLK_HZ(25_000_000), .BAUD(FTDI_BAUD)) uart (
         .clk   (clk_sys),
         .rst   (rst_sys),
         .rx    (ftdi_txd),
@@ -230,11 +236,30 @@ module top_ulx3s (
         .tape_active (tape_active)
     );
 
-    uart_tx #(.CLK_HZ(25_000_000), .BAUD(115_200)) uart_credits (
+    // Streamer écran : occupe l'UART FTDI quand ni dump ni cassette ni
+    // chargeur ne l'utilisent. Priorité : dump > cassette/chargeur > écran.
+    wire        scr_enable = ~dump_active & ~tape_active & ~ld_active;
+    wire [15:0] scr_raddr;
+    wire [3:0]  scr_rdata;
+    wire        scr_rd_valid;
+    wire [7:0]  scr_tx_data;
+    wire        scr_tx_send, scr_active;
+
+    screen_stream scr (
+        .clk(clk_sys), .rst(rst_sys), .enable(scr_enable),
+        .raddr(scr_raddr), .rdata(scr_rdata), .rd_valid(scr_rd_valid),
+        .tx_data(scr_tx_data), .tx_send(scr_tx_send),
+        .tx_busy(tap_tx_busy), .active(scr_active)
+    );
+
+    uart_tx #(.CLK_HZ(25_000_000), .BAUD(FTDI_BAUD)) uart_credits (
         .clk  (clk_sys),
         .rst  (rst_sys),
-        .data (dump_active ? dump_tx_data : tap_tx_data),
-        .send (dump_active ? dump_tx_send : (ld_active ? 1'b0 : tap_tx_send)),
+        .data (dump_active ? dump_tx_data
+               : scr_enable ? scr_tx_data : tap_tx_data),
+        .send (dump_active ? dump_tx_send
+               : scr_enable ? scr_tx_send
+               : (ld_active ? 1'b0 : tap_tx_send)),
         .tx   (ftdi_rxd),
         .busy (tap_tx_busy)
     );
@@ -391,7 +416,10 @@ module top_ulx3s (
         .wdata (fb_wdata),
         .rclk  (clk_pixel),
         .raddr (fb_raddr),
-        .rdata (fb_rdata)
+        .rdata (fb_rdata),
+        .raddr2   (scr_raddr),
+        .rdata2   (scr_rdata),
+        .rd2_valid(scr_rd_valid)
     );
 
     // Audio pour le HDMI : PSG 10 bits non signé -> PCM 16 bits signé.
