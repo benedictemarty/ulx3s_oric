@@ -494,8 +494,11 @@ module top_ulx3s (
     wire        fat_rd_start;
     wire [31:0] fat_rd_sector;
 
+    // SD + FAT = périphériques : reset au power-on SEUL (rst_por), pas à
+    // chaque reset CPU. Sinon un BTN1/BTN5 ré-initialise la SD (qui n'aime
+    // pas ça sans coupure d'alim) -> fat_done retombe à 0 -> OSD désactivé.
     sd_spi #(.CLK_HZ(25_000_000), .HALF(32)) sdc (
-        .clk(clk_sys), .rst(rst_sys),
+        .clk(clk_sys), .rst(rst_por),
         .start_read(fat_rd_start), .sector(fat_rd_sector),
         .ready(sd_ready), .busy(sd_busy), .error(sd_error),
         .data(sd_data), .data_valid(sd_dvalid), .status(sd_status),
@@ -571,7 +574,7 @@ module top_ulx3s (
     wire        d_grant = ~dump_active & ~ld_active;   // priorité dump > tape > dsk
 
     fat32 fat (
-        .clk(clk_sys), .rst(rst_sys), .start(fat_start),
+        .clk(clk_sys), .rst(rst_por), .start(fat_start),
         .rd_start(fat_rd_start), .rd_sector(fat_rd_sector),
         .sd_ready(sd_ready), .sd_busy(sd_busy),
         .sd_dvalid(sd_dvalid), .sd_data(sd_data),
@@ -653,10 +656,11 @@ module top_ulx3s (
         .sec_addr(mdp_secaddr), .sec_byte(mdp_secbyte)
     );
 
-    // Lancer le parsing une fois la carte initialisée
+    // Lancer le parsing une fois la carte initialisée. Sur power-on seul :
+    // le listing survit aux resets CPU (l'OSD reste dispo après BTN1/BTN5).
     always @(posedge clk_sys) begin
         fat_start <= 1'b0;
-        if (rst_sys) fat_trig <= 1'b0;
+        if (rst_por) fat_trig <= 1'b0;
         else if (sd_ready && !fat_trig) begin fat_start <= 1'b1; fat_trig <= 1'b1; end
     end
 
