@@ -238,7 +238,12 @@ module top_ulx3s (
 
     // Streamer écran : occupe l'UART FTDI quand ni dump ni cassette ni
     // chargeur ne l'utilisent. Priorité : dump > cassette/chargeur > écran.
-    wire        scr_enable = ~dump_active & ~tape_active & ~ld_active;
+    // L'écran cède l'UART au dump (BTN2) et au chargement cassette DEPUIS LE
+    // PC (crédits sur ftdi_rxd). Pendant un chargement DEPUIS LA SD (ld_active),
+    // aucun crédit n'est émis -> l'UART est libre -> on garde l'écran VIVANT
+    // (on voit « Searching… » puis le jeu se charger). tape_active seul (sans
+    // ld_active) = cassette PC -> on cède.
+    wire        scr_enable = ~dump_active & ~(tape_active & ~ld_active);
     wire [15:0] scr_raddr;
     wire [3:0]  scr_rdata;
     wire        scr_rd_valid;
