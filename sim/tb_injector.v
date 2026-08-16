@@ -14,7 +14,7 @@ module tb_injector;
 
     wire [7:0] rx_data;
     wire rx_valid;
-    wire inj_active, inj_shift;
+    wire inj_active, inj_shift, inj_ctrl;
     wire [2:0] inj_col, inj_row;
 
     uart_rx #(.CLK_HZ(CLK_HZ), .BAUD(BAUD)) uart (
@@ -24,7 +24,7 @@ module tb_injector;
     key_injector #(.PRESS_TICKS(400), .GAP_TICKS(200)) inj (
         .clk(clk), .rst(rst), .rx_data(rx_data), .rx_valid(rx_valid),
         .inj_active(inj_active), .inj_col(inj_col), .inj_row(inj_row),
-        .inj_shift(inj_shift)
+        .inj_shift(inj_shift), .inj_ctrl(inj_ctrl)
     );
 
     reg [2:0] col_sel = 0;
@@ -34,7 +34,7 @@ module tb_injector;
     oric_keyboard kbd (
         .clk(clk), .azerty(1'b0), .mods(8'd0), .k1(8'd0), .k2(8'd0), .k3(8'd0), .k4(8'd0),
         .inj_active(inj_active), .inj_col(inj_col), .inj_row(inj_row),
-        .inj_shift(inj_shift),
+        .inj_shift(inj_shift), .inj_ctrl(inj_ctrl),
         .col_sel(col_sel), .ay_ioa(ay_ioa), .sense(sense)
     );
 

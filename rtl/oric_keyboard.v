@@ -48,6 +48,7 @@ module oric_keyboard #(
     input  [2:0] inj_col,
     input  [2:0] inj_row,
     input        inj_shift,
+    input        inj_ctrl,
     // Interface matrice
     input  [2:0] col_sel,     // VIA ORB[2:0]
     input  [7:0] ay_ioa,      // rangées actives bas
@@ -289,6 +290,7 @@ module oric_keyboard #(
         if (inj_active) begin
             matrix[inj_col][inj_row] = 1'b1;
             if (inj_shift) matrix[4][4] = 1'b1;   // LSHIFT Oric
+            if (inj_ctrl)  matrix[2][4] = 1'b1;   // LCTRL Oric (2,4)
         end
     end
 

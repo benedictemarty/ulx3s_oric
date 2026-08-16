@@ -35,6 +35,7 @@ module oric_atmos #(
     input  [2:0]  inj_col,
     input  [2:0]  inj_row,
     input         inj_shift,
+    input         inj_ctrl,
 
     // Framebuffer vidéo
     output        fb_we,
@@ -366,6 +367,7 @@ module oric_atmos #(
         .inj_col    (inj_col),
         .inj_row    (inj_row),
         .inj_shift  (inj_shift),
+        .inj_ctrl   (inj_ctrl),
         .col_sel    (via_pb_out[2:0]),
         .ay_ioa     (ay_ioa),
         .sense      (kbd_sense)

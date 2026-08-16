@@ -90,12 +90,16 @@ class Console:
         self.root.after(50, self.refresh)
 
     def on_key(self, e):
-        ch = e.char
-        if not ch:
-            # touches spéciales -> codes Oric usuels
-            m = {"Return": "\r", "BackSpace": "\x7f", "Escape": "\x1b",
-                 "Left": "\x08", "Right": "\x09", "Up": "\x0b", "Down": "\x0a"}
-            ch = m.get(e.keysym, "")
+        # Ctrl+lettre -> code de contrôle (ex. Ctrl+T = 0x14 = bascule
+        # majuscules/minuscules de la ROM Oric). e.state bit 2 = Control.
+        if (e.state & 0x4) and len(e.keysym) == 1 and e.keysym.isalpha():
+            ch = chr(ord(e.keysym.lower()) & 0x1f)
+        else:
+            ch = e.char
+            if not ch:
+                m = {"Return": "\r", "BackSpace": "\x7f", "Escape": "\x1b",
+                     "Left": "\x08", "Right": "\x09", "Up": "\x0b", "Down": "\x0a"}
+                ch = m.get(e.keysym, "")
         if ch:
             if ch == "\n":
                 ch = "\r"

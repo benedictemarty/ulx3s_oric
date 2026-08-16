@@ -166,7 +166,7 @@ module top_ulx3s (
     // ------------------------------------------------------------------
     wire [7:0] rx_data;
     wire       rx_valid;
-    wire       inj_active, inj_shift;
+    wire       inj_active, inj_shift, inj_ctrl;
     wire [2:0] inj_col, inj_row;
 
     // Console déportée : clavier PC + écran (framebuffer) sur le MÊME port
@@ -196,7 +196,8 @@ module top_ulx3s (
         .inj_active (inj_active),
         .inj_col    (inj_col),
         .inj_row    (inj_row),
-        .inj_shift  (inj_shift)
+        .inj_shift  (inj_shift),
+        .inj_ctrl   (inj_ctrl)
     );
 
     // ------------------------------------------------------------------
@@ -364,6 +365,7 @@ module top_ulx3s (
         .inj_col     (inj_col),
         .inj_row     (inj_row),
         .inj_shift   (inj_shift),
+        .inj_ctrl    (inj_ctrl),
         .exp_addr    (exp_addr),
         .exp_we      (exp_we),
         .exp_do      (exp_do),

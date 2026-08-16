@@ -16,7 +16,8 @@ module key_injector #(
     output       inj_active,
     output [2:0] inj_col,
     output [2:0] inj_row,
-    output       inj_shift
+    output       inj_shift,
+    output       inj_ctrl
 );
 
     // ASCII -> {valide, shift, col[2:0], row[2:0]} — table partagée
@@ -42,10 +43,17 @@ module key_injector #(
     reg [1:0]  state;
     reg [20:0] timer;
     reg [7:0]  cur, last_char;
+    reg        cur_ctrl;                 // la frappe courante = Ctrl+lettre
     wire [7:0] m = map_char(cur);
 
     wire [7:0] head   = fifo[rptr];
-    wire [7:0] m_head = map_char(head);
+    // Ctrl+lettre : un code 0x01..0x1A NON déjà mappé (CR/DEL/… gardent leur
+    // mapping direct) -> presse la lettre minuscule (|0x60) AVEC la touche
+    // CTRL. Ex. Ctrl+T (0x14) -> 't' + CTRL = bascule majuscules de la ROM.
+    wire [7:0] m_direct = map_char(head);
+    wire       ctrlcombo = ~m_direct[7] && (head >= 8'd1) && (head <= 8'd26);
+    wire [7:0] head_eff = ctrlcombo ? (head | 8'h60) : head;
+    wire [7:0] m_head   = map_char(head_eff);
 
     always @(posedge clk) begin
         if (rst) begin
@@ -53,7 +61,8 @@ module key_injector #(
         end else begin
             case (state)
                 IDLE: if (!empty) begin
-                    cur  <= head;
+                    cur      <= head_eff;
+                    cur_ctrl <= ctrlcombo;
                     rptr <= rptr + 8'd1;
                     // LF juste après CR : c'est le même retour ligne, on saute
                     if (head == 8'h0A && last_char == 8'h0D)
@@ -84,6 +93,7 @@ module key_injector #(
 
     assign inj_active = (state == PRESS) && m[7];
     assign inj_shift  = (state == PRESS) && m[6];
+    assign inj_ctrl   = (state == PRESS) && cur_ctrl;
     assign inj_col    = m[5:3];
     assign inj_row    = m[2:0];
 
