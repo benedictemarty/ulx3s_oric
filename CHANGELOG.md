@@ -6,6 +6,17 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 ## [Non publié]
 
 ### Ajouté
+- **US-MBANK.4b — Portage du contrôleur SDRAM (bring-up sim)** (bmarty,
+  2026-08-17, **sim validée**) : `rtl/sdram_ctrl.v` + `sim/sdram_model.v` +
+  `sim/tb_sdram.v` importés d'`~/oric2/hdl` (EUPL-1.2, auteur bmarty, en-têtes
+  conservés) + cible `test-sdram`. Contrôleur SDR JEDEC closed-page, 16-bit,
+  25-bit adresse (32 Mo). **`test-sdram` PASSED** : init JEDEC (PRECHARGE ALL →
+  2× AUTO_REFRESH → LOAD MODE), écriture/relecture de 4 mots sur 2 lignes
+  (exerce ACTIVE), persistance après ≥1 auto-refresh (refresh=5), **0 violation**
+  READ/WRITE-sans-ACTIVE. Hors bus Oric — c'est le spike dé-risquant qui prouve
+  que le contrôleur fonctionne dans `ulx3s_oric` avant d'y accrocher les banques.
+  **Reste (sur carte, non simulable)** : `sdram_clk` (F19) + PLL + brochage dans
+  `top_ulx3s.v`. Note licence : ces 3 fichiers sont **EUPL-1.2** (mixage assumé).
 - **US-MBANK.4a — Investigation budget SDRAM pour les banques ORIX** (bmarty,
   2026-08-17, conception) : `docs/MULTIBANK_SDRAM.md`. Déclenchée par la cible
   **ORIX** (= TELEMON 3.0, **7 banques ROM** `orixbank1..7.rom` dans

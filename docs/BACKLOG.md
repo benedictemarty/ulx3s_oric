@@ -247,7 +247,11 @@ en SDRAM** (112 Ko, US-MBANK.4, cf. `docs/MULTIBANK_SDRAM.md`) et un **CH376**
       BRAM adossée SDRAM, **re-remplie par DMA au changement de banque** (PAS de
       lecture SDRAM au fil de l'eau — latence/refresh vs bus 1 MHz). Sous-jalons :
       - [x] US-MBANK.4a Investigation + architecture (doc).
-      - [ ] US-MBANK.4b Porter `sdram_ctrl` + `sdram_clk`/PLL + testbench SDRAM.
+      - [~] US-MBANK.4b Porter `sdram_ctrl` + testbench SDRAM (**sim PASSED**
+            2026-08-17 : `rtl/sdram_ctrl.v` + `sim/sdram_model.v` + `sim/tb_sdram.v`
+            d'oric2, EUPL/bmarty ; `test-sdram` = init JEDEC + W/R + refresh, 0
+            viol). Reste **sur carte** : `sdram_clk` (F19) + PLL + brochage dans
+            `top_ulx3s.v` (non validable en sim).
       - [ ] US-MBANK.4c `bank_backing.v` (BRAM active + DMA refill) sous bank_window.
       - [ ] US-MBANK.4d Chargement des banques en SDRAM depuis la SD (fat32).
 - [ ] US-MBANK.5 Validation carte : booter TELEMON/ORIX, `!DIR` STRATSED.
