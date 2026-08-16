@@ -205,6 +205,25 @@ ROM patchée = usage personnel uniquement (cf. dette technique).
 Cible mémoire : 48 Ko RAM fixe + fenêtre 16 Ko à `$C000` commutée
 (jusqu'à 4-8 banques ROM + RAM haute = « 64 Ko ROM / 64 Ko RAM »).
 L'émulateur `~/Oric1` sert de modèle de référence à chaque incrément.
+
+### Sous-chantier MULTIBANK — voie Telestrat fidèle (plan : docs/MULTIBANK.md)
+**Décision (bmarty, 2026-08-17)** : le mécanisme de banques est spécifié
+**Telestrat-fidèle** (spec confirmée sur le web, état de l'art 2026 : core FPGA
+BigMist GPL-2.0, ORIX 2025). Fenêtre `$C000` = **8 banques** hétérogènes ROM/RAM,
+sélecteur = **3 bits PA0-2 d'un 2ᵉ VIA à `$0320`** (et non le simple `NG_BANK
+$03E0`, qui devient un alias optionnel) ; **bank 0 = overlay RAM** (STRATSED),
+**bank 7 = TELEMON** (boot). Écritures `$C000` → toujours overlay RAM. Répond à
+« RAM aussi ? » = OUI (RAM = banques comme les ROM ; BigMist a 128 Ko RAM).
+Clean-room d'après la spec, pas de reprise du code GPL BigMist.
+- [x] US-MBANK.0 **Conception** (2026-08-17) : `docs/MULTIBANK.md` (spec Telestrat,
+      `bank_window.v` unifié ROM/RAM+overlay, intégration, budget BRAM/SDRAM, SotA).
+- [ ] US-MBANK.1 `bank_window.v` (8 banques, `is_ram`, overlay write, `/MAP`) +
+      testbench ; remplace `oric_rom.v` en gardant le boot Atmos (bank BASIC défaut).
+- [ ] US-MBANK.2 2ᵉ VIA `$0320`, `PA0-2 → bank_sel`, décodage `oric_atmos.v`.
+- [ ] US-MBANK.3 Banques réelles TELEMON (bank 7) + boot Telestrat optionnel.
+- [ ] US-MBANK.4 Banques RAM (overlay + RAM haute) ; décision BRAM vs SDRAM.
+- [ ] US-MBANK.5 Validation carte : booter TELEMON/ORIX, `!DIR` STRATSED.
+
 - [~] US-ULA-NG.1 **Registre NG_BANK + commutation ROM/RAM** — première
       tranche FAITE (2026-08-11, validée sur carte) : `oric_rom.v` à
       2 banques (1.1b défaut + **BASIC 1.0**), bascule BTN5 + reset,

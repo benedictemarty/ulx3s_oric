@@ -6,6 +6,22 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 ## [Non publié]
 
 ### Ajouté
+- **US-MBANK.0 — Conception multibank « voie Telestrat fidèle »** (bmarty,
+  2026-08-17) : `docs/MULTIBANK.md` + sous-chantier MULTIBANK sous l'épopée
+  ULA-NG dans `docs/BACKLOG.md`. Décision prise avec bmarty : le banking mémoire
+  est spécifié **Telestrat-fidèle**, après vérification web (spec faisant autorité
+  cc65/OSDK + **état de l'art 2026** : core FPGA **BigMist/Oric_Telestrat**
+  GPL-2.0, core MiSTer, OS **ORIX v2025.3**). Spec confirmée : fenêtre `$C000`
+  = **8 banques** hétérogènes ROM/RAM, sélecteur = **3 bits PA0-2 d'un 2ᵉ VIA à
+  `$0320`** (le `NG_BANK $03E0` de US-ULA-NG.1 devient un alias optionnel),
+  **bank 0 = overlay RAM** (STRATSED), **bank 7 = TELEMON** (boot, vecteur reset) ;
+  écritures `$C000` → toujours overlay RAM. Réponse tranchée à « si ROM alors RAM
+  aussi ? » = **OUI** (la RAM est des banques comme les ROM ; BigMist embarque
+  128 Ko RAM). Conception d'un `bank_window.v` **unifié** (banques ROM/RAM +
+  overlay + `/MAP`) remplaçant `oric_rom.v`, avec réserve **budget BRAM/SDRAM**
+  (128 Ko bankés probablement trop justes en EBR seule → banques RAM en SDRAM à
+  chiffrer). Approche **clean-room** (spec, pas le code GPL BigMist). 6 jalons
+  US-MBANK.0→5. **Aucun code produit** — conception seule.
 - **US-LOCI-SOC.0 — Conception SoC : soft-core RISC-V exécutant loci-fw**
   (bmarty, 2026-08-17) : `docs/LOCI_SOC.md` + épopée LOCI-SOC dans
   `docs/BACKLOG.md`. Périmètre décidé avec bmarty : voie **soft-core + firmware**,
