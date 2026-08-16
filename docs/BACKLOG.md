@@ -28,7 +28,9 @@ affichage HDMI, clavier USB, son AY.
       alimenté par UART avec contrôle de flux par crédits (voie retour
       ftdi_rxd) ; modulation fidèle à la référence, script tools/send_tap.py,
       testbench tb_tape. VALIDÉ SUR CARTE avec un vrai .tap (bmarty, 2026-08-02).
-- [ ] US2.2 Bouton reset physique (BTN) + reset à chaud/froid
+- [x] US2.2 Bouton reset physique (BTN1) + reset à chaud/froid (2026-08-16 :
+      BTN1 reset ; BTN5 bascule ROM+reset ; SW1 bascule Microdisc+reset AUTO
+      anti-rebondi ; insertion .dsk = reset auto. tb_sw1reset garde-fou.)
 - [ ] US2.3 LED d'activité (IRQ, VSYNC, USB)
 
 ## Épopée MODEM WiFi — 6551 ACIA + ESP32 Hayes (plan : docs/MODEM_WIFI.md)
