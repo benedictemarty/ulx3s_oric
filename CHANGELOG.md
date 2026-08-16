@@ -6,6 +6,22 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 ## [Non publié]
 
 ### Ajouté
+- **US-MBANK.1 — `bank_window.v` : fenêtre multibank $C000 (voie Telestrat)**
+  (bmarty, 2026-08-17, **sim validée**) : `rtl/bank_window.v` + `sim/tb_bank_window.v`
+  + cible `test-bank`. Généralise `oric_rom.v` (2 banques figées) vers **8 banques
+  logiques à rôle** (2 bits/banque : 0=non peuplée→$FF, 1=ROM A, 2=ROM B, 3=RAM
+  servie par l'overlay externe), avec sortie **`bank_is_ram`** (crochet pour router
+  les futures banques RAM vers l'overlay `oric_ram`+`rom_as_ram` existant, US-MBANK.4).
+  Intégré dans `oric_atmos.v` en remplacement de `oric_rom` avec
+  `bank_sel={2'b0,rom_bank}` → comportement **strictement identique** (bank0=BASIC
+  1.1b, bank1=1.0). **Zéro régression prouvée** : `test-bank` (défaut + remapping
+  des rôles + `bank_is_ram`) et `test-boot` (boot BASIC complet du cœur, bannière
+  détectée) tous deux **PASSED**. Écart assumé vs conception (`docs/MULTIBANK.md`
+  §2) : l'overlay write et `/MAP` **restent** gérés par la RAM 64 Ko existante
+  (non dupliqués dans le module) — c'est ce qui garantit la non-régression.
+  `oric_rom.v` conservé mais retiré des listes de build (rollback). Suite : 2e VIA
+  `$0320` pilotant `bank_sel` (US-MBANK.2). **Makefile** : `oric_rom.v`→`bank_window.v`
+  dans `RTL`/`SIM_CORE`, `test-bank` ajouté à `TESTS`.
 - **US-MBANK.0 — Conception multibank « voie Telestrat fidèle »** (bmarty,
   2026-08-17) : `docs/MULTIBANK.md` + sous-chantier MULTIBANK sous l'épopée
   ULA-NG dans `docs/BACKLOG.md`. Décision prise avec bmarty : le banking mémoire

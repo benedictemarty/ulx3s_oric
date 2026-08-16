@@ -217,8 +217,15 @@ $03E0`, qui devient un alias optionnel) ; **bank 0 = overlay RAM** (STRATSED),
 Clean-room d'après la spec, pas de reprise du code GPL BigMist.
 - [x] US-MBANK.0 **Conception** (2026-08-17) : `docs/MULTIBANK.md` (spec Telestrat,
       `bank_window.v` unifié ROM/RAM+overlay, intégration, budget BRAM/SDRAM, SotA).
-- [ ] US-MBANK.1 `bank_window.v` (8 banques, `is_ram`, overlay write, `/MAP`) +
-      testbench ; remplace `oric_rom.v` en gardant le boot Atmos (bank BASIC défaut).
+- [x] US-MBANK.1 **`bank_window.v` + testbench** (2026-08-17, sim OK) : 8 banques
+      logiques à rôle (0=vide→$FF, 1=ROM A, 2=ROM B, 3=RAM→overlay externe) ;
+      sortie `bank_is_ram` (crochet banques RAM). Remplace `oric_rom` dans
+      `oric_atmos.v` avec `bank_sel={2'b0,rom_bank}` → **strictement identique**
+      (bank0=1.1b, bank1=1.0). `test-bank` (défaut + remap + is_ram) et **`test-boot`
+      (boot BASIC complet, zéro régression) PASSED**. NB : overlay write + `/MAP`
+      **non déplacés** dans le module (déjà servis par `oric_ram`+`rom_as_ram`) —
+      écart assumé vs conception §2 pour zéro régression ; `bank_is_ram` les
+      branchera en US-MBANK.4. `oric_rom.v` conservé (inutilisé) pour rollback.
 - [ ] US-MBANK.2 2ᵉ VIA `$0320`, `PA0-2 → bank_sel`, décodage `oric_atmos.v`.
 - [ ] US-MBANK.3 Banques réelles TELEMON (bank 7) + boot Telestrat optionnel.
 - [ ] US-MBANK.4 Banques RAM (overlay + RAM haute) ; décision BRAM vs SDRAM.

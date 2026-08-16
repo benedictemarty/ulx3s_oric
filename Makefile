@@ -6,7 +6,7 @@ FPGA_SIZE = 85k
 PACKAGE   = CABGA381
 LPF       = constraints/ulx3s_v20.lpf
 
-RTL = rtl/oric_atmos.v rtl/oric_ula.v rtl/oric_ram.v rtl/oric_rom.v \
+RTL = rtl/oric_atmos.v rtl/oric_ula.v rtl/oric_ram.v rtl/bank_window.v \
       rtl/via6522.v rtl/oric_keyboard.v rtl/framebuffer.v \
       rtl/tmds_encoder.v rtl/hdmi_tmds_channel.v rtl/hdmi_packet_assembler.v \
       rtl/hdmi_audio_packets.v rtl/hdmi_data_island.v \
@@ -29,7 +29,7 @@ USB = third_party/usb_hid_host/src/usb_hid_host.v \
 SRC = $(RTL) $(CPU) $(JT49) $(USB)
 
 # Sources sans top ni HDMI ni USB ni PLL, pour la simulation
-SIM_CORE = rtl/oric_atmos.v rtl/oric_ula.v rtl/oric_ram.v rtl/oric_rom.v \
+SIM_CORE = rtl/oric_atmos.v rtl/oric_ula.v rtl/oric_ram.v rtl/bank_window.v \
            rtl/via6522.v rtl/oric_keyboard.v rtl/framebuffer.v rtl/acia6551.v \
            rtl/wd1793.v rtl/microdisc.v rtl/dsk_track.v \
            $(CPU) $(JT49)
@@ -63,7 +63,7 @@ prog-fujprog: build/$(PROJ).bit
 # ----------------------------------------------------------------------
 # Tests
 # ----------------------------------------------------------------------
-TESTS = test-via test-keyboard test-azerty test-injector test-tape test-acia test-expansion test-ula test-boot test-hdmi test-hdmi-packet test-hdmi-audio test-hdmi-island test-spi-byte test-sd test-fat test-tape-loader test-wd test-microdisc test-dsk test-sw1reset test-sd-write test-fat-write
+TESTS = test-via test-keyboard test-azerty test-injector test-tape test-acia test-expansion test-ula test-boot test-hdmi test-hdmi-packet test-hdmi-audio test-hdmi-island test-spi-byte test-sd test-fat test-tape-loader test-wd test-microdisc test-dsk test-sw1reset test-sd-write test-fat-write test-bank
 
 test: $(TESTS)
 	@echo "== TOUS LES TESTS SONT PASSES =="
@@ -123,6 +123,11 @@ test-expansion: sim/out
 	iverilog -DSIM -g2005 -o sim/out/tb_exp.vvp sim/tb_expansion.v rtl/expansion_port.v
 	vvp sim/out/tb_exp.vvp | tee sim/out/tb_exp.log
 	@grep -q "ALL TESTS PASSED" sim/out/tb_exp.log
+
+test-bank: sim/out
+	iverilog -DSIM -g2005 -o sim/out/tb_bank.vvp sim/tb_bank_window.v rtl/bank_window.v
+	vvp sim/out/tb_bank.vvp | tee sim/out/tb_bank.log
+	@grep -q "ALL TESTS PASSED" sim/out/tb_bank.log
 
 test-ula: sim/out
 	iverilog -DSIM -g2005 -o sim/out/tb_ula.vvp sim/tb_ula.v rtl/oric_ula.v rtl/oric_ram.v

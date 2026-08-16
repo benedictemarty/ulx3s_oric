@@ -215,11 +215,17 @@ module oric_atmos #(
         .dout_b (vram_dout)
     );
 
-    oric_rom #(.ROM_FILE(ROM_FILE), .ROM_FILE_B(ROM_FILE_B)) rom (
-        .clk  (clk),
-        .bank (rom_bank),
-        .addr (bus_addr_q[13:0]),
-        .dout (rom_dout)
+    // Fenêtre multibank $C000-$FFFF (voie Telestrat, cf. docs/MULTIBANK.md).
+    // US-MBANK.1 : bank_sel = {2'b0, rom_bank} -> bank0 = ROM A (BASIC 1.1b),
+    // bank1 = ROM B (1.0) — strictement identique à l'ancien oric_rom. Le 2e VIA
+    // $0320 pilotera bank_sel (US-MBANK.2) ; bank_is_ram servira les banques RAM.
+    wire bank_is_ram_unused;
+    bank_window #(.ROM_FILE_A(ROM_FILE), .ROM_FILE_B(ROM_FILE_B)) rom (
+        .clk         (clk),
+        .bank_sel    ({2'b00, rom_bank}),
+        .addr        (bus_addr_q[13:0]),
+        .dout        (rom_dout),
+        .bank_is_ram (bank_is_ram_unused)
     );
 
     // DI verrouillé à t4 : donnée du cycle courant, stable bien avant le
