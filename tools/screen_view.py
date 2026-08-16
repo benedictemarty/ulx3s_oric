@@ -80,7 +80,19 @@ def fit_scale(user_scale):
     return max(1, sx, sy)
 
 
-def render(px, scale, out):
+def cell_color(px, x0, y0, scale, bg):
+    # Réduction d'un bloc scale x scale : si UN pixel est de l'encre (!= fond),
+    # la cellule prend cette encre (préserve les traits fins de 1 px), sinon fond.
+    for dy in range(scale):
+        base = (y0 + dy) * W + x0
+        for dx in range(scale):
+            v = px[base + dx] & 7
+            if v != bg:
+                return v
+    return bg
+
+
+def render(px, scale, out, bg):
     # Positionnement ABSOLU par ligne (\033[row;1H) : immunisé contre le mode
     # raw où \n ne fait pas de retour chariot (sinon cisaillement diagonal).
     out_rows = []
@@ -89,13 +101,13 @@ def render(px, scale, out):
         row = ["\033[%d;1H" % r]
         r += 1
         prev = None
-        for cx in range(0, W, scale):
-            tv = px[cy * W + cx] & 7
-            bv = px[(cy + scale) * W + cx] & 7
+        for cx in range(0, W - scale + 1, scale):
+            tv = cell_color(px, cx, cy, scale, bg)
+            bv = cell_color(px, cx, cy + scale, scale, bg)
             if (tv, bv) != prev:            # ne réémet la couleur que si elle change
                 tr, tg, tb = PAL[tv]
-                br, bg, bb = PAL[bv]
-                row.append("\033[38;2;%d;%d;%d;48;2;%d;%d;%dm" % (tr, tg, tb, br, bg, bb))
+                br, bgc, bb = PAL[bv]
+                row.append("\033[38;2;%d;%d;%d;48;2;%d;%d;%dm" % (tr, tg, tb, br, bgc, bb))
                 prev = (tv, bv)
             row.append("▀")
         row.append("\033[0m\033[K")         # efface fin de ligne
@@ -109,11 +121,15 @@ def screen_loop(ser, scale):
     sys.stdout.write("\033[2J\033[?25l")     # efface + cache curseur
     sys.stdout.flush()
     try:
+        from collections import Counter
         while not _stop.is_set():
             resync(ser)
             frame = read_exact(ser, FRAME)
             if len(frame) == FRAME:
-                render(unpack(frame), scale, sys.stdout)
+                px = unpack(frame)
+                bg = (Counter(px[i] & 7 for i in range(0, W * H, 7))
+                      .most_common(1)[0][0])          # couleur de fond (papier)
+                render(px, scale, sys.stdout, bg)
     finally:
         sys.stdout.write("\033[?25h\033[0m\n")
         sys.stdout.flush()
