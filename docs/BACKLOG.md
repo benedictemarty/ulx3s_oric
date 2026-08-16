@@ -132,8 +132,16 @@ comparable à une vraie mécanique 3") ; v1 en LECTURE SEULE.
       la chaîne depuis le début du fichier à chaque piste (piste 60 ≈ 90
       sauts FAT à 390 kHz). Boot Sedoric rapide, Citadelle OK, cassette
       et Atmos pur sans régression.
-- [ ] US-DISK.5 **Écriture** (v2, ultérieur) : write-back des secteurs vers
-      la SD (commandes type II write), dirty tracking par piste.
+- [~] US-DISK.5 **Écriture disquette** (en cours 2026-08-16, EN PHASES) :
+      - [x] Phase 1 : sd_spi écrit un bloc (CMD24) — test-sd-write, suite OK
+      - [x] Phase 2 : fat32 écrit un bloc à un offset quelconque (suivi de
+            chaîne FAT + LBA) — test-fat-write (offset 8192, 3e cluster), OK
+      - [ ] Phase 3 : dsk_track write-back — secteur écrit dans tbuf ->
+            read-modify-write des 1-2 blocs SD touchés (foff = 256 +
+            (track+side*ntracks)*6400 + sec_off), fat32 read+overlay tbuf+write
+      - [ ] Phase 4 : WD1793 commande write sector (type II) — recevoir les
+            octets DRQ du CPU, remplir tbuf, retirer le write-protect
+      Câblage prêt : ports fat32 wblk_* + dsk_wblk_* (tie-off) dans le top.
 
 ## Épopée ULA-NG — extensions « voie Telestrat » : banques mémoire + vidéo étendue
 > **Frontière avec `~/oric2`** (2026-08-10) : le projet Oric 2 « chimère »
