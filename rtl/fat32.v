@@ -59,9 +59,26 @@ module fat32 #(
     output reg        floading,
     output reg        feof,
     output reg [7:0]  fdata,
-    output reg        fdata_valid    // niveau : tenu jusqu'à l'acceptation ;
+    output reg        fdata_valid,   // niveau : tenu jusqu'à l'acceptation ;
                                      // transfert au cycle où valid ET ready sont hauts
+
+    // Écriture d'un bloc (US-DISK.5) : écrit 512 octets à wblk_offset (aligné
+    // 512) du fichier wblk_idx. Suit la chaîne de clusters jusqu'au bloc, puis
+    // CMD24. La source fournit wblk_data pour la position wblk_pos (= wr_idx SD).
+    input             wblk_start,     // pulse : lancer l'écriture
+    input      [5:0]  wblk_idx,
+    input      [31:0] wblk_offset,
+    input      [7:0]  wblk_data,      // octet à la position wblk_pos
+    output     [8:0]  wblk_pos,       // = index SD courant (0..511)
+    output reg        wblk_done,
+    output reg        wblk_error,
+    // vers sd_spi (écriture)
+    output reg        wr_start,       // -> sd_spi.start_write
+    output     [7:0]  wr_data,        // -> sd_spi.wr_data
+    input      [8:0]  wr_idx          // <- sd_spi.wr_idx
 );
+    assign wr_data  = wblk_data;      // passthrough source -> sd_spi
+    assign wblk_pos = wr_idx;
     // Mémoires de listing
     reg [87:0] name_mem [0:MAXFILES-1];
     reg [31:0] size_mem [0:MAXFILES-1];
@@ -117,8 +134,12 @@ module fat32 #(
     localparam S_IDLE=0, S_RD0_R=1, S_RD0_C=2, S_BPB_R=3, S_BPB_C=4,
                S_CALC=5, S_DIR_R=6, S_DIR_C=7, S_DONE=8, S_ERR=9,
                FO_INIT=10, FO_RD=11, FO_CAP=12, FO_EMIT=13,
-               FO_FAT=14, FO_FATC=15, FO_EOF=16;
+               FO_FAT=14, FO_FATC=15, FO_EOF=16,
+               // écriture d'un bloc à un offset
+               WB_SKIP=17, WB_FAT=18, WB_FATC=19, WB_WR=20, WB_BUSY=21;
     reg [4:0]  state;
+    reg [31:0] wb_clus, wb_skip;     // suivi de chaîne pour l'écriture
+    reg [7:0]  wb_sic;               // bloc dans le cluster
     reg [9:0]  bidx;                 // 0..511 octet dans le secteur
     reg [3:0]  dirsec;               // secteur de répertoire courant (0..DIRSECS-1)
     reg        stop_dir;             // fin de répertoire (entrée 0x00) rencontrée
@@ -130,12 +151,14 @@ module fat32 #(
     integer k;
 
     always @(posedge clk) begin
-        rd_start <= 1'b0;
+        rd_start  <= 1'b0;
+        wr_start  <= 1'b0;
+        wblk_done <= 1'b0;
         if (rst) begin
             fdata_valid <= 1'b0;
             state <= S_IDLE; done <= 0; error <= 0; file_count <= 0;
             status <= 8'h00; rd_sector <= 0; bidx <= 0; dirsec <= 0; stop_dir <= 0;
-            floading <= 0; feof <= 0; cache_valid <= 1'b0;
+            floading <= 0; feof <= 0; cache_valid <= 1'b0; wblk_error <= 1'b0;
         end else begin
             case (state)
                 S_IDLE: if (start) begin
@@ -246,7 +269,12 @@ module fat32 #(
 
                 S_DONE: begin
                     done <= 1'b1; feof <= 1'b0;
-                    if (open_start) begin
+                    if (wblk_start) begin           // écriture d'un bloc à un offset
+                        wb_clus <= clus_mem[wblk_idx];
+                        wb_skip <= wblk_offset;
+                        wblk_error <= 1'b0;
+                        state <= WB_SKIP;
+                    end else if (open_start) begin
                         // au-delà de la fin : EOF immédiat (bytes_left = 0)
                         bytes_left <= (open_offset < size_mem[open_idx])
                                       ? size_mem[open_idx] - open_offset : 32'd0;
@@ -375,6 +403,39 @@ module fat32 #(
                 end
 
                 FO_EOF: begin floading <= 1'b0; feof <= 1'b1; state <= S_DONE; end
+
+                // ---- écriture d'un bloc : suivre la chaîne jusqu'à l'offset ----
+                WB_SKIP: if (wb_skip >= clus_bytes) begin
+                             wb_skip <= wb_skip - clus_bytes;   // sauter ce cluster
+                             state <= WB_FAT;
+                         end else begin
+                             wb_sic <= wb_skip[16:9];           // bloc dans le cluster
+                             state <= WB_WR;
+                         end
+                WB_FAT: if (sd_ready && !sd_busy) begin
+                            rd_sector <= fat_lba + (wb_clus >> 7);
+                            rd_start <= 1'b1; bidx <= 0; state <= WB_FATC;
+                        end
+                WB_FATC: if (sd_dvalid) begin
+                            if (bidx[8:0] == {wb_clus[6:0], 2'd0})       next_clus[7:0]   <= sd_data;
+                            if (bidx[8:0] == {wb_clus[6:0], 2'd0} + 9'd1) next_clus[15:8]  <= sd_data;
+                            if (bidx[8:0] == {wb_clus[6:0], 2'd0} + 9'd2) next_clus[23:16] <= sd_data;
+                            if (bidx[8:0] == {wb_clus[6:0], 2'd0} + 9'd3) next_clus[31:24] <= sd_data;
+                            if (bidx == 511) begin
+                                if ((next_clus & 32'h0FFFFFFF) >= 32'h0FFFFFF8) begin
+                                    wblk_error <= 1'b1; wblk_done <= 1'b1; state <= S_DONE;
+                                end else begin
+                                    wb_clus <= next_clus & 32'h0FFFFFFF; state <= WB_SKIP;
+                                end
+                            end else bidx <= bidx + 10'd1;
+                        end
+                WB_WR: if (sd_ready && !sd_busy) begin
+                            rd_sector <= first_data + (wb_clus - 32'd2) * spc + wb_sic;
+                            wr_start <= 1'b1; state <= WB_BUSY;
+                        end
+                WB_BUSY: if (sd_ready && !sd_busy && !wr_start) begin  // écriture finie
+                            wblk_done <= 1'b1; state <= S_DONE;
+                         end
 
                 S_ERR:  begin error <= 1'b1; end
                 default: state <= S_ERR;

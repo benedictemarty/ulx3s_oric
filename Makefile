@@ -63,7 +63,7 @@ prog-fujprog: build/$(PROJ).bit
 # ----------------------------------------------------------------------
 # Tests
 # ----------------------------------------------------------------------
-TESTS = test-via test-keyboard test-azerty test-injector test-tape test-acia test-expansion test-ula test-boot test-hdmi test-hdmi-packet test-hdmi-audio test-hdmi-island test-spi-byte test-sd test-fat test-tape-loader test-wd test-microdisc test-dsk test-sw1reset test-sd-write
+TESTS = test-via test-keyboard test-azerty test-injector test-tape test-acia test-expansion test-ula test-boot test-hdmi test-hdmi-packet test-hdmi-audio test-hdmi-island test-spi-byte test-sd test-fat test-tape-loader test-wd test-microdisc test-dsk test-sw1reset test-sd-write test-fat-write
 
 test: $(TESTS)
 	@echo "== TOUS LES TESTS SONT PASSES =="
@@ -95,6 +95,12 @@ test-acia: sim/out
 	iverilog -DSIM -g2005 -o sim/out/tb_acia.vvp sim/tb_acia.v rtl/acia6551.v
 	vvp sim/out/tb_acia.vvp | tee sim/out/tb_acia.log
 	@grep -q "ALL TESTS PASSED" sim/out/tb_acia.log
+
+test-fat-write: sim/out
+	python3 tools/gen_fat_test.py sim/out/fat_test.img
+	iverilog -DSIM -g2005 -o sim/out/tb_fw.vvp sim/tb_fat_write.v rtl/fat32.v rtl/sd_spi.v rtl/spi_byte.v sim/sd_card_file.v
+	vvp sim/out/tb_fw.vvp | tee sim/out/tb_fw.log
+	@grep -q "ALL TESTS PASSED" sim/out/tb_fw.log
 
 test-sd-write: sim/out
 	python3 -c "open('sim/out/wr_test.img','wb').write(b'\\xEE'*65536)"

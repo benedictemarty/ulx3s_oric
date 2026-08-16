@@ -521,10 +521,24 @@ module top_ulx3s (
     // SD + FAT = périphériques : reset au power-on SEUL (rst_por), pas à
     // chaque reset CPU. Sinon un BTN1/BTN5 ré-initialise la SD (qui n'aime
     // pas ça sans coupure d'alim) -> fat_done retombe à 0 -> OSD désactivé.
+    // Écriture SD : fat32 pilote start_write/wr_data (US-DISK.5). wr_idx est
+    // exposé pour que la source (dsk_track, phase 3) présente le bon octet.
+    wire        fat_wr_start;
+    wire [7:0]  fat_wr_data;
+    wire [8:0]  sd_wr_idx;
+    // Source d'écriture = dsk_track (phase 3) ; dormant en attendant (tie-off).
+    wire        dsk_wblk_start  = 1'b0;
+    wire [5:0]  dsk_wblk_idx    = 6'd0;
+    wire [31:0] dsk_wblk_offset = 32'd0;
+    wire [7:0]  dsk_wblk_data   = 8'd0;
+    wire [8:0]  dsk_wblk_pos;
+    wire        dsk_wblk_done, dsk_wblk_error;
+
     sd_spi #(.CLK_HZ(25_000_000), .HALF(32)) sdc (
         .clk(clk_sys), .rst(rst_por),
         .start_read(fat_rd_start),
-        .start_write(1'b0), .wr_data(8'd0), .sector(fat_rd_sector),
+        .start_write(fat_wr_start), .wr_data(fat_wr_data), .wr_idx(sd_wr_idx),
+        .sector(fat_rd_sector),
         .ready(sd_ready), .busy(sd_busy), .error(sd_error),
         .data(sd_data), .data_valid(sd_dvalid), .status(sd_status),
         .sck(sd_clk), .mosi(sd_cmd), .miso(sd_d[0]), .cs_n(sd_d[3])
@@ -615,7 +629,12 @@ module top_ulx3s (
         .open_idx((dump_active | ld_active) ? sel_idx : d_open_idx),
         .fdata_ready(dump_active ? dump_fdata_ready :
                      ld_active   ? ld_fdata_ready  : d_fdata_ready),
-        .floading(fat_floading), .feof(fat_feof), .fdata(fat_fdata), .fdata_valid(fat_fdata_valid)
+        .floading(fat_floading), .feof(fat_feof), .fdata(fat_fdata), .fdata_valid(fat_fdata_valid),
+        // Écriture (US-DISK.5) : dormant tant que dsk_track ne pilote pas (phase 3)
+        .wblk_start(dsk_wblk_start), .wblk_idx(dsk_wblk_idx),
+        .wblk_offset(dsk_wblk_offset), .wblk_data(dsk_wblk_data),
+        .wblk_pos(dsk_wblk_pos), .wblk_done(dsk_wblk_done), .wblk_error(dsk_wblk_error),
+        .wr_start(fat_wr_start), .wr_data(fat_wr_data), .wr_idx(sd_wr_idx)
     );
 
     fat_dump dbg (

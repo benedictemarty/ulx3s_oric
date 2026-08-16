@@ -48,7 +48,10 @@ module tb_sedboot;
         .open_start(d_open_start), .open_idx(d_open_idx),
         .open_offset(d_open_offset), .open_abort(d_open_abort),
         .fdata_ready(d_fdata_ready),
-        .floading(floading), .feof(feof), .fdata(fdata), .fdata_valid(fdata_valid)
+        .floading(floading), .feof(feof), .fdata(fdata), .fdata_valid(fdata_valid),
+        .wblk_start(1'b0), .wblk_idx(6'd0), .wblk_offset(32'd0),
+        .wblk_data(8'd0), .wr_idx(9'd0),
+        .wblk_pos(), .wblk_done(), .wblk_error(), .wr_start(), .wr_data()
     );
 
     reg  insert = 0;
