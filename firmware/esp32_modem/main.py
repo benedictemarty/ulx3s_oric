@@ -35,6 +35,7 @@ wlan.active(True)
 
 poller = select.poll()
 poller.register(sys.stdin, select.POLLIN)
+net_poll = select.poll()          # surveille la socket réseau (lisible ?)
 
 echo = True
 sock = None
@@ -81,6 +82,10 @@ def hangup(report=True):
     global sock, online
     if sock:
         try:
+            net_poll.unregister(sock)
+        except Exception:
+            pass
+        try:
             sock.close()
         except Exception:
             pass
@@ -108,6 +113,7 @@ def dial(arg):
         s = socket.socket()
         s.connect(socket.getaddrinfo(host, port)[0][-1])
         s.setblocking(False)
+        net_poll.register(s, select.POLLIN)
         sock = s
         online = True
         crlf("CONNECT")
@@ -369,15 +375,18 @@ def run():
                     buf = buf[:-1]
                 else:
                     buf += ch
-        if sock and online:
+        # Ne lire QUE si la socket est réellement lisible (POLLIN) : sinon un
+        # recv() non-bloquant renvoie b"" « pas de données » sur MicroPython,
+        # à tort pris pour une fermeture -> NO CARRIER juste après CONNECT.
+        if sock and online and net_poll.poll(0):
             try:
                 data = sock.recv(256)
-                if data == b"":
+                if not data:                 # POLLIN + vide = vraie fermeture
                     hangup()
-                elif data:
+                else:
                     sys.stdout.write(data.decode("latin-1"))
             except OSError:
-                pass                # EAGAIN
+                pass                # EAGAIN transitoire
             except Exception:
                 hangup()
         time.sleep_ms(2)
