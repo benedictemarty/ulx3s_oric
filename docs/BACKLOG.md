@@ -215,6 +215,12 @@ $03E0`, qui devient un alias optionnel) ; **bank 0 = overlay RAM** (STRATSED),
 **bank 7 = TELEMON** (boot). Écritures `$C000` → toujours overlay RAM. Répond à
 « RAM aussi ? » = OUI (RAM = banques comme les ROM ; BigMist a 128 Ko RAM).
 Clean-room d'après la spec, pas de reprise du code GPL BigMist.
+**Cible ORIX (2026-08-17)** : ORIX = **TELEMON 3.0** (bank 7 bootable, appels
+`BRK_TELEMON`, 7 banques `orixbank1..7.rom` présentes dans `~/oricutron/roms/`).
+La compat ORIX impose : **boot bank 7** (mode Telestrat, US-MBANK.3), **banques
+en SDRAM** (112 Ko, US-MBANK.4, cf. `docs/MULTIBANK_SDRAM.md`) et un **CH376**
+(stockage FAT32 d'ORIX, à émuler par-dessus `fat32.v`/`sd_spi.v` — modèle dans
+`~/oricutron`). ROM ORIX/Telestrat = **usage perso, jamais commitées** (droits).
 - [x] US-MBANK.0 **Conception** (2026-08-17) : `docs/MULTIBANK.md` (spec Telestrat,
       `bank_window.v` unifié ROM/RAM+overlay, intégration, budget BRAM/SDRAM, SotA).
 - [x] US-MBANK.1 **`bank_window.v` + testbench** (2026-08-17, sim OK) : 8 banques
@@ -234,7 +240,16 @@ Clean-room d'après la spec, pas de reprise du code GPL BigMist.
       (banking seul). `test-bank-sel` (écriture DDRA/ORA → banque 1..7, masquage,
       repli) et **`test-boot` (zéro régression) PASSED**.
 - [ ] US-MBANK.3 Banques réelles TELEMON (bank 7) + boot Telestrat optionnel.
-- [ ] US-MBANK.4 Banques RAM (overlay + RAM haute) ; décision BRAM vs SDRAM.
+- [~] US-MBANK.4 **Banques en SDRAM** (plan : docs/MULTIBANK_SDRAM.md) —
+      investigation faite (2026-08-17). Cible ORIX = 7 banques × 16 Ko (112 Ko)
+      → hors BRAM → **SDRAM**. Actif réutilisable : `sdram_ctrl.v` d'`~/oric2`
+      (EUPL, bmarty, même carte). **Archi retenue** : banque active 16 Ko en
+      BRAM adossée SDRAM, **re-remplie par DMA au changement de banque** (PAS de
+      lecture SDRAM au fil de l'eau — latence/refresh vs bus 1 MHz). Sous-jalons :
+      - [x] US-MBANK.4a Investigation + architecture (doc).
+      - [ ] US-MBANK.4b Porter `sdram_ctrl` + `sdram_clk`/PLL + testbench SDRAM.
+      - [ ] US-MBANK.4c `bank_backing.v` (BRAM active + DMA refill) sous bank_window.
+      - [ ] US-MBANK.4d Chargement des banques en SDRAM depuis la SD (fat32).
 - [ ] US-MBANK.5 Validation carte : booter TELEMON/ORIX, `!DIR` STRATSED.
 
 - [~] US-ULA-NG.1 **Registre NG_BANK + commutation ROM/RAM** — première

@@ -6,6 +6,19 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 ## [Non publié]
 
 ### Ajouté
+- **US-MBANK.4a — Investigation budget SDRAM pour les banques ORIX** (bmarty,
+  2026-08-17, conception) : `docs/MULTIBANK_SDRAM.md`. Déclenchée par la cible
+  **ORIX** (= TELEMON 3.0, **7 banques ROM** `orixbank1..7.rom` dans
+  `~/oricutron/roms/`, boot bank 7, stockage **CH376**). 112 Ko de banques ne
+  tiennent pas en BRAM → **SDRAM**. Actif réutilisable identifié : `sdram_ctrl.v`
+  d'`~/oric2/hdl` (contrôleur SDR JEDEC 16-bit, 32 Mo, EUPL, auteur bmarty, même
+  carte) + arbitre + `ulx3s_sdram.lpf`. **Décision d'architecture** : NE PAS lire
+  les banques en SDRAM au fil de l'eau (latence variable + refresh vs bus 1 MHz,
+  risque de rater l'échantillon t4) mais **banque active de 16 Ko en BRAM adossée
+  à la SDRAM, re-remplie par DMA au changement de banque** (modèle `oric_bankN`
+  du firmware LOCI). Sous-jalons US-MBANK.4a→d définis. Risques ouverts listés
+  (fréquence de swap TELEMON, collision refresh, coexistence horloges HDMI/SDRAM,
+  mixage licence EUPL). **Aucun RTL SDRAM ajouté** — investigation seule.
 - **US-MBANK.2 — 2ᵉ VIA `$0320` pilotant la banque `$C000` (voie Telestrat)**
   (bmarty, 2026-08-17, **sim validée**) : `rtl/oric_atmos.v` — un `via6522` est
   réinstancié à **`$0320-$032F`** (`sel_via2`, décodage `$03xx` mis à jour :
