@@ -240,9 +240,14 @@ def do_cmd(line):
     elif u == "ATI":
         crlf(VERSION)
         if wlan.isconnected():
-            crlf("WIFI CONNECTED " + str(wlan.config("ssid")))
-            crlf("IP " + wlan.ifconfig()[0]
-                 + " RSSI " + str(wlan.status("rssi")))
+            # wlan.config("ssid") lève ValueError sur MicroPython 1.14 en STA :
+            # on affiche le SSID mémorisé et on garde le RSSI optionnel.
+            crlf("WIFI CONNECTED " + ssid)
+            try:
+                rssi = str(wlan.status("rssi"))
+            except Exception:
+                rssi = "?"
+            crlf("IP " + wlan.ifconfig()[0] + " RSSI " + rssi)
         else:
             crlf("WIFI NOT CONNECTED"
                  + (" (SSID " + ssid + ")" if ssid else ""))
