@@ -43,6 +43,58 @@ online = False
 ssid = ""
 password = ""
 
+# Telnet : on répond aux négociations IAC (refus de toutes les options) et on
+# les retire de l'affichage -> terminal propre. ATNET0 = mode brut (IAC passés
+# tels quels, ex. transfert XMODEM binaire). État persistant entre les recv.
+tn_on = True
+_tn_st = 0            # 0 normal, 1 IAC, 2 option, 3 SB, 4 SB+IAC
+_tn_cmd = 0
+
+
+def telnet_reset():
+    global _tn_st, _tn_cmd
+    _tn_st = 0
+    _tn_cmd = 0
+
+
+def telnet_filter(data):
+    global _tn_st, _tn_cmd
+    if not tn_on:
+        return data
+    out = bytearray()
+    resp = bytearray()
+    for b in data:
+        if _tn_st == 0:
+            if b == 0xFF:
+                _tn_st = 1
+            else:
+                out.append(b)
+        elif _tn_st == 1:
+            if b == 0xFF:            # IAC IAC = 0xFF littéral
+                out.append(0xFF); _tn_st = 0
+            elif 0xFB <= b <= 0xFE:  # WILL/WONT/DO/DONT
+                _tn_cmd = b; _tn_st = 2
+            elif b == 0xFA:          # SB
+                _tn_st = 3
+            else:
+                _tn_st = 0
+        elif _tn_st == 2:            # octet d'option -> refuser
+            if _tn_cmd == 0xFD:      # DO x   -> WONT x
+                resp += bytes((0xFF, 0xFC, b))
+            elif _tn_cmd == 0xFB:    # WILL x -> DONT x
+                resp += bytes((0xFF, 0xFE, b))
+            _tn_st = 0
+        elif _tn_st == 3:            # sous-négociation
+            if b == 0xFF:
+                _tn_st = 4
+        elif _tn_st == 4:
+            _tn_st = 0 if b == 0xF0 else 3   # IAC SE = fin
+    if resp and sock:
+        try:
+            sock.send(resp)
+        except Exception:
+            pass
+    return bytes(out)
 
 
 # Sortie octets BRUTS : MicroPython ne supporte que le codec UTF-8, donc
@@ -129,6 +181,7 @@ def dial(arg):
         net_poll.register(s, select.POLLIN)
         sock = s
         online = True
+        telnet_reset()
         crlf("CONNECT")
     except Exception:
         crlf("NO CARRIER")
@@ -248,7 +301,7 @@ HELP = (
 
 
 def do_cmd(line):
-    global echo, online, ssid, password
+    global echo, online, ssid, password, tn_on
     u = line.upper()
     if u == "AT":
         crlf("OK")
@@ -333,6 +386,14 @@ def do_cmd(line):
             crlf("NO CARRIER")
     elif u == "ATH":
         hangup()
+    elif u.startswith("ATNET"):
+        if u == "ATNET?":
+            crlf("1" if tn_on else "0")
+        elif u == "ATNET0":
+            tn_on = False
+        else:                         # ATNET1/ATNET2 -> traitement telnet ON
+            tn_on = True
+        crlf("OK")
     elif u.startswith("ATGET"):
         atget(line[5:].strip())
     elif u == "ATZ":
@@ -397,7 +458,7 @@ def run():
                 if not data:                 # POLLIN + vide = vraie fermeture
                     hangup()
                 else:
-                    wbytes(data)
+                    wbytes(telnet_filter(data))
             except OSError:
                 pass                # EAGAIN transitoire
             except Exception:
