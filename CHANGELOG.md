@@ -6,6 +6,19 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 ## [Non publié]
 
 ### Ajouté
+- **US-LOCI.0 — Conception de l'émulation LOCI interne** (bmarty, 2026-08-17) :
+  `docs/LOCI_EMULATION.md` + nouvelle épopée LOCI dans `docs/BACKLOG.md`.
+  Analyse factuelle des sources réelles (`loci-hardware` 1.3, `loci-fw`,
+  ROM menu, code client `bbsoric`/`scum`) via 3 explorations parallèles.
+  **Décision de périmètre** : la LOCI est un **RP2040 + firmware** ; son cœur
+  (MIA `$03A0`, API POSIX open/read/write/mount/boot, ROM swap `$C000`) est
+  **logiciel** — non émulable en RTL pur et **redondant** avec la chaîne disque
+  native déjà validée (sd_spi→fat32→dsk_track→wd1793→microdisc, boot Sedoric OK).
+  Seule brique retenue comme émulable ET distincte de l'existant :
+  l'**ACIA 6551 à `$0380`** (canal modem LOCI), face au 6551 existant à `$031C`.
+  Soft-CPU exécutant `loci-fw` **écarté** (projet en soi). Backlog : US-LOCI.1
+  (décision 2ᵉ 6551 vs commutable) → US-LOCI.4 (validation carte). **Aucun RTL
+  produit** — conception seule, à valider avant codage.
 - **Note à l'équipe — liaison physique vers la LOCI + berceau PCBA**
   (bmarty, 2026-08-13) : `docs/NOTE_EQUIPE_LIAISON_LOCI.md`. Revue croisée avec
   l'étude indépendante `~/NetMaze/ulx3s2Loci/` : **validation mutuelle** du

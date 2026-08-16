@@ -143,6 +143,25 @@ comparable à une vraie mécanique 3") ; v1 en LECTURE SEULE.
             octets DRQ du CPU, remplir tbuf, retirer le write-protect
       Câblage prêt : ports fat32 wblk_* + dsk_wblk_* (tie-off) dans le top.
 
+## Épopée LOCI — émulation interne (plan : docs/LOCI_EMULATION.md)
+Objectif : décider ce qui, de la carte LOCI (`sodiumlb/loci-hardware` 1.3,
+firmware `loci-fw`), est émulable dans l'ECP5. **Constat de conception
+(2026-08-17)** : la LOCI est un **RP2040 + firmware** ; son cœur (MIA `$03A0`,
+API POSIX, ROM swap) est **logiciel**, non émulable en RTL pur, et **redondant**
+avec la chaîne disque native déjà validée (épopée DISK). Seule brique retenue :
+l'**ACIA 6551 à `$0380`** (canal modem LOCI), distincte du 6551 existant à
+`$031C`. Le pont vers une **vraie** LOCI est un sujet séparé (`expansion_port.v`,
+`docs/NOTE_EQUIPE_LIAISON_LOCI.md`).
+- [x] US-LOCI.0 **Conception + périmètre** (2026-08-17) : `docs/LOCI_EMULATION.md`
+      — cartographie LOCI, ce qui est/n'est pas émulable, recouvrement avec
+      l'épopée DISK, brique ACIA `$0380` retenue, soft-CPU écarté.
+- [ ] US-LOCI.1 **Décision** : (a) 2ᵉ 6551 à `$0380` coexistant avec `$031C`
+      vs (b) 6551 commutable ; garde d'exclusivité avec une vraie LOCI branchée.
+- [ ] US-LOCI.2 **RTL** `loci_acia` (ou paramétrage `acia6551.v`) + `sel_loci`
+      prioritaire sur `sel_ext` + testbench `tb_loci_acia`.
+- [ ] US-LOCI.3 **Intégration** top + pont UART + synthèse timing.
+- [ ] US-LOCI.4 **Validation carte** : dialogue AT depuis l'Oric sur `$0380`.
+
 ## Épopée ULA-NG — extensions « voie Telestrat » : banques mémoire + vidéo étendue
 > **Frontière avec `~/oric2`** (2026-08-10) : le projet Oric 2 « chimère »
 > (65C816, OricOS multitâche, GPU blitter, golden model Phosphoric) est un
