@@ -245,9 +245,27 @@ module top_ulx3s (
     wire [7:0]  scr_tx_data;
     wire        scr_tx_send, scr_active;
 
+    // OSD recomposité dans le flux console (coordonnées framebuffer, 8x8) :
+    // même liste de fichiers que l'OSD HDMI, via le 3e port de noms de fat32.
+    wire [9:0]  scr_ov_x, scr_ov_y;
+    wire        scr_osd_on;
+    wire [7:0]  scr_osd_r, scr_osd_g, scr_osd_b;
+    wire [5:0]  scr_osd_nidx;
+    wire [87:0] scr_osd_name;
+    osd #(.OSD_X(8), .OSD_Y(8), .COLS(11), .ROWS(13), .ZL(0)) osd_scr (
+        .hc(scr_ov_x), .vc(scr_ov_y),
+        .enable(fat_done && !tape_active && osd_open),
+        .file_count(file_count), .sel_idx(sel_idx),
+        .name_idx(scr_osd_nidx), .name(scr_osd_name),
+        .osd_on(scr_osd_on), .osd_r(scr_osd_r), .osd_g(scr_osd_g), .osd_b(scr_osd_b)
+    );
+    wire [2:0]  scr_ov_col = {scr_osd_b[7], scr_osd_g[7], scr_osd_r[7]};
+
     screen_stream scr (
         .clk(clk_sys), .rst(rst_sys), .enable(scr_enable),
         .raddr(scr_raddr), .rdata(scr_rdata), .rd_valid(scr_rd_valid),
+        .ov_x(scr_ov_x), .ov_y(scr_ov_y),
+        .ov_on(scr_osd_on), .ov_col(scr_ov_col),
         .tx_data(scr_tx_data), .tx_send(scr_tx_send),
         .tx_busy(tap_tx_busy), .active(scr_active)
     );
@@ -551,6 +569,7 @@ module top_ulx3s (
         .file_count(file_count), .status(fat_status),
         .q_idx(sel_idx), .q_name(), .q_size(sel_size), .q_clus(), .q_isdsk(sel_isdsk),
         .q2_idx(osd_name_idx), .q2_name(osd_q2_name),
+        .q3_idx(scr_osd_nidx), .q3_name(scr_osd_name),
         .open_start(dump_active ? dump_open_start :
                     ld_active   ? ld_open_start   : d_open_start),
         .open_offset(d_grant ? d_open_offset : 32'd0),

@@ -39,9 +39,13 @@ module fat32 #(
     output     [31:0] q_clus,
     output            q_isdsk,
 
-    // 2e port de lecture (OSD)
+    // 2e port de lecture (OSD HDMI)
     input      [5:0]  q2_idx,
     output     [87:0] q2_name,
+
+    // 3e port de lecture (OSD de la console déportée)
+    input      [5:0]  q3_idx,
+    output     [87:0] q3_name,
 
     // Lecture de fichier (streaming octet par octet, avec contrôle de flux)
     input             open_start,    // pulse : ouvrir le fichier open_idx
@@ -65,6 +69,7 @@ module fat32 #(
     reg        dsk_mem  [0:MAXFILES-1];
     assign q_name   = name_mem[q_idx];
     assign q2_name  = name_mem[q2_idx];
+    assign q3_name  = name_mem[q3_idx];
     assign q_size   = size_mem[q_idx];
     assign q_clus   = clus_mem[q_idx];
     assign q_isdsk  = dsk_mem[q_idx];
