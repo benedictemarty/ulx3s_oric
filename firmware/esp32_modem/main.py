@@ -44,6 +44,19 @@ ssid = ""
 password = ""
 
 
+
+# Sortie octets BRUTS : MicroPython ne supporte que le codec UTF-8, donc
+# data.decode("latin-1") LÈVE UnicodeError sur un octet >=0x80 (ex. telnet
+# IAC 0xFF). On écrit les octets directement via sys.stdout.buffer.
+_rawout = getattr(sys.stdout, "buffer", None)
+def wbytes(data):
+    if _rawout:
+        _rawout.write(data)
+    else:
+        for b in data:
+            sys.stdout.write(chr(b) if b < 0x80 else "?")
+
+
 def crlf(s=""):
     sys.stdout.write(s + "\r\n")
 
@@ -145,7 +158,7 @@ def atget(url):
             data = s.read(256) if proto == "https" else s.recv(256)
             if not data:
                 break
-            sys.stdout.write(data.decode("latin-1"))
+            wbytes(data)
         s.close()
         crlf()
         crlf("OK")
@@ -384,7 +397,7 @@ def run():
                 if not data:                 # POLLIN + vide = vraie fermeture
                     hangup()
                 else:
-                    sys.stdout.write(data.decode("latin-1"))
+                    wbytes(data)
             except OSError:
                 pass                # EAGAIN transitoire
             except Exception:
