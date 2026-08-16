@@ -62,7 +62,7 @@ module top_ulx3s (
     wire ext_rst_req;
     wire rst_por = (por != 0);      // power-on seul (survit aux resets machine)
     wire rst_sys = rst_por || btn[1] || ext_rst_req || (bank_rst != 0)
-                 || (dsk_rst != 0);
+                 || (dsk_rst != 0) || (sw0_rst != 0);
 
     // ------------------------------------------------------------------
     // Banque ROM sur BTN5 (UP) : chaque appui bascule BASIC 1.1b <-> 1.0
@@ -320,8 +320,18 @@ module top_ulx3s (
     // Microdisc : SW1 = branché ; fournisseur de secteurs = bouchon (pas de
     // disquette tant que US-DISK.3 n'apporte pas les pistes depuis la SD) —
     // l'EPROM boote et voit un lecteur vide.
-    reg [1:0] sw0_sync = 2'b00;
-    always @(posedge clk_sys) sw0_sync <= {sw0_sync[0], sw[0]};
+    // Tout changement de SW1 (branche/débranche le Microdisc) déclenche un
+    // reset ~5 ms : sinon basculer en marche fait disparaître l'EPROM de la
+    // carte mémoire sous les pieds du CPU -> crash (écran de rayures).
+    reg [1:0]  sw0_sync = 2'b00;
+    reg        sw0_prev = 1'b0;
+    reg [16:0] sw0_rst  = 17'd0;
+    always @(posedge clk_sys) begin
+        sw0_sync <= {sw0_sync[0], sw[0]};
+        sw0_prev <= sw0_sync[1];
+        if (sw0_sync[1] != sw0_prev)      sw0_rst <= 17'd125_000;
+        else if (sw0_rst != 17'd0)        sw0_rst <= sw0_rst - 17'd1;
+    end
 
     oric_atmos #(.DIV(25), .ROM_FILE("basic11b.hex")) oric (
         .clk         (clk_sys),
