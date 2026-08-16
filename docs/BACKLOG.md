@@ -162,6 +162,25 @@ l'**ACIA 6551 à `$0380`** (canal modem LOCI), distincte du 6551 existant à
 - [ ] US-LOCI.3 **Intégration** top + pont UART + synthèse timing.
 - [ ] US-LOCI.4 **Validation carte** : dialogue AT depuis l'Oric sur `$0380`.
 
+## Épopée LOCI-SOC — soft-core RISC-V exécutant loci-fw (plan : docs/LOCI_SOC.md)
+Objectif : LOCI fidèle via un **soft-core VexRiscv/LiteX** dans l'ECP5 exécutant
+un **portage de `loci-fw`**. **Faits de conception (2026-08-17)** : aucun portage
+RP6502→FPGA n'existe (*from scratch*) ; ARM M0 open = expérimental → **RISC-V**
+(LiteX a une cible ULX3S). « Tel quel » impossible : recompilation + réécriture du
+HAL RP2040 (PIO/DMA/dual-core/USB/XIP). Les couches PIO-bus et WD1793 sont
+**redondantes** avec le natif → on garde la **logique applicative** (MIA/API,
+menu, fatfs) et on branche sur le bus 6502 natif + SD. **Seul vrai mur : l'USB
+host du modem** (repli v0 = UART/ESP32). Approche dé-risquée par spikes.
+- [x] US-LOCI-SOC.0 **Conception SoC** (2026-08-17) : `docs/LOCI_SOC.md` —
+      faisabilité, choix RISC-V, carte SoC, HAL gardé/réécrit, point USB, jalons.
+- [ ] US-LOCI-SOC.1 **Spike** : VexRiscv minimal qui boote sur ULX3S (blinky+UART).
+- [ ] US-LOCI-SOC.2 **Mémoire & stockage** : SDRAM + SD lus par le soft-core (fatfs).
+- [ ] US-LOCI-SOC.3 **Coexistence** SoC ↔ cœur Oric sans casser le boot actuel.
+- [ ] US-LOCI-SOC.4 **MIA bridge** : registre-file `$03A0-$03BF` RTL, 1er API_OP.
+- [ ] US-LOCI-SOC.5 **Portage loci-fw** (RV32) : logique MIA/API/menu, op par op.
+- [ ] US-LOCI-SOC.6 **Modem** : décision USB (v0 UART/ESP32) puis fidélité.
+- [ ] US-LOCI-SOC.7 **Validation carte** : menu LOCI piloté depuis l'Oric.
+
 ## Épopée ULA-NG — extensions « voie Telestrat » : banques mémoire + vidéo étendue
 > **Frontière avec `~/oric2`** (2026-08-10) : le projet Oric 2 « chimère »
 > (65C816, OricOS multitâche, GPU blitter, golden model Phosphoric) est un

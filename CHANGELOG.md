@@ -6,6 +6,23 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 ## [Non publié]
 
 ### Ajouté
+- **US-LOCI-SOC.0 — Conception SoC : soft-core RISC-V exécutant loci-fw**
+  (bmarty, 2026-08-17) : `docs/LOCI_SOC.md` + épopée LOCI-SOC dans
+  `docs/BACKLOG.md`. Périmètre décidé avec bmarty : voie **soft-core + firmware**,
+  fidélité maximale. Recherche factuelle : **aucun portage RP6502/RP2040→FPGA
+  n'existe** (*from scratch*) ; **Cortex-M0 open-source sur ECP5 = expérimental**
+  (netlist DesignStart obfusqué) → on part sur **RISC-V (VexRiscv/LiteX**, cible
+  ULX3S clé en main). Constat honnête : « exécuter `loci-fw` tel quel » n'est pas
+  atteignable — la voie RISC-V impose de **recompiler** et de **réécrire le HAL
+  RP2040** (PIO/DMA/dual-core/USB host/XIP) ; or PIO-bus et WD1793 sont
+  **redondants** avec le natif `ulx3s_oric`. Architecture retenue : SoC
+  LiteX/VexRiscv gardant la **logique applicative** (MIA/API POSIX, `fatfs`, menu)
+  branchée sur le bus 6502 natif + `sd_spi.v`, via un **« MIA bridge »** RTL
+  (`$03A0-$03BF`). **Seul vrai mur : l'USB host du modem CDC** (repli v0 =
+  UART/ESP32 déjà présent). Plan dé-risqué en 7 jalons (spike VexRiscv →
+  SDRAM/SD → coexistence → MIA bridge → portage → modem → validation), avec
+  critère d'arrêt (repli sur le MIA RTL pur de `LOCI_EMULATION.md` si la
+  coexistence ne tient pas sur la 85F). **Aucun code produit** — conception seule.
 - **US-LOCI.0 — Conception de l'émulation LOCI interne** (bmarty, 2026-08-17) :
   `docs/LOCI_EMULATION.md` + nouvelle épopée LOCI dans `docs/BACKLOG.md`.
   Analyse factuelle des sources réelles (`loci-hardware` 1.3, `loci-fw`,
