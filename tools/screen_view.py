@@ -68,24 +68,39 @@ def unpack(frame):
     return px
 
 
+def fit_scale(user_scale):
+    """Choisit un pas qui tient dans le terminal (évite le repli = cisaillement).
+    Un caractère = 1 pixel large x 2 pixels haut (demi-bloc ▀)."""
+    if user_scale:
+        return user_scale
+    import shutil
+    cols, rows = shutil.get_terminal_size((120, 40))
+    sx = -(-W // max(1, cols))              # ceil(240/cols)
+    sy = -(-H // max(1, 2 * (rows - 1)))    # ceil(224/(2*(rows-1)))
+    return max(1, sx, sy)
+
+
 def render(px, scale, out):
-    at = "\033[H"                  # curseur en haut à gauche
-    lines = [at]
+    lines = ["\033[H"]                      # curseur en haut à gauche
     for cy in range(0, H - 2 * scale + 1, 2 * scale):
         row = []
+        prev = None
         for cx in range(0, W, scale):
             tv = px[cy * W + cx] & 7
             bv = px[(cy + scale) * W + cx] & 7
-            tr, tg, tb = PAL[tv]
-            br, bg, bb = PAL[bv]
-            row.append("\033[38;2;%d;%d;%d;48;2;%d;%d;%dm▀"
-                       % (tr, tg, tb, br, bg, bb))
-        lines.append("".join(row) + "\033[0m")
+            if (tv, bv) != prev:            # ne réémet la couleur que si elle change
+                tr, tg, tb = PAL[tv]
+                br, bg, bb = PAL[bv]
+                row.append("\033[38;2;%d;%d;%d;48;2;%d;%d;%dm" % (tr, tg, tb, br, bg, bb))
+                prev = (tv, bv)
+            row.append("▀")
+        lines.append("".join(row) + "\033[0m\033[K")   # efface fin de ligne
     out.write("\n".join(lines))
     out.flush()
 
 
 def screen_loop(ser, scale):
+    scale = fit_scale(scale)
     sys.stdout.write("\033[2J\033[?25l")     # efface + cache curseur
     sys.stdout.flush()
     try:
@@ -119,15 +134,53 @@ def keyboard_loop(ser):
         termios.tcsetattr(fd, termios.TCSADRAIN, old)
 
 
+def write_png(px, path, zoom=3):
+    import struct
+    import zlib
+    raw = bytearray()
+    for y in range(H):
+        for _ in range(zoom):
+            raw.append(0)                      # filtre None
+            for x in range(W):
+                r, g, b = PAL[px[y * W + x] & 7]
+                raw += bytes((r, g, b)) * zoom
+
+    def chunk(t, d):
+        c = t + d
+        return struct.pack(">I", len(d)) + c \
+            + struct.pack(">I", zlib.crc32(c) & 0xffffffff)
+    png = b"\x89PNG\r\n\x1a\n"
+    png += chunk(b"IHDR", struct.pack(">IIBBBBB", W * zoom, H * zoom, 8, 2, 0, 0, 0))
+    png += chunk(b"IDAT", zlib.compress(bytes(raw), 9))
+    png += chunk(b"IEND", b"")
+    open(path, "wb").write(png)
+
+
+def snapshot(ser, path):
+    resync(ser)
+    frame = read_exact(ser, FRAME)
+    if len(frame) == FRAME:
+        write_png(unpack(frame), path)
+        print("snapshot ->", path)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("-p", "--port", default="/dev/ttyUSB0")
     ap.add_argument("-b", "--baud", type=int, default=1_000_000)
-    ap.add_argument("-s", "--scale", type=int, default=2)
+    ap.add_argument("-s", "--scale", type=int, default=0,
+                    help="0 = auto-ajuste au terminal")
     ap.add_argument("-k", "--keyboard", action="store_true")
+    ap.add_argument("--snap", metavar="FICHIER.png",
+                    help="capture une image PNG fidèle puis quitte")
     a = ap.parse_args()
 
     ser = serial.Serial(a.port, a.baud, timeout=0.2)
+
+    if a.snap:
+        snapshot(ser, a.snap)
+        ser.close()
+        return
 
     if a.keyboard:
         t = threading.Thread(target=screen_loop, args=(ser, a.scale),
