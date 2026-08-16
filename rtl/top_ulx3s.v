@@ -62,7 +62,7 @@ module top_ulx3s (
     wire ext_rst_req;
     wire rst_por = (por != 0);      // power-on seul (survit aux resets machine)
     wire rst_sys = rst_por || btn[1] || ext_rst_req || (bank_rst != 0)
-                 || (dsk_rst != 0);
+                 || (dsk_rst != 0) || (sw0_rst != 0);
 
     // ------------------------------------------------------------------
     // Banque ROM sur BTN5 (UP) : chaque appui bascule BASIC 1.1b <-> 1.0
@@ -329,15 +329,39 @@ module top_ulx3s (
     // (SW1-reset auto RETIRÉ 2026-08-16 : suspecté de tenir le CPU en reset
     //  — écran noir + bandes = RAM non effacée. Rebasculer SW1 nécessite à
     //  nouveau un BTN1 manuel ; à réintroduire proprement (debounce) plus tard.)
+    // SW1 (Microdisc branché) : reset auto au basculement, AVEC anti-rebond
+    // (~10 ms stable, exactement comme BTN5) et détection des DEUX sens. Un
+    // simple synchroniseur ne suffit PAS : les rebonds mécaniques font des
+    // fronts multiples sur le signal brut -> resets en boucle -> CPU tenu en
+    // reset (écran noir, bug du 2026-08-16). `sw0_stable` ne change qu'après
+    // 10 ms stables -> au plus UN reset par basculement réel. Au power-on :
+    // SW1 OFF = aucun reset ; SW1 ON = un seul reset propre (-> mode Microdisc).
     reg [1:0]  sw0_sync = 2'b00;
-    always @(posedge clk_sys) sw0_sync <= {sw0_sync[0], sw[0]};
+    reg [19:0] sw0_deb  = 20'd0;
+    reg        sw0_stable = 1'b0, sw0_prev = 1'b0;
+    reg [16:0] sw0_rst  = 17'd0;
+    always @(posedge clk_sys) begin
+        sw0_sync <= {sw0_sync[0], sw[0]};
+        if (sw0_sync[1] == sw0_stable)
+            sw0_deb <= 20'd0;
+        else if (sw0_deb == 20'd250_000) begin   // ~10 ms stable -> valide
+            sw0_stable <= sw0_sync[1];
+            sw0_deb    <= 20'd0;
+        end else
+            sw0_deb <= sw0_deb + 20'd1;
+        sw0_prev <= sw0_stable;
+        if (sw0_stable != sw0_prev)               // basculement confirmé (2 sens)
+            sw0_rst <= 17'd125_000;               // ~5 ms de reset
+        else if (sw0_rst != 17'd0)
+            sw0_rst <= sw0_rst - 17'd1;
+    end
 
     oric_atmos #(.DIV(25), .ROM_FILE("basic11b.hex")) oric (
         .clk         (clk_sys),
         .rst         (rst_sys),
         .rom_bank    (rom_bank),
         .turbo       (turbo),
-        .md_enable   (sw0_sync[1]),
+        .md_enable   (sw0_stable),
         .md_disk_present (mdp_present),
         .md_n_tracks (mdp_ntracks),
         .md_n_spt    (mdp_nspt),

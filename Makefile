@@ -63,7 +63,7 @@ prog-fujprog: build/$(PROJ).bit
 # ----------------------------------------------------------------------
 # Tests
 # ----------------------------------------------------------------------
-TESTS = test-via test-keyboard test-azerty test-injector test-tape test-acia test-expansion test-ula test-boot test-hdmi test-hdmi-packet test-hdmi-audio test-hdmi-island test-spi-byte test-sd test-fat test-tape-loader test-wd test-microdisc test-dsk
+TESTS = test-via test-keyboard test-azerty test-injector test-tape test-acia test-expansion test-ula test-boot test-hdmi test-hdmi-packet test-hdmi-audio test-hdmi-island test-spi-byte test-sd test-fat test-tape-loader test-wd test-microdisc test-dsk test-sw1reset
 
 test: $(TESTS)
 	@echo "== TOUS LES TESTS SONT PASSES =="
@@ -95,6 +95,11 @@ test-acia: sim/out
 	iverilog -DSIM -g2005 -o sim/out/tb_acia.vvp sim/tb_acia.v rtl/acia6551.v
 	vvp sim/out/tb_acia.vvp | tee sim/out/tb_acia.log
 	@grep -q "ALL TESTS PASSED" sim/out/tb_acia.log
+
+test-sw1reset: sim/out
+	iverilog -DSIM -g2005 -o sim/out/tb_sw1.vvp sim/tb_sw1reset.v
+	vvp sim/out/tb_sw1.vvp | tee sim/out/tb_sw1.log
+	@grep -q "ALL TESTS PASSED" sim/out/tb_sw1.log
 
 test-injector: sim/out
 	iverilog -DSIM -g2005 -I rtl -o sim/out/tb_inj.vvp sim/tb_injector.v \
