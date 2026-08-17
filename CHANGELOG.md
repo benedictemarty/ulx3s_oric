@@ -5,6 +5,24 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 
 ## [Non publié]
 
+### Ajouté
+- **US-DISK.5 phase 3 — write-back disquette (RMW) dans `dsk_track`** (bmarty,
+  2026-08-17, **sim validée**) : `rtl/dsk_track.v` + `sim/tb_dsk_write.v` + cible
+  `test-dsk-write`. Nouveau chemin d'écriture : `sec_we`/`sec_wr_data` poussent
+  les octets du secteur dans le buffer de piste (`tbuf`), puis `wr_commit`
+  déclenche une **FSM read-modify-write** — pour chacun des 1-2 blocs SD de 512 o
+  couvrant le secteur : lecture du bloc (fat32) → overlay des octets du secteur
+  (depuis `tbuf`) → réécriture (`fat32.wblk`). Overlay **déterministe** via
+  `ocnt0` (octets du secteur dans le 1er bloc), 3 phases par octet pour la
+  latence BRAM. `wr_busy`/`wr_ok`/`wr_err` pilotent le WD1793 (phase 4 à venir).
+  **2 bugs corrigés au debug** : (1) `ocnt0[12:0]` sur un reg 10 bits → `x` sur le
+  2e bloc ; (2) `wblk_data` registré → latence 1-cycle → `sd_spi` latchait
+  l'octet précédent au streaming → source rendue **combinatoire** (comme
+  `tb_fat_write`). **`test-dsk-write`** (écrit un secteur, recharge depuis la SD,
+  vérifie nouvelle donnée + secteur voisin intact) et **`test-dsk`** (lecture,
+  zéro régression) **PASSED**. Reste US-DISK.5 phase 4 (commande write sector
+  WD1793 + câblage top WD1793↔dsk_track↔fat32.wblk).
+
 ### Décision
 - **Retour à l'Atmos pur — tangentes Telestrat/ORIX/LOCI parquées** (bmarty,
   2026-08-17) : après une session d'exploration large (émulation LOCI, soft-core

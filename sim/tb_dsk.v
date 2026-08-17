@@ -81,7 +81,12 @@ module tb_dsk;
         .trk_loading(trk_loading), .disk_present(disk_present),
         .n_tracks(n_tracks), .n_spt(n_spt),
         .sec_id(sec_id), .sec_valid(sec_valid),
-        .sec_addr(sec_addr), .sec_byte(sec_byte)
+        .sec_addr(sec_addr), .sec_byte(sec_byte),
+        // écriture (US-DISK.5) : inactive dans ce test (lecture seule)
+        .sec_we(1'b0), .sec_wr_data(8'd0), .wr_commit(1'b0),
+        .wr_busy(), .wr_ok(), .wr_err(),
+        .wblk_start(), .wblk_idx(), .wblk_offset(), .wblk_data(),
+        .wblk_pos(9'd0), .wblk_done(1'b0), .wblk_error(1'b0)
     );
 
     // ---- Microdisc (WD1793) — timings réduits ----

@@ -136,9 +136,14 @@ comparable à une vraie mécanique 3") ; v1 en LECTURE SEULE.
       - [x] Phase 1 : sd_spi écrit un bloc (CMD24) — test-sd-write, suite OK
       - [x] Phase 2 : fat32 écrit un bloc à un offset quelconque (suivi de
             chaîne FAT + LBA) — test-fat-write (offset 8192, 3e cluster), OK
-      - [ ] Phase 3 : dsk_track write-back — secteur écrit dans tbuf ->
-            read-modify-write des 1-2 blocs SD touchés (foff = 256 +
-            (track+side*ntracks)*6400 + sec_off), fat32 read+overlay tbuf+write
+      - [x] Phase 3 : dsk_track write-back (2026-08-17, sim OK) — `sec_we` écrit
+            le secteur dans tbuf ; `wr_commit` déclenche le **RMW** des 1-2 blocs
+            SD touchés (lecture bloc -> overlay des octets du secteur depuis tbuf
+            -> réécriture via `fat32.wblk`). Overlay déterministe par `ocnt0`
+            (octets dans le 1er bloc) ; `wblk_data` combinatoire (latence 1-cycle
+            fatale au streaming, cf. `tb_fat_write`). **`test-dsk-write`** :
+            écrit un secteur, recharge depuis la SD, vérifie la nouvelle donnée
+            + secteur voisin intact ; **`test-dsk` (lecture) sans régression**.
       - [ ] Phase 4 : WD1793 commande write sector (type II) — recevoir les
             octets DRQ du CPU, remplir tbuf, retirer le write-protect
       Câblage prêt : ports fat32 wblk_* + dsk_wblk_* (tie-off) dans le top.

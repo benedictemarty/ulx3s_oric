@@ -63,7 +63,7 @@ prog-fujprog: build/$(PROJ).bit
 # ----------------------------------------------------------------------
 # Tests
 # ----------------------------------------------------------------------
-TESTS = test-via test-keyboard test-azerty test-injector test-tape test-acia test-expansion test-ula test-boot test-hdmi test-hdmi-packet test-hdmi-audio test-hdmi-island test-spi-byte test-sd test-fat test-tape-loader test-wd test-microdisc test-dsk test-sw1reset test-sd-write test-fat-write test-bank test-bank-sel test-sdram
+TESTS = test-via test-keyboard test-azerty test-injector test-tape test-acia test-expansion test-ula test-boot test-hdmi test-hdmi-packet test-hdmi-audio test-hdmi-island test-spi-byte test-sd test-fat test-tape-loader test-wd test-microdisc test-dsk test-sw1reset test-sd-write test-fat-write test-bank test-bank-sel test-sdram test-dsk-write
 
 test: $(TESTS)
 	@echo "== TOUS LES TESTS SONT PASSES =="
@@ -140,6 +140,13 @@ test-sdram: sim/out
 	iverilog -DSIM -g2005 -o sim/out/tb_sdram.vvp sim/tb_sdram.v rtl/sdram_ctrl.v sim/sdram_model.v
 	vvp sim/out/tb_sdram.vvp | tee sim/out/tb_sdram.log
 	@grep -q "RESULT: PASS" sim/out/tb_sdram.log
+
+test-dsk-write: sim/out
+	python3 tools/gen_fat_test.py sim/out/fat_test.img
+	iverilog -DSIM -g2005 -o sim/out/tb_dskw.vvp sim/tb_dsk_write.v \
+	  rtl/dsk_track.v rtl/fat32.v rtl/sd_spi.v rtl/spi_byte.v sim/sd_card_file.v
+	vvp sim/out/tb_dskw.vvp | tee sim/out/tb_dskw.log
+	@grep -q "ALL TESTS PASSED" sim/out/tb_dskw.log
 
 test-ula: sim/out
 	iverilog -DSIM -g2005 -o sim/out/tb_ula.vvp sim/tb_ula.v rtl/oric_ula.v rtl/oric_ram.v
