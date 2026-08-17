@@ -74,7 +74,8 @@ module wd1793 #(
                STI_HEADL = 8'h20, ST_WPROT = 8'h40, ST_NOT_READY = 8'h80;
 
     localparam OP_NONE = 3'd0, OP_RD_SEC = 3'd1, OP_RD_SECS = 3'd2,
-               OP_RD_ADDR = 3'd3, OP_WR_SEC = 3'd4, OP_WR_WB = 3'd5;
+               OP_RD_ADDR = 3'd3, OP_WR_SEC = 3'd4, OP_WR_WB = 3'd5,
+               OP_WR_TRK = 3'd6, OP_WR_TRK_WB = 3'd7;   // formatage (Write Track)
     reg [2:0]  currentop;
 
     reg [7:0]  track, sector, data, status;
@@ -92,6 +93,12 @@ module wd1793 #(
 
     reg [8:0]  cur_offset;                // 0..255
     reg [4:0]  cur_sec;
+    // Write Track (formatage) : parseur du flux IBM/MFM (réf. ~/Oric1 disk.c).
+    reg [1:0]  wt_state;                  // 0=scan, 1=champ ID, 2=champ data
+    reg [2:0]  wt_field_idx;              // octet courant du champ ID (0..3)
+    reg [4:0]  wt_sec;                    // secteur nommé par le dernier ID
+    reg [4:0]  wt_ndone;                  // secteurs écrits sur la piste
+    reg        wt_dfirst;                 // 1er octet du champ data (pas d'incr.)
 
     assign req_side = side;
     assign sec_id   = cur_sec;
@@ -176,6 +183,8 @@ module wd1793 #(
             intrq <= 1'b0; drq <= 1'b0;
             seek_req <= 1'b0;
             sec_we <= 1'b0; wr_commit <= 1'b0; sec_wr_data <= 8'd0;
+            wt_state <= 2'd0; wt_ndone <= 5'd0; wt_field_idx <= 3'd0;
+            wt_sec <= 5'd1; wt_dfirst <= 1'b0;
             // rot_pos non remis à zéro : le plateau tourne toujours
         end else if (cen) begin
             seek_req <= 1'b0;
@@ -242,6 +251,10 @@ module wd1793 #(
                         // (hors du pulse sec_we -> pas de course avec dsk_track)
                         if (currentop == OP_WR_SEC && !dd_first)
                             cur_offset <= cur_offset + 9'd1;
+                        if (currentop == OP_WR_TRK && wt_state == 2'd2) begin
+                            if (!wt_dfirst) cur_offset <= cur_offset + 9'd1;
+                            wt_dfirst <= 1'b0;
+                        end
                         dd_first <= 1'b0;
                     end
                 end
@@ -253,6 +266,17 @@ module wd1793 #(
                 else        status <= 8'd0;        // succès
                 intrq <= 1'b1;
                 currentop <= OP_NONE;
+            end
+
+            // ---- Formatage : fin du write-back d'un secteur -> suite ou fin ----
+            if (currentop == OP_WR_TRK_WB && !wr_busy && !wr_commit) begin
+                if (wr_err) begin
+                    status <= ST_WPROT; intrq <= 1'b1; currentop <= OP_NONE;
+                end else if (wt_ndone >= n_spt) begin
+                    status <= 8'd0; intrq <= 1'b1; currentop <= OP_NONE; // piste finie
+                end else begin
+                    currentop <= OP_WR_TRK; delayed_drq <= 22'd32; // secteur suivant
+                end
             end
 
             // ---- Accès registres ----
@@ -359,18 +383,31 @@ module wd1793 #(
                                     currentop <= OP_NONE;
                                 end
                             end
-                            3'b111: begin          // Read/Write track : v1 non
-                                status_type1 <= 1'b0;              // supporté
-                                if (din[4]) begin
-                                    status <= ST_WPROT;
-                                    intrq <= 1'b1;
-                                end else begin
+                            3'b111: begin          // Write track (format) / Read track
+                                status_type1 <= 1'b0;
+                                if (din[4]) begin  // Write Track (0xF0) : formatage
+                                    if (!disk_present) begin
+                                        drq <= 1'b0;
+                                        status <= ST_BUSY;
+                                        di_status <= ST_RNF; di_valid <= 1'b1;
+                                        delayed_int <= RNF_CYCLES;
+                                        currentop <= OP_NONE;
+                                    end else begin
+                                        status <= ST_BUSY | ST_NOT_READY;
+                                        delayed_drq <= {4'd0, rot_wait(5'd1)}
+                                                     + (din[2] ? SETTLE_CYCLES : 22'd0);
+                                        dd_first <= 1'b1;
+                                        wt_state <= 2'd0; wt_ndone <= 5'd0;
+                                        wt_field_idx <= 3'd0; wt_dfirst <= 1'b0;
+                                        currentop <= OP_WR_TRK;
+                                    end
+                                end else begin     // Read Track : non implémenté
                                     drq <= 1'b0;
                                     status <= ST_BUSY;
                                     di_status <= ST_RNF; di_valid <= 1'b1;
                                     delayed_int <= RNF_CYCLES;
+                                    currentop <= OP_NONE;
                                 end
-                                currentop <= OP_NONE;
                             end
                         endcase
                     end
@@ -391,6 +428,40 @@ module wd1793 #(
                                 delayed_drq <= 22'd32;   // prochain DRQ (incrémente
                                                          // cur_offset à l'échéance)
                             end
+                        end else if (currentop == OP_WR_TRK && drq) begin
+                            // Formatage : parse le flux IBM/MFM (réf. ~/Oric1 disk.c).
+                            status <= status & ~ST_DRQ;
+                            drq <= 1'b0;
+                            case (wt_state)
+                                2'd0: begin                     // scan des marques
+                                    if (din == 8'hFE) begin
+                                        wt_state <= 2'd1; wt_field_idx <= 3'd0;
+                                    end else if (din == 8'hFB || din == 8'hF8) begin
+                                        cur_sec <= wt_sec;      // secteur du dernier ID
+                                        cur_offset <= 9'd0;
+                                        wt_dfirst <= 1'b1;
+                                        wt_state <= 2'd2;
+                                    end
+                                    delayed_drq <= 22'd32;
+                                end
+                                2'd1: begin                     // champ ID : 4 octets
+                                    if (wt_field_idx == 3'd2) wt_sec <= din[4:0];
+                                    wt_field_idx <= wt_field_idx + 3'd1;
+                                    if (wt_field_idx == 3'd3) wt_state <= 2'd0;
+                                    delayed_drq <= 22'd32;
+                                end
+                                default: begin                  // champ data (256 o)
+                                    sec_we <= 1'b1; sec_wr_data <= din;
+                                    if (cur_offset == 9'd255) begin
+                                        wr_commit <= 1'b1;      // secteur -> write-back
+                                        if (wt_ndone < 5'd31) wt_ndone <= wt_ndone + 5'd1;
+                                        wt_state <= 2'd0;
+                                        status <= ST_BUSY;
+                                        currentop <= OP_WR_TRK_WB;
+                                    end else
+                                        delayed_drq <= 22'd32;
+                                end
+                            endcase
                         end
                     end
                 endcase

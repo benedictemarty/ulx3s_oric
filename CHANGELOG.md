@@ -6,6 +6,21 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 ## [Non publié]
 
 ### Ajouté
+- **US-DISK.6 — Formatage disquette : commande Write Track du WD1793** (bmarty,
+  2026-08-17, **sim validée**) : `rtl/wd1793.v` — la commande `0xF0` (jusque-là
+  « write protect ») implémente le **parseur du flux IBM/MFM** de formatage
+  (modèle `~/Oric1/src/storage/disk.c`) : marque `FE` → champ ID de 4 octets
+  (dont le n° de secteur), marque `FB`/`F8` → champ data de 256 octets poussé
+  dans `tbuf` via `sec_we` (au secteur nommé par le dernier ID) ; gaps et octets
+  de contrôle CRC (`F5/F6/F7/4E`) ignorés (layout seul). **Write-back par
+  secteur** réutilisant la chaîne RMW des phases 3/4 (`wr_commit` → attente
+  `wr_ok`), fin de commande quand les `n_spt` secteurs de la piste sont écrits.
+  Nouveaux ops `OP_WR_TRK`/`OP_WR_TRK_WB` ; même correctif anti-course
+  `cur_offset` (incrément à l'échéance DRQ) que la phase 4. `tb_wd1793` étendu :
+  génère un flux MFM de 17 secteurs, capture par secteur, vérifie le motif
+  écrit → **`test-wd` PASSED** ; `test-dsk-wr-e2e`/`test-boot`/`test-microdisc`
+  **sans régression**. Autorise un `INIT`/formatage Sedoric sur une piste déjà
+  cataloguée. (Read Track reste non implémenté — usage marginal.)
 - **US-DISK.5 phase 4 — commande Write Sector du WD1793 (écriture disquette
   bout-en-bout)** (bmarty, 2026-08-17, **e2e sim validé**) : `rtl/wd1793.v`
   (commande `0xA0` : DRQ → réception de 256 octets → `sec_we`/`sec_wr_data` vers

@@ -35,7 +35,12 @@ module tb_wd1793;
     wire       sec_we, wr_commit;
     wire [7:0] sec_wr_data;
     reg  [7:0] wrote [0:255];
-    always @(posedge clk) if (sec_we) wrote[sec_addr[7:0]] <= sec_wr_data;
+    reg  [7:0] wrote_trk [0:18*256-1];    // formatage : capture par secteur
+    always @(posedge clk) if (sec_we) begin
+        wrote[sec_addr[7:0]] <= sec_wr_data;
+        wrote_trk[{sec_id, sec_addr[7:0]}] <= sec_wr_data;
+    end
+    reg done_fmt;
 
     localparam SPT = 17;
     wire sec_valid = (sec_id >= 1) && (sec_id <= SPT);
@@ -107,6 +112,21 @@ module tb_wd1793;
     integer i;
     reg [7:0] expect;
 
+    // Formatage : pousse un octet du flux quand DRQ ; s'arrête si INTRQ (fin).
+    task fmt_put(input [7:0] v);
+        integer n;
+        begin : fp
+            n = 0;
+            while (n < 4_000_000) begin
+                @(negedge clk);
+                if (intrq) begin done_fmt = 1; disable fp; end
+                if (drq)   begin bus_op(1, 2'd3, v); disable fp; end
+                n = n + 1;
+            end
+        end
+    endtask
+
+    integer s2, j;
     initial begin
         repeat (8) @(negedge clk); rst = 0;
         repeat (8) @(negedge clk);
@@ -216,6 +236,39 @@ module tb_wd1793;
         bus_read(2'd0);
         // (le pulse dure IDX ticks : on doit finir par le voir)
         check(i < 3*REV*4, "type I: index pulse vivant");
+
+        // ---- Write track (formatage, US-DISK.5) : flux MFM des 17 secteurs ----
+        // Motif écrit : 0x5A ^ (secteur + offset). Backend simulé -> chaque
+        // write-back « réussit » aussitôt (wr_ok=1), on vérifie ce qui est poussé.
+        done_fmt = 0;
+        bus_op(1, 2'd0, 8'hF0);                     // Write Track
+        for (s2 = 1; s2 <= 17 && !done_fmt; s2 = s2 + 1) begin
+            fmt_put(8'h4E); fmt_put(8'h4E);         // gap
+            fmt_put(8'hF5); fmt_put(8'hF5); fmt_put(8'hF5);   // A1 sync (ignorés)
+            fmt_put(8'hFE);                         // ID mark
+            fmt_put(8'd0); fmt_put(8'd0); fmt_put(s2[7:0]); fmt_put(8'd1); // trk,side,sec,size
+            fmt_put(8'hF7);                         // CRC (ignoré)
+            fmt_put(8'h4E); fmt_put(8'h4E);
+            fmt_put(8'hF5); fmt_put(8'hF5); fmt_put(8'hF5);
+            fmt_put(8'hFB);                         // Data mark
+            for (j = 0; j < 256 && !done_fmt; j = j + 1)
+                fmt_put(8'h5A ^ (s2[7:0] + j[7:0]));
+            fmt_put(8'hF7);
+            fmt_put(8'h4E);
+        end
+        // fin : INTRQ après le 17e secteur
+        i = 0; while (!intrq && i < 4_000_000) begin @(negedge clk); i = i + 1; end
+        check(intrq, "format: INTRQ en fin de piste");
+        bus_read(2'd0);
+        check(rd[6] == 1'b0, "format: pas de WRITE PROTECT");
+        // vérifier les 17 secteurs capturés
+        for (s2 = 1; s2 <= 17; s2 = s2 + 1)
+            for (j = 0; j < 256; j = j + 1)
+                if (wrote_trk[s2*256 + j] !== (8'h5A ^ (s2[7:0] + j[7:0])) && errors < 12) begin
+                    $display("FAIL: format s%0d b%0d = %02x att %02x",
+                             s2, j, wrote_trk[s2*256+j], 8'h5A ^ (s2[7:0]+j[7:0]));
+                    errors = errors + 1;
+                end
 
         if (errors == 0) $display("ALL TESTS PASSED (tb_wd1793)");
         else             $display("%0d ERREUR(S)", errors);

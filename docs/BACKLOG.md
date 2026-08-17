@@ -153,6 +153,16 @@ comparable à une vraie mécanique 3") ; v1 en LECTURE SEULE.
             (écriture 256 o) et `test-dsk-wr-e2e` (Write Sector → SD → relecture,
             secteur voisin intact) PASSED ; test-boot/dsk/microdisc/dsk-write
             sans régression.**
+- [x] US-DISK.6 **Formatage — commande Write Track WD1793** (2026-08-17, sim OK) :
+      `rtl/wd1793.v` — commande `0xF0` : parseur du flux IBM/MFM (réf. `~/Oric1`
+      `disk.c`) — marque `FE` → champ ID 4 octets (secteur), `FB/F8` → champ data
+      256 o poussé dans `tbuf` (`sec_we`, secteur = ID courant) ; gaps/CRC (`F5/
+      F6/F7/4E`) ignorés ; write-back **par secteur** (réutilise la chaîne phase
+      3/4), fin quand les `n_spt` secteurs sont écrits. Même anti-course
+      `cur_offset` (incrément à l'échéance DRQ). **`test-wd`** (flux 17 secteurs →
+      capture par secteur vérifiée) PASSED ; e2e/boot/microdisc sans régression.
+      Permet un `INIT`/formatage Sedoric sur une piste déjà cataloguée (réécrit
+      la donnée). Read Track reste non implémenté (peu utile).
 
 ## Épopée LOCI — émulation interne (plan : docs/LOCI_EMULATION.md)
 > ⏸ **PARQUÉE (2026-08-17)** — décision « retour à l'Atmos pur » (on arrête
