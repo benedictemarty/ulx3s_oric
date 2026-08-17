@@ -5,6 +5,19 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 
 ## [Non publié]
 
+### Modifié
+- **Plan MULTIBANK révisé par une mesure — banques ORIX en BRAM, DMA abandonné**
+  (bmarty, 2026-08-17) : synthèse yosys du design complet → **121/208 EBR
+  occupés** (87 libres). Une banque ROM 16 Ko = 8 EBR, donc 7 banques ORIX =
+  56 EBR → **177/208, ça TIENT en BRAM**. Corrige l'hypothèse non mesurée de
+  US-MBANK.4a (« 112 Ko trop juste → SDRAM »). Conséquence : **toutes les banques
+  ORIX vont en BRAM** (switch instantané, fidèle aux trampolines TELEMON) ;
+  l'architecture « banque active + DMA refill » (US-MBANK.4c) est **ABANDONNÉE**
+  (son switch en ~ms cassait les trampolines) ; `bank_backing.v` non écrit. Le
+  contrôleur SDRAM (4b) reste pour la **RAM haute**, hors chemin critique ORIX.
+  Vrai prochain pas : `bank_window` à 8 banques BRAM + ROM ORIX (MBANK.3).
+  Doc mis à jour : `docs/MULTIBANK_SDRAM.md` §2bis.
+
 ### Ajouté
 - **US-MBANK.4b — Portage du contrôleur SDRAM (bring-up sim)** (bmarty,
   2026-08-17, **sim validée**) : `rtl/sdram_ctrl.v` + `sim/sdram_model.v` +

@@ -43,6 +43,30 @@ assumer/documenter (en-têtes conservés).
 
 ---
 
+## 2bis. MESURE DÉCISIVE (2026-08-17) — les banques tiennent en BRAM
+
+⚠️ **Cette note part d'une hypothèse (« 112 Ko ne tiennent pas en BRAM ») qui
+s'est révélée FAUSSE à la mesure.** Synthèse yosys du design complet :
+
+- Occupation actuelle : **121 / 208 EBR** (120 DP16KD + 1 PDPW16KD) → **87 libres**.
+- Une banque ROM 16 Ko octet = **8 EBR** → 7 banques ORIX = **56 EBR**.
+- **121 + 56 = 177 / 208** → **ÇA TIENT**, ~31 EBR de marge.
+
+**Conséquences :**
+- **Toutes les banques ORIX vont en BRAM** → switch = changer quelle BRAM on lit
+  = **instantané et fidèle** (trampolines TELEMON OK). Comme le vrai LOCI/Telestrat.
+- L'architecture « banque active + DMA refill » des §3-4 ci-dessous est
+  **ABANDONNÉE** pour les banques ROM (son défaut : switch trop lent pour les
+  trampolines). `bank_backing.v` **n'est pas écrit**.
+- La SDRAM (US-MBANK.4b, portée et testée) **reste disponible pour la RAM haute /
+  banques RAM** futures qui dépasseraient la BRAM, mais **sort du chemin critique**
+  des banques ROM ORIX.
+- **Vrai prochain pas** : étendre `bank_window.v` à 8 banques BRAM + ROM ORIX
+  (MBANK.3), switch instantané par `bank_sel`.
+
+Les §3-7 ci-dessous sont **conservés pour mémoire** (raisonnement DMA/SDRAM), mais
+ne sont plus le plan retenu pour les banques ROM.
+
 ## 3. Décision d'architecture — PAS de lecture SDRAM au fil de l'eau
 
 Le bus 6502 à **1 MHz** exige la donnée `$C000` **dans le cycle** (échantillon à
