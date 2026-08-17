@@ -373,6 +373,12 @@ module top_ulx3s (
         .md_sec_valid (mdp_secvalid),
         .md_sec_addr (mdp_secaddr),
         .md_sec_byte (mdp_secbyte),
+        .md_sec_we      (mdp_sec_we),
+        .md_sec_wr_data (mdp_sec_wr_data),
+        .md_wr_commit   (mdp_wr_commit),
+        .md_wr_busy     (mdp_wr_busy),
+        .md_wr_ok       (mdp_wr_ok),
+        .md_wr_err      (mdp_wr_err),
         .kbd_azerty  (layout_azerty),
         .kbd_mods    (mods_s2),
         .kbd_k1      (k1_s2),
@@ -527,13 +533,16 @@ module top_ulx3s (
     wire        fat_wr_start;
     wire [7:0]  fat_wr_data;
     wire [8:0]  sd_wr_idx;
-    // Source d'écriture = dsk_track (phase 3) ; dormant en attendant (tie-off).
-    wire        dsk_wblk_start  = 1'b0;
-    wire [5:0]  dsk_wblk_idx    = 6'd0;
-    wire [31:0] dsk_wblk_offset = 32'd0;
-    wire [7:0]  dsk_wblk_data   = 8'd0;
+    // Source d'écriture = dsk_track (US-DISK.5 ph.3/4) : write-back RMW.
+    wire        dsk_wblk_start;
+    wire [5:0]  dsk_wblk_idx;
+    wire [31:0] dsk_wblk_offset;
+    wire [7:0]  dsk_wblk_data;
     wire [8:0]  dsk_wblk_pos;
     wire        dsk_wblk_done, dsk_wblk_error;
+    // Chemin WD1793 -> dsk_track (écriture de secteur, ph.4)
+    wire        mdp_sec_we, mdp_wr_commit, mdp_wr_busy, mdp_wr_ok, mdp_wr_err;
+    wire [7:0]  mdp_sec_wr_data;
 
     sd_spi #(.CLK_HZ(25_000_000), .HALF(32)) sdc (
         .clk(clk_sys), .rst(rst_por),
@@ -698,7 +707,13 @@ module top_ulx3s (
         .trk_loading(mdp_trk_loading), .disk_present(mdp_present),
         .n_tracks(mdp_ntracks), .n_spt(mdp_nspt),
         .sec_id(mdp_secid), .sec_valid(mdp_secvalid),
-        .sec_addr(mdp_secaddr), .sec_byte(mdp_secbyte)
+        .sec_addr(mdp_secaddr), .sec_byte(mdp_secbyte),
+        // écriture de secteur (WD1793 -> dsk_track) + write-back (-> fat32.wblk)
+        .sec_we(mdp_sec_we), .sec_wr_data(mdp_sec_wr_data), .wr_commit(mdp_wr_commit),
+        .wr_busy(mdp_wr_busy), .wr_ok(mdp_wr_ok), .wr_err(mdp_wr_err),
+        .wblk_start(dsk_wblk_start), .wblk_idx(dsk_wblk_idx),
+        .wblk_offset(dsk_wblk_offset), .wblk_data(dsk_wblk_data),
+        .wblk_pos(dsk_wblk_pos), .wblk_done(dsk_wblk_done), .wblk_error(dsk_wblk_error)
     );
 
     // Lancer le parsing une fois la carte initialisée. Sur power-on seul :

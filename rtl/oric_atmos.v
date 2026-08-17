@@ -93,6 +93,13 @@ module oric_atmos #(
     input         md_sec_valid,
     output [8:0]  md_sec_addr,
     input  [7:0]  md_sec_byte,
+    // Écriture de secteur (US-DISK.5 phase 4)
+    output        md_sec_we,
+    output [7:0]  md_sec_wr_data,
+    output        md_wr_commit,
+    input         md_wr_busy,
+    input         md_wr_ok,
+    input         md_wr_err,
 
     // Debug
     output        cpu_irq_dbg
@@ -376,7 +383,13 @@ module oric_atmos #(
         .sec_id     (md_sec_id),
         .sec_valid  (md_sec_valid),
         .sec_addr   (md_sec_addr),
-        .sec_byte   (md_sec_byte)
+        .sec_byte   (md_sec_byte),
+        .sec_we      (md_sec_we),
+        .sec_wr_data (md_sec_wr_data),
+        .wr_commit   (md_wr_commit),
+        .wr_busy     (md_wr_busy),
+        .wr_ok       (md_wr_ok),
+        .wr_err      (md_wr_err)
     );
 
     assign prn_data     = via_pa_out;     // partagé avec le bus AY (fidèle)

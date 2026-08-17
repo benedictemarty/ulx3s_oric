@@ -132,7 +132,7 @@ comparable à une vraie mécanique 3") ; v1 en LECTURE SEULE.
       la chaîne depuis le début du fichier à chaque piste (piste 60 ≈ 90
       sauts FAT à 390 kHz). Boot Sedoric rapide, Citadelle OK, cassette
       et Atmos pur sans régression.
-- [~] US-DISK.5 **Écriture disquette** (en cours 2026-08-16, EN PHASES) :
+- [x] US-DISK.5 **Écriture disquette** (TERMINÉ 2026-08-17, 4 phases sim OK) :
       - [x] Phase 1 : sd_spi écrit un bloc (CMD24) — test-sd-write, suite OK
       - [x] Phase 2 : fat32 écrit un bloc à un offset quelconque (suivi de
             chaîne FAT + LBA) — test-fat-write (offset 8192, 3e cluster), OK
@@ -144,9 +144,15 @@ comparable à une vraie mécanique 3") ; v1 en LECTURE SEULE.
             fatale au streaming, cf. `tb_fat_write`). **`test-dsk-write`** :
             écrit un secteur, recharge depuis la SD, vérifie la nouvelle donnée
             + secteur voisin intact ; **`test-dsk` (lecture) sans régression**.
-      - [ ] Phase 4 : WD1793 commande write sector (type II) — recevoir les
-            octets DRQ du CPU, remplir tbuf, retirer le write-protect
-      Câblage prêt : ports fat32 wblk_* + dsk_wblk_* (tie-off) dans le top.
+      - [x] Phase 4 : WD1793 commande write sector (2026-08-17, e2e OK) —
+            commande `0xA0`, DRQ pour recevoir 256 octets → `sec_we` vers tbuf
+            (position via DRQ pour éviter la course avec le pulse), `wr_commit`
+            en fin → attente `wr_ok`/`wr_err` (niveaux, échantillonnables à cen).
+            Câblage top complet : WD1793 → microdisc → oric_atmos → dsk_track →
+            fat32.wblk (tie-offs supprimés). Write-protect retiré. **`test-wd`
+            (écriture 256 o) et `test-dsk-wr-e2e` (Write Sector → SD → relecture,
+            secteur voisin intact) PASSED ; test-boot/dsk/microdisc/dsk-write
+            sans régression.**
 
 ## Épopée LOCI — émulation interne (plan : docs/LOCI_EMULATION.md)
 > ⏸ **PARQUÉE (2026-08-17)** — décision « retour à l'Atmos pur » (on arrête

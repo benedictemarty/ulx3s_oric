@@ -6,6 +6,24 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 ## [Non publié]
 
 ### Ajouté
+- **US-DISK.5 phase 4 — commande Write Sector du WD1793 (écriture disquette
+  bout-en-bout)** (bmarty, 2026-08-17, **e2e sim validé**) : `rtl/wd1793.v`
+  (commande `0xA0` : DRQ → réception de 256 octets → `sec_we`/`sec_wr_data` vers
+  `dsk_track`, `wr_commit` en fin → attente `wr_ok`/`wr_err` ; write-protect
+  retiré ; `currentop` élargi à 3 bits, ops `OP_WR_SEC`/`OP_WR_WB`),
+  `rtl/dsk_track.v` (`wr_ok`/`wr_err` passés en **niveaux** pour un
+  échantillonnage fiable côté WD1793 en domaine `cen`), et **câblage top complet**
+  du chemin d'écriture : `wd1793` → `microdisc` → `oric_atmos` → `dsk_track` →
+  `fat32.wblk` (tie-offs supprimés). Bug corrigé : décalage d'un octet
+  (l'incrément de `cur_offset` était concurrent du pulse `sec_we` large ; déplacé
+  à l'assertion du DRQ suivant). Nouveau `sim/tb_dsk_wr_e2e.v` (+ cible
+  `test-dsk-wr-e2e`) : chaîne Microdisc+WD1793+dsk_track+fat32+SD, écrit le
+  secteur 1 par la commande WD1793, relit → nouveau motif, secteur 2 intact.
+  `tb_wd1793` mis à jour (le Write Sector n'est plus « write protect » : écrit
+  256 octets vérifiés). **`test-dsk-wr-e2e`, `test-wd` PASSED ;
+  `test-boot`/`test-dsk`/`test-microdisc`/`test-dsk-write` sans régression.**
+  **US-DISK.5 (écriture disquette) est complète** — un `SAVE` Sedoric a désormais
+  tout le chemin RTL (validation carte à faire).
 - **US-DISK.5 phase 3 — write-back disquette (RMW) dans `dsk_track`** (bmarty,
   2026-08-17, **sim validée**) : `rtl/dsk_track.v` + `sim/tb_dsk_write.v` + cible
   `test-dsk-write`. Nouveau chemin d'écriture : `sec_we`/`sec_wr_data` poussent

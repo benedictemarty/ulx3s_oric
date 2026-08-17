@@ -57,7 +57,14 @@ module microdisc #(
     output     [4:0]  sec_id,
     input             sec_valid,
     output     [8:0]  sec_addr,
-    input      [7:0]  sec_byte
+    input      [7:0]  sec_byte,
+    // Écriture de secteur (US-DISK.5 phase 4) — vers dsk_track
+    output            sec_we,
+    output     [7:0]  sec_wr_data,
+    output            wr_commit,
+    input             wr_busy,
+    input             wr_ok,
+    input             wr_err
 );
 
     // ------------------------------------------------------------------
@@ -104,7 +111,9 @@ module microdisc #(
         .disk_present(present0), .n_tracks(n_tracks), .n_spt(n_spt),
         .req_track(req_track), .req_side(req_side), .trk_loading(trk_loading),
         .sec_id(sec_id), .sec_valid(sec_valid),
-        .sec_addr(sec_addr), .sec_byte(sec_byte)
+        .sec_addr(sec_addr), .sec_byte(sec_byte),
+        .sec_we(sec_we), .sec_wr_data(sec_wr_data), .wr_commit(wr_commit),
+        .wr_busy(wr_busy), .wr_ok(wr_ok), .wr_err(wr_err)
     );
 
     // IRQ CPU si INTENA (réf. : INTRQ actif ET intena)

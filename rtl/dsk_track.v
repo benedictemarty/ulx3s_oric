@@ -172,13 +172,13 @@ module dsk_track (
         open_start  <= 1'b0;
         open_abort  <= 1'b0;
         wblk_start  <= 1'b0;
-        wr_ok       <= 1'b0;
-        wr_err      <= 1'b0;
+        // wr_ok / wr_err : NIVEAUX (posés à la fin, effacés au prochain commit)
+        // pour être échantillonnés de façon fiable par le WD1793 (domaine cen).
         if (rst) begin
             state <= D_IDLE; inserted <= 1'b0; disk_present <= 1'b0;
             bad_format <= 1'b0; loaded <= 8'hFF; sec_ok <= 18'd0;
             fdata_ready <= 1'b0; open_offset <= 32'd0;
-            wr_busy <= 1'b0;
+            wr_busy <= 1'b0; wr_ok <= 1'b0; wr_err <= 1'b0;
         end else if (soft_rst && state != D_IDLE) begin
             // Reset machine en plein transfert : on abandonne proprement (la
             // piste sera rechargée à la demande) mais la disquette RESTE
@@ -224,7 +224,7 @@ module dsk_track (
                                 + (loaded[7] ? {25'd0, geo_tracks} : 32'd0))
                                * TRK_BYTES
                              + {19'd0, sec_off[sec_id_clip]};
-                        wr_busy <= 1'b1;
+                        wr_busy <= 1'b1; wr_ok <= 1'b0; wr_err <= 1'b0;
                         state <= D_WSTART;
                     end
                 end

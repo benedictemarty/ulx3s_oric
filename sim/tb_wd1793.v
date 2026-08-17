@@ -30,6 +30,13 @@ module tb_wd1793;
     wire [8:0] sec_addr;
     reg  [7:0] sec_byte;
 
+    // Écriture (US-DISK.5 ph.4) : capture des octets poussés + backend simulé
+    // (wr_busy=0, wr_ok=1 -> le write-back « réussit » immédiatement).
+    wire       sec_we, wr_commit;
+    wire [7:0] sec_wr_data;
+    reg  [7:0] wrote [0:255];
+    always @(posedge clk) if (sec_we) wrote[sec_addr[7:0]] <= sec_wr_data;
+
     localparam SPT = 17;
     wire sec_valid = (sec_id >= 1) && (sec_id <= SPT);
     always @(posedge clk) sec_byte <= {3'b000, sec_id} ^ sec_addr[7:0];
@@ -43,7 +50,9 @@ module tb_wd1793;
         .disk_present(1'b1), .n_tracks(7'd42), .n_spt(5'd17),
         .req_track(req_track), .req_side(req_side), .trk_loading(1'b0),
         .sec_id(sec_id), .sec_valid(sec_valid),
-        .sec_addr(sec_addr), .sec_byte(sec_byte)
+        .sec_addr(sec_addr), .sec_byte(sec_byte),
+        .sec_we(sec_we), .sec_wr_data(sec_wr_data), .wr_commit(wr_commit),
+        .wr_busy(1'b0), .wr_ok(1'b1), .wr_err(1'b0)
     );
 
     integer errors = 0;
@@ -175,11 +184,22 @@ module tb_wd1793;
         wait_intrq;
         bus_read(2'd0);
 
-        // ---- Write sector : v1 = write protect ----
-        bus_op(1, 2'd0, 8'hA0);
-        check(intrq, "write: INTRQ immediat");
+        // ---- Write sector (US-DISK.5 ph.4) : 256 octets -> commit -> OK ----
+        bus_op(1, 2'd2, 8'd5);                      // SECTOR = 5
+        bus_op(1, 2'd0, 8'hA0);                     // Write sector
+        for (i = 0; i < 256; i = i + 1) begin
+            wait_drq;
+            bus_op(1, 2'd3, 8'hA5 ^ i[7:0]);        // DATA
+        end
+        wait_intrq;
         bus_read(2'd0);
-        check(rd[6] == 1'b1, "write: WRITE PROTECT");
+        check(rd[6] == 1'b0, "write: pas de WRITE PROTECT");
+        check(rd[4:0] == 5'd0, "write: status propre");
+        for (i = 0; i < 256; i = i + 1)
+            if (wrote[i] !== (8'hA5 ^ i[7:0]) && errors < 8) begin
+                $display("FAIL: write octet %0d = %02x att %02x", i, wrote[i], 8'hA5^i[7:0]);
+                errors = errors + 1;
+            end
 
         // ---- Force interrupt ----
         bus_op(1, 2'd2, 8'd5);
