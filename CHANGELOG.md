@@ -5,6 +5,19 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 
 ## [Non publié]
 
+### Décision
+- **Retour à l'Atmos pur — tangentes Telestrat/ORIX/LOCI parquées** (bmarty,
+  2026-08-17) : après une session d'exploration large (émulation LOCI, soft-core
+  loci-fw, banking Telestrat, cible ORIX, CH376, comparaison LOCI/CH376), décision
+  de **recentrer sur l'Atmos fidèle qui marche** et d'arrêter d'élargir. Les
+  épopées **LOCI**, **LOCI-SOC** et le sous-chantier **MULTIBANK** sont **PARQUÉS**
+  dans `docs/BACKLOG.md` (exploration conservée, non reprise). **Aucun revert** :
+  le RTL multibank livré (bank_window, VIA-2 `$0320`, telestrat_mode, contrôleur
+  SDRAM) reste en place mais **dormant et rétro-compatible** — `telestrat_mode`=0,
+  VIA-2 inactif tant que non écrit → l'Atmos boote comme avant (`test-boot` vert).
+  Les docs de conception (`LOCI_EMULATION`, `LOCI_SOC`, `MULTIBANK`,
+  `MULTIBANK_SDRAM`) restent comme trace des études.
+
 ### Ajouté
 - **US-MBANK.3 — Mode boot Telestrat + affinage sélecteur de banque** (bmarty,
   2026-08-17, **sim validée**) : `rtl/oric_atmos.v` — nouvel input

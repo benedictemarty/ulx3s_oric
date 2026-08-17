@@ -144,6 +144,8 @@ comparable à une vraie mécanique 3") ; v1 en LECTURE SEULE.
       Câblage prêt : ports fat32 wblk_* + dsk_wblk_* (tie-off) dans le top.
 
 ## Épopée LOCI — émulation interne (plan : docs/LOCI_EMULATION.md)
+> ⏸ **PARQUÉE (2026-08-17)** — décision « retour à l'Atmos pur » (on arrête
+> d'élargir). Exploration conservée pour mémoire, non reprise pour l'instant.
 Objectif : décider ce qui, de la carte LOCI (`sodiumlb/loci-hardware` 1.3,
 firmware `loci-fw`), est émulable dans l'ECP5. **Constat de conception
 (2026-08-17)** : la LOCI est un **RP2040 + firmware** ; son cœur (MIA `$03A0`,
@@ -163,6 +165,8 @@ l'**ACIA 6551 à `$0380`** (canal modem LOCI), distincte du 6551 existant à
 - [ ] US-LOCI.4 **Validation carte** : dialogue AT depuis l'Oric sur `$0380`.
 
 ## Épopée LOCI-SOC — soft-core RISC-V exécutant loci-fw (plan : docs/LOCI_SOC.md)
+> ⏸ **PARQUÉE (2026-08-17)** — décision « retour à l'Atmos pur ». Conception
+> conservée, non reprise.
 Objectif : LOCI fidèle via un **soft-core VexRiscv/LiteX** dans l'ECP5 exécutant
 un **portage de `loci-fw`**. **Faits de conception (2026-08-17)** : aucun portage
 RP6502→FPGA n'existe (*from scratch*) ; ARM M0 open = expérimental → **RISC-V**
@@ -207,6 +211,11 @@ Cible mémoire : 48 Ko RAM fixe + fenêtre 16 Ko à `$C000` commutée
 L'émulateur `~/Oric1` sert de modèle de référence à chaque incrément.
 
 ### Sous-chantier MULTIBANK — voie Telestrat fidèle (plan : docs/MULTIBANK.md)
+> ⏸ **PARQUÉ (2026-08-17)** — décision « retour à l'Atmos pur ». Le RTL déjà
+> livré (bank_window, VIA-2 $0320, telestrat_mode, SDRAM) reste en place mais
+> **DORMANT et rétro-compatible** : `telestrat_mode`=0 dans le top, VIA-2 inactif
+> tant que non écrit → l'Atmos boote strictement comme avant (test-boot vert).
+> Aucune reprise (US-MBANK.3b et suivantes) tant que la décision tient.
 **Décision (bmarty, 2026-08-17)** : le mécanisme de banques est spécifié
 **Telestrat-fidèle** (spec confirmée sur le web, état de l'art 2026 : core FPGA
 BigMist GPL-2.0, ORIX 2025). Fenêtre `$C000` = **8 banques** hétérogènes ROM/RAM,
