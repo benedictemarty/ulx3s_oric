@@ -7,7 +7,7 @@ module tb_trace;
     reg clk = 0, rst = 1;
 
     oric_atmos #(.DIV(DIV), .ROM_FILE("roms/basic11b.hex"), .ROM_FILE_B("roms/basic10.hex"), .MD_ROM_FILE("roms/microdis.hex")) dut (
-        .clk(clk), .rst(rst), .rom_bank(1'b0), .turbo(1'b0),
+        .clk(clk), .rst(rst), .rom_bank(1'b0), .telestrat_mode(1'b0), .turbo(1'b0),
         .md_enable(1'b0), .md_disk_present(1'b0), .md_n_tracks(7'd42), .md_n_spt(5'd17), .md_req_track(), .md_req_side(), .md_trk_loading(1'b0), .md_sec_id(), .md_sec_valid(1'b0), .md_sec_addr(), .md_sec_byte(8'h00),
         .kbd_azerty(1'b0), .kbd_mods(8'd0), .kbd_k1(8'd0), .kbd_k2(8'd0), .kbd_k3(8'd0), .kbd_k4(8'd0),
         .inj_active(1'b0), .inj_col(3'd0), .inj_row(3'd0), .inj_shift(1'b0),

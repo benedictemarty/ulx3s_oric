@@ -360,6 +360,7 @@ module top_ulx3s (
         .clk         (clk_sys),
         .rst         (rst_sys),
         .rom_bank    (rom_bank),
+        .telestrat_mode (1'b0),   // Atmos par défaut ; ORIX/TELEMON = US-MBANK.3b
         .turbo       (turbo),
         .md_enable   (sw0_stable),
         .md_disk_present (mdp_present),

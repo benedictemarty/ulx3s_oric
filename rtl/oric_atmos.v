@@ -17,6 +17,8 @@ module oric_atmos #(
     input         rst,
     input         rom_bank,     // 0 = BASIC 1.1b (défaut), 1 = BASIC 1.0 —
                                 // à ne changer qu'avec un reset
+    input         telestrat_mode, // 0 = Atmos (boot BASIC bank0) ; 1 = Telestrat
+                                // (boot TELEMON bank7). Cf. docs/MULTIBANK.md.
     input         turbo,        // accélère TOUT le domaine cen1 (CPU+VIA+AY) :
                                 // la cohérence interne (Timer 2 vs cassette,
                                 // délais ROM) est préservée si la source
@@ -206,14 +208,18 @@ module oric_atmos #(
     wire [7:0]  ram_dout, rom_dout, via_dout, acia_dout;
     wire        acia_irq;
 
-    // Sélecteur de banque $C000 (US-MBANK.2). Le port A du 2e VIA (bits de
-    // SORTIE seulement, masqués par DDRA) prime dès qu'un logiciel sélectionne
-    // une banque != 0 ; sinon on garde le chemin BTN5 (rom_bank : BASIC
-    // 1.1b<->1.0) validé sur carte. Au reset, VIA-2 DDRA=0 -> via2_bank=0 ->
-    // repli sur rom_bank : boot strictement inchangé (zéro régression).
+    // Sélecteur de banque $C000 (US-MBANK.2/.3). Gate par DDRA du 2e VIA : dès
+    // qu'un logiciel PILOTE le port A (DDRA != 0), la banque vient du port A —
+    // y compris la banque 0 (overlay), l'ambiguïté « via2_bank=0 » de US-MBANK.2
+    // est levée. Sinon (DDRA=0, ex. au reset) on prend la banque par défaut :
+    //  - mode Telestrat  -> banque 7 (TELEMON, vecteur reset) : boot Telestrat/ORIX ;
+    //  - sinon (Atmos)   -> chemin BTN5 (rom_bank : BASIC 1.1b<->1.0) validé carte.
+    // telestrat_mode=0 (défaut top) -> boot Atmos strictement inchangé.
     wire [7:0]  via2_dout, via2_pa_out, via2_ddra;
-    wire [2:0]  via2_bank = via2_pa_out[2:0] & via2_ddra[2:0];
-    wire [2:0]  bank_sel_w = (via2_bank != 3'd0) ? via2_bank : {2'b0, rom_bank};
+    wire        via2_drives  = (via2_ddra[2:0] != 3'd0);
+    wire [2:0]  via2_bank    = via2_pa_out[2:0] & via2_ddra[2:0];
+    wire [2:0]  bank_default = telestrat_mode ? 3'd7 : {2'b0, rom_bank};
+    wire [2:0]  bank_sel_w   = via2_drives ? via2_bank : bank_default;
     wire [15:0] vram_addr;
     wire [7:0]  vram_dout;
 

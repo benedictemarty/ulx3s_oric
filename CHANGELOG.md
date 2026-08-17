@@ -5,6 +5,21 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 
 ## [Non publié]
 
+### Ajouté
+- **US-MBANK.3 — Mode boot Telestrat + affinage sélecteur de banque** (bmarty,
+  2026-08-17, **sim validée**) : `rtl/oric_atmos.v` — nouvel input
+  **`telestrat_mode`** (0 = Atmos/boot BASIC bank0 ; 1 = Telestrat/boot TELEMON
+  bank7), câblé `1'b0` dans `top_ulx3s.v` (Atmos par défaut, zéro régression).
+  Sélecteur `bank_sel` affiné : **gate par DDRA** du 2e VIA — dès que le port A
+  est piloté (DDRA≠0) la banque en vient (**banque 0 désormais sélectionnable**,
+  l'ambiguïté « via2_bank=0 » de US-MBANK.2 est levée) ; sinon défaut =
+  **banque 7 (TELEMON, vecteur reset)** en mode Telestrat, ou chemin BTN5
+  (BASIC 1.1b/1.0) en Atmos. `sim/tb_bank_sel.v` étendu (gate DDRA, défaut
+  bank7, masquage PA0-2) **PASSED** ; **`test-boot` PASSED** (zéro régression) ;
+  les 5 testbenches cœur (`tb_boot`/`tb_sedboot`/`tb_trace`/`tb_cload`/
+  `tb_cload_sd`) câblent `telestrat_mode(1'b0)`. Reste **US-MBANK.3b** : charger
+  les 7 ROM ORIX en banques BRAM (les 177/208 EBR mesurés le permettent).
+
 ### Modifié
 - **Plan MULTIBANK révisé par une mesure — banques ORIX en BRAM, DMA abandonné**
   (bmarty, 2026-08-17) : synthèse yosys du design complet → **121/208 EBR

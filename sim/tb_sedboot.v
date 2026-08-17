@@ -83,7 +83,7 @@ module tb_sedboot;
     oric_atmos #(.DIV(25), .ROM_FILE("roms/basic11b.hex"),
                  .ROM_FILE_B("roms/basic10.hex"),
                  .MD_ROM_FILE("roms/microdis.hex")) dut (
-        .clk(clk), .rst(cpu_rst), .rom_bank(1'b0), .turbo(1'b0),
+        .clk(clk), .rst(cpu_rst), .rom_bank(1'b0), .telestrat_mode(1'b0), .turbo(1'b0),
         .md_enable(1'b1),
         .md_disk_present(disk_present), .md_n_tracks(n_tracks), .md_n_spt(n_spt),
         .md_req_track(req_track), .md_req_side(req_side),

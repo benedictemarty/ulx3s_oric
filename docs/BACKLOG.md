@@ -239,7 +239,17 @@ en SDRAM** (112 Ko, US-MBANK.4, cf. `docs/MULTIBANK_SDRAM.md`) et un **CH376**
       repli sur le BTN5 validé carte au reset (DDRA=0). IRQ du VIA-2 non câblée
       (banking seul). `test-bank-sel` (écriture DDRA/ORA → banque 1..7, masquage,
       repli) et **`test-boot` (zéro régression) PASSED**.
-- [ ] US-MBANK.3 Banques réelles TELEMON (bank 7) + boot Telestrat optionnel.
+- [~] US-MBANK.3 **Mode boot Telestrat** (2026-08-17, sim OK) : `oric_atmos.v`
+      — nouvel input `telestrat_mode` (câblé `1'b0` dans `top_ulx3s.v` = Atmos par
+      défaut) ; `bank_sel` affiné **gate par DDRA** (banque 0 désormais
+      sélectionnable ; ambiguïté US-MBANK.2 levée) : DDRA≠0 → banque du port A ;
+      DDRA=0 → défaut = **banque 7 (TELEMON)** si `telestrat_mode`, sinon BTN5
+      (BASIC 1.1b/1.0). `test-bank-sel` (gate DDRA + défaut bank7 + masquage) et
+      **`test-boot` (zéro régression) PASSED**. Les 5 testbenches cœur câblent
+      `telestrat_mode(1'b0)`. Reste **US-MBANK.3b** : charger les 7 ROM ORIX
+      (`orixbank1..7`) en banques BRAM (conversion .rom→.hex, extension
+      `bank_window` à 8 banques physiques, variante de build Telestrat) — les ROM
+      restent gitignorées (droits).
 - [~] US-MBANK.4 **Banques en SDRAM** (plan : docs/MULTIBANK_SDRAM.md) —
       investigation faite (2026-08-17). Cible ORIX = 7 banques × 16 Ko (112 Ko)
       → hors BRAM → **SDRAM**. Actif réutilisable : `sdram_ctrl.v` d'`~/oric2`
