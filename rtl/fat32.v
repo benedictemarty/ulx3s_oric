@@ -47,6 +47,10 @@ module fat32 #(
     input      [5:0]  q3_idx,
     output     [87:0] q3_name,
 
+    // 4e port de lecture (localisation de SAVE.TAP par le top, US-CSAVE.3 ph.B)
+    input      [5:0]  q4_idx,
+    output     [87:0] q4_name,
+
     // Lecture de fichier (streaming octet par octet, avec contrôle de flux)
     input             open_start,    // pulse : ouvrir le fichier open_idx
     input      [5:0]  open_idx,
@@ -87,6 +91,7 @@ module fat32 #(
     assign q_name   = name_mem[q_idx];
     assign q2_name  = name_mem[q2_idx];
     assign q3_name  = name_mem[q3_idx];
+    assign q4_name  = name_mem[q4_idx];
     assign q_size   = size_mem[q_idx];
     assign q_clus   = clus_mem[q_idx];
     assign q_isdsk  = dsk_mem[q_idx];

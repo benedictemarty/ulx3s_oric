@@ -194,10 +194,12 @@ carte SD ensuite. Décodeur de référence : `~/Oric1/src/io/cassette.c`
             `sim/tb_tape_saver.v` (`test-tape-saver`) : chaîne complète
             injector→demod→saver→fat32→SD, 600 o (2 blocs, ping-pong), relecture
             vérifiée. `file_count` des tests fat32/dsk 7→8. Suite 29/29.
-      - [ ] **Phase B** : intégration top — localiser `SAVE.TAP` par son nom
-            (comparaison 8.3 sur le port `q_name` de fat32), arbitrer
-            `fat32.wblk` entre le write-back disque et le saver, déclencheur de
-            sauvegarde ; validation carte.
+      - [x] **Phase B** (2026-08-20, synthèse OK, **carte à valider**) :
+            intégration top — `fat32` 4ᵉ port de nom (`q4`), locator FSM qui
+            verrouille l'index de `SAVE.TAP`, instance `tape_saver`, mux
+            `fat32.wblk` disque↔saver (`sav_busy`). Save inhibée si `SAVE.TAP`
+            absent (`sav_found`). Synthèse 85F propre, suite sans régression.
+            Reste : `CSAVE"NOM"` réel sur carte → `SAVE.TAP` mis à jour.
       - [ ] **Refinement** : mettre à jour le champ taille de l'entrée de
             répertoire (`nbytes`) via RMW du secteur de répertoire (sinon
             `SAVE.TAP` conserve sa taille placeholder, le `.tap` restant

@@ -6,6 +6,23 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 ## [Non publié]
 
 ### Ajouté
+- **US-CSAVE.3 phase B — Intégration top de la sauvegarde SD** (bmarty,
+  2026-08-20, **synthèse OK, validation carte à faire**) : `rtl/fat32.v` gagne
+  un **4ᵉ port de nom** (`q4_idx`/`q4_name`, lecture combinatoire de `name_mem`)
+  pour localiser un fichier par son nom. `rtl/top_ulx3s.v` : **locator FSM** qui,
+  après le parsing (`fat_done`), balaie le listing via `q4` et verrouille
+  l'index du fichier `« SAVE    TAP »` (`sav_found`/`sav_file_idx`, domaine
+  `rst_por` → survit aux resets CPU comme le listing) ; instance `tape_saver`
+  alimentée par le démodulateur (`sav_byte`/`sav_valid`/`sav_capturing`) et
+  autorisée par `sav_found` ; **mux `fat32.wblk`** arbitrant la source d'écriture
+  entre le write-back disque (`dsk_track`) et le saver selon `sav_busy` (disque
+  et cassette-save mutuellement exclusifs ; retours `wblk_pos/done/error`
+  partagés). `tape_saver.v` ajouté aux sources de synthèse. Si `SAVE.TAP` est
+  absent, `sav_found=0` inhibe la save SD sans gêner la voie UART (US-CSAVE.2).
+  **Synthèse 85F sans erreur, ni double-driver, ni signal non piloté** ;
+  `test-tape-saver` + suite complète sans régression. **Reste : validation carte**
+  (`CSAVE"NOM"` réel → `SAVE.TAP` mis à jour) et le refinement « taille dans
+  l'entrée de répertoire ».
 - **US-CSAVE.3 phase A — Sauvegarde cassette vers la carte SD (module +
   chaîne sim)** (bmarty, 2026-08-20, **sim validée e2e**) : `rtl/tape_saver.v`
   — consomme les octets `.tap` de `tape_demod` et les écrit dans un fichier

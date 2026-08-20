@@ -565,6 +565,28 @@ module top_ulx3s (
     wire [7:0]  dsk_wblk_data;
     wire [8:0]  dsk_wblk_pos;
     wire        dsk_wblk_done, dsk_wblk_error;
+
+    // 2e client d'écriture = tape_saver (US-CSAVE.3 ph.B) : sauvegarde cassette
+    // vers SAVE.TAP. Disque et cassette-save sont mutuellement exclusifs → un
+    // simple mux arbitre fat32.wblk (le saver prend la main quand il est busy ;
+    // les sorties wblk_pos/done/error de fat32 sont partagées aux deux clients).
+    wire        sav_wblk_start;
+    wire [5:0]  sav_wblk_idx;
+    wire [31:0] sav_wblk_offset;
+    wire [7:0]  sav_wblk_data;
+    wire        sav_busy, sav_done, sav_error;
+    wire [31:0] sav_nbytes;
+    // Localisation de SAVE.TAP (par son nom 8.3) dans le listing fat32.
+    reg  [5:0]  sav_q4_idx = 0;
+    wire [87:0] sav_q4_name;
+    reg  [5:0]  sav_file_idx = 0;
+    reg         sav_found = 1'b0;
+    // Sélection de source vers fat32.wblk (saver prioritaire pendant une save).
+    wire        wblk_start_s  = sav_busy ? sav_wblk_start  : dsk_wblk_start;
+    wire [5:0]  wblk_idx_s    = sav_busy ? sav_wblk_idx    : dsk_wblk_idx;
+    wire [31:0] wblk_offset_s = sav_busy ? sav_wblk_offset : dsk_wblk_offset;
+    wire [7:0]  wblk_data_s   = sav_busy ? sav_wblk_data   : dsk_wblk_data;
+
     // Chemin WD1793 -> dsk_track (écriture de secteur, ph.4)
     wire        mdp_sec_we, mdp_wr_commit, mdp_wr_busy, mdp_wr_ok, mdp_wr_err;
     wire [7:0]  mdp_sec_wr_data;
@@ -657,6 +679,7 @@ module top_ulx3s (
         .q_idx(sel_idx), .q_name(), .q_size(sel_size), .q_clus(), .q_isdsk(sel_isdsk),
         .q2_idx(osd_name_idx), .q2_name(osd_q2_name),
         .q3_idx(scr_osd_nidx), .q3_name(scr_osd_name),
+        .q4_idx(sav_q4_idx), .q4_name(sav_q4_name),
         .open_start(dump_active ? dump_open_start :
                     ld_active   ? ld_open_start   : d_open_start),
         .open_offset(d_grant ? d_open_offset : 32'd0),
@@ -665,9 +688,11 @@ module top_ulx3s (
         .fdata_ready(dump_active ? dump_fdata_ready :
                      ld_active   ? ld_fdata_ready  : d_fdata_ready),
         .floading(fat_floading), .feof(fat_feof), .fdata(fat_fdata), .fdata_valid(fat_fdata_valid),
-        // Écriture (US-DISK.5) : dormant tant que dsk_track ne pilote pas (phase 3)
-        .wblk_start(dsk_wblk_start), .wblk_idx(dsk_wblk_idx),
-        .wblk_offset(dsk_wblk_offset), .wblk_data(dsk_wblk_data),
+        // Écriture (US-DISK.5 disque / US-CSAVE.3 cassette) : source muxée
+        // (dsk_track write-back OU tape_saver selon sav_busy). Les retours
+        // wblk_pos/done/error sont partagés aux deux clients.
+        .wblk_start(wblk_start_s), .wblk_idx(wblk_idx_s),
+        .wblk_offset(wblk_offset_s), .wblk_data(wblk_data_s),
         .wblk_pos(dsk_wblk_pos), .wblk_done(dsk_wblk_done), .wblk_error(dsk_wblk_error),
         .wr_start(fat_wr_start), .wr_data(fat_wr_data), .wr_idx(sd_wr_idx)
     );
@@ -739,6 +764,49 @@ module top_ulx3s (
         .wblk_start(dsk_wblk_start), .wblk_idx(dsk_wblk_idx),
         .wblk_offset(dsk_wblk_offset), .wblk_data(dsk_wblk_data),
         .wblk_pos(dsk_wblk_pos), .wblk_done(dsk_wblk_done), .wblk_error(dsk_wblk_error)
+    );
+
+    // ------------------------------------------------------------------
+    // Sauvegarde cassette -> SAVE.TAP (US-CSAVE.3 ph.B)
+    // ------------------------------------------------------------------
+    // Localisation de SAVE.TAP par son nom 8.3 : après le parsing (fat_done),
+    // on balaie le listing (port q4) et on verrouille l'index du fichier nommé
+    // « SAVE    TAP ». Une seule passe ; `sav_found` reste faux si absent (la
+    // save SD est alors inhibée, la voie UART US-CSAVE.2 reste opérationnelle).
+    localparam [87:0] SAVE_NAME = "SAVE    TAP";
+    localparam LS_IDLE = 2'd0, LS_SETTLE = 2'd1, LS_CMP = 2'd2, LS_DONE = 2'd3;
+    reg [1:0] lstate = LS_IDLE;
+    reg       fat_done_d = 1'b0;
+    always @(posedge clk_sys) begin
+        fat_done_d <= fat_done;
+        if (rst_por) begin
+            lstate <= LS_IDLE; sav_found <= 1'b0; sav_q4_idx <= 0; sav_file_idx <= 0;
+        end else case (lstate)
+            LS_IDLE: if (fat_done & ~fat_done_d) begin   // parsing terminé
+                sav_q4_idx <= 0; sav_found <= 1'b0; lstate <= LS_SETTLE;
+            end
+            LS_SETTLE: lstate <= LS_CMP;                 // laisse q4_name se stabiliser
+            LS_CMP: begin
+                if (sav_q4_name == SAVE_NAME) begin
+                    sav_file_idx <= sav_q4_idx; sav_found <= 1'b1; lstate <= LS_DONE;
+                end else if (sav_q4_idx + 6'd1 >= file_count[5:0]) begin
+                    lstate <= LS_DONE;                   // absent
+                end else begin
+                    sav_q4_idx <= sav_q4_idx + 6'd1; lstate <= LS_SETTLE;
+                end
+            end
+            default: ;                                   // LS_DONE : verrouillé
+        endcase
+    end
+
+    tape_saver saver (
+        .clk(clk_sys), .rst(rst_sys),
+        .byte_in(sav_byte), .byte_valid(sav_valid), .capturing(sav_capturing),
+        .file_idx(sav_file_idx), .enable(sav_found),
+        .wblk_start(sav_wblk_start), .wblk_idx(sav_wblk_idx),
+        .wblk_offset(sav_wblk_offset), .wblk_data(sav_wblk_data),
+        .wblk_pos(dsk_wblk_pos), .wblk_done(dsk_wblk_done), .wblk_error(dsk_wblk_error),
+        .busy(sav_busy), .done(sav_done), .error(sav_error), .nbytes(sav_nbytes)
     );
 
     // Lancer le parsing une fois la carte initialisée. Sur power-on seul :

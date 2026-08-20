@@ -80,12 +80,34 @@ le FPGA **démodule** la forme d'onde et renvoie le `.tap` reconstruit au PC.
   (en-tête 9 o → adresses fin/début → nom → `fin-début+1` octets de données)
   pour connaître la fin exacte, puis écrit le `.tap`.
 
+### Sauvegarde sur la carte SD (SAVE.TAP)
+
+En parallèle de la voie UART, le FPGA peut écrire le `.tap` directement sur la
+carte, dans un fichier **placeholder pré-créé** `SAVE.TAP` (racine de la carte,
+taille max fixe — l'allocation FAT32 / la création d'entrée n'est pas faite,
+seul le contenu est écrasé).
+
+- `rtl/tape_saver.v` consomme les octets du démodulateur, les accumule dans un
+  **double buffer ping-pong** (512 o) et les écrit bloc par bloc via
+  `fat32.wblk` (même chemin que le write-back disque). Le dernier bloc est
+  complété par des `0x00`.
+- Le top **localise `SAVE.TAP`** par son nom 8.3 (balayage du listing fat32) et
+  mux `fat32.wblk` entre le write-back disque et le saver. Si `SAVE.TAP` est
+  absent, la save SD est simplement inhibée (la voie UART reste disponible).
+- La taille de l'entrée de répertoire n'est pas encore mise à jour : `SAVE.TAP`
+  conserve sa taille placeholder, mais le `.tap` reste auto-délimité par la
+  structure de ses blocs (un lecteur conforme s'arrête au bon endroit).
+
 ### Tests
 
 `make test-tape-demod` : boucle `tape_injector` → `tape_demod`, vérifie que les
 octets décodés == amorce `0x16` + données envoyées, sur flux simple et
 multi-blocs. (La modulation de l'injecteur est déjà validée sur carte contre la
 vraie ROM CLOAD, ce qui fait de la boucle un test de fidélité du démodulateur.)
+
+`make test-tape-saver` : chaîne complète `tape_injector → tape_demod →
+tape_saver → fat32.wblk → sd_card_file`, joue une charge > 512 o (2 blocs,
+exerce le ping-pong), relit `SAVE.TAP` et vérifie amorce + données + padding.
 
 ## Protocole UART
 
