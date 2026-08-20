@@ -6,6 +6,25 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 ## [Non publié]
 
 ### Ajouté
+- **US-CSAVE.1 — Démodulateur cassette (CSAVE) RTL** (bmarty, 2026-08-20,
+  **sim validée**) : `rtl/tape_demod.v` — miroir de `tape_injector.v` et portage
+  RTL du décodeur de référence `~/Oric1/src/io/cassette.c` (`tape_capture_*`).
+  Échantillonne `tape_out` (PB7, bit-bangé par la ROM `CSAVE` via Timer 1),
+  **ne compte que les fronts montants**, mesure la période front-à-front
+  (2·HALF_ONE = '1' court / HALF_ONE+HALF_LONG = '0' long), applique le **seuil
+  512 µs** (`CYC_THRESH`, défaut 12800 cy à 25 MHz) → bit. Réassembleur d'octet
+  **sans trame de longueur fixe** (comme `GetTapeByte` $E6C9) : chasse le start
+  (saute les stops '1', le 1er '0' long est le start), 8 bits data LSB d'abord,
+  **brûle une période** (parité, valeur ignorée), rechasse — évite le décalage
+  de framing d'un bit/trame. Sorties `byte_out`/`byte_valid` (pulse) et
+  `capturing` (retombe après `GAP_CYCLES` de silence → fin de sauvegarde).
+  Nouveau `sim/tb_tape_demod.v` (+ cible `test-tape-demod`, ajoutée à `TESTS`) :
+  **boucle `tape_injector` → `tape_demod`** (la modulation est déjà validée sur
+  carte contre la vraie ROM CLOAD), vérifie octets décodés == amorce 0x16 +
+  données, sur flux simple ET multi-blocs (amorce inter-blocs). **`test-tape-demod`
+  PASSED du premier coup**, suite complète sans régression. Reste US-CSAVE.2
+  (câblage top + sortie UART vers PC / `recv_tap.py`) puis US-CSAVE.3 (écriture
+  `.tap` sur carte SD).
 - **US-DISK.6 — Formatage disquette : commande Write Track du WD1793** (bmarty,
   2026-08-17, **sim validée**) : `rtl/wd1793.v` — la commande `0xF0` (jusque-là
   « write protect ») implémente le **parseur du flux IBM/MFM** de formatage

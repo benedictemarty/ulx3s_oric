@@ -164,6 +164,28 @@ comparable à une vraie mécanique 3") ; v1 en LECTURE SEULE.
       Permet un `INIT`/formatage Sedoric sur une piste déjà cataloguée (réécrit
       la donnée). Read Track reste non implémenté (peu utile).
 
+## Épopée CSAVE — sauvegarde cassette — EN COURS (démarrée 2026-08-20)
+Objectif : capturer la forme d'onde `CSAVE` que la ROM bit-bange sur PB7 et la
+reconstruire en `.tap`. Miroir de l'épopée LOAD (`tape_injector`). Destination :
+**les deux, en incrémental** — UART vers le PC d'abord (validation rapide),
+carte SD ensuite. Décodeur de référence : `~/Oric1/src/io/cassette.c`
+(`tape_capture_*`, mode `--tape-out-capture`).
+- [x] US-CSAVE.1 **Démodulateur RTL** (2026-08-20, sim OK) : `rtl/tape_demod.v`
+      — fronts montants PB7 → période front-à-front → seuil 512 µs (`CYC_THRESH`)
+      → bit ; réassembleur d'octet par chasse au start (comme `GetTapeByte`,
+      brûle la parité, ignore le nombre de stops) ; `byte_out`/`byte_valid` +
+      `capturing` (fin sur `GAP_CYCLES` de silence). `sim/tb_tape_demod.v` (cible
+      `test-tape-demod`) : boucle `tape_injector`→`tape_demod`, octets décodés ==
+      amorce + données (flux simple + multi-blocs). **PASSED, suite sans
+      régression.**
+- [ ] US-CSAVE.2 **Sortie UART vers le PC** : brancher `tape_demod` sur
+      `tape_out` dans `top_ulx3s`, router `byte_valid` vers `uart_tx` (ftdi_rxd),
+      script `tools/recv_tap.py` qui reçoit et écrit le `.tap`. Validation carte :
+      `CSAVE"NOM"` sur l'Oric → `.tap` relisible par `send_tap.py`/un émulateur.
+- [ ] US-CSAVE.3 **Sortie carte SD** (évolution) : créer un nouveau fichier
+      `.tap` sur la SD (allocation cluster FAT32 + entrée répertoire). Plus
+      complexe que le write-back RMW disque (fichier existant) — après US-CSAVE.2.
+
 ## Épopée LOCI — émulation interne (plan : docs/LOCI_EMULATION.md)
 > ⏸ **PARQUÉE (2026-08-17)** — décision « retour à l'Atmos pur » (on arrête
 > d'élargir). Exploration conservée pour mémoire, non reprise pour l'instant.
