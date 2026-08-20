@@ -78,7 +78,7 @@ module tb_fat32;
         wait (fat_done === 1'b1);
         $display("PARSE OK (status=%02x, %0d fichiers)", fat_status, file_count);
         check(!fat_error, "parsing sans erreur");
-        check(file_count === 8'd7, "7 fichiers .tap/.dsk (README.TXT ignoré)");
+        check(file_count === 8'd8, "8 fichiers .tap/.dsk (README.TXT ignoré ; SAVE.TAP inclus)");
 
         q_idx = 0; #1; check(q_name === "DEFENDERTAP", "fichier 0 = DEFENDER.TAP");
         q_idx = 2; #1; check(q_name === "ORICCHESDSK" && q_isdsk, "fichier 2 = ORICCHES.DSK");

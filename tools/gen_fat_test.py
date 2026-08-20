@@ -102,7 +102,12 @@ else:                                            # environnement sans ~/Oric1
     CIT_DSK, CIT_GOLD, CIT_VALID = MFM_DSK, b'', []
 CIT_CLUS  = MFM_CLUS + MFM_NCLUS
 CIT_NCLUS = (len(CIT_DSK) + SEC - 1) // SEC
-last_used  = clus_lba(CIT_CLUS + CIT_NCLUS - 1)         # dernier secteur écrit
+# SAVE.TAP : placeholder pré-créé (rempli 0xEE) que la sauvegarde cassette
+# (US-CSAVE.3) écrase via fat32.wblk. 8 clusters = 4096 o (taille max de test).
+SAVE_CLUS  = CIT_CLUS + CIT_NCLUS
+SAVE_NCLUS = 8
+SAVE_SIZE  = SAVE_NCLUS * SEC
+last_used  = clus_lba(SAVE_CLUS + SAVE_NCLUS - 1)      # dernier secteur écrit
 total_sec  = last_used + 2
 img = bytearray(total_sec * SEC)
 
@@ -141,6 +146,9 @@ set_fat(MFM_CLUS + MFM_NCLUS - 1, 0x0FFFFFFF)
 for c in range(CIT_CLUS, CIT_CLUS + CIT_NCLUS - 1):     # chaîne CITREAL.DSK
     set_fat(c, c + 1)
 set_fat(CIT_CLUS + CIT_NCLUS - 1, 0x0FFFFFFF)
+for c in range(SAVE_CLUS, SAVE_CLUS + SAVE_NCLUS - 1):  # chaîne SAVE.TAP
+    set_fat(c, c + 1)
+set_fat(SAVE_CLUS + SAVE_NCLUS - 1, 0x0FFFFFFF)
 
 # --- Données de TEST.TAP (motif i & 0xFF) ---
 for i in range(TEST_SIZE):
@@ -152,6 +160,12 @@ for i in range(TEST_SIZE):
 # --- Données de VALID.TAP ---
 v = clus_lba(VALID_CLUS) * SEC
 img[v : v + len(VALID_TAP)] = VALID_TAP
+
+# --- Placeholder SAVE.TAP : rempli 0xEE (motif témoin d'écrasement) ---
+for c in range(SAVE_CLUS, SAVE_CLUS + SAVE_NCLUS):
+    s = clus_lba(c) * SEC
+    for i in range(SEC):
+        img[s + i] = 0xEE
 
 # --- Données de TESTMFM.DSK (clusters consécutifs) ---
 m = clus_lba(MFM_CLUS) * SEC
@@ -186,6 +200,7 @@ ents = [
     entry('VALID   TAP', 0x20, VALID_CLUS, len(VALID_TAP)),  # .tap valide
     entry('TESTMFM DSK', 0x20, MFM_CLUS, len(MFM_DSK)),      # .dsk MFM valide
     entry('CITREAL DSK', 0x20, CIT_CLUS, len(CIT_DSK)),      # vraies pistes
+    entry('SAVE    TAP', 0x20, SAVE_CLUS, SAVE_SIZE),        # placeholder CSAVE
 ]
 d = root_dir_lba * SEC
 for i, e in enumerate(ents):
@@ -195,4 +210,5 @@ with open(sys.argv[1], 'wb') as fh:
     fh.write(img)
 print(f"image {sys.argv[1]} : part_lba={PART_LBA} fat_lba={fat_lba} "
       f"root_dir_lba={root_dir_lba} first_data={first_data} "
-      f"total_sec={total_sec} files={len(ents)} TEST.TAP={TEST_SIZE}o@clus{TEST_CLUS}")
+      f"total_sec={total_sec} files={len(ents)} TEST.TAP={TEST_SIZE}o@clus{TEST_CLUS} "
+      f"SAVE.TAP={SAVE_SIZE}o@clus{SAVE_CLUS}")

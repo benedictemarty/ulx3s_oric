@@ -210,7 +210,7 @@ module tb_dsk;
         wait (sd_ready === 1'b1);
         @(negedge clk); fat_start = 1; @(negedge clk); fat_start = 0;
         wait (fat_done === 1'b1);
-        check(file_count == 8'd7, "7 fichiers listes");
+        check(file_count == 8'd8, "8 fichiers listes (SAVE.TAP inclus)");
 
         // 2) Insertion de TESTMFM.DSK (idx 5) -> en-tête + piste 0
         @(negedge clk); insert = 1; @(negedge clk); insert = 0;

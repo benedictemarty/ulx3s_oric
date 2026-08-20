@@ -185,9 +185,23 @@ carte SD ensuite. Décodeur de référence : `~/Oric1/src/io/cassette.c`
       parse les blocs, écrit le `.tap`. Synthèse 85F propre (pas de double-driver),
       parseur validé sur flux synthétique. Reste : `CSAVE"NOM"` réel sur carte
       → `.tap` relisible par `send_tap.py`/un émulateur.
-- [ ] US-CSAVE.3 **Sortie carte SD** (évolution) : créer un nouveau fichier
-      `.tap` sur la SD (allocation cluster FAT32 + entrée répertoire). Plus
-      complexe que le write-back RMW disque (fichier existant) — après US-CSAVE.2.
+- [~] US-CSAVE.3 **Sortie carte SD** (stratégie **placeholder** retenue :
+      écrase un `SAVE.TAP` pré-créé, pas de création FAT32) :
+      - [x] **Phase A** (2026-08-20, sim e2e OK) : `rtl/tape_saver.v` — octets
+            démod → double buffer ping-pong → `fat32.wblk` dans `SAVE.TAP` ;
+            dernier bloc padé `0x00`, `nbytes` = taille réelle.
+            `tools/gen_fat_test.py` : placeholder `SAVE.TAP` (4096 o, 0xEE).
+            `sim/tb_tape_saver.v` (`test-tape-saver`) : chaîne complète
+            injector→demod→saver→fat32→SD, 600 o (2 blocs, ping-pong), relecture
+            vérifiée. `file_count` des tests fat32/dsk 7→8. Suite 29/29.
+      - [ ] **Phase B** : intégration top — localiser `SAVE.TAP` par son nom
+            (comparaison 8.3 sur le port `q_name` de fat32), arbitrer
+            `fat32.wblk` entre le write-back disque et le saver, déclencheur de
+            sauvegarde ; validation carte.
+      - [ ] **Refinement** : mettre à jour le champ taille de l'entrée de
+            répertoire (`nbytes`) via RMW du secteur de répertoire (sinon
+            `SAVE.TAP` conserve sa taille placeholder, le `.tap` restant
+            auto-délimité par la structure des blocs).
 
 ## Épopée LOCI — émulation interne (plan : docs/LOCI_EMULATION.md)
 > ⏸ **PARQUÉE (2026-08-17)** — décision « retour à l'Atmos pur » (on arrête

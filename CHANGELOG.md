@@ -6,6 +6,25 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 ## [Non publié]
 
 ### Ajouté
+- **US-CSAVE.3 phase A — Sauvegarde cassette vers la carte SD (module +
+  chaîne sim)** (bmarty, 2026-08-20, **sim validée e2e**) : `rtl/tape_saver.v`
+  — consomme les octets `.tap` de `tape_demod` et les écrit dans un fichier
+  placeholder **pré-existant** `SAVE.TAP` via le chemin `fat32.wblk` déjà
+  validé (US-DISK.5 : suit la chaîne de clusters + CMD24). **Double buffer
+  ping-pong** (bufA/bufB de 512 o) : on écrit le buffer plein pendant que
+  l'autre se remplit — la cadence bande (~137 o/s) étant très inférieure à une
+  écriture SPI, aucun octet n'est perdu. Dernier bloc partiel complété par des
+  `0x00` ; `nbytes` donne la taille réelle. `tools/gen_fat_test.py` : ajout d'un
+  placeholder `SAVE.TAP` (8 clusters = 4096 o, rempli `0xEE`). Nouveau
+  `sim/tb_tape_saver.v` (cible `test-tape-saver`) : chaîne complète
+  `tape_injector → tape_demod → tape_saver → fat32.wblk → sd_card_file`, joue une
+  charge de 600 o (> 512 → 2 blocs, exerce le ping-pong), relit `SAVE.TAP` →
+  amorce + données correctes, padding `0x00` en fin de bloc (604 o sauvegardés).
+  `test-fat32`/`test-dsk` : assertion `file_count` 7→8 (SAVE.TAP ajouté à
+  l'image partagée). **`test-tape-saver` PASSED ; suite complète 29/29, zéro
+  régression.** Reste **US-CSAVE.3 phase B** (intégration top : localiser
+  SAVE.TAP par son nom, arbitrer `fat32.wblk` disque↔saver, déclencheur) et la
+  mise à jour de la taille dans l'entrée de répertoire (refinement).
 - **US-CSAVE.2 — Sortie SAVE vers le PC (câblage top + `recv_tap.py`)** (bmarty,
   2026-08-20, **synthèse OK, validation carte à faire**) : `rtl/top_ulx3s.v` —
   `tape_out` (PB7) passe désormais par un wire nommé alimentant à la fois la
