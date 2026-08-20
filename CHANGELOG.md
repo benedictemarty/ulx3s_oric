@@ -6,6 +6,23 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 ## [Non publié]
 
 ### Ajouté
+- **US-CSAVE.3 refinement — Taille réelle dans l'entrée de répertoire**
+  (bmarty, 2026-08-20, **sim validée e2e + synthèse OK**) : `rtl/fat32.v` gagne
+  une primitive `dsize_*` — **RMW du secteur de répertoire** : lecture du secteur
+  dans `secbuf`, substitution du champ taille (octets 28-31 de l'entrée) par
+  `dsize_val`, réécriture (CMD24) ; `wr_data` muxé (`secbuf` en écriture dir,
+  sinon passthrough `wblk_data`). Le parsing mémorise désormais la **localisation
+  de l'entrée** de chaque fichier (secteur `dsec_mem` + offset `doff_mem`).
+  `rtl/top_ulx3s.v` : à la fin d'une sauvegarde réussie (`sav_done` & `sav_found`),
+  la taille réelle (`sav_nbytes`) est inscrite dans l'entrée de `SAVE.TAP` — le
+  fichier ne conserve plus sa taille placeholder. `tb_tape_saver` étendu (clôture
+  de la lecture de contrôle, `dsize` → `q_size`=604) + **post-check
+  `tools/check_save_tap.py`** qui relit l'image FAT : entrée `SAVE.TAP` taille=604
+  et 1er octet de données `0x16` (placeholder `0xEE` bien écrasé). **Suite
+  complète 29/29 PASSED, synthèse 85F sans erreur ni double-driver. US-CSAVE.3
+  est complète** (reste la validation carte). Bug corrigé au passage : la maj
+  n'est possible que fat32 en `S_DONE` — le banc clôt d'abord la lecture par
+  `open_abort`.
 - **US-CSAVE.3 phase B — Intégration top de la sauvegarde SD** (bmarty,
   2026-08-20, **synthèse OK, validation carte à faire**) : `rtl/fat32.v` gagne
   un **4ᵉ port de nom** (`q4_idx`/`q4_name`, lecture combinatoire de `name_mem`)

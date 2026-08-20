@@ -94,9 +94,9 @@ seul le contenu est écrasé).
 - Le top **localise `SAVE.TAP`** par son nom 8.3 (balayage du listing fat32) et
   mux `fat32.wblk` entre le write-back disque et le saver. Si `SAVE.TAP` est
   absent, la save SD est simplement inhibée (la voie UART reste disponible).
-- La taille de l'entrée de répertoire n'est pas encore mise à jour : `SAVE.TAP`
-  conserve sa taille placeholder, mais le `.tap` reste auto-délimité par la
-  structure de ses blocs (un lecteur conforme s'arrête au bon endroit).
+- À la fin de la sauvegarde, la **taille réelle** est inscrite dans l'entrée de
+  répertoire de `SAVE.TAP` (primitive `dsize` de fat32 : RMW du secteur de
+  répertoire, octets 28-31) — le fichier ne garde donc pas sa taille placeholder.
 
 ### Tests
 

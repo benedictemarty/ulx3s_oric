@@ -581,6 +581,13 @@ module top_ulx3s (
     wire [87:0] sav_q4_name;
     reg  [5:0]  sav_file_idx = 0;
     reg         sav_found = 1'b0;
+    // Maj taille SAVE.TAP : déclenchée à la fin de la sauvegarde (sav_done),
+    // fat32 étant retourné en S_DONE après le dernier bloc écrit.
+    reg         dsize_start = 1'b0;
+    reg  [5:0]  dsize_idx = 0;
+    reg  [31:0] dsize_val = 0;
+    wire        dsize_done, dsize_error;
+
     // Sélection de source vers fat32.wblk (saver prioritaire pendant une save).
     wire        wblk_start_s  = sav_busy ? sav_wblk_start  : dsk_wblk_start;
     wire [5:0]  wblk_idx_s    = sav_busy ? sav_wblk_idx    : dsk_wblk_idx;
@@ -694,6 +701,9 @@ module top_ulx3s (
         .wblk_start(wblk_start_s), .wblk_idx(wblk_idx_s),
         .wblk_offset(wblk_offset_s), .wblk_data(wblk_data_s),
         .wblk_pos(dsk_wblk_pos), .wblk_done(dsk_wblk_done), .wblk_error(dsk_wblk_error),
+        // Maj taille SAVE.TAP dans l'entrée répertoire (US-CSAVE.3 refinement)
+        .dsize_start(dsize_start), .dsize_idx(dsize_idx), .dsize_val(dsize_val),
+        .dsize_done(dsize_done), .dsize_error(dsize_error),
         .wr_start(fat_wr_start), .wr_data(fat_wr_data), .wr_idx(sd_wr_idx)
     );
 
@@ -808,6 +818,17 @@ module top_ulx3s (
         .wblk_pos(dsk_wblk_pos), .wblk_done(dsk_wblk_done), .wblk_error(dsk_wblk_error),
         .busy(sav_busy), .done(sav_done), .error(sav_error), .nbytes(sav_nbytes)
     );
+
+    // À la fin d'une sauvegarde réussie, inscrire la taille réelle dans l'entrée
+    // de répertoire de SAVE.TAP (sinon le fichier garde sa taille placeholder).
+    always @(posedge clk_sys) begin
+        dsize_start <= 1'b0;
+        if (!rst_por && sav_done && sav_found && !sav_error) begin
+            dsize_idx   <= sav_file_idx;
+            dsize_val   <= sav_nbytes;
+            dsize_start <= 1'b1;
+        end
+    end
 
     // Lancer le parsing une fois la carte initialisée. Sur power-on seul :
     // le listing survit aux resets CPU (l'OSD reste dispo après BTN1/BTN5).

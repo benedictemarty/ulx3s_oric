@@ -76,18 +76,33 @@ module fat32 #(
     output     [8:0]  wblk_pos,       // = index SD courant (0..511)
     output reg        wblk_done,
     output reg        wblk_error,
+
+    // Mise à jour de la taille dans l'entrée de répertoire (US-CSAVE.3 refinement) :
+    // RMW du secteur de répertoire du fichier dsize_idx, écrit dsize_val (32 bits
+    // little-endian) dans le champ taille (octets 28-31 de l'entrée). Réutilise
+    // secbuf pour préserver les 508 autres octets du secteur.
+    input             dsize_start,    // pulse : lancer la mise à jour
+    input      [5:0]  dsize_idx,
+    input      [31:0] dsize_val,
+    output reg        dsize_done,
+    output reg        dsize_error,
+
     // vers sd_spi (écriture)
     output reg        wr_start,       // -> sd_spi.start_write
     output     [7:0]  wr_data,        // -> sd_spi.wr_data
     input      [8:0]  wr_idx          // <- sd_spi.wr_idx
 );
-    assign wr_data  = wblk_data;      // passthrough source -> sd_spi
+    reg        ds_writing;            // écriture du secteur de répertoire en cours
+    assign wr_data  = ds_writing ? secbuf[wr_idx] : wblk_data;
     assign wblk_pos = wr_idx;
     // Mémoires de listing
     reg [87:0] name_mem [0:MAXFILES-1];
     reg [31:0] size_mem [0:MAXFILES-1];
     reg [31:0] clus_mem [0:MAXFILES-1];
     reg        dsk_mem  [0:MAXFILES-1];
+    // Localisation de l'entrée de répertoire de chaque fichier (pour la maj taille)
+    reg [3:0]  dsec_mem [0:MAXFILES-1];   // n° de secteur dans le répertoire racine
+    reg [8:0]  doff_mem [0:MAXFILES-1];   // offset de l'entrée dans le secteur (0..480)
     assign q_name   = name_mem[q_idx];
     assign q2_name  = name_mem[q2_idx];
     assign q3_name  = name_mem[q3_idx];
@@ -141,10 +156,15 @@ module fat32 #(
                FO_INIT=10, FO_RD=11, FO_CAP=12, FO_EMIT=13,
                FO_FAT=14, FO_FATC=15, FO_EOF=16,
                // écriture d'un bloc à un offset
-               WB_SKIP=17, WB_FAT=18, WB_FATC=19, WB_WR=20, WB_BUSY=21;
+               WB_SKIP=17, WB_FAT=18, WB_FATC=19, WB_WR=20, WB_BUSY=21,
+               // maj taille dans l'entrée de répertoire (RMW)
+               DS_RD=22, DS_CAP=23, DS_WR=24, DS_BUSY=25;
     reg [4:0]  state;
     reg [31:0] wb_clus, wb_skip;     // suivi de chaîne pour l'écriture
     reg [7:0]  wb_sic;               // bloc dans le cluster
+    reg [3:0]  ds_sec;               // secteur de répertoire à réécrire
+    reg [8:0]  ds_off;               // offset de l'entrée dans le secteur
+    reg [31:0] ds_val;               // nouvelle taille à écrire
     reg [9:0]  bidx;                 // 0..511 octet dans le secteur
     reg [3:0]  dirsec;               // secteur de répertoire courant (0..DIRSECS-1)
     reg        stop_dir;             // fin de répertoire (entrée 0x00) rencontrée
@@ -156,14 +176,16 @@ module fat32 #(
     integer k;
 
     always @(posedge clk) begin
-        rd_start  <= 1'b0;
-        wr_start  <= 1'b0;
-        wblk_done <= 1'b0;
+        rd_start   <= 1'b0;
+        wr_start   <= 1'b0;
+        wblk_done  <= 1'b0;
+        dsize_done <= 1'b0;
         if (rst) begin
             fdata_valid <= 1'b0;
             state <= S_IDLE; done <= 0; error <= 0; file_count <= 0;
             status <= 8'h00; rd_sector <= 0; bidx <= 0; dirsec <= 0; stop_dir <= 0;
             floading <= 0; feof <= 0; cache_valid <= 1'b0; wblk_error <= 1'b0;
+            ds_writing <= 1'b0; dsize_error <= 1'b0;
         end else begin
             case (state)
                 S_IDLE: if (start) begin
@@ -262,6 +284,10 @@ module fat32 #(
                             size_mem[file_count] <= {sd_data, esize[23:0]};
                             clus_mem[file_count] <= eclus;
                             dsk_mem[file_count]  <= ext_dsk;
+                            // localisation de l'entrée : secteur courant + début
+                            // d'entrée (aligné 32 : eoff==31 -> {bidx[8:5],5'd0})
+                            dsec_mem[file_count] <= dirsec;
+                            doff_mem[file_count] <= {bidx[8:5], 5'd0};
                             file_count <= file_count + 8'd1;
                         end
                     end
@@ -279,6 +305,13 @@ module fat32 #(
                         wb_skip <= wblk_offset;
                         wblk_error <= 1'b0;
                         state <= WB_SKIP;
+                    end else if (dsize_start) begin  // maj taille entrée répertoire
+                        ds_sec <= dsec_mem[dsize_idx];
+                        ds_off <= doff_mem[dsize_idx];
+                        ds_val <= dsize_val;
+                        size_mem[dsize_idx] <= dsize_val;   // reflète la nouvelle taille
+                        dsize_error <= 1'b0;
+                        state <= DS_RD;
                     end else if (open_start) begin
                         // au-delà de la fin : EOF immédiat (bytes_left = 0)
                         bytes_left <= (open_offset < size_mem[open_idx])
@@ -440,6 +473,32 @@ module fat32 #(
                         end
                 WB_BUSY: if (sd_ready && !sd_busy && !wr_start) begin  // écriture finie
                             wblk_done <= 1'b1; state <= S_DONE;
+                         end
+
+                // ---- maj taille : lire le secteur de répertoire (RMW) ----
+                DS_RD: if (sd_ready && !sd_busy) begin
+                            rd_sector <= root_lba + ds_sec;
+                            rd_start <= 1'b1; bidx <= 0; state <= DS_CAP;
+                        end
+                DS_CAP: if (sd_dvalid) begin
+                            // capture 512 o dans secbuf, en substituant le champ
+                            // taille (4 octets à ds_off+28..31) par ds_val.
+                            if (bidx[8:0] == ds_off + 9'd28)      secbuf[bidx] <= ds_val[7:0];
+                            else if (bidx[8:0] == ds_off + 9'd29) secbuf[bidx] <= ds_val[15:8];
+                            else if (bidx[8:0] == ds_off + 9'd30) secbuf[bidx] <= ds_val[23:16];
+                            else if (bidx[8:0] == ds_off + 9'd31) secbuf[bidx] <= ds_val[31:24];
+                            else                                  secbuf[bidx] <= sd_data;
+                            if (bidx == 511) state <= DS_WR;
+                            else bidx <= bidx + 10'd1;
+                        end
+                DS_WR: if (sd_ready && !sd_busy) begin
+                            rd_sector <= root_lba + ds_sec;
+                            ds_writing <= 1'b1;            // wr_data <- secbuf
+                            wr_start <= 1'b1; state <= DS_BUSY;
+                        end
+                DS_BUSY: if (sd_ready && !sd_busy && !wr_start) begin
+                            ds_writing <= 1'b0;
+                            dsize_done <= 1'b1; state <= S_DONE;
                          end
 
                 S_ERR:  begin error <= 1'b1; end

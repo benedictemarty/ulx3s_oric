@@ -63,11 +63,19 @@ module tb_tape_saver;
     wire [7:0]  file_count, fat_status;
     // lecture (relecture de contrôle)
     reg         open_start = 0;
+    reg         open_abort = 0;
     reg  [5:0]  open_idx = 0;
     reg  [31:0] open_offset = 0;
     reg         fdata_ready = 0;
     wire        floading, feof, fdata_valid;
     wire [7:0]  fdata;
+    // maj taille entrée répertoire (refinement)
+    reg         dsize_start = 0;
+    reg  [5:0]  dsize_idx = 0;
+    reg  [31:0] dsize_val = 0;
+    wire        dsize_done, dsize_error;
+    reg  [5:0]  q_idx = 0;
+    wire [31:0] q_size;
     // écriture (pilotée par le saver)
     wire        wblk_start;
     wire [5:0]  wblk_idx;
@@ -81,15 +89,18 @@ module tb_tape_saver;
         .rd_start(rd_start), .rd_sector(rd_sector),
         .sd_ready(sd_ready), .sd_busy(sd_busy), .sd_dvalid(sd_dvalid), .sd_data(sd_data),
         .done(fat_done), .error(fat_error), .file_count(file_count), .status(fat_status),
-        .q_idx(6'd0), .q_name(), .q_size(), .q_clus(), .q_isdsk(),
+        .q_idx(q_idx), .q_name(), .q_size(q_size), .q_clus(), .q_isdsk(),
         .q2_idx(6'd0), .q2_name(), .q3_idx(6'd0), .q3_name(),
+        .q4_idx(6'd0), .q4_name(),
         .open_start(open_start), .open_idx(open_idx),
-        .open_offset(open_offset), .open_abort(1'b0),
+        .open_offset(open_offset), .open_abort(open_abort),
         .fdata_ready(fdata_ready),
         .floading(floading), .feof(feof), .fdata(fdata), .fdata_valid(fdata_valid),
         .wblk_start(wblk_start), .wblk_idx(wblk_idx), .wblk_offset(wblk_offset),
         .wblk_data(wblk_data), .wblk_pos(wblk_pos),
         .wblk_done(wblk_done), .wblk_error(wblk_error),
+        .dsize_start(dsize_start), .dsize_idx(dsize_idx), .dsize_val(dsize_val),
+        .dsize_done(dsize_done), .dsize_error(dsize_error),
         .wr_start(wr_start), .wr_data(wr_data), .wr_idx(sd_wr_idx)
     );
 
@@ -177,6 +188,21 @@ module tb_tape_saver;
                 $display("FAIL: octet %0d : relu %02x attendu %02x", i, rdbuf[i], exp[i]);
                 errors = errors + 1;
             end
+
+        // --- clore la lecture de contrôle (retour fat32 -> S_DONE) ---
+        @(negedge clk); open_abort = 1; @(negedge clk); open_abort = 0;
+        wait (floading === 1'b0);
+        repeat (4) @(negedge clk);
+
+        // --- refinement : maj de la taille de SAVE.TAP dans l'entrée répertoire ---
+        @(negedge clk);
+        dsize_idx = SAVE_IDX; dsize_val = LEAD + NDATA;   // 604
+        @(negedge clk); dsize_start = 1; @(negedge clk); dsize_start = 0;
+        wait (dsize_done === 1'b1);
+        check(dsize_error == 1'b0, "maj taille sans erreur");
+        @(negedge clk); q_idx = SAVE_IDX; #1;
+        check(q_size === LEAD + NDATA, "q_size reflete la nouvelle taille");
+        $display("taille SAVE.TAP apres maj : %0d (attendu %0d)", q_size, LEAD+NDATA);
 
         if (errors == 0) $display("ALL TESTS PASSED (tb_tape_saver)");
         else             $display("%0d ERREUR(S)", errors);

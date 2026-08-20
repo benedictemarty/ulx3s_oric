@@ -104,6 +104,7 @@ test-tape-saver: sim/out
 	    rtl/fat32.v rtl/sd_spi.v rtl/spi_byte.v sim/sd_card_file.v
 	vvp sim/out/tb_tsv.vvp | tee sim/out/tb_tsv.log
 	@grep -q "ALL TESTS PASSED" sim/out/tb_tsv.log
+	python3 tools/check_save_tap.py sim/out/fat_test.img 604
 
 test-acia: sim/out
 	iverilog -DSIM -g2005 -o sim/out/tb_acia.vvp sim/tb_acia.v rtl/acia6551.v

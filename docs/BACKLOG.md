@@ -200,10 +200,12 @@ carte SD ensuite. Décodeur de référence : `~/Oric1/src/io/cassette.c`
             `fat32.wblk` disque↔saver (`sav_busy`). Save inhibée si `SAVE.TAP`
             absent (`sav_found`). Synthèse 85F propre, suite sans régression.
             Reste : `CSAVE"NOM"` réel sur carte → `SAVE.TAP` mis à jour.
-      - [ ] **Refinement** : mettre à jour le champ taille de l'entrée de
-            répertoire (`nbytes`) via RMW du secteur de répertoire (sinon
-            `SAVE.TAP` conserve sa taille placeholder, le `.tap` restant
-            auto-délimité par la structure des blocs).
+      - [x] **Refinement** (2026-08-20, sim e2e + synthèse OK) : primitive
+            `dsize_*` de fat32 (RMW du secteur de répertoire, octets 28-31),
+            localisation de l'entrée mémorisée au parsing, déclenchée par le top
+            à la fin de la save (`sav_done` → `sav_nbytes`). Post-check
+            `tools/check_save_tap.py` sur l'image. `SAVE.TAP` porte sa taille
+            réelle. **US-CSAVE.3 complète** (reste validation carte).
 
 ## Épopée LOCI — émulation interne (plan : docs/LOCI_EMULATION.md)
 > ⏸ **PARQUÉE (2026-08-17)** — décision « retour à l'Atmos pur » (on arrête
