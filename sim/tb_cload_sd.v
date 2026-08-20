@@ -104,6 +104,7 @@ module tb_cload_sd;
         .clk(clk), .rst(rst), .rom_bank(1'b0), .telestrat_mode(1'b0), .turbo(turbo),
         .md_enable(1'b0), .md_disk_present(1'b0), .md_n_tracks(7'd42), .md_n_spt(5'd17), .md_req_track(), .md_req_side(), .md_trk_loading(1'b0), .md_sec_id(), .md_sec_valid(1'b0), .md_sec_addr(), .md_sec_byte(8'h00),
         .kbd_azerty(1'b0), .kbd_mods(8'd0), .kbd_k1(8'd0), .kbd_k2(8'd0), .kbd_k3(8'd0), .kbd_k4(8'd0),
+        .joy_up(1'b0), .joy_down(1'b0), .joy_left(1'b0), .joy_right(1'b0), .joy_fire(1'b0), .joy_present(1'b0),
         .inj_active(inj_active), .inj_col(inj_col), .inj_row(inj_row), .inj_shift(inj_shift),
         .exp_addr(), .exp_we(), .exp_do(), .exp_io_page(), .exp_tphase(),
         .ext_din(8'hFF), .ext_irq(1'b0), .ext_romdis(1'b0), .ext_map(1'b0),

@@ -22,6 +22,7 @@ module tb_boot;
         .clk(clk), .rst(rst), .rom_bank(tb_bank), .telestrat_mode(1'b0), .turbo(tb_turbo),
         .md_enable(tb_md), .md_disk_present(1'b0), .md_n_tracks(7'd42), .md_n_spt(5'd17), .md_req_track(), .md_req_side(), .md_trk_loading(1'b0), .md_sec_id(), .md_sec_valid(1'b0), .md_sec_addr(), .md_sec_byte(8'h00),
         .kbd_azerty(1'b0), .kbd_mods(8'd0), .kbd_k1(8'd0), .kbd_k2(8'd0), .kbd_k3(8'd0), .kbd_k4(8'd0),
+        .joy_up(1'b0), .joy_down(1'b0), .joy_left(1'b0), .joy_right(1'b0), .joy_fire(1'b0), .joy_present(1'b0),
         .inj_active(1'b0), .inj_col(3'd0), .inj_row(3'd0), .inj_shift(1'b0),
         .exp_addr(), .exp_we(), .exp_do(), .exp_io_page(), .exp_tphase(),
         .ext_din(8'hFF), .ext_irq(1'b0), .ext_romdis(1'b0), .ext_map(1'b0),

@@ -128,6 +128,7 @@ module top_ulx3s (
     wire [1:0] usb_typ;
     wire       usb_report, usb_conerr;
     wire [7:0] hid_mods, hid_k1, hid_k2, hid_k3, hid_k4;
+    wire       hid_gu, hid_gd, hid_gl, hid_gr, hid_ga, hid_gb;
 
     usb_hid_host usb (
         .usbclk        (clk_usb),
@@ -145,8 +146,8 @@ module top_ulx3s (
         .mouse_btn     (),
         .mouse_dx      (),
         .mouse_dy      (),
-        .game_l        (), .game_r (), .game_u (), .game_d (),
-        .game_a        (), .game_b (), .game_x (), .game_y (),
+        .game_l        (hid_gl), .game_r (hid_gr), .game_u (hid_gu), .game_d (hid_gd),
+        .game_a        (hid_ga), .game_b (hid_gb), .game_x (), .game_y (),
         .game_sel      (), .game_sta (),
         .dbg_hid_report()
     );
@@ -159,6 +160,15 @@ module top_ulx3s (
         k3_s1 <= hid_k3;     k4_s1 <= hid_k4;
         mods_s2 <= mods_s1;  k1_s2 <= k1_s1;  k2_s2 <= k2_s1;
         k3_s2 <= k3_s1;      k4_s2 <= k4_s1;
+    end
+
+    // Joystick USB (gamepad HID) -> interface IJK (US3.3). Synchro 12->24 MHz.
+    // fire = bouton A ou B ; présence = un gamepad est reconnu (typ==3).
+    wire       joy_present = (usb_typ == 2'd3);
+    reg [5:0]  joy_s1, joy_s2;   // {present,fire,right,left,down,up}
+    always @(posedge clk_sys) begin
+        joy_s1 <= {joy_present, hid_ga | hid_gb, hid_gr, hid_gl, hid_gd, hid_gu};
+        joy_s2 <= joy_s1;
     end
 
     // ------------------------------------------------------------------
@@ -410,6 +420,13 @@ module top_ulx3s (
         .kbd_k2      (k2_s2),
         .kbd_k3      (k3_s2),
         .kbd_k4      (k4_s2),
+        // Joystick IJK (US3.3) : {present,fire,right,left,down,up}
+        .joy_up      (joy_s2[0]),
+        .joy_down    (joy_s2[1]),
+        .joy_left    (joy_s2[2]),
+        .joy_right   (joy_s2[3]),
+        .joy_fire    (joy_s2[4]),
+        .joy_present (joy_s2[5]),
         .inj_active  (inj_active),
         .inj_col     (inj_col),
         .inj_row     (inj_row),

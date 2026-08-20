@@ -6,6 +6,21 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 ## [Non publié]
 
 ### Ajouté
+- **US3.3 — Joystick USB → interface IJK Oric** (bmarty, 2026-08-20, **sim +
+  synthèse OK, validation carte à faire**) : `rtl/joystick_ijk.v` — portage RTL
+  de `oric_joystick_port_a_pins()` (réf. `~/Oric1/src/io/joystick.c`) : l'IJK vit
+  sur le port imprimante = **VIA Port A**, activé quand PB4 (strobe) est piloté
+  bas (`~pb_out[4]`), stick sélectionné par les bits 6-7 de `pa_out`
+  (`ora|~ddra`), état actif bas sur bits 0-4 (RIGHT/LEFT/FIRE/DOWN/UP), présence
+  bit 5. Sortie `pins` combinée par **ET** dans `via_pa_in` (pull-downs à
+  collecteur ouvert ; 0xFF = neutre hors lecture joystick). Le core USB HID
+  décodait déjà le gamepad (`game_u/d/l/r`, `game_a/b`) : `top_ulx3s` câble ces
+  sorties, dérive `fire = A|B` et `present = (typ==3)`, les synchronise
+  (12→24 MHz) et les passe à `oric_atmos` qui instancie l'IJK. Nouveau
+  `sim/tb_joystick_ijk.v` (cible `test-joystick`, ajoutée à `TESTS`) : 9 vecteurs
+  vérifiés contre la référence (absence, activation PB4, sélection, chaque
+  direction/fire, tout appuyé). `test-boot` inchangé (overlay neutre au repos).
+  **Suite complète + synthèse 85F sans régression.**
 - **US-CSAVE.3 refinement — Taille réelle dans l'entrée de répertoire**
   (bmarty, 2026-08-20, **sim validée e2e + synthèse OK**) : `rtl/fat32.v` gagne
   une primitive `dsize_*` — **RMW du secteur de répertoire** : lecture du secteur

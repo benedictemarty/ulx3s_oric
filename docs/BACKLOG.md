@@ -448,7 +448,10 @@ qui l'exploitera.
 - [ ] US3.1 OSD de sélection de fichiers .tap → couvert par US-NETFS.2 (OSD
       incrusté FPGA) ; la source de fichiers devient le serveur WiFi.
 - [ ] US3.2 Mode 60 Hz optionnel / meilleure synchro vidéo (triple buffer)
-- [ ] US3.3 Joystick USB → interface joystick Oric
+- [x] US3.3 Joystick USB → interface joystick Oric (2026-08-20, sim+synthèse OK,
+      **carte à valider**) : `rtl/joystick_ijk.v` (interface IJK, Port A du VIA,
+      portage `~/Oric1` joystick.c) ; gamepad USB HID (`game_*`) synchronisé et
+      superposé sur `via_pa_in` dans `oric_atmos`. `test-joystick` (9 vecteurs).
 - [ ] US3.4 Shift register VIA complet + entrée cassette réelle (jack)
 
 ## Sprint 4+ — « Atmos moderne » (carte format Atmos)

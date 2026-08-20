@@ -31,6 +31,8 @@ module oric_atmos #(
     input         kbd_azerty,   // 0 = QWERTY positionnel, 1 = AZERTY français
     input  [7:0]  kbd_mods,
     input  [7:0]  kbd_k1, kbd_k2, kbd_k3, kbd_k4,
+    // Joystick IJK (US3.3) — directions/fire actifs hauts, présence gamepad
+    input         joy_up, joy_down, joy_left, joy_right, joy_fire, joy_present,
 
     // Injection clavier série (UART)
     input         inj_active,
@@ -283,8 +285,17 @@ module oric_atmos #(
     wire [7:0] ay_dout, ay_ioa;
     wire       kbd_sense;
 
-    // Bus AY : lecture active quand BC1=1, BDIR=0
-    wire [7:0] via_pa_in = (via_ca2 & ~via_cb2) ? ay_dout : 8'hFF;
+    // Joystick IJK (US3.3) : superpose ses pull-downs sur Port A (collecteur
+    // ouvert -> ET dans pa_in). Neutre (0xFF) hors lecture joystick.
+    wire [7:0] joy_pins;
+    joystick_ijk joy_ijk (
+        .up(joy_up), .down(joy_down), .left(joy_left), .right(joy_right),
+        .fire(joy_fire), .present(joy_present),
+        .pa_out(via_pa_out), .pb4_low(~via_pb_out[4]), .pins(joy_pins)
+    );
+
+    // Bus AY : lecture active quand BC1=1, BDIR=0 ; ET avec l'IJK.
+    wire [7:0] via_pa_in = ((via_ca2 & ~via_cb2) ? ay_dout : 8'hFF) & joy_pins;
     wire [7:0] via_pb_in = {4'b1111, kbd_sense, 3'b111};
 
     via6522 via (
