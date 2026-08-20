@@ -554,10 +554,16 @@ module top_ulx3s (
     );
 
     // ------------------------------------------------------------------
-    // Audio : DAC résistif 4 bits de l'ULX3S (jack 3.5 mm, conservé)
+    // Audio : DAC résistif 4 bits de l'ULX3S (jack 3.5 mm). Noise-shaper
+    // sigma-delta (suréchantillonné à 25 MHz) pour restituer les 10 bits du
+    // mix AY sur les 4 bits du DAC — bien mieux que la troncature `[9:6]`.
     // ------------------------------------------------------------------
-    assign audio_l = audio_mix[9:6];
-    assign audio_r = audio_mix[9:6];
+    wire [3:0] audio_sd;
+    audio_dac_sd audio_dac (
+        .clk(clk_sys), .rst(rst_sys), .in(audio_mix), .out(audio_sd)
+    );
+    assign audio_l = audio_sd;
+    assign audio_r = audio_sd;
 
     // ------------------------------------------------------------------
     // Carte micro-SD (SPI) + parseur FAT32 — liste les .tap/.dsk de la carte

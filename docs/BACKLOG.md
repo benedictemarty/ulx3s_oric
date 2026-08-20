@@ -21,7 +21,10 @@ affichage HDMI, clavier USB, son AY.
       fonctionnel par bmarty sur ULX3S)
 - [x] Bascule disposition QWERTY/AZERTY sur BTN6 (2026-08-02 — décodage
       ASCII FR + table partagée, LED4 = AZERTY, testbench tb_azerty)
-- [ ] Son AY sur la prise jack (ex. `PING`, `ZAP`, `MUSIC` en BASIC)
+- [x] Son AY sur la prise jack (2026-08-20) : déjà routé (DAC R-2R 4 bits),
+      **amélioré** par un noise-shaper sigma-delta `rtl/audio_dac_sd.v`
+      (suréchantillonné 25 MHz → résolution effective ~10 bits). `test-audio-dac`.
+      Reste validation carte (écoute PING/ZAP/MUSIC au casque).
 
 ## Sprint 2 — « On charge des programmes »
 - [x] US2.1 Chargement .tap (cassette) (2026-08-02) — injecteur cassette FPGA

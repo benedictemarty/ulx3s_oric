@@ -6,6 +6,19 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 ## [Non publié]
 
 ### Ajouté
+- **Audio jack — noise-shaper sigma-delta (qualité AY)** (bmarty, 2026-08-20,
+  **sim + synthèse OK**) : le son AY était déjà présent sur le jack 3.5 mm mais
+  **tronqué à 4 bits** (`audio_mix[9:6]`, 16 niveaux). `rtl/audio_dac_sd.v` —
+  noise-shaper sigma-delta du 1er ordre **suréchantillonné à 25 MHz** : les
+  6 bits de poids faible du mix 10 bits sont accumulés et reportés (carry) dans
+  le LSB du code 4 bits, si bien que la **moyenne temporelle** de la sortie suit
+  la valeur 10 bits complète (résolution effective ~10 bits, bruit de
+  quantification hors bande). Modulateur borné (accumulateur 6 bits) : pas
+  d'emballement, saturation propre à pleine échelle (`in≥960`). `top_ulx3s`
+  interpose le module entre `audio_mix` et `audio_l/r`. Nouveau
+  `sim/tb_audio_dac_sd.v` (cible `test-audio-dac`) : pour 7 niveaux DC, la
+  moyenne·64 == entrée (à ~1 LSB), sortie bornée ≤15. **Suite + synthèse sans
+  régression.**
 - **US3.3 — Joystick USB → interface IJK Oric** (bmarty, 2026-08-20, **sim +
   synthèse OK, validation carte à faire**) : `rtl/joystick_ijk.v` — portage RTL
   de `oric_joystick_port_a_pins()` (réf. `~/Oric1/src/io/joystick.c`) : l'IJK vit
