@@ -178,10 +178,13 @@ carte SD ensuite. Décodeur de référence : `~/Oric1/src/io/cassette.c`
       `test-tape-demod`) : boucle `tape_injector`→`tape_demod`, octets décodés ==
       amorce + données (flux simple + multi-blocs). **PASSED, suite sans
       régression.**
-- [ ] US-CSAVE.2 **Sortie UART vers le PC** : brancher `tape_demod` sur
-      `tape_out` dans `top_ulx3s`, router `byte_valid` vers `uart_tx` (ftdi_rxd),
-      script `tools/recv_tap.py` qui reçoit et écrit le `.tap`. Validation carte :
-      `CSAVE"NOM"` sur l'Oric → `.tap` relisible par `send_tap.py`/un émulateur.
+- [x] US-CSAVE.2 **Sortie UART vers le PC** (2026-08-20, synthèse OK, **carte à
+      valider**) : `tape_demod` branché sur `tape_out` dans `top_ulx3s`, octets
+      injectés dans le mux UART (priorité dump > SAVE > écran > crédits),
+      `sav_capturing` coupe l'écran. `tools/recv_tap.py` : resync `0x16…0x24`,
+      parse les blocs, écrit le `.tap`. Synthèse 85F propre (pas de double-driver),
+      parseur validé sur flux synthétique. Reste : `CSAVE"NOM"` réel sur carte
+      → `.tap` relisible par `send_tap.py`/un émulateur.
 - [ ] US-CSAVE.3 **Sortie carte SD** (évolution) : créer un nouveau fichier
       `.tap` sur la SD (allocation cluster FAT32 + entrée répertoire). Plus
       complexe que le write-back RMW disque (fichier existant) — après US-CSAVE.2.

@@ -6,6 +6,24 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 ## [Non publié]
 
 ### Ajouté
+- **US-CSAVE.2 — Sortie SAVE vers le PC (câblage top + `recv_tap.py`)** (bmarty,
+  2026-08-20, **synthèse OK, validation carte à faire**) : `rtl/top_ulx3s.v` —
+  `tape_out` (PB7) passe désormais par un wire nommé alimentant à la fois la
+  broche d'extension `gp[14]` et une instance `tape_demod`. Les octets `.tap`
+  reconstruits sont injectés dans le **mux UART FTDI** avec priorité
+  **dump > SAVE > écran > crédits** ; `sav_capturing` coupe le streamer écran et
+  donne la main à la voie SAVE (débit bande ~137 o/s << UART 115200 → le pulse
+  `byte_valid` pilote directement `uart_tx`, jamais occupé). `tape_demod.v`
+  ajouté aux sources de synthèse. Nouveau `tools/recv_tap.py` : se
+  **resynchronise sur l'amorce `0x16…0x24`** (écarte tout octet écran parasite
+  reçu avant la sauvegarde), parse la structure des blocs (en-tête 9 o →
+  adresses fin/début → nom → `fin-début+1` octets, **même logique que le parseur
+  de `tape_injector.v`**) pour connaître la fin exacte, écrit le `.tap` après un
+  silence. **Synthèse 85F sans erreur ni double-driver** ; parseur `recv_tap`
+  validé sur flux synthétique (bruit + 2 blocs → reconstruits à l'octet près) ;
+  `test-tape-demod` + suite sans régression. Utilisation : `recv_tap.py sortie.tap`
+  puis `CSAVE"NOM"` sur l'Oric. **Reste : valider sur carte** (`CSAVE` réel →
+  `.tap` relisible), puis US-CSAVE.3 (écriture sur SD).
 - **US-CSAVE.1 — Démodulateur cassette (CSAVE) RTL** (bmarty, 2026-08-20,
   **sim validée**) : `rtl/tape_demod.v` — miroir de `tape_injector.v` et portage
   RTL du décodeur de référence `~/Oric1/src/io/cassette.c` (`tape_capture_*`).

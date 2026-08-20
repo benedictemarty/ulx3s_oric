@@ -237,6 +237,29 @@ module top_ulx3s (
         .tape_active (tape_active)
     );
 
+    // ------------------------------------------------------------------
+    // Sauvegarde cassette (US-CSAVE.2) : démodule PB7 (tape_out, bit-bangé par
+    // la ROM CSAVE) et émet les octets .tap reconstitués sur l'UART FTDI. Le
+    // PC (tools/recv_tap.py) se resynchronise sur l'amorce 0x16→0x24 et écrit
+    // le .tap. Débit bande (~137 o/s) << UART (115200) : aucun tampon requis,
+    // le pulse byte_valid déclenche directement uart_tx (jamais occupé).
+    // `sav_capturing` (haut dès le 1er front, retombe après GAP_CYCLES de
+    // silence) coupe le streamer écran et donne la main à la voie SAVE.
+    // CYC_THRESH = 512 µs × 25 (CPU 1 MHz, clk 25 MHz) = 12800 (défaut).
+    // ------------------------------------------------------------------
+    wire       tape_out_w;
+    wire [7:0] sav_byte;
+    wire       sav_valid, sav_capturing;
+    tape_demod demod (
+        .clk       (clk_sys),
+        .rst       (rst_sys),
+        .tape_out  (tape_out_w),
+        .byte_out  (sav_byte),
+        .byte_valid(sav_valid),
+        .capturing (sav_capturing)
+    );
+    assign gp[14] = tape_out_w;    // conserve la broche d'extension tape-out
+
     // Streamer écran : occupe l'UART FTDI quand ni dump ni cassette ni
     // chargeur ne l'utilisent. Priorité : dump > cassette/chargeur > écran.
     // L'écran cède l'UART au dump (BTN2) et au chargement cassette DEPUIS LE
@@ -244,7 +267,7 @@ module top_ulx3s (
     // aucun crédit n'est émis -> l'UART est libre -> on garde l'écran VIVANT
     // (on voit « Searching… » puis le jeu se charger). tape_active seul (sans
     // ld_active) = cassette PC -> on cède.
-    wire        scr_enable = ~dump_active & ~(tape_active & ~ld_active);
+    wire        scr_enable = ~dump_active & ~(tape_active & ~ld_active) & ~sav_capturing;
     wire [15:0] scr_raddr;
     wire [3:0]  scr_rdata;
     wire        scr_rd_valid;
@@ -279,10 +302,12 @@ module top_ulx3s (
     uart_tx #(.CLK_HZ(25_000_000), .BAUD(FTDI_BAUD)) uart_credits (
         .clk  (clk_sys),
         .rst  (rst_sys),
-        .data (dump_active ? dump_tx_data
-               : scr_enable ? scr_tx_data : tap_tx_data),
-        .send (dump_active ? dump_tx_send
-               : scr_enable ? scr_tx_send
+        .data (dump_active   ? dump_tx_data
+               : sav_capturing ? sav_byte
+               : scr_enable    ? scr_tx_data : tap_tx_data),
+        .send (dump_active   ? dump_tx_send
+               : sav_capturing ? sav_valid
+               : scr_enable    ? scr_tx_send
                : (ld_active ? 1'b0 : tap_tx_send)),
         .tx   (ftdi_rxd),
         .busy (tap_tx_busy)
@@ -403,7 +428,7 @@ module top_ulx3s (
         .prn_data    ({gn[25], gn[24], gn[23], gp[27], gp[26], gp[25], gp[24], gp[23]}),
         .prn_strobe_n(gn[26]),
         .prn_ack     (gn[27]),
-        .tape_out    (gp[14]),
+        .tape_out    (tape_out_w),
         .tape_motor  (tape_motor_w),
         .tape_in     (tape_line),      // alimenté par l'injecteur .tap
         .acia_tx_data (acia_tx_data),

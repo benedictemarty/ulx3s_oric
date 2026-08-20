@@ -43,6 +43,50 @@ avec `RUN` (BASIC) — le code machine démarre souvent tout seul.
   envoie exactement un octet `.tap` par crédit → jamais de débordement, même
   pour un jeu de 48 Ko.
 
+## Sauvegarde `CSAVE` → `.tap` (épopée CSAVE)
+
+Le chemin inverse : l'Oric **sauvegarde** un programme sur cassette (`CSAVE`),
+le FPGA **démodule** la forme d'onde et renvoie le `.tap` reconstruit au PC.
+
+1. Sur le PC, arme la réception :
+   ```sh
+   tools/recv_tap.py monprog.tap /dev/ttyUSB0
+   ```
+2. Sur l'Oric :
+   ```
+   CSAVE"NOM"
+   ```
+   (le moteur démarre, la ROM bit-bange la forme d'onde sur **PB7**). Quand la
+   sauvegarde se termine, le script écrit `monprog.tap` (relisible ensuite par
+   `send_tap.py` ou un émulateur).
+
+### Comment ça marche
+
+- **Chemin d'écriture** (ROM) : `CSAVE` génère la forme d'onde sur **PB7** via le
+  Timer 1 — mêmes trames 14 bits, amorce `0x16`, pulses 416/624 µs que la
+  lecture.
+- **Démodulateur** (`rtl/tape_demod.v`, miroir de `tape_injector.v` et portage
+  du décodeur de référence `~/Oric1/src/io/cassette.c`) : ne compte que les
+  **fronts montants** de PB7, mesure la période front-à-front, applique le seuil
+  512 µs (< → `1`, > → `0`), puis réassemble l'octet par **chasse au start**
+  (saute les stops `1`, premier `0` long = start, 8 bits data LSB d'abord, brûle
+  une période de parité) — exactement comme `GetTapeByte` (`$E6C9`).
+- **Sortie UART** : les octets décodés partent sur `ftdi_rxd` (priorité
+  dump > SAVE > écran > crédits) ; `sav_capturing` coupe le streamer écran
+  pendant la capture. Débit bande (~137 o/s) très inférieur à l'UART → aucun
+  tampon.
+- **Réception PC** (`tools/recv_tap.py`) : se resynchronise sur l'amorce
+  `0x16…0x24` (écarte tout octet écran reçu avant), parse la structure des blocs
+  (en-tête 9 o → adresses fin/début → nom → `fin-début+1` octets de données)
+  pour connaître la fin exacte, puis écrit le `.tap`.
+
+### Tests
+
+`make test-tape-demod` : boucle `tape_injector` → `tape_demod`, vérifie que les
+octets décodés == amorce `0x16` + données envoyées, sur flux simple et
+multi-blocs. (La modulation de l'injecteur est déjà validée sur carte contre la
+vraie ROM CLOAD, ce qui fait de la boucle un test de fidélité du démodulateur.)
+
 ## Protocole UART
 
 ```
