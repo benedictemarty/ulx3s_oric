@@ -73,6 +73,10 @@ module fat32 #(
     input      [5:0]  wblk_idx,
     input      [31:0] wblk_offset,
     input      [7:0]  wblk_data,      // octet à la position wblk_pos
+    input             wblk_extend,    // si l'offset dépasse la fin de chaîne :
+                                      //   1 = allouer un cluster à la demande
+                                      //       (création cassette, US-CSAVE.4) ;
+                                      //   0 = wblk_error (fichier pré-alloué, disque)
     output     [8:0]  wblk_pos,       // = index SD courant (0..511)
     output reg        wblk_done,
     output reg        wblk_error,
@@ -197,6 +201,7 @@ module fat32 #(
     reg [7:0]  al_ae;                // index d'entrée dans le secteur (0..127)
     reg [31:0] al_prev;              // cluster à chaîner (0 = aucun)
     reg        al_need_chain;        // reste à écrire prev -> nouveau cluster
+    reg        wb_extending;         // allocateur invoqué depuis WB (extension)
     // Création d'entrée de répertoire
     reg [3:0]  me_sec;               // secteur de répertoire en cours de scan
     reg [3:0]  me_ee;                // index d'entrée dans le secteur (0..15)
@@ -247,7 +252,7 @@ module fat32 #(
             status <= 8'h00; rd_sector <= 0; bidx <= 0; dirsec <= 0; stop_dir <= 0;
             floading <= 0; feof <= 0; cache_valid <= 1'b0; wblk_error <= 1'b0;
             ds_writing <= 1'b0; dsize_error <= 1'b0; alloc_error <= 1'b0;
-            mkent_error <= 1'b0;
+            mkent_error <= 1'b0; wb_extending <= 1'b0;
         end else begin
             case (state)
                 S_IDLE: if (start) begin
@@ -536,7 +541,16 @@ module fat32 #(
                             if (bidx[8:0] == {wb_clus[6:0], 2'd0} + 9'd3) next_clus[31:24] <= sd_data;
                             if (bidx == 511) begin
                                 if ((next_clus & 32'h0FFFFFFF) >= 32'h0FFFFFF8) begin
-                                    wblk_error <= 1'b1; wblk_done <= 1'b1; state <= S_DONE;
+                                    if (wblk_extend) begin
+                                        // fin de chaîne atteinte : allouer un
+                                        // nouveau cluster chaîné à wb_clus et
+                                        // poursuivre l'écriture dedans
+                                        al_prev <= wb_clus; al_need_chain <= 1'b1;
+                                        al_sec <= 32'd0; alloc_error <= 1'b0;
+                                        wb_extending <= 1'b1; state <= AL_RD;
+                                    end else begin
+                                        wblk_error <= 1'b1; wblk_done <= 1'b1; state <= S_DONE;
+                                    end
                                 end else begin
                                     wb_clus <= next_clus & 32'h0FFFFFFF; state <= WB_SKIP;
                                 end
@@ -619,7 +633,10 @@ module fat32 #(
                 AL_WBUSY: if (sd_ready && !sd_busy && !wr_start) begin
                             ds_writing <= 1'b0;
                             if (al_need_chain) state <= AL_PRD;   // chaîner prev
-                            else begin alloc_done <= 1'b1; state <= S_DONE; end
+                            else if (wb_extending) begin          // (cas isolé : sans prev)
+                                wb_extending <= 1'b0;
+                                wb_clus <= alloc_clus; state <= WB_SKIP;
+                            end else begin alloc_done <= 1'b1; state <= S_DONE; end
                          end
                 // ---- chaînage : RMW du secteur FAT de al_prev -> alloc_clus ----
                 AL_PRD: if (sd_ready && !sd_busy) begin
@@ -643,7 +660,12 @@ module fat32 #(
                         end
                 AL_PBUSY: if (sd_ready && !sd_busy && !wr_start) begin
                             ds_writing <= 1'b0; al_need_chain <= 1'b0;
-                            alloc_done <= 1'b1; state <= S_DONE;
+                            if (wb_extending) begin       // retour à l'écriture
+                                wb_extending <= 1'b0;
+                                wb_clus <= alloc_clus; state <= WB_SKIP;
+                            end else begin
+                                alloc_done <= 1'b1; state <= S_DONE;
+                            end
                          end
 
                 // ---- création d'entrée : lire le secteur de répertoire ----

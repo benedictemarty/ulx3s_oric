@@ -723,6 +723,7 @@ module top_ulx3s (
         // wblk_pos/done/error sont partagés aux deux clients.
         .wblk_start(wblk_start_s), .wblk_idx(wblk_idx_s),
         .wblk_offset(wblk_offset_s), .wblk_data(wblk_data_s),
+        .wblk_extend(1'b0),   // US-CSAVE.4 phase D : passera à sav_busy
         .wblk_pos(dsk_wblk_pos), .wblk_done(dsk_wblk_done), .wblk_error(dsk_wblk_error),
         // Maj taille SAVE.TAP dans l'entrée répertoire (US-CSAVE.3 refinement)
         .dsize_start(dsize_start), .dsize_idx(dsize_idx), .dsize_val(dsize_val),

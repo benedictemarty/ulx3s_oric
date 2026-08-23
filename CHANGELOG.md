@@ -6,6 +6,20 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 ## [Non publié]
 
 ### Ajouté
+- **US-CSAVE.4 phase 3 — Extension de chaîne à la demande** (bmarty,
+  2026-08-24, **sim OK**) : `rtl/fat32.v` gagne un input `wblk_extend`. Quand
+  l'écriture d'un bloc (`wblk`) atteint la fin de la chaîne (EOC), au lieu de
+  `wblk_error` l'allocateur est invoqué **en sous-routine** (flag `wb_extending`,
+  retour depuis `AL_PBUSY`/`AL_WBUSY` vers `WB_SKIP`) pour allouer et chaîner un
+  cluster, puis l'écriture se poursuit dedans. `wblk_extend=0` conserve le
+  comportement d'erreur (fichiers disque pré-alloués, `dsk_track`). Nouveau
+  `sim/tb_fat_extend.v` (cible `test-fat-extend`, ajoutée à `TESTS`) : crée un
+  fichier neuf (alloc + entrée, taille 1536), écrit 3 blocs de 512 o à des
+  offsets croissants (image SPC=1 → chaque bloc après le 1er force une
+  extension : clusters 335→336→337), puis relit les 1536 o par le chemin de
+  lecture (suivi de la chaîne dynamiquement construite) — **contenu conforme**.
+  `top_ulx3s` : `wblk_extend` câblé à 0 (phase D le passera à `sav_busy`).
+  **Suite complète sans régression.**
 - **US-CSAVE.4 phase 2 — Création d'entrée de répertoire FAT32** (bmarty,
   2026-08-24, **sim OK**) : `rtl/fat32.v` gagne `mkent_start`/`mkent_name`/
   `mkent_clus`/`mkent_size` → `mkent_idx`/`mkent_done`/`mkent_error`. Scanne le

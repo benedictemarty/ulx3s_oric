@@ -240,8 +240,15 @@ carte SD ensuite. Décodeur de référence : `~/Oric1/src/io/cassette.c`
             création de `NEWSAVE.TAP`, contrôle du listing mémoire, puis
             **re-parse** de l'image → le fichier réapparaît (nom/cluster/taille),
             persistance prouvée.
-      - [ ] **Phase 3 — Extension de chaîne** : allouer un cluster à la demande
-            quand l'écriture (`wblk`) dépasse la fin de la chaîne courante.
+      - [x] **Phase 3 — Extension de chaîne** (2026-08-24, sim OK) : nouvel input
+            `wblk_extend` — quand l'écriture (`wblk`) atteint la fin de chaîne
+            (EOC), si `wblk_extend=1` l'allocateur est invoqué en sous-routine
+            (`wb_extending`) pour allouer et chaîner un cluster puis poursuivre ;
+            si `wblk_extend=0`, comportement inchangé (`wblk_error`, fichiers
+            disque pré-alloués). `sim/tb_fat_extend.v` (cible `test-fat-extend`) :
+            crée un fichier neuf (alloc + entrée), écrit 3 blocs (SPC=1 → 2
+            extensions), relit les 1536 o par le chemin de lecture (suivi de la
+            chaîne construite) — contenu conforme.
       - [ ] **Phase 4 — Intégration top** : orchestration `mkfile` (alloc +
             dirent) branchée au `tape_saver`, nom de fichier généré.
       - [ ] **Phase 5 — e2e** : injector→demod→saver→(création+écriture)→SD,
