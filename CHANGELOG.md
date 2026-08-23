@@ -6,6 +6,20 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 ## [Non publié]
 
 ### Ajouté
+- **US-CSAVE.4 phase 2 — Création d'entrée de répertoire FAT32** (bmarty,
+  2026-08-24, **sim OK**) : `rtl/fat32.v` gagne `mkent_start`/`mkent_name`/
+  `mkent_clus`/`mkent_size` → `mkent_idx`/`mkent_done`/`mkent_error`. Scanne le
+  répertoire racine (`DIRSECS` secteurs), trouve un **slot libre** (1er octet
+  `0x00` fin ou `0xE5` supprimé) et y écrit une **entrée 8.3** (nom 11 o, attr
+  archive `0x20`, cluster high 20-21 / low 26-27, taille 28-31, reste à zéro) par
+  RMW du secteur (états `ME_*`, remplissage octet-par-octet piloté par un décodeur
+  combinatoire `me_val`). Le fichier est ajouté au **listing en mémoire**
+  (`name/clus/size/dsk/dsec/doff_mem`) et son index renvoyé — visible sans
+  re-parse. Nouveau `sim/tb_fat_mkent.v` (cible `test-fat-mkent`, ajoutée à
+  `TESTS`) : allocation + création de `NEWSAVE.TAP` (cluster 335, taille 1234),
+  contrôle du listing mémoire, puis **re-parse** de l'image → le fichier
+  réapparaît avec le bon nom/cluster/taille (**persistance prouvée**). `top_ulx3s`
+  câble `mkent` en tie-off. **Suite complète sans régression.**
 - **US-CSAVE.4 phase 1 — Allocateur de cluster FAT32** (bmarty, 2026-08-24,
   **sim + check OK**) : première brique de la *vraie création FAT32* (lever le
   placeholder `SAVE.TAP`). `rtl/fat32.v` gagne une primitive d'allocation

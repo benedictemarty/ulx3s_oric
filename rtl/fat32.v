@@ -97,6 +97,18 @@ module fat32 #(
     output reg        alloc_done,
     output reg        alloc_error,    // FAT pleine (aucun cluster libre)
 
+    // Création d'une entrée de répertoire (US-CSAVE.4 phase B) : trouve un slot
+    // libre (0x00 fin, ou 0xE5 supprimé) dans le répertoire racine et y écrit
+    // une entrée 8.3 (RMW du secteur). Ajoute le fichier au listing et renvoie
+    // son index dans mkent_idx.
+    input             mkent_start,
+    input      [87:0] mkent_name,     // nom 8.3 (11 octets, comme q_name)
+    input      [31:0] mkent_clus,     // cluster de départ
+    input      [31:0] mkent_size,     // taille en octets
+    output reg [5:0]  mkent_idx,
+    output reg        mkent_done,
+    output reg        mkent_error,    // répertoire racine plein
+
     // vers sd_spi (écriture)
     output reg        wr_start,       // -> sd_spi.start_write
     output     [7:0]  wr_data,        // -> sd_spi.wr_data
@@ -171,7 +183,9 @@ module fat32 #(
                DS_RD=22, DS_CAP=23, DS_WR=24, DS_BUSY=25,
                // allocation d'un cluster libre (scan FAT + marquage EOC + chaînage)
                AL_RD=26, AL_CAP=27, AL_SCAN=28, AL_WR=29, AL_WBUSY=30,
-               AL_PRD=31, AL_PCAP=32, AL_PWR=33, AL_PBUSY=34;
+               AL_PRD=31, AL_PCAP=32, AL_PWR=33, AL_PBUSY=34,
+               // création d'une entrée de répertoire (slot libre + RMW)
+               ME_RD=35, ME_CAP=36, ME_SCAN=37, ME_FILL=38, ME_WR=39, ME_WBUSY=40;
     reg [5:0]  state;
     reg [31:0] wb_clus, wb_skip;     // suivi de chaîne pour l'écriture
     reg [7:0]  wb_sic;               // bloc dans le cluster
@@ -183,6 +197,13 @@ module fat32 #(
     reg [7:0]  al_ae;                // index d'entrée dans le secteur (0..127)
     reg [31:0] al_prev;              // cluster à chaîner (0 = aucun)
     reg        al_need_chain;        // reste à écrire prev -> nouveau cluster
+    // Création d'entrée de répertoire
+    reg [3:0]  me_sec;               // secteur de répertoire en cours de scan
+    reg [3:0]  me_ee;                // index d'entrée dans le secteur (0..15)
+    reg [5:0]  me_b;                 // octet en cours d'écriture (0..31)
+    reg [8:0]  me_base;              // offset de l'entrée dans le secteur
+    reg [87:0] me_name;
+    reg [31:0] me_clus, me_size;
     reg [9:0]  bidx;                 // 0..511 octet dans le secteur
     reg [3:0]  dirsec;               // secteur de répertoire courant (0..DIRSECS-1)
     reg        stop_dir;             // fin de répertoire (entrée 0x00) rencontrée
@@ -190,6 +211,26 @@ module fat32 #(
     wire [4:0] eoff = bidx[4:0];     // offset dans l'entrée (0..31)
     wire       ext_tap = (ntmp[8]=="T") && (ntmp[9]=="A") && (ntmp[10]=="P");
     wire       ext_dsk = (ntmp[8]=="D") && (ntmp[9]=="S") && (ntmp[10]=="K");
+
+    // Octet me_b (0..31) de l'entrée de répertoire à écrire (ME_FILL) :
+    // nom 8.3 (0..10), attr archive (11), cluster (20/21 high, 26/27 low),
+    // taille (28..31) ; tout le reste (dates, NTres) à zéro.
+    reg [7:0] me_val;
+    always @* begin
+        if (me_b <= 6'd10) me_val = me_name[(6'd10 - me_b)*8 +: 8];
+        else case (me_b)
+            6'd11:   me_val = 8'h20;
+            6'd20:   me_val = me_clus[23:16];
+            6'd21:   me_val = me_clus[31:24];
+            6'd26:   me_val = me_clus[7:0];
+            6'd27:   me_val = me_clus[15:8];
+            6'd28:   me_val = me_size[7:0];
+            6'd29:   me_val = me_size[15:8];
+            6'd30:   me_val = me_size[23:16];
+            6'd31:   me_val = me_size[31:24];
+            default: me_val = 8'h00;
+        endcase
+    end
 
     integer k;
 
@@ -199,12 +240,14 @@ module fat32 #(
         wblk_done  <= 1'b0;
         dsize_done <= 1'b0;
         alloc_done <= 1'b0;
+        mkent_done <= 1'b0;
         if (rst) begin
             fdata_valid <= 1'b0;
             state <= S_IDLE; done <= 0; error <= 0; file_count <= 0;
             status <= 8'h00; rd_sector <= 0; bidx <= 0; dirsec <= 0; stop_dir <= 0;
             floading <= 0; feof <= 0; cache_valid <= 1'b0; wblk_error <= 1'b0;
             ds_writing <= 1'b0; dsize_error <= 1'b0; alloc_error <= 1'b0;
+            mkent_error <= 1'b0;
         end else begin
             case (state)
                 S_IDLE: if (start) begin
@@ -337,6 +380,13 @@ module fat32 #(
                         al_sec <= 32'd0;
                         alloc_error <= 1'b0;
                         state <= AL_RD;
+                    end else if (mkent_start) begin  // créer une entrée de répertoire
+                        me_name <= mkent_name;
+                        me_clus <= mkent_clus;
+                        me_size <= mkent_size;
+                        me_sec  <= 4'd0;
+                        mkent_error <= 1'b0;
+                        state <= ME_RD;
                     end else if (open_start) begin
                         // au-delà de la fin : EOF immédiat (bytes_left = 0)
                         bytes_left <= (open_offset < size_mem[open_idx])
@@ -594,6 +644,59 @@ module fat32 #(
                 AL_PBUSY: if (sd_ready && !sd_busy && !wr_start) begin
                             ds_writing <= 1'b0; al_need_chain <= 1'b0;
                             alloc_done <= 1'b1; state <= S_DONE;
+                         end
+
+                // ---- création d'entrée : lire le secteur de répertoire ----
+                ME_RD: if (sd_ready && !sd_busy) begin
+                            rd_sector <= root_lba + me_sec;
+                            rd_start <= 1'b1; bidx <= 0; state <= ME_CAP;
+                        end
+                ME_CAP: if (sd_dvalid) begin
+                            secbuf[bidx] <= sd_data;
+                            if (bidx == 511) begin me_ee <= 4'd0; state <= ME_SCAN; end
+                            else bidx <= bidx + 10'd1;
+                        end
+                // ---- chercher un slot libre (1er octet 0x00 ou 0xE5) ----
+                ME_SCAN: begin
+                    if (secbuf[{me_ee,5'd0}] == 8'h00 || secbuf[{me_ee,5'd0}] == 8'hE5) begin
+                        if (file_count >= MAXFILES) begin
+                            mkent_error <= 1'b1; mkent_done <= 1'b1; state <= S_DONE;
+                        end else begin
+                            me_base <= {me_ee, 5'd0}; me_b <= 6'd0; state <= ME_FILL;
+                        end
+                    end else if (me_ee == 4'd15) begin
+                        if (me_sec + 4'd1 >= DIRSECS) begin
+                            mkent_error <= 1'b1; mkent_done <= 1'b1; state <= S_DONE;
+                        end else begin me_sec <= me_sec + 4'd1; state <= ME_RD; end
+                    end else me_ee <= me_ee + 4'd1;
+                end
+                // ---- écrire les 32 octets de l'entrée dans secbuf ----
+                ME_FILL: begin
+                    secbuf[me_base + me_b] <= me_val;
+                    if (me_b == 6'd31) state <= ME_WR;
+                    else me_b <= me_b + 6'd1;
+                end
+                // ---- réécrire le secteur de répertoire ----
+                ME_WR: if (sd_ready && !sd_busy) begin
+                            rd_sector <= root_lba + me_sec;
+                            ds_writing <= 1'b1;
+                            wr_start <= 1'b1; state <= ME_WBUSY;
+                        end
+                ME_WBUSY: if (sd_ready && !sd_busy && !wr_start) begin
+                            ds_writing <= 1'b0;
+                            // ajout au listing en mémoire (visible sans re-parse)
+                            name_mem[file_count] <= me_name;
+                            clus_mem[file_count] <= me_clus;
+                            size_mem[file_count] <= me_size;
+                            dsk_mem[file_count]  <= (me_name[23:16]==8'h44) &&
+                                                    (me_name[15:8]==8'h53) &&
+                                                    (me_name[7:0]==8'h4B);   // "DSK"
+                            dsec_mem[file_count] <= me_sec;
+                            doff_mem[file_count] <= me_base;
+                            mkent_idx <= file_count[5:0];
+                            file_count <= file_count + 8'd1;
+                            mkent_done <= 1'b1;
+                            state <= S_DONE;
                          end
 
                 S_ERR:  begin error <= 1'b1; end

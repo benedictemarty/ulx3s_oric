@@ -64,7 +64,7 @@ prog-fujprog: build/$(PROJ).bit
 # ----------------------------------------------------------------------
 # Tests
 # ----------------------------------------------------------------------
-TESTS = test-via test-keyboard test-azerty test-injector test-tape test-tape-demod test-tape-saver test-joystick test-audio-dac test-led test-acia test-expansion test-ula test-boot test-hdmi test-hdmi-packet test-hdmi-audio test-hdmi-island test-spi-byte test-sd test-fat test-tape-loader test-wd test-microdisc test-dsk test-sw1reset test-sd-write test-fat-write test-fat-alloc test-bank test-bank-sel test-sdram test-dsk-write test-dsk-wr-e2e
+TESTS = test-via test-keyboard test-azerty test-injector test-tape test-tape-demod test-tape-saver test-joystick test-audio-dac test-led test-acia test-expansion test-ula test-boot test-hdmi test-hdmi-packet test-hdmi-audio test-hdmi-island test-spi-byte test-sd test-fat test-tape-loader test-wd test-microdisc test-dsk test-sw1reset test-sd-write test-fat-write test-fat-alloc test-fat-mkent test-bank test-bank-sel test-sdram test-dsk-write test-dsk-wr-e2e
 
 test: $(TESTS)
 	@echo "== TOUS LES TESTS SONT PASSES =="
@@ -139,6 +139,12 @@ test-fat-alloc: sim/out
 	vvp sim/out/tb_fal.vvp | tee sim/out/tb_fal.log
 	@grep -q "ALL TESTS PASSED" sim/out/tb_fal.log
 	python3 tools/check_fat_alloc.py sim/out/fat_test.img sim/out/tb_fal.log
+
+test-fat-mkent: sim/out
+	python3 tools/gen_fat_test.py sim/out/fat_test.img
+	iverilog -DSIM -g2005 -o sim/out/tb_fme.vvp sim/tb_fat_mkent.v rtl/fat32.v rtl/sd_spi.v rtl/spi_byte.v sim/sd_card_file.v
+	vvp sim/out/tb_fme.vvp | tee sim/out/tb_fme.log
+	@grep -q "ALL TESTS PASSED" sim/out/tb_fme.log
 
 test-sd-write: sim/out
 	python3 -c "open('sim/out/wr_test.img','wb').write(b'\\xEE'*65536)"

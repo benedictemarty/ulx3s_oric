@@ -230,8 +230,16 @@ carte SD ensuite. Décodeur de référence : `~/Oric1/src/io/cassette.c`
             de l'image de test bouchés (`gen_fat_test.py`) → 1er libre > 128,
             scan multi-secteur exercé. Top : allocateur tie-off (pas encore
             piloté).
-      - [ ] **Phase 2 — Création d'entrée de répertoire** : trouver un slot libre
-            (0x00/0xE5), écrire l'entrée 32 o (nom 8.3, attr 0x20, cluster, taille).
+      - [x] **Phase 2 — Création d'entrée de répertoire** (2026-08-24, sim OK) :
+            `fat32.v` gagne `mkent_start/mkent_name/mkent_clus/mkent_size →
+            mkent_idx/mkent_done/mkent_error`. Scanne le répertoire racine
+            (`DIRSECS` secteurs), trouve un slot libre (1er octet `0x00`/`0xE5`),
+            écrit l'entrée 8.3 (nom, attr 0x20, cluster hi/lo, taille) par RMW du
+            secteur, puis ajoute le fichier au listing en mémoire (visible sans
+            re-parse). `sim/tb_fat_mkent.v` (cible `test-fat-mkent`) : alloc +
+            création de `NEWSAVE.TAP`, contrôle du listing mémoire, puis
+            **re-parse** de l'image → le fichier réapparaît (nom/cluster/taille),
+            persistance prouvée.
       - [ ] **Phase 3 — Extension de chaîne** : allouer un cluster à la demande
             quand l'écriture (`wblk`) dépasse la fin de la chaîne courante.
       - [ ] **Phase 4 — Intégration top** : orchestration `mkfile` (alloc +
