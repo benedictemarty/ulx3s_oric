@@ -6,6 +6,17 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 ## [Non publié]
 
 ### Ajouté
+- **US-CSAVE.4 phase D1 — Extracteur de nom cassette** (bmarty, 2026-08-24,
+  **sim OK**) : `rtl/tape_name.v` — observe (sans le consommer) le flux `.tap`
+  produit par `tape_demod` et reconstruit le **nom 8.3** du fichier à partir de
+  l'en-tête cassette Oric (amorce `0x16` → marqueur `0x24` → 9 octets d'en-tête →
+  nom ASCII terminé `0x00`). Normalisation 8.3 : troncature à 8 caractères,
+  minuscules → majuscules, `[A-Z0-9]` conservés sinon `_`, complété d'espaces,
+  extension forcée `TAP` ; nom vide → `NONAME`. `capturing` bas réarme pour le
+  CSAVE suivant. Décision produit : le fichier créé portera le **nom réel** du
+  `CSAVE"NOM"`. Nouveau `sim/tb_tape_name.v` (cible `test-tape-name`, ajoutée à
+  `TESTS`) : nom normal, minuscules+invalides, troncature > 8, nom vide. Module
+  isolé (pas encore instancié dans le top). **Suite complète sans régression.**
 - **US-CSAVE.4 phase 3 — Extension de chaîne à la demande** (bmarty,
   2026-08-24, **sim OK**) : `rtl/fat32.v` gagne un input `wblk_extend`. Quand
   l'écriture d'un bloc (`wblk`) atteint la fin de la chaîne (EOC), au lieu de

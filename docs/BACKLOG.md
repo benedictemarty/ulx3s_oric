@@ -249,8 +249,19 @@ carte SD ensuite. Décodeur de référence : `~/Oric1/src/io/cassette.c`
             crée un fichier neuf (alloc + entrée), écrit 3 blocs (SPC=1 → 2
             extensions), relit les 1536 o par le chemin de lecture (suivi de la
             chaîne construite) — contenu conforme.
-      - [ ] **Phase 4 — Intégration top** : orchestration `mkfile` (alloc +
+      - [~] **Phase 4 — Intégration top** : orchestration `mkfile` (alloc +
             dirent) branchée au `tape_saver`, nom de fichier généré.
+            **Décision nommage : nom réel du `CSAVE"NOM"`** (extrait de l'en-tête
+            cassette).
+            - [x] **D1 — Extracteur de nom** (2026-08-24, sim OK) : `rtl/tape_name.v`
+                  observe le flux `tape_demod` (amorce 0x16 → 0x24 → 9 o d'en-tête
+                  → nom ASCII + 0x00) et reconstruit un nom 8.3 (troncature 8,
+                  majuscules, `[A-Z0-9]` sinon `_`, extension `TAP`, défaut
+                  `NONAME`). `sim/tb_tape_name.v` (cible `test-tape-name`) : nom
+                  normal, minuscules/invalides, troncature, nom vide.
+            - [ ] **D2 — Orchestration** : `tape_saver` capture dès le 1er octet
+                  et attend la création ; sur `name_ready` → `alloc`+`mkent` →
+                  écriture avec `wblk_extend` → `dsize` (taille) à la fin.
       - [ ] **Phase 5 — e2e** : injector→demod→saver→(création+écriture)→SD,
             relecture du `.tap` créé + vérif entrée + chaîne FAT.
 

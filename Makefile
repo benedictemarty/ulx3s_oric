@@ -64,7 +64,7 @@ prog-fujprog: build/$(PROJ).bit
 # ----------------------------------------------------------------------
 # Tests
 # ----------------------------------------------------------------------
-TESTS = test-via test-keyboard test-azerty test-injector test-tape test-tape-demod test-tape-saver test-joystick test-audio-dac test-led test-acia test-expansion test-ula test-boot test-hdmi test-hdmi-packet test-hdmi-audio test-hdmi-island test-spi-byte test-sd test-fat test-tape-loader test-wd test-microdisc test-dsk test-sw1reset test-sd-write test-fat-write test-fat-alloc test-fat-mkent test-fat-extend test-bank test-bank-sel test-sdram test-dsk-write test-dsk-wr-e2e
+TESTS = test-via test-keyboard test-azerty test-injector test-tape test-tape-demod test-tape-saver test-joystick test-audio-dac test-led test-acia test-expansion test-ula test-boot test-hdmi test-hdmi-packet test-hdmi-audio test-hdmi-island test-spi-byte test-sd test-fat test-tape-loader test-wd test-microdisc test-dsk test-sw1reset test-sd-write test-fat-write test-fat-alloc test-fat-mkent test-fat-extend test-tape-name test-bank test-bank-sel test-sdram test-dsk-write test-dsk-wr-e2e
 
 test: $(TESTS)
 	@echo "== TOUS LES TESTS SONT PASSES =="
@@ -151,6 +151,11 @@ test-fat-extend: sim/out
 	iverilog -DSIM -g2005 -o sim/out/tb_fex.vvp sim/tb_fat_extend.v rtl/fat32.v rtl/sd_spi.v rtl/spi_byte.v sim/sd_card_file.v
 	vvp sim/out/tb_fex.vvp | tee sim/out/tb_fex.log
 	@grep -q "ALL TESTS PASSED" sim/out/tb_fex.log
+
+test-tape-name: sim/out
+	iverilog -DSIM -g2005 -o sim/out/tb_tn.vvp sim/tb_tape_name.v rtl/tape_name.v
+	vvp sim/out/tb_tn.vvp | tee sim/out/tb_tn.log
+	@grep -q "ALL TESTS PASSED" sim/out/tb_tn.log
 
 test-sd-write: sim/out
 	python3 -c "open('sim/out/wr_test.img','wb').write(b'\\xEE'*65536)"
