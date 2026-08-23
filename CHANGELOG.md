@@ -6,6 +6,23 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 ## [Non publié]
 
 ### Ajouté
+- **US2.3 — LEDs d'activité (IRQ, VSYNC, USB)** (bmarty, 2026-08-23, **sim +
+  synthèse OK, validation carte à faire**) : `rtl/led_activity.v` — monostable
+  re-déclenchable générique (paramètre `WIDTH`) : chaque impulsion/niveau haut
+  sur `trig` recharge un compteur qui décroît ensuite ; la LED reste allumée
+  ~2^WIDTH cycles après le **dernier** événement (WIDTH=22 @ 25 MHz ≈ 168 ms).
+  `top_ulx3s` instancie trois monostables sur `clk_sys` : **IRQ** (`irq_dbg`) et
+  **VSYNC** (`frame_tick`, 50 Hz) restent allumés en continu tant que le cœur
+  tourne = *heartbeat « il vit »* ; l'**USB** flashe à chaque rapport HID
+  (`usb_report`, resynchronisé du domaine `clk_usb` 12 MHz par double bascule —
+  largeur ≥ 2 `clk_sys`, aucune perte). Affichage **opt-in** via **SW4**
+  (`sw[3]`, resynchronisé) : haut → vue activité sur les LEDs hautes
+  (`led[7]=IRQ`, `led[6]=VSYNC`, `led[5]=USB`) ; bas → la vue diagnostic
+  SD/FAT/sélection existante est **inchangée** (zéro régression fonctionnelle).
+  Nouveau `sim/tb_led_activity.v` (cible `test-led`, ajoutée à `TESTS`) :
+  WIDTH=4 réduit, vérifie allumage immédiat, durée de vie ~2^WIDTH, maintien
+  sous train d'impulsions (retriggerable) et extinction au reset. **Suite
+  complète + synthèse 85F sans régression.**
 - **Audio jack — noise-shaper sigma-delta (qualité AY)** (bmarty, 2026-08-20,
   **sim + synthèse OK**) : le son AY était déjà présent sur le jack 3.5 mm mais
   **tronqué à 4 bits** (`audio_mix[9:6]`, 16 niveaux). `rtl/audio_dac_sd.v` —

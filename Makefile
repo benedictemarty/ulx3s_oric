@@ -14,7 +14,8 @@ RTL = rtl/oric_atmos.v rtl/oric_ula.v rtl/oric_ram.v rtl/bank_window.v \
       rtl/uart_rx.v rtl/uart_tx.v rtl/key_injector.v rtl/tape_injector.v rtl/tape_demod.v rtl/tape_saver.v \
       rtl/acia6551.v rtl/expansion_port.v rtl/pll_video.v rtl/pll_sys.v \
       rtl/spi_byte.v rtl/sd_spi.v rtl/fat32.v rtl/tape_loader.v rtl/osd.v rtl/fat_dump.v \
-      rtl/wd1793.v rtl/microdisc.v rtl/dsk_track.v rtl/screen_stream.v rtl/audio_dac_sd.v
+      rtl/wd1793.v rtl/microdisc.v rtl/dsk_track.v rtl/screen_stream.v rtl/audio_dac_sd.v \
+      rtl/led_activity.v
 
 CPU = third_party/verilog-6502/cpu.v third_party/verilog-6502/ALU.v
 
@@ -63,7 +64,7 @@ prog-fujprog: build/$(PROJ).bit
 # ----------------------------------------------------------------------
 # Tests
 # ----------------------------------------------------------------------
-TESTS = test-via test-keyboard test-azerty test-injector test-tape test-tape-demod test-tape-saver test-joystick test-audio-dac test-acia test-expansion test-ula test-boot test-hdmi test-hdmi-packet test-hdmi-audio test-hdmi-island test-spi-byte test-sd test-fat test-tape-loader test-wd test-microdisc test-dsk test-sw1reset test-sd-write test-fat-write test-bank test-bank-sel test-sdram test-dsk-write test-dsk-wr-e2e
+TESTS = test-via test-keyboard test-azerty test-injector test-tape test-tape-demod test-tape-saver test-joystick test-audio-dac test-led test-acia test-expansion test-ula test-boot test-hdmi test-hdmi-packet test-hdmi-audio test-hdmi-island test-spi-byte test-sd test-fat test-tape-loader test-wd test-microdisc test-dsk test-sw1reset test-sd-write test-fat-write test-bank test-bank-sel test-sdram test-dsk-write test-dsk-wr-e2e
 
 test: $(TESTS)
 	@echo "== TOUS LES TESTS SONT PASSES =="
@@ -101,6 +102,11 @@ test-audio-dac: sim/out
 	iverilog -DSIM -g2005 -o sim/out/tb_adac.vvp sim/tb_audio_dac_sd.v rtl/audio_dac_sd.v
 	vvp sim/out/tb_adac.vvp | tee sim/out/tb_adac.log
 	@grep -q "ALL TESTS PASSED" sim/out/tb_adac.log
+
+test-led: sim/out
+	iverilog -DSIM -g2005 -o sim/out/tb_led.vvp sim/tb_led_activity.v rtl/led_activity.v
+	vvp sim/out/tb_led.vvp | tee sim/out/tb_led.log
+	@grep -q "ALL TESTS PASSED" sim/out/tb_led.log
 
 test-joystick: sim/out
 	iverilog -DSIM -g2005 -o sim/out/tb_joy.vvp sim/tb_joystick_ijk.v rtl/joystick_ijk.v

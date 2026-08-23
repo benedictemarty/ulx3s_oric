@@ -34,7 +34,11 @@ affichage HDMI, clavier USB, son AY.
 - [x] US2.2 Bouton reset physique (BTN1) + reset à chaud/froid (2026-08-16 :
       BTN1 reset ; BTN5 bascule ROM+reset ; SW1 bascule Microdisc+reset AUTO
       anti-rebondi ; insertion .dsk = reset auto. tb_sw1reset garde-fou.)
-- [ ] US2.3 LED d'activité (IRQ, VSYNC, USB)
+- [x] US2.3 LED d'activité (IRQ, VSYNC, USB) (2026-08-23, sim + synthèse OK,
+      **carte à valider**) : `rtl/led_activity.v` monostable re-déclenchable
+      (heartbeat IRQ/VSYNC, flash USB) ; overlay opt-in **SW4** (`sw[3]`) →
+      `led[7:5]={IRQ,VSYNC,USB}`, vue diagnostic SD/FAT inchangée sinon.
+      tb_led_activity (cible `test-led`).
 
 ## Épopée MODEM WiFi — 6551 ACIA + ESP32 Hayes (plan : docs/MODEM_WIFI.md)
 Objectif : modem WiFi Oric (telnet/BBS) via 6551 émulé (FPGA) + firmware

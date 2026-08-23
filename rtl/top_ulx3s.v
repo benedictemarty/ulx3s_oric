@@ -869,16 +869,41 @@ module top_ulx3s (
         else if (fat_rd_start) sec_cnt <= sec_cnt + 8'd1;
 
     // ------------------------------------------------------------------
-    // LEDs : erreur SD = 0xE0, erreur FAT = 0xEE ; pendant le parsing = étape ;
-    // après = {chargement, .dsk?, nb_fichiers[2:0], index sélectionné[2:0]}.
+    // US2.3 — LEDs d'activité (IRQ, VSYNC, USB HID).
+    // Monostables re-déclenchables : allumés dès qu'un événement se produit,
+    // éteints ~168 ms (2^22 @ 25 MHz) après le dernier. IRQ (~100 Hz) et VSYNC
+    // (50 Hz) restent donc allumés en continu tant que le cœur tourne (= heart-
+    // beat « il vit »), l'USB flashe à chaque rapport HID (frappe/joystick).
+    // usb_report est en domaine clk_usb (12 MHz < 25 MHz) : sa largeur ≥ 2 clk_sys
+    // -> resynchro par double bascule sans perte.
+    // ------------------------------------------------------------------
+    reg [2:0] usbrep_s;
+    always @(posedge clk_sys) usbrep_s <= {usbrep_s[1:0], usb_report};
+
+    wire act_irq, act_vsync, act_usb;
+    led_activity #(.WIDTH(22)) act_i (.clk(clk_sys), .rst(rst_sys), .trig(irq_dbg),    .active(act_irq));
+    led_activity #(.WIDTH(22)) act_v (.clk(clk_sys), .rst(rst_sys), .trig(frame_tick), .active(act_vsync));
+    led_activity #(.WIDTH(22)) act_u (.clk(clk_sys), .rst(rst_sys), .trig(usbrep_s[2]),.active(act_usb));
+
+    // Overlay d'activité opt-in : SW4 (sw[3]) haut -> vue activité sur les LEDs
+    // hautes ; sinon la vue diagnostic SD/FAT/sélection reste inchangée.
+    reg [1:0] sw3_s;
+    always @(posedge clk_sys) sw3_s <= {sw3_s[0], sw[3]};
+
+    // ------------------------------------------------------------------
+    // LEDs (vue diagnostic) : erreur SD = 0xE0, erreur FAT = 0xEE ; pendant le
+    // parsing = étape ; après = {chargement, .dsk?, nb_fichiers[2:0], index[2:0]}.
     // BTN3 change l'index (led[2:0]), led[6] s'allume si le fichier est un .dsk
     // (non chargeable), led[7] = chargement en cours.
     // ------------------------------------------------------------------
-    assign led = sd_error   ? 8'hE0 :
-                 fat_error  ? 8'hEE :
-                 tape_active ? fat_status :    // etat fat32 : 91/92 lecture, 93 debit, 94/95 FAT
-                 !fat_done  ? fat_status :
-                 {dsk_inserted, sel_isdsk, file_count[2:0], sel_idx[2:0]};
-                 // bit7 = disquette insérée (feedback BTN4 sur un .dsk)
+    wire [7:0] led_diag = sd_error   ? 8'hE0 :
+                          fat_error  ? 8'hEE :
+                          tape_active ? fat_status :  // etat fat32 : 91/92 lecture, 93 debit, 94/95 FAT
+                          !fat_done  ? fat_status :
+                          {dsk_inserted, sel_isdsk, file_count[2:0], sel_idx[2:0]};
+                          // bit7 = disquette insérée (feedback BTN4 sur un .dsk)
+
+    // Vue activité : led[7]=IRQ, led[6]=VSYNC, led[5]=USB.
+    assign led = sw3_s[1] ? {act_irq, act_vsync, act_usb, 5'b00000} : led_diag;
 
 endmodule
