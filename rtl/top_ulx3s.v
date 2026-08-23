@@ -727,6 +727,9 @@ module top_ulx3s (
         // Maj taille SAVE.TAP dans l'entrée répertoire (US-CSAVE.3 refinement)
         .dsize_start(dsize_start), .dsize_idx(dsize_idx), .dsize_val(dsize_val),
         .dsize_done(dsize_done), .dsize_error(dsize_error),
+        // Allocateur de cluster (US-CSAVE.4) : pas encore piloté par le top
+        .alloc_start(1'b0), .alloc_prev(32'd0),
+        .alloc_clus(), .alloc_done(), .alloc_error(),
         .wr_start(fat_wr_start), .wr_data(fat_wr_data), .wr_idx(sd_wr_idx)
     );
 

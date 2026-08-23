@@ -149,6 +149,15 @@ set_fat(CIT_CLUS + CIT_NCLUS - 1, 0x0FFFFFFF)
 for c in range(SAVE_CLUS, SAVE_CLUS + SAVE_NCLUS - 1):  # chaîne SAVE.TAP
     set_fat(c, c + 1)
 set_fat(SAVE_CLUS + SAVE_NCLUS - 1, 0x0FFFFFFF)
+# Bouche les « trous » FAT (entrées factices DEFENDER/CITADEL/… sans données
+# réelles) jusqu'au dernier cluster utilisé, pour que la FAT soit cohérente :
+# le 1er cluster réellement libre est alors > 128, ce qui exerce le scan
+# multi-secteur de l'allocateur (US-CSAVE.4). Sans effet sur les autres bancs
+# (ils ne lisent jamais ces clusters).
+LAST_USED = SAVE_CLUS + SAVE_NCLUS - 1
+for c in range(2, LAST_USED + 1):
+    if img[f + c*4 : f + c*4 + 4] == b'\x00\x00\x00\x00':
+        set_fat(c, 0x0FFFFFFF)
 
 # --- Données de TEST.TAP (motif i & 0xFF) ---
 for i in range(TEST_SIZE):

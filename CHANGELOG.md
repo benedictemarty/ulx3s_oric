@@ -6,6 +6,23 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 ## [Non publié]
 
 ### Ajouté
+- **US-CSAVE.4 phase 1 — Allocateur de cluster FAT32** (bmarty, 2026-08-24,
+  **sim + check OK**) : première brique de la *vraie création FAT32* (lever le
+  placeholder `SAVE.TAP`). `rtl/fat32.v` gagne une primitive d'allocation
+  `alloc_start`/`alloc_prev` → `alloc_clus`/`alloc_done`/`alloc_error` : scanne
+  la FAT depuis le cluster 2 (**balayage multi-secteur**, `al_sec`/`al_ae`),
+  trouve la 1re entrée libre (== 0), la marque **EOC** (`0x0FFFFFFF`) par RMW du
+  secteur FAT (réutilise `secbuf` + `ds_writing`) ; si `alloc_prev ≠ 0`, chaîne
+  également `prev → nouveau cluster` (extension de fichier) par un 2ᵉ RMW.
+  Sortie `alloc_error` si la FAT est pleine. `state` élargi à 6 bits (9 états
+  `AL_*`). Nouveau `sim/tb_fat_alloc.v` (cible `test-fat-alloc`, ajoutée à
+  `TESTS`) : 3 allocations chaînées ; la **persistance de l'EOC** est prouvée
+  (l'alloc #2 renvoie `c1+1`, pas `c1`) et `tools/check_fat_alloc.py` valide la
+  chaîne FAT (`FAT[c1]=c2`, `FAT[c2]=c3`, `FAT[c3]=EOC`, `c1` = 1re libre) sur
+  l'image écrite. `tools/gen_fat_test.py` : bouche les trous FAT des entrées
+  factices → 1er cluster libre > 128, ce qui exerce le scan multi-secteur (sans
+  effet sur les autres bancs). `top_ulx3s` : allocateur câblé en tie-off (pas
+  encore piloté). **Suite complète sans régression.**
 - **US2.3 — LEDs d'activité (IRQ, VSYNC, USB)** (bmarty, 2026-08-23, **sim +
   synthèse OK, validation carte à faire**) : `rtl/led_activity.v` — monostable
   re-déclenchable générique (paramètre `WIDTH`) : chaque impulsion/niveau haut

@@ -87,6 +87,16 @@ module fat32 #(
     output reg        dsize_done,
     output reg        dsize_error,
 
+    // Allocation d'un cluster libre (US-CSAVE.4 — vraie création FAT32) :
+    // scanne la FAT depuis le cluster 2, trouve la 1re entrée libre (== 0), la
+    // marque EOC (0x0FFFFFFF). Si alloc_prev != 0, chaîne aussi alloc_prev ->
+    // nouveau cluster (extension de fichier). Le n° obtenu sort sur alloc_clus.
+    input             alloc_start,
+    input      [31:0] alloc_prev,     // 0 = cluster isolé ; sinon chaîne
+    output reg [31:0] alloc_clus,
+    output reg        alloc_done,
+    output reg        alloc_error,    // FAT pleine (aucun cluster libre)
+
     // vers sd_spi (écriture)
     output reg        wr_start,       // -> sd_spi.start_write
     output     [7:0]  wr_data,        // -> sd_spi.wr_data
@@ -158,13 +168,21 @@ module fat32 #(
                // écriture d'un bloc à un offset
                WB_SKIP=17, WB_FAT=18, WB_FATC=19, WB_WR=20, WB_BUSY=21,
                // maj taille dans l'entrée de répertoire (RMW)
-               DS_RD=22, DS_CAP=23, DS_WR=24, DS_BUSY=25;
-    reg [4:0]  state;
+               DS_RD=22, DS_CAP=23, DS_WR=24, DS_BUSY=25,
+               // allocation d'un cluster libre (scan FAT + marquage EOC + chaînage)
+               AL_RD=26, AL_CAP=27, AL_SCAN=28, AL_WR=29, AL_WBUSY=30,
+               AL_PRD=31, AL_PCAP=32, AL_PWR=33, AL_PBUSY=34;
+    reg [5:0]  state;
     reg [31:0] wb_clus, wb_skip;     // suivi de chaîne pour l'écriture
     reg [7:0]  wb_sic;               // bloc dans le cluster
     reg [3:0]  ds_sec;               // secteur de répertoire à réécrire
     reg [8:0]  ds_off;               // offset de l'entrée dans le secteur
     reg [31:0] ds_val;               // nouvelle taille à écrire
+    // Allocateur de cluster
+    reg [31:0] al_sec;               // secteur FAT relatif en cours de scan
+    reg [7:0]  al_ae;                // index d'entrée dans le secteur (0..127)
+    reg [31:0] al_prev;              // cluster à chaîner (0 = aucun)
+    reg        al_need_chain;        // reste à écrire prev -> nouveau cluster
     reg [9:0]  bidx;                 // 0..511 octet dans le secteur
     reg [3:0]  dirsec;               // secteur de répertoire courant (0..DIRSECS-1)
     reg        stop_dir;             // fin de répertoire (entrée 0x00) rencontrée
@@ -180,12 +198,13 @@ module fat32 #(
         wr_start   <= 1'b0;
         wblk_done  <= 1'b0;
         dsize_done <= 1'b0;
+        alloc_done <= 1'b0;
         if (rst) begin
             fdata_valid <= 1'b0;
             state <= S_IDLE; done <= 0; error <= 0; file_count <= 0;
             status <= 8'h00; rd_sector <= 0; bidx <= 0; dirsec <= 0; stop_dir <= 0;
             floading <= 0; feof <= 0; cache_valid <= 1'b0; wblk_error <= 1'b0;
-            ds_writing <= 1'b0; dsize_error <= 1'b0;
+            ds_writing <= 1'b0; dsize_error <= 1'b0; alloc_error <= 1'b0;
         end else begin
             case (state)
                 S_IDLE: if (start) begin
@@ -312,6 +331,12 @@ module fat32 #(
                         size_mem[dsize_idx] <= dsize_val;   // reflète la nouvelle taille
                         dsize_error <= 1'b0;
                         state <= DS_RD;
+                    end else if (alloc_start) begin  // allouer un cluster libre
+                        al_prev <= alloc_prev;
+                        al_need_chain <= (alloc_prev != 32'd0);
+                        al_sec <= 32'd0;
+                        alloc_error <= 1'b0;
+                        state <= AL_RD;
                     end else if (open_start) begin
                         // au-delà de la fin : EOF immédiat (bytes_left = 0)
                         bytes_left <= (open_offset < size_mem[open_idx])
@@ -499,6 +524,76 @@ module fat32 #(
                 DS_BUSY: if (sd_ready && !sd_busy && !wr_start) begin
                             ds_writing <= 1'b0;
                             dsize_done <= 1'b1; state <= S_DONE;
+                         end
+
+                // ---- allocation : lire le secteur FAT courant ----
+                AL_RD: if (sd_ready && !sd_busy) begin
+                            rd_sector <= fat_lba + al_sec;
+                            rd_start <= 1'b1; bidx <= 0; state <= AL_CAP;
+                        end
+                AL_CAP: if (sd_dvalid) begin
+                            secbuf[bidx] <= sd_data;      // secteur FAT complet
+                            if (bidx == 511) begin al_ae <= 8'd0; state <= AL_SCAN; end
+                            else bidx <= bidx + 10'd1;
+                        end
+                // ---- chercher une entrée libre (== 0) dans le secteur ----
+                AL_SCAN: begin
+                    // cluster testé = al_sec*128 + al_ae ; ignorer 0 et 1
+                    if (({al_sec[24:0], 7'd0} + al_ae) >= 32'd2 &&
+                        secbuf[{al_ae,2'd0}]       == 8'h00 &&
+                        secbuf[{al_ae,2'd0}+9'd1]  == 8'h00 &&
+                        secbuf[{al_ae,2'd0}+9'd2]  == 8'h00 &&
+                        (secbuf[{al_ae,2'd0}+9'd3] & 8'h0F) == 8'h00) begin
+                        // trouvé : marquer EOC dans secbuf puis réécrire
+                        alloc_clus <= {al_sec[24:0], 7'd0} + al_ae;
+                        secbuf[{al_ae,2'd0}]      <= 8'hFF;
+                        secbuf[{al_ae,2'd0}+9'd1] <= 8'hFF;
+                        secbuf[{al_ae,2'd0}+9'd2] <= 8'hFF;
+                        secbuf[{al_ae,2'd0}+9'd3] <= 8'h0F;
+                        state <= AL_WR;
+                    end else if (al_ae == 8'd127) begin
+                        // secteur épuisé : suivant, ou FAT pleine
+                        if (al_sec + 32'd1 >= fatsz) begin
+                            alloc_error <= 1'b1; alloc_done <= 1'b1; state <= S_DONE;
+                        end else begin
+                            al_sec <= al_sec + 32'd1; state <= AL_RD;
+                        end
+                    end else al_ae <= al_ae + 8'd1;
+                end
+                // ---- réécrire le secteur FAT (EOC posé) ----
+                AL_WR: if (sd_ready && !sd_busy) begin
+                            rd_sector <= fat_lba + al_sec;
+                            ds_writing <= 1'b1;           // wr_data <- secbuf
+                            wr_start <= 1'b1; state <= AL_WBUSY;
+                        end
+                AL_WBUSY: if (sd_ready && !sd_busy && !wr_start) begin
+                            ds_writing <= 1'b0;
+                            if (al_need_chain) state <= AL_PRD;   // chaîner prev
+                            else begin alloc_done <= 1'b1; state <= S_DONE; end
+                         end
+                // ---- chaînage : RMW du secteur FAT de al_prev -> alloc_clus ----
+                AL_PRD: if (sd_ready && !sd_busy) begin
+                            rd_sector <= fat_lba + (al_prev >> 7);
+                            rd_start <= 1'b1; bidx <= 0; state <= AL_PCAP;
+                        end
+                AL_PCAP: if (sd_dvalid) begin
+                            // substitue l'entrée de al_prev (offset (prev%128)*4)
+                            if (bidx[8:0] == {al_prev[6:0],2'd0})       secbuf[bidx] <= alloc_clus[7:0];
+                            else if (bidx[8:0] == {al_prev[6:0],2'd0}+9'd1) secbuf[bidx] <= alloc_clus[15:8];
+                            else if (bidx[8:0] == {al_prev[6:0],2'd0}+9'd2) secbuf[bidx] <= alloc_clus[23:16];
+                            else if (bidx[8:0] == {al_prev[6:0],2'd0}+9'd3) secbuf[bidx] <= {4'd0, alloc_clus[27:24]};
+                            else                                        secbuf[bidx] <= sd_data;
+                            if (bidx == 511) state <= AL_PWR;
+                            else bidx <= bidx + 10'd1;
+                        end
+                AL_PWR: if (sd_ready && !sd_busy) begin
+                            rd_sector <= fat_lba + (al_prev >> 7);
+                            ds_writing <= 1'b1;
+                            wr_start <= 1'b1; state <= AL_PBUSY;
+                        end
+                AL_PBUSY: if (sd_ready && !sd_busy && !wr_start) begin
+                            ds_writing <= 1'b0; al_need_chain <= 1'b0;
+                            alloc_done <= 1'b1; state <= S_DONE;
                          end
 
                 S_ERR:  begin error <= 1'b1; end

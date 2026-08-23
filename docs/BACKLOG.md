@@ -213,6 +213,31 @@ carte SD ensuite. Décodeur de référence : `~/Oric1/src/io/cassette.c`
             à la fin de la save (`sav_done` → `sav_nbytes`). Post-check
             `tools/check_save_tap.py` sur l'image. `SAVE.TAP` porte sa taille
             réelle. **US-CSAVE.3 complète** (reste validation carte).
+- [~] US-CSAVE.4 **Vraie création FAT32** (EN COURS, démarrée 2026-08-24) :
+      lever le *placeholder* `SAVE.TAP` — créer un vrai fichier `.tap` sur la SD
+      (allocation de cluster + entrée de répertoire) au lieu d'écraser un fichier
+      pré-existant. Stratégie retenue : **allocation incrémentale** (clusters
+      alloués à la demande pendant l'écriture, pas de pré-allocation ni de
+      troncature).
+      - [x] **Phase 1 — Allocateur de cluster** (2026-08-24, sim + check OK) :
+            `fat32.v` gagne `alloc_start/alloc_prev → alloc_clus/alloc_done/
+            alloc_error`. Scanne la FAT depuis le cluster 2 (multi-secteur),
+            trouve la 1re entrée libre, la marque **EOC** (RMW du secteur FAT
+            via `secbuf`) ; si `alloc_prev≠0`, chaîne aussi `prev → nouveau`
+            (extension). `sim/tb_fat_alloc.v` (cible `test-fat-alloc`) : 3 allocs
+            chaînées, la persistance de l'EOC est prouvée (alloc #2 rend c1+1) ;
+            `tools/check_fat_alloc.py` valide la chaîne FAT sur l'image. Trous FAT
+            de l'image de test bouchés (`gen_fat_test.py`) → 1er libre > 128,
+            scan multi-secteur exercé. Top : allocateur tie-off (pas encore
+            piloté).
+      - [ ] **Phase 2 — Création d'entrée de répertoire** : trouver un slot libre
+            (0x00/0xE5), écrire l'entrée 32 o (nom 8.3, attr 0x20, cluster, taille).
+      - [ ] **Phase 3 — Extension de chaîne** : allouer un cluster à la demande
+            quand l'écriture (`wblk`) dépasse la fin de la chaîne courante.
+      - [ ] **Phase 4 — Intégration top** : orchestration `mkfile` (alloc +
+            dirent) branchée au `tape_saver`, nom de fichier généré.
+      - [ ] **Phase 5 — e2e** : injector→demod→saver→(création+écriture)→SD,
+            relecture du `.tap` créé + vérif entrée + chaîne FAT.
 
 ## Épopée LOCI — émulation interne (plan : docs/LOCI_EMULATION.md)
 > ⏸ **PARQUÉE (2026-08-17)** — décision « retour à l'Atmos pur » (on arrête
