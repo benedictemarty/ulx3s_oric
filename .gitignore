@@ -10,3 +10,12 @@ tools/esp32/bin/
 tools/esp32/passthru/
 tools/esp32/venv/
 tools/esp32/out/
+
+# ROMs propriétaires — NON distribuées (copyright). À fournir localement :
+#   roms/basic11b.rom  (BASIC 1.1b Atmos), roms/basic10.hex, roms/basic11b.hex
+#   roms/microdis.hex  (firmware Microdisc)
+# Cf. README « ROMs requises ». roms/font8x8.hex (police OSD maison) reste suivie.
+roms/basic10.hex
+roms/basic11b.hex
+roms/basic11b.rom
+roms/microdis.hex

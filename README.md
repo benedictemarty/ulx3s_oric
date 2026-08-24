@@ -32,6 +32,24 @@ docs/          Documentation projet (architecture, backlog agile)
 build/         Produits de synthèse (non versionnés)
 ```
 
+## ROMs requises (non fournies)
+
+Les ROMs propriétaires ne sont **pas distribuées** dans ce dépôt (copyright). À
+placer soi-même dans `roms/` avant de construire :
+
+| Fichier | Contenu | Format |
+|---------|---------|--------|
+| `roms/basic11b.rom` | BASIC 1.1b (Atmos), 16 Ko | binaire |
+| `roms/basic11b.hex` | idem, converti pour `$readmemh` | un octet hexa/ligne |
+| `roms/basic10.hex`  | BASIC 1.0 (banque alternative) | idem |
+| `roms/microdis.hex` | firmware Microdisc (support `.dsk`) | idem |
+
+Conversion binaire → `.hex` (exemple) :
+```sh
+xxd -c1 -p roms/basic11b.rom > roms/basic11b.hex
+```
+`roms/font8x8.hex` (police OSD, maison) est fournie.
+
 ## Construire
 
 ```sh
@@ -53,5 +71,6 @@ make prog       # flash SRAM via openFPGALoader (ou: make prog-fujprog)
 - `third_party/jt49` : GPL-3.0 (Jose Tejada)
 - `third_party/usb_hid_host` : MIT (nand2mario)
 - RTL du projet : GPL-3.0 (contaminé par jt49)
-- La ROM BASIC 1.1b reste propriété de ses ayants droit ; fournie ici pour usage
-  personnel de préservation.
+- Les ROMs BASIC (Oric/Tangerine) et le firmware Microdisc restent la propriété
+  de leurs ayants droit ; **non distribués ici** — à fournir localement (cf.
+  « ROMs requises »).
