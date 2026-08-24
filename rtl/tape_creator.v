@@ -43,6 +43,7 @@ module tape_creator (
     input             dsize_done,
     // depuis tape_saver
     input             sav_done,
+    input             sav_busy,
     input      [31:0] sav_nbytes,
     // vers tape_saver
     output reg [5:0]  file_idx,
@@ -98,6 +99,10 @@ module tape_creator (
             CR_ACTIVE: if (sav_done) begin
                            dsize_idx <= file_idx; dsize_val <= sav_nbytes;
                            state <= CR_DSIZE;
+                       end else if (!capturing && !sav_busy) begin
+                           // le saver a abandonné sans clôturer (cas pathologique :
+                           // capture finie avant la création) : sortir sans dsize
+                           state <= CR_FAIL;
                        end
             // inscrit la taille réelle
             CR_DSIZE:  begin dsize_start <= 1'b1; state <= CR_DSIZEW; end

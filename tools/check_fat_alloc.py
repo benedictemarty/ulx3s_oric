@@ -36,6 +36,10 @@ def main():
     f = fat_lba * 512
     def fat(c):
         return le32(img, f + c*4) & 0x0FFFFFFF
+    # 2e copie de la FAT (US-CSAVE.4 #3 : doit rester cohérente avec la 1re)
+    f2 = (fat_lba + fatsz) * 512
+    def fat2(c):
+        return le32(img, f2 + c*4) & 0x0FFFFFFF
 
     errors = 0
     def check(cond, msg):
@@ -49,6 +53,12 @@ def main():
     check(fat(c1) == c2, f"FAT[{c1}] = {fat(c1)} (attendu {c2})")
     check(fat(c2) == c3, f"FAT[{c2}] = {fat(c2)} (attendu {c3})")
     check(fat(c3) >= EOC, f"FAT[{c3}] = {fat(c3):#x} (attendu EOC >= {EOC:#x})")
+
+    # cohérence de la 2e copie FAT (chkdsk/OS ne doit pas voir de divergence)
+    if nfat >= 2:
+        for c in (c1, c2, c3):
+            check(fat2(c) == fat(c),
+                  f"FAT2[{c}] = {fat2(c)} == FAT[{c}] = {fat(c)}")
 
     # c1 = 1re entrée libre : 2..c1-1 toutes occupees (!= 0)
     first_hole = next((c for c in range(2, c1) if fat(c) == 0), None)

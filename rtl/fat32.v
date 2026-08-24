@@ -202,6 +202,8 @@ module fat32 #(
     reg [31:0] al_prev;              // cluster à chaîner (0 = aucun)
     reg        al_need_chain;        // reste à écrire prev -> nouveau cluster
     reg        wb_extending;         // allocateur invoqué depuis WB (extension)
+    reg [7:0]  al_copy;              // copie FAT en cours d'écriture (0..nfat-1)
+    reg [31:0] al_fatoff;            // offset secteur de cette copie (= al_copy*fatsz)
     // Création d'entrée de répertoire
     reg [3:0]  me_sec;               // secteur de répertoire en cours de scan
     reg [3:0]  me_ee;                // index d'entrée dans le secteur (0..15)
@@ -614,6 +616,7 @@ module fat32 #(
                         secbuf[{al_ae,2'd0}+9'd1] <= 8'hFF;
                         secbuf[{al_ae,2'd0}+9'd2] <= 8'hFF;
                         secbuf[{al_ae,2'd0}+9'd3] <= 8'h0F;
+                        al_copy <= 8'd0; al_fatoff <= 32'd0;   // écrire toutes les copies FAT
                         state <= AL_WR;
                     end else if (al_ae == 8'd127) begin
                         // secteur épuisé : suivant, ou FAT pleine
@@ -624,16 +627,21 @@ module fat32 #(
                         end
                     end else al_ae <= al_ae + 8'd1;
                 end
-                // ---- réécrire le secteur FAT (EOC posé) ----
+                // ---- réécrire le secteur FAT (EOC posé) sur les nfat copies ----
                 AL_WR: if (sd_ready && !sd_busy) begin
-                            rd_sector <= fat_lba + al_sec;
+                            rd_sector <= fat_lba + al_fatoff + al_sec;
                             ds_writing <= 1'b1;           // wr_data <- secbuf
                             wr_start <= 1'b1; state <= AL_WBUSY;
                         end
                 AL_WBUSY: if (sd_ready && !sd_busy && !wr_start) begin
                             ds_writing <= 1'b0;
-                            if (al_need_chain) state <= AL_PRD;   // chaîner prev
-                            else if (wb_extending) begin          // (cas isolé : sans prev)
+                            if (al_copy + 8'd1 < nfat) begin      // copie FAT suivante
+                                al_copy <= al_copy + 8'd1;
+                                al_fatoff <= al_fatoff + fatsz;
+                                state <= AL_WR;
+                            end else if (al_need_chain) begin     // chaîner prev
+                                al_copy <= 8'd0; al_fatoff <= 32'd0; state <= AL_PRD;
+                            end else if (wb_extending) begin      // (cas isolé : sans prev)
                                 wb_extending <= 1'b0;
                                 wb_clus <= alloc_clus; state <= WB_SKIP;
                             end else begin alloc_done <= 1'b1; state <= S_DONE; end
@@ -654,17 +662,24 @@ module fat32 #(
                             else bidx <= bidx + 10'd1;
                         end
                 AL_PWR: if (sd_ready && !sd_busy) begin
-                            rd_sector <= fat_lba + (al_prev >> 7);
+                            rd_sector <= fat_lba + al_fatoff + (al_prev >> 7);
                             ds_writing <= 1'b1;
                             wr_start <= 1'b1; state <= AL_PBUSY;
                         end
                 AL_PBUSY: if (sd_ready && !sd_busy && !wr_start) begin
-                            ds_writing <= 1'b0; al_need_chain <= 1'b0;
-                            if (wb_extending) begin       // retour à l'écriture
-                                wb_extending <= 1'b0;
-                                wb_clus <= alloc_clus; state <= WB_SKIP;
+                            ds_writing <= 1'b0;
+                            if (al_copy + 8'd1 < nfat) begin      // copie FAT suivante
+                                al_copy <= al_copy + 8'd1;
+                                al_fatoff <= al_fatoff + fatsz;
+                                state <= AL_PWR;
                             end else begin
-                                alloc_done <= 1'b1; state <= S_DONE;
+                                al_copy <= 8'd0; al_fatoff <= 32'd0; al_need_chain <= 1'b0;
+                                if (wb_extending) begin           // retour à l'écriture
+                                    wb_extending <= 1'b0;
+                                    wb_clus <= alloc_clus; state <= WB_SKIP;
+                                end else begin
+                                    alloc_done <= 1'b1; state <= S_DONE;
+                                end
                             end
                          end
 

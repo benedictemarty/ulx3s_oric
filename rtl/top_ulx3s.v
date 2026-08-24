@@ -826,7 +826,7 @@ module top_ulx3s (
         .mkent_idx(cr_mkent_idx), .mkent_done(cr_mkent_done), .mkent_error(cr_mkent_error),
         .dsize_start(cr_dsize_start), .dsize_idx(cr_dsize_idx), .dsize_val(cr_dsize_val),
         .dsize_done(cr_dsize_done),
-        .sav_done(sav_done), .sav_nbytes(sav_nbytes),
+        .sav_done(sav_done), .sav_busy(sav_busy), .sav_nbytes(sav_nbytes),
         .file_idx(cr_file_idx), .file_ready(cr_file_ready), .busy(cr_busy)
     );
 

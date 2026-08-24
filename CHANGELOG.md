@@ -5,6 +5,25 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 
 ## [Non publié]
 
+### Corrigé
+- **US-CSAVE.4 — robustesse (revue adversariale)** (bmarty, 2026-08-24, **sim +
+  synthèse OK**) : deux correctifs sur du code non encore validé sur carte,
+  trouvés par une revue de code dédiée.
+  - **Blocage sur CSAVE avorté** : si la capture s'arrêtait avant l'extraction du
+    nom (bruit sur PB7 / flux tronqué), `tape_saver` posait `wr_req` et attendait
+    `file_ready` (qui ne venait jamais) → `busy`/`armed` collés, cassant
+    l'écriture disque et toute sauvegarde ultérieure jusqu'au reset. Ajout d'un
+    verrou `had_file` : sans fichier créé, la capture est abandonnée proprement.
+    `tape_creator` gagne un échappement `CR_ACTIVE` (via `sav_busy`) pour le cas
+    symétrique. Nouveau scénario « capture avortée » dans `tb_tape_create`
+    (saver + creator reviennent au repos).
+  - **2ᵉ copie de la FAT non mise à jour** : l'allocateur n'écrivait que la 1re
+    FAT (`fat_lba`) ; sur un volume `nfat=2` la 2ᵉ copie divergeait → un
+    `chkdsk`/OS hôte « réparait » et pouvait casser le fichier. `AL_WR`/`AL_PWR`
+    réécrivent désormais le secteur FAT sur les **`nfat` copies** (accumulateur
+    `al_fatoff`, pas de multiplieur). `check_fat_alloc.py` vérifie la cohérence
+    des deux copies.
+
 ### Ajouté
 - **US-CSAVE.4 phase D2 — Orchestration de la vraie création cassette** (bmarty,
   2026-08-24, **sim e2e + synthèse OK, validation carte à faire**) : lève

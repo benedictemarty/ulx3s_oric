@@ -127,7 +127,7 @@ module tb_tape_create;
         .mkent_idx(mkent_idx_w), .mkent_done(mkent_done), .mkent_error(mkent_error),
         .dsize_start(dsize_start), .dsize_idx(dsize_idx), .dsize_val(dsize_val),
         .dsize_done(dsize_done),
-        .sav_done(sav_done), .sav_nbytes(sav_nbytes),
+        .sav_done(sav_done), .sav_busy(sav_busy), .sav_nbytes(sav_nbytes),
         .file_idx(file_idx), .file_ready(file_ready), .busy(cr_busy)
     );
 
@@ -156,7 +156,7 @@ module tb_tape_create;
     endtask
 
     reg [7:0] flow [0:FLEN-1];
-    integer errors = 0, i, rp, found;
+    integer errors = 0, i, rp, found, cbase;
     reg [7:0] rdbuf [0:2047];
     localparam [87:0] NM = "TESTPROGTAP";
 
@@ -238,6 +238,20 @@ module tb_tape_create;
                     errors = errors + 1;
                 end
         end
+
+        // --- Cas AVORTÉ (#2) : un CSAVE qui s'arrête avant le nom (que des
+        //     syncs 0x16, pas de 0x24/en-tête/nom) ne doit PAS bloquer le saver
+        //     ni le creator (sinon sav_busy resterait collé et casserait tout).
+        cbase = credit_cnt;
+        send_byte(8'h01); send_byte(8'd6); send_byte(8'd0);   // 6 octets
+        for (i = 0; i < 6; i = i + 1) begin
+            wait (credit_cnt > cbase + i);
+            send_byte(8'h16);
+        end
+        wait (tape_active == 1'b0);
+        repeat (600) @(negedge clk);         // laisser le GAP clore + stabiliser
+        check(sav_busy === 1'b0, "saver au repos apres capture avortee (#2)");
+        check(cr_busy  === 1'b0, "creator au repos apres capture avortee (#2)");
 
         if (errors == 0) $display("ALL TESTS PASSED (tb_tape_create)");
         else             $display("%0d ERREUR(S)", errors);

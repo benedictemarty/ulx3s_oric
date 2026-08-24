@@ -61,6 +61,9 @@ module tape_saver (
     reg [9:0]  wr_valid;             // octets valides dans ce bloc (512 = plein)
     reg        wr_req;               // une écriture est demandée
     reg        armed;                // capture démarrée (enable verrouillé)
+    reg        had_file;             // file_ready a été vu (fichier créé) — si la
+                                     // capture se termine sans, la save est
+                                     // abandonnée proprement (CSAVE avorté/bruit)
 
     // Octet fourni à fat32 : buffer sélectionné, 0x00 au-delà des octets valides
     // (padding du dernier bloc).
@@ -78,13 +81,13 @@ module tape_saver (
         if (rst) begin
             fill_sel <= 1'b0; wcnt <= 0; total <= 0; blkno <= 0;
             wr_req <= 1'b0; armed <= 1'b0; busy <= 1'b0; error <= 1'b0;
-            nbytes <= 0; wstate <= WS_IDLE;
+            nbytes <= 0; wstate <= WS_IDLE; had_file <= 1'b0;
         end else begin
             // -------- Remplissage --------
             if (!armed) begin
                 // Démarre une capture au 1er octet si autorisé.
                 if (enable && byte_valid) begin
-                    armed <= 1'b1; busy <= 1'b1; error <= 1'b0;
+                    armed <= 1'b1; busy <= 1'b1; error <= 1'b0; had_file <= 1'b0;
                     total <= 0; blkno <= 0; fill_sel <= 1'b0; wcnt <= 0;
                     // range le 1er octet
                     bufA[0] <= byte_in;
@@ -92,6 +95,7 @@ module tape_saver (
                     total   <= 32'd1;
                 end
             end else begin
+                if (file_ready) had_file <= 1'b1;   // fichier créé (verrouillé)
                 if (byte_valid) begin
                     if (fill_sel) bufB[wcnt[8:0]] <= byte_in;
                     else          bufA[wcnt[8:0]] <= byte_in;
@@ -109,7 +113,12 @@ module tape_saver (
 
                 // Fin de capture : flush du dernier bloc (partiel) puis clôture.
                 if (!capturing && wstate == WS_IDLE && !wr_req) begin
-                    if (wcnt != 0) begin
+                    if (!had_file) begin
+                        // fichier jamais créé (CSAVE avorté / bruit avant le nom) :
+                        // abandon propre, rien à écrire — évite le blocage sur
+                        // file_ready qui ne viendra pas.
+                        armed <= 1'b0; busy <= 1'b0; wcnt <= 0;
+                    end else if (wcnt != 0) begin
                         wr_sel   <= fill_sel;
                         wr_valid <= wcnt;      // octets valides (reste padé à 0)
                         wr_req   <= 1'b1;
