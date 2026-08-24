@@ -259,9 +259,21 @@ carte SD ensuite. Décodeur de référence : `~/Oric1/src/io/cassette.c`
                   majuscules, `[A-Z0-9]` sinon `_`, extension `TAP`, défaut
                   `NONAME`). `sim/tb_tape_name.v` (cible `test-tape-name`) : nom
                   normal, minuscules/invalides, troncature, nom vide.
-            - [ ] **D2 — Orchestration** : `tape_saver` capture dès le 1er octet
-                  et attend la création ; sur `name_ready` → `alloc`+`mkent` →
-                  écriture avec `wblk_extend` → `dsize` (taille) à la fin.
+            - [x] **D2 — Orchestration** (2026-08-24, sim e2e + synthèse OK) :
+                  `rtl/tape_creator.v` (intègre `tape_name`) séquence
+                  extraction du nom → `alloc` → `mkent` (nom réel, taille 0) →
+                  `file_ready`/`file_idx` → écriture `tape_saver` (avec
+                  `wblk_extend`) → `dsize` (taille réelle) à la fin. `tape_saver`
+                  gagne `file_ready` (le 1er bloc attend la création ; il
+                  bufferise pendant l'amorce). `top_ulx3s` remplace le locator
+                  `SAVE.TAP` + le bloc `dsize` par `tape_creator` ; `alloc`/
+                  `mkent`/`dsize` de fat32 pilotés par lui, `wblk_extend=sav_busy`.
+                  `sim/tb_tape_create.v` (cible `test-tape-create`) : chaîne e2e
+                  complète (injector→demod→creator+saver→fat32→SD), flux avec
+                  en-tête + nom « TESTPROG », capture du flux décodé réel, puis
+                  re-parse → fichier `TESTPROGTAP` créé, taille inscrite, contenu
+                  relu identique. **Plus de placeholder SAVE.TAP.** Reste :
+                  validation carte.
       - [ ] **Phase 5 — e2e** : injector→demod→saver→(création+écriture)→SD,
             relecture du `.tap` créé + vérif entrée + chaîne FAT.
 

@@ -6,6 +6,25 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 ## [Non publié]
 
 ### Ajouté
+- **US-CSAVE.4 phase D2 — Orchestration de la vraie création cassette** (bmarty,
+  2026-08-24, **sim e2e + synthèse OK, validation carte à faire**) : lève
+  définitivement le placeholder `SAVE.TAP`. `rtl/tape_creator.v` (intègre
+  `tape_name`) séquence toute la création pendant un CSAVE : extraction du nom →
+  `fat32.alloc` (1er cluster) → `fat32.mkent` (entrée au **nom réel**, taille 0) →
+  publication `file_ready`/`file_idx` → écriture par `tape_saver` (avec
+  `wblk_extend`) → `fat32.dsize` (taille réelle) à la fin. La création tient dans
+  l'amorce (~259 o) donc `file_ready` est prêt avant le 1er bloc de 512 o.
+  `rtl/tape_saver.v` gagne l'input `file_ready` : il bufferise dès le 1er octet
+  mais n'écrit le 1er bloc qu'une fois le fichier créé (aucun octet perdu).
+  `rtl/top_ulx3s.v` remplace le locator `SAVE.TAP` + l'ancien bloc `dsize` par
+  `tape_creator` ; `alloc`/`mkent`/`dsize` de fat32 pilotés par lui,
+  `wblk_extend=sav_busy`. Nouveau `sim/tb_tape_create.v` (cible
+  `test-tape-create`, ajoutée à `TESTS`) : chaîne e2e complète
+  (injector→demod→creator+saver→fat32→SD) avec en-tête + nom « TESTPROG » ;
+  capture le flux décodé réel (indépendant du modèle injecteur/démod), puis
+  re-parse → fichier `TESTPROGTAP` **créé de zéro**, taille inscrite, contenu relu
+  identique. `tape_name.v`/`tape_creator.v` ajoutés à la synthèse. **Suite
+  complète + synthèse 85F sans régression.**
 - **US-CSAVE.4 phase D1 — Extracteur de nom cassette** (bmarty, 2026-08-24,
   **sim OK**) : `rtl/tape_name.v` — observe (sans le consommer) le flux `.tap`
   produit par `tape_demod` et reconstruit le **nom 8.3** du fichier à partir de

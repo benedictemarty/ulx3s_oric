@@ -12,6 +12,7 @@ RTL = rtl/oric_atmos.v rtl/oric_ula.v rtl/oric_ram.v rtl/bank_window.v \
       rtl/hdmi_audio_packets.v rtl/hdmi_data_island.v \
       rtl/hdmi_out.v rtl/top_ulx3s.v \
       rtl/uart_rx.v rtl/uart_tx.v rtl/key_injector.v rtl/tape_injector.v rtl/tape_demod.v rtl/tape_saver.v \
+      rtl/tape_name.v rtl/tape_creator.v \
       rtl/acia6551.v rtl/expansion_port.v rtl/pll_video.v rtl/pll_sys.v \
       rtl/spi_byte.v rtl/sd_spi.v rtl/fat32.v rtl/tape_loader.v rtl/osd.v rtl/fat_dump.v \
       rtl/wd1793.v rtl/microdisc.v rtl/dsk_track.v rtl/screen_stream.v rtl/audio_dac_sd.v \
@@ -64,7 +65,7 @@ prog-fujprog: build/$(PROJ).bit
 # ----------------------------------------------------------------------
 # Tests
 # ----------------------------------------------------------------------
-TESTS = test-via test-keyboard test-azerty test-injector test-tape test-tape-demod test-tape-saver test-joystick test-audio-dac test-led test-acia test-expansion test-ula test-boot test-hdmi test-hdmi-packet test-hdmi-audio test-hdmi-island test-spi-byte test-sd test-fat test-tape-loader test-wd test-microdisc test-dsk test-sw1reset test-sd-write test-fat-write test-fat-alloc test-fat-mkent test-fat-extend test-tape-name test-bank test-bank-sel test-sdram test-dsk-write test-dsk-wr-e2e
+TESTS = test-via test-keyboard test-azerty test-injector test-tape test-tape-demod test-tape-saver test-joystick test-audio-dac test-led test-acia test-expansion test-ula test-boot test-hdmi test-hdmi-packet test-hdmi-audio test-hdmi-island test-spi-byte test-sd test-fat test-tape-loader test-wd test-microdisc test-dsk test-sw1reset test-sd-write test-fat-write test-fat-alloc test-fat-mkent test-fat-extend test-tape-name test-tape-create test-bank test-bank-sel test-sdram test-dsk-write test-dsk-wr-e2e
 
 test: $(TESTS)
 	@echo "== TOUS LES TESTS SONT PASSES =="
@@ -156,6 +157,14 @@ test-tape-name: sim/out
 	iverilog -DSIM -g2005 -o sim/out/tb_tn.vvp sim/tb_tape_name.v rtl/tape_name.v
 	vvp sim/out/tb_tn.vvp | tee sim/out/tb_tn.log
 	@grep -q "ALL TESTS PASSED" sim/out/tb_tn.log
+
+test-tape-create: sim/out
+	python3 tools/gen_fat_test.py sim/out/fat_test.img
+	iverilog -DSIM -g2005 -o sim/out/tb_tc.vvp sim/tb_tape_create.v \
+	  rtl/tape_injector.v rtl/tape_demod.v rtl/tape_creator.v rtl/tape_name.v \
+	  rtl/tape_saver.v rtl/fat32.v rtl/sd_spi.v rtl/spi_byte.v sim/sd_card_file.v
+	vvp sim/out/tb_tc.vvp | tee sim/out/tb_tc.log
+	@grep -q "ALL TESTS PASSED" sim/out/tb_tc.log
 
 test-sd-write: sim/out
 	python3 -c "open('sim/out/wr_test.img','wb').write(b'\\xEE'*65536)"

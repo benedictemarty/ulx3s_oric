@@ -599,17 +599,17 @@ module top_ulx3s (
     wire [7:0]  sav_wblk_data;
     wire        sav_busy, sav_done, sav_error;
     wire [31:0] sav_nbytes;
-    // Localisation de SAVE.TAP (par son nom 8.3) dans le listing fat32.
-    reg  [5:0]  sav_q4_idx = 0;
-    wire [87:0] sav_q4_name;
-    reg  [5:0]  sav_file_idx = 0;
-    reg         sav_found = 1'b0;
-    // Maj taille SAVE.TAP : déclenchée à la fin de la sauvegarde (sav_done),
-    // fat32 étant retourné en S_DONE après le dernier bloc écrit.
-    reg         dsize_start = 1'b0;
-    reg  [5:0]  dsize_idx = 0;
-    reg  [31:0] dsize_val = 0;
-    wire        dsize_done, dsize_error;
+    // US-CSAVE.4 : vraie création FAT32 orchestrée par tape_creator (extraction
+    // du nom -> alloc -> mkent -> écriture avec extension -> dsize). Remplace la
+    // localisation d'un placeholder SAVE.TAP.
+    wire        cr_alloc_start, cr_mkent_start, cr_dsize_start;
+    wire [31:0] cr_alloc_prev, cr_mkent_clus, cr_mkent_size, cr_dsize_val;
+    wire [87:0] cr_mkent_name;
+    wire [5:0]  cr_mkent_idx, cr_dsize_idx;
+    wire [31:0] cr_alloc_clus;
+    wire        cr_alloc_done, cr_alloc_error, cr_mkent_done, cr_mkent_error, cr_dsize_done;
+    wire [5:0]  cr_file_idx;
+    wire        cr_file_ready, cr_busy;
 
     // Sélection de source vers fat32.wblk (saver prioritaire pendant une save).
     wire        wblk_start_s  = sav_busy ? sav_wblk_start  : dsk_wblk_start;
@@ -709,7 +709,7 @@ module top_ulx3s (
         .q_idx(sel_idx), .q_name(), .q_size(sel_size), .q_clus(), .q_isdsk(sel_isdsk),
         .q2_idx(osd_name_idx), .q2_name(osd_q2_name),
         .q3_idx(scr_osd_nidx), .q3_name(scr_osd_name),
-        .q4_idx(sav_q4_idx), .q4_name(sav_q4_name),
+        .q4_idx(6'd0), .q4_name(),
         .open_start(dump_active ? dump_open_start :
                     ld_active   ? ld_open_start   : d_open_start),
         .open_offset(d_grant ? d_open_offset : 32'd0),
@@ -723,17 +723,18 @@ module top_ulx3s (
         // wblk_pos/done/error sont partagés aux deux clients.
         .wblk_start(wblk_start_s), .wblk_idx(wblk_idx_s),
         .wblk_offset(wblk_offset_s), .wblk_data(wblk_data_s),
-        .wblk_extend(1'b0),   // US-CSAVE.4 phase D : passera à sav_busy
+        .wblk_extend(sav_busy),   // extension à la demande pendant une save cassette
         .wblk_pos(dsk_wblk_pos), .wblk_done(dsk_wblk_done), .wblk_error(dsk_wblk_error),
-        // Maj taille SAVE.TAP dans l'entrée répertoire (US-CSAVE.3 refinement)
-        .dsize_start(dsize_start), .dsize_idx(dsize_idx), .dsize_val(dsize_val),
-        .dsize_done(dsize_done), .dsize_error(dsize_error),
-        // Allocateur de cluster + création d'entrée (US-CSAVE.4) : pas encore
-        // pilotés par le top
-        .alloc_start(1'b0), .alloc_prev(32'd0),
-        .alloc_clus(), .alloc_done(), .alloc_error(),
-        .mkent_start(1'b0), .mkent_name(88'd0), .mkent_clus(32'd0), .mkent_size(32'd0),
-        .mkent_idx(), .mkent_done(), .mkent_error(),
+        // Maj taille (US-CSAVE.4) — inscrite par tape_creator à la fin de save
+        .dsize_start(cr_dsize_start), .dsize_idx(cr_dsize_idx), .dsize_val(cr_dsize_val),
+        .dsize_done(cr_dsize_done), .dsize_error(),
+        // Allocateur de cluster + création d'entrée (US-CSAVE.4) : pilotés par
+        // tape_creator (vraie création FAT32)
+        .alloc_start(cr_alloc_start), .alloc_prev(cr_alloc_prev),
+        .alloc_clus(cr_alloc_clus), .alloc_done(cr_alloc_done), .alloc_error(cr_alloc_error),
+        .mkent_start(cr_mkent_start), .mkent_name(cr_mkent_name),
+        .mkent_clus(cr_mkent_clus), .mkent_size(cr_mkent_size),
+        .mkent_idx(cr_mkent_idx), .mkent_done(cr_mkent_done), .mkent_error(cr_mkent_error),
         .wr_start(fat_wr_start), .wr_data(fat_wr_data), .wr_idx(sd_wr_idx)
     );
 
@@ -807,58 +808,37 @@ module top_ulx3s (
     );
 
     // ------------------------------------------------------------------
-    // Sauvegarde cassette -> SAVE.TAP (US-CSAVE.3 ph.B)
+    // Sauvegarde cassette -> vraie création FAT32 (US-CSAVE.4)
     // ------------------------------------------------------------------
-    // Localisation de SAVE.TAP par son nom 8.3 : après le parsing (fat_done),
-    // on balaie le listing (port q4) et on verrouille l'index du fichier nommé
-    // « SAVE    TAP ». Une seule passe ; `sav_found` reste faux si absent (la
-    // save SD est alors inhibée, la voie UART US-CSAVE.2 reste opérationnelle).
-    localparam [87:0] SAVE_NAME = "SAVE    TAP";
-    localparam LS_IDLE = 2'd0, LS_SETTLE = 2'd1, LS_CMP = 2'd2, LS_DONE = 2'd3;
-    reg [1:0] lstate = LS_IDLE;
-    reg       fat_done_d = 1'b0;
-    always @(posedge clk_sys) begin
-        fat_done_d <= fat_done;
-        if (rst_por) begin
-            lstate <= LS_IDLE; sav_found <= 1'b0; sav_q4_idx <= 0; sav_file_idx <= 0;
-        end else case (lstate)
-            LS_IDLE: if (fat_done & ~fat_done_d) begin   // parsing terminé
-                sav_q4_idx <= 0; sav_found <= 1'b0; lstate <= LS_SETTLE;
-            end
-            LS_SETTLE: lstate <= LS_CMP;                 // laisse q4_name se stabiliser
-            LS_CMP: begin
-                if (sav_q4_name == SAVE_NAME) begin
-                    sav_file_idx <= sav_q4_idx; sav_found <= 1'b1; lstate <= LS_DONE;
-                end else if (sav_q4_idx + 6'd1 >= file_count[5:0]) begin
-                    lstate <= LS_DONE;                   // absent
-                end else begin
-                    sav_q4_idx <= sav_q4_idx + 6'd1; lstate <= LS_SETTLE;
-                end
-            end
-            default: ;                                   // LS_DONE : verrouillé
-        endcase
-    end
+    // tape_creator orchestre la création du fichier .tap au NOM RÉEL du
+    // CSAVE"NOM" : il extrait le nom du flux (pendant l'amorce), alloue un
+    // cluster, crée l'entrée de répertoire, publie file_idx/file_ready au saver,
+    // puis inscrit la taille réelle à la fin. Plus de placeholder SAVE.TAP.
+    // enable = fat_done : la save SD n'est armée qu'une fois la carte listée
+    // (la voie UART US-CSAVE.2 reste opérationnelle indépendamment).
+    tape_creator creator (
+        .clk(clk_sys), .rst(rst_sys),
+        .byte_in(sav_byte), .byte_valid(sav_valid), .capturing(sav_capturing),
+        .alloc_start(cr_alloc_start), .alloc_prev(cr_alloc_prev),
+        .alloc_clus(cr_alloc_clus), .alloc_done(cr_alloc_done), .alloc_error(cr_alloc_error),
+        .mkent_start(cr_mkent_start), .mkent_name(cr_mkent_name),
+        .mkent_clus(cr_mkent_clus), .mkent_size(cr_mkent_size),
+        .mkent_idx(cr_mkent_idx), .mkent_done(cr_mkent_done), .mkent_error(cr_mkent_error),
+        .dsize_start(cr_dsize_start), .dsize_idx(cr_dsize_idx), .dsize_val(cr_dsize_val),
+        .dsize_done(cr_dsize_done),
+        .sav_done(sav_done), .sav_nbytes(sav_nbytes),
+        .file_idx(cr_file_idx), .file_ready(cr_file_ready), .busy(cr_busy)
+    );
 
     tape_saver saver (
         .clk(clk_sys), .rst(rst_sys),
         .byte_in(sav_byte), .byte_valid(sav_valid), .capturing(sav_capturing),
-        .file_idx(sav_file_idx), .enable(sav_found),
+        .file_idx(cr_file_idx), .enable(fat_done), .file_ready(cr_file_ready),
         .wblk_start(sav_wblk_start), .wblk_idx(sav_wblk_idx),
         .wblk_offset(sav_wblk_offset), .wblk_data(sav_wblk_data),
         .wblk_pos(dsk_wblk_pos), .wblk_done(dsk_wblk_done), .wblk_error(dsk_wblk_error),
         .busy(sav_busy), .done(sav_done), .error(sav_error), .nbytes(sav_nbytes)
     );
-
-    // À la fin d'une sauvegarde réussie, inscrire la taille réelle dans l'entrée
-    // de répertoire de SAVE.TAP (sinon le fichier garde sa taille placeholder).
-    always @(posedge clk_sys) begin
-        dsize_start <= 1'b0;
-        if (!rst_por && sav_done && sav_found && !sav_error) begin
-            dsize_idx   <= sav_file_idx;
-            dsize_val   <= sav_nbytes;
-            dsize_start <= 1'b1;
-        end
-    end
 
     // Lancer le parsing une fois la carte initialisée. Sur power-on seul :
     // le listing survit aux resets CPU (l'OSD reste dispo après BTN1/BTN5).

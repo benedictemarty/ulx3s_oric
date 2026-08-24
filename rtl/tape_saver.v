@@ -1,12 +1,12 @@
-// Sauvegarde cassette vers la carte SD (US-CSAVE.3) : consomme les octets .tap
-// produits par `tape_demod` pendant un CSAVE et les écrit dans un fichier
-// placeholder **pré-existant** `SAVE.TAP` de la carte, via le chemin
-// `fat32.wblk` déjà validé (US-DISK.5 : suit la chaîne de clusters + CMD24).
+// Sauvegarde cassette vers la carte SD (US-CSAVE.3/4) : consomme les octets
+// .tap produits par `tape_demod` pendant un CSAVE et les écrit dans un fichier
+// de la carte, via le chemin `fat32.wblk` (US-DISK.5 : suit la chaîne de
+// clusters + CMD24), avec extension de chaîne à la demande (US-CSAVE.4).
 //
-// Le fichier doit exister (taille max fixe) — l'allocation FAT / la création
-// d'entrée de répertoire ne sont PAS faites ici ; on réutilise l'écriture de
-// blocs à un offset. `file_idx` = index de SAVE.TAP dans le listing fat32
-// (localisé par le top via son nom 8.3).
+// La CRÉATION du fichier (allocation FAT + entrée de répertoire) est faite en
+// amont par `tape_creator` pendant l'amorce ; `file_idx` désigne ce fichier et
+// `file_ready` autorise l'écriture du 1er bloc (le saver bufferise en attendant).
+// Historique : US-CSAVE.3 écrivait dans un placeholder `SAVE.TAP` pré-existant.
 //
 // Contrôle de flux : la ROM CSAVE émet ~137 o/s, très lentement devant une
 // écriture de bloc SPI. Un **double buffer ping-pong** (bufA/bufB de 512 o)
@@ -26,9 +26,12 @@ module tape_saver (
     input      [7:0]  byte_in,
     input             byte_valid,
     input             capturing,
-    // Cible : index de SAVE.TAP + autorisation SD
+    // Cible : index du fichier + autorisation SD
     input      [5:0]  file_idx,
-    input             enable,        // niveau : autorise la sauvegarde SD
+    input             enable,        // niveau : autorise la capture SD
+    input             file_ready,    // niveau : le fichier cible existe (créé) —
+                                     // le 1er bloc n'est écrit qu'une fois haut
+                                     // (US-CSAVE.4 : création pendant l'amorce)
     // Vers fat32.wblk
     output reg        wblk_start,
     output reg [5:0]  wblk_idx,
@@ -123,7 +126,7 @@ module tape_saver (
 
             // -------- Moteur d'écriture (consomme wr_req) --------
             case (wstate)
-                WS_IDLE: if (wr_req) begin
+                WS_IDLE: if (wr_req && file_ready) begin
                     wblk_idx    <= file_idx;
                     wblk_offset <= {blkno, 9'd0};   // blkno * 512
                     wstate      <= WS_START;

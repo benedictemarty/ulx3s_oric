@@ -110,7 +110,7 @@ module tb_tape_saver;
     tape_saver saver (
         .clk(clk), .rst(rst),
         .byte_in(dbyte), .byte_valid(dvalid), .capturing(capturing),
-        .file_idx(SAVE_IDX), .enable(1'b1),
+        .file_idx(SAVE_IDX), .enable(1'b1), .file_ready(1'b1),
         .wblk_start(wblk_start), .wblk_idx(wblk_idx), .wblk_offset(wblk_offset),
         .wblk_data(wblk_data), .wblk_pos(wblk_pos),
         .wblk_done(wblk_done), .wblk_error(wblk_error),
