@@ -5,6 +5,15 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/).
 
 ## [Non publié]
 
+### Documentation
+- **Procédure de validation carte** (bmarty, 2026-08-24) : `docs/VALIDATION_CARTE.md`
+  — checklist de tests **matériels** des fonctionnalités « sim OK, carte à
+  valider » : US2.3 (LEDs d'activité via SW4), US3.3 (joystick IJK), US-CSAVE.2
+  (sauvegarde → UART/PC) et US-CSAVE.4 (sauvegarde → **création SD** au nom réel).
+  Chaque test : pré-requis, étapes, critères de succès et dépannage ; points de
+  vérification spécifiques issus de la revue (multi-fichiers, capture coupée,
+  cohérence FAT via `fsck.vfat`). Pointeur ajouté en tête de `BACKLOG.md`.
+
 ### Corrigé
 - **US-CSAVE.4 — robustesse (revue adversariale)** (bmarty, 2026-08-24, **sim +
   synthèse OK**) : deux correctifs sur du code non encore validé sur carte,

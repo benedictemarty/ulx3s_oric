@@ -1,5 +1,9 @@
 # Backlog agile — ulx3s_oric
 
+> **Validation carte en attente** : procédure de test matériel des
+> fonctionnalités « sim OK » (US2.3 LEDs, US3.3 joystick, US-CSAVE.2/4) dans
+> [VALIDATION_CARTE.md](VALIDATION_CARTE.md).
+
 ## Sprint 1 (TERMINÉ 2026-07-29) — « Il boote »
 Objectif : Oric Atmos fonctionnel sur ULX3S 85F — BASIC 1.1b au boot,
 affichage HDMI, clavier USB, son AY.
