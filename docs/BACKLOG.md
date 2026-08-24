@@ -213,7 +213,8 @@ carte SD ensuite. Décodeur de référence : `~/Oric1/src/io/cassette.c`
             à la fin de la save (`sav_done` → `sav_nbytes`). Post-check
             `tools/check_save_tap.py` sur l'image. `SAVE.TAP` porte sa taille
             réelle. **US-CSAVE.3 complète** (reste validation carte).
-- [~] US-CSAVE.4 **Vraie création FAT32** (EN COURS, démarrée 2026-08-24) :
+- [x] US-CSAVE.4 **Vraie création FAT32** (COMPLÈTE en sim 2026-08-24, **reste
+      validation carte**) :
       lever le *placeholder* `SAVE.TAP` — créer un vrai fichier `.tap` sur la SD
       (allocation de cluster + entrée de répertoire) au lieu d'écraser un fichier
       pré-existant. Stratégie retenue : **allocation incrémentale** (clusters
@@ -249,10 +250,10 @@ carte SD ensuite. Décodeur de référence : `~/Oric1/src/io/cassette.c`
             crée un fichier neuf (alloc + entrée), écrit 3 blocs (SPC=1 → 2
             extensions), relit les 1536 o par le chemin de lecture (suivi de la
             chaîne construite) — contenu conforme.
-      - [~] **Phase 4 — Intégration top** : orchestration `mkfile` (alloc +
-            dirent) branchée au `tape_saver`, nom de fichier généré.
-            **Décision nommage : nom réel du `CSAVE"NOM"`** (extrait de l'en-tête
-            cassette).
+      - [x] **Phase 4 — Intégration top** (2026-08-24) : orchestration `mkfile`
+            (alloc + dirent) branchée au `tape_saver`, **nom réel du `CSAVE"NOM"`**
+            extrait de l'en-tête cassette. La phase 5 (e2e) est intégrée dans D2
+            (`tb_tape_create`).
             - [x] **D1 — Extracteur de nom** (2026-08-24, sim OK) : `rtl/tape_name.v`
                   observe le flux `tape_demod` (amorce 0x16 → 0x24 → 9 o d'en-tête
                   → nom ASCII + 0x00) et reconstruit un nom 8.3 (troncature 8,
