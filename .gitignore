@@ -19,3 +19,10 @@ roms/basic10.hex
 roms/basic11b.hex
 roms/basic11b.rom
 roms/microdis.hex
+
+# Outils tiers volumineux (routeur PCB) — à télécharger séparément
+*.jar
+
+# Artefacts / config Claude Code (spécifiques à l'assistant, hors projet)
+.claude/
+CLAUDE.md
